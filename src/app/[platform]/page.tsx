@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { PLATFORM, cariPlatform, tautanAngkatan } from '@/lib/data';
+import { PLATFORM, cariPlatform, jumlahContoh, tautanAngkatan } from '@/lib/data';
 import { Remah, Status, Kosong } from '../komponen';
 
 export function generateStaticParams() {
@@ -30,42 +30,72 @@ export default async function HalamanPlatform({
       {platform.tes.length === 0 ? (
         <Kosong teks="Belum ada tes" sebab="Platform ini belum punya tes yang terdaftar." />
       ) : (
-        platform.tes.map((tes) => (
-          <section key={tes.kode}>
-            <h2>{tes.nama}</h2>
-            {tes.instansi && (
-              <p className="kartu-kecil">
-                {tes.instansi}
-                {tes.kategori && ` · ${tes.kategori}`}
-              </p>
-            )}
-            {tes.deskripsi && <p className="pengantar">{tes.deskripsi}</p>}
+        <>
+          <p className="judul-bagian">Tes · {platform.tes.length}</p>
+          {/*
+            Tiap tes jadi satu blok berisi angkatannya, bukan judul polos
+            diikuti satu kartu kecil yang kesepian. Kartu angkatan kini
+            membawa angka — tahapan, subtes, contoh soal — supaya sebelum
+            diklik sudah kelihatan seberapa lengkap isinya.
+          */}
+          <div className="tes-daftar">
+            {platform.tes.map((tes) => (
+              <section key={tes.kode} className="tes-blok">
+                <div className="tes-kepala">
+                  <h2>{tes.nama}</h2>
+                  {tes.kategori && <span className="lencana lencana-aksen">{tes.kategori}</span>}
+                </div>
+                {tes.instansi && <div className="tes-instansi">{tes.instansi}</div>}
+                {tes.deskripsi && <p className="pengantar tes-deskripsi">{tes.deskripsi}</p>}
 
-            {tes.angkatan.length === 0 ? (
-              <Kosong teks="Belum ada angkatan" sebab="Tes ini belum punya angkatan yang datanya ditulis." />
-            ) : (
-              <div className="petak">
-                {[...tes.angkatan]
-                  .sort((a, b) => b.tahun - a.tahun)
-                  .map((angkatan) => (
-                    <a
-                      key={angkatan.kode}
-                      href={tautanAngkatan({ platform, tes, angkatan })}
-                      className="kartu"
-                    >
-                      <div className="kartu-judul">
-                        {angkatan.nama} ({angkatan.tahun})
-                      </div>
-                      <div className="kartu-kecil" style={{ marginBottom: 6 }}>
-                        {angkatan.tahapan.length} tahapan
-                      </div>
-                      <Status nilai={angkatan.status} />
-                    </a>
-                  ))}
-              </div>
-            )}
-          </section>
-        ))
+                {tes.angkatan.length === 0 ? (
+                  <Kosong
+                    teks="Belum ada angkatan"
+                    sebab="Tes ini belum punya angkatan yang datanya ditulis."
+                  />
+                ) : (
+                  <div className="petak">
+                    {[...tes.angkatan]
+                      .sort((a, b) => b.tahun - a.tahun)
+                      .map((angkatan) => {
+                        const subtes = angkatan.tahapan.flatMap((t) => t.subtes);
+                        const soal = subtes.reduce((n, s) => n + jumlahContoh(s), 0);
+                        return (
+                          <a
+                            key={angkatan.kode}
+                            href={tautanAngkatan({ platform, tes, angkatan })}
+                            className="kartu"
+                          >
+                            <div className="kartu-judul">{angkatan.nama}</div>
+                            <div className="kartu-kecil" style={{ marginBottom: 12 }}>
+                              {angkatan.tahun}
+                            </div>
+                            <div className="kartu-angka">
+                              <div>
+                                <div className="angka-besar">{angkatan.tahapan.length}</div>
+                                <div className="kartu-kecil">tahapan</div>
+                              </div>
+                              <div>
+                                <div className="angka-besar">{subtes.length}</div>
+                                <div className="kartu-kecil">subtes</div>
+                              </div>
+                              <div>
+                                <div className="angka-besar">{soal || '—'}</div>
+                                <div className="kartu-kecil">contoh</div>
+                              </div>
+                            </div>
+                            <div style={{ marginTop: 12 }}>
+                              <Status nilai={angkatan.status} />
+                            </div>
+                          </a>
+                        );
+                      })}
+                  </div>
+                )}
+              </section>
+            ))}
+          </div>
+        </>
       )}
     </>
   );
