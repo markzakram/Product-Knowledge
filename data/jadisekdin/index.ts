@@ -13,6 +13,7 @@ export const jadisekdin: Platform = {
   kode: 'JADISEKDIN',
   nama: 'JadiSekdin',
   slug: 'jadisekdin',
+  logo: 'logo/icon-jadisekdin.png',
   deskripsi:
     'Persiapan seleksi masuk sekolah kedinasan. SKD dipakai bersama seluruh ' +
     'sekolah, seleksi lanjutan berbeda per sekolah.',

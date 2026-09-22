@@ -5,6 +5,7 @@ export const jadipcpm: Platform = {
   kode: 'JADIPCPM',
   nama: 'JadiPCPM',
   slug: 'jadipcpm',
+  logo: 'logo/icon-jadipcpm.png',
   deskripsi: 'Persiapan seleksi Pendidikan Calon Pegawai Asisten Manajer Bank Indonesia.',
   tes: [pcpmBI],
 };

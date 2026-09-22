@@ -17,7 +17,13 @@ export default function Beranda() {
       <div className="petak">
         {terisi.map(({ platform, r }) => (
           <a key={platform.kode} href={tautanPlatform(platform)} className="kartu">
-            <div className="kartu-judul">{platform.nama}</div>
+            <div className="kartu-kepala">
+              {platform.logo && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="logo" src={`/${platform.logo}`} alt="" aria-hidden />
+              )}
+              <div className="kartu-judul">{platform.nama}</div>
+            </div>
             <div className="kartu-kecil" style={{ marginBottom: 12 }}>
               {platform.tes.map((t) => t.nama).join(' · ')}
             </div>
@@ -44,6 +50,10 @@ export default function Beranda() {
           <div className="chip-baris">
             {kosong.map(({ platform }) => (
               <span key={platform.kode} className="chip">
+                {platform.logo && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="logo logo-mini" src={`/${platform.logo}`} alt="" aria-hidden />
+                )}
                 {platform.nama}
               </span>
             ))}

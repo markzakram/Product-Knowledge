@@ -5,6 +5,7 @@ export const jadiasn: Platform = {
   kode: 'JADIASN',
   nama: 'JadiASN',
   slug: 'jadiasn',
+  logo: 'logo/icon-jadiasn.png',
   deskripsi: 'Persiapan seleksi Calon Pegawai Negeri Sipil.',
   tes: [
     {

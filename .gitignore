@@ -30,3 +30,6 @@ package-lock.json
 *.log
 .DS_Store
 Thumbs.db
+
+# Keluaran scraping — data mentah, bukan sumber kebenaran
+out/

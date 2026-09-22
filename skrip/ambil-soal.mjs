@@ -40,6 +40,9 @@ if (!platform || platform.startsWith('--')) {
 const maxPaket = Number(opsi('paket', 1));
 const maxSoal = Number(opsi('soal', 5));
 const fileKeluar = opsi('keluar', `out/soal-${platform}.json`);
+// --daftar: cuma memetakan paket > section > lesson, tanpa membuka soal.
+// Dipakai untuk mencari paket yang benar sebelum mengambil apa pun.
+const modeDaftar = process.argv.includes('--daftar');
 
 // Modul browser QC Agent dipakai ulang: cookie sesi Markaz tidak tersimpan di
 // folder profil melainkan di .profile/sesi-cookies.json, dan hanya
@@ -282,6 +285,21 @@ try {
   console.log(`Paket tryout di ${platform}: ${paket.length}`);
   if (!paket.length) throw new Error('tidak ada paket tryout');
 
+  if (modeDaftar) {
+    for (const [i, p] of paket.entries()) {
+      const sections = await ambilSection(page, p.url);
+      const isi = [];
+      for (const s of sections) {
+        const lessons = await ambilLesson(page, s.url);
+        isi.push(`${s.nama} [${lessons.map((l) => l.nama).join(' | ')}]`);
+      }
+      console.log(`${String(i + 1).padStart(2)}. ${p.nama}  <${p.kategori}>`);
+      isi.forEach((x) => console.log(`      ${x}`));
+    }
+    await tutupBrowser().catch(() => {});
+    process.exit(0);
+  }
+
   for (const p of paket.slice(0, maxPaket)) {
     console.log(`\n[paket] ${p.nama}  [${p.kategori}]`);
     const sections = await ambilSection(page, p.url);
@@ -311,16 +329,24 @@ try {
             opsi,
             pembahasan: q.isiPembahasan,
             pembahasanBerisi: pembahasanBerisi(q.isiPembahasan, q.kunci),
+            // Dibedakan dari "tanpa opsi": sebagian tipe soal (mis. Error
+            // Recognition di JadiOJK) memang menaruh penanda (A)(B)(C) di
+            // dalam kalimat dan tidak punya opsi terpisah — itu wajar.
+            // `isiKosong` berarti Markaz tidak memuat isinya sama sekali,
+            // dan soal seperti itu tidak boleh dipakai.
+            isiKosong: !pertanyaan.trim(),
             audio: q.audio,
             gambar: q.gambar,
           };
         });
         const berisi = rapi.filter((q) => q.pembahasanBerisi).length;
-        const tanpaOpsi = rapi.filter((q) => q.opsi.length === 0 && q.tipe !== 'SHORT_ANSWER').length;
+        const kosong = rapi.filter((q) => q.isiKosong).length;
+        const tanpaOpsi = rapi.filter((q) => !q.isiKosong && q.opsi.length === 0).length;
         console.log(
           `    [lesson] ${l.nama} -> ${rapi.length} soal, ` +
             `${berisi} pembahasan berisi` +
-            (tanpaOpsi ? `, ${tanpaOpsi} TANPA OPSI` : ''),
+            (tanpaOpsi ? `, ${tanpaOpsi} tanpa opsi terpisah` : '') +
+            (kosong ? `, ${kosong} ISI KOSONG` : ''),
         );
         hasil.push(...rapi);
       }
@@ -335,8 +361,10 @@ try {
   console.log(`\nOK -> ${fileKeluar}`);
   console.log(`   ${hasil.length} soal - tipe: ${tipe}`);
   console.log(`   pembahasan berisi: ${berisi}/${hasil.length}`);
-  const tanpaOpsi = hasil.filter((q) => q.opsi.length === 0 && q.tipe !== 'SHORT_ANSWER').length;
-  console.log(`   tanpa opsi (perlu diperiksa): ${tanpaOpsi}`);
+  const kosong = hasil.filter((q) => q.isiKosong).length;
+  const tanpaOpsi = hasil.filter((q) => !q.isiKosong && q.opsi.length === 0).length;
+  console.log(`   isi kosong di Markaz (TIDAK BISA DIPAKAI): ${kosong}`);
+  console.log(`   tanpa opsi terpisah (wajar untuk tipe tertentu): ${tanpaOpsi}`);
   console.log(`   punya audio: ${hasil.filter((q) => q.audio).length} - punya gambar: ${hasil.filter((q) => q.gambar).length}`);
 } catch (e) {
   console.error('GAGAL:', e.message);

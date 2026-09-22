@@ -524,3 +524,26 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
   .spek { gap: 20px; }
   .spek dd { font-size: 23px; }
 }
+
+/* ── Logo platform ───────────────────────────────────────────────────
+   Logo berupa PNG dengan latar terang. Di mode gelap ia dibingkai kotak
+   putih tipis, bukan dibiarkan melayang, supaya tepinya tidak hilang. */
+.logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  border-radius: var(--r-mini);
+  background: #fff;
+  padding: 2px;
+  flex: 0 0 auto;
+}
+.logo-mini { width: 17px; height: 17px; padding: 1px; border-radius: 5px; margin-right: 2px; }
+.logo-besar { width: 46px; height: 46px; border-radius: var(--r-kecil); padding: 4px; }
+
+.kartu-kepala { display: flex; align-items: center; gap: 10px; margin-bottom: 3px; }
+.kartu-kepala .kartu-judul { margin-bottom: 0; }
+
+.judul-logo { display: flex; align-items: center; gap: 14px; margin: 6px 0 8px; }
+.judul-logo h1 { margin: 0; }
+
+.chip { display: inline-flex; align-items: center; gap: 6px; }

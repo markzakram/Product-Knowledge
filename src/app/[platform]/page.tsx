@@ -18,7 +18,13 @@ export default async function HalamanPlatform({
   return (
     <>
       <Remah jejak={[{ teks: 'Platform', ke: '/' }, { teks: platform.nama }]} />
-      <h1>{platform.nama}</h1>
+      <div className="judul-logo">
+        {platform.logo && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className="logo logo-besar" src={`/${platform.logo}`} alt="" aria-hidden />
+        )}
+        <h1>{platform.nama}</h1>
+      </div>
       {platform.deskripsi && <p className="pengantar">{platform.deskripsi}</p>}
 
       {platform.tes.length === 0 ? (

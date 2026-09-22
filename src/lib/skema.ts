@@ -141,6 +141,8 @@ export interface Platform {
   nama: string;
   slug: string;
   deskripsi?: string;
+  /** Jalur di bawah `public/`, mis. "logo/icon-jadiasn.png". */
+  logo?: string;
   tes: Tes[];
 }
 
