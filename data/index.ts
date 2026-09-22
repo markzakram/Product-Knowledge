@@ -1,5 +1,6 @@
 import type { Platform } from '@/lib/skema';
 import { jadiasn } from './jadiasn';
+import { jadibumn } from './jadibumn';
 import { jadipcpm } from './jadipcpm';
 import { jadisekdin } from './jadisekdin';
 
@@ -19,7 +20,7 @@ export const PLATFORM: Platform[] = [
   { kode: 'CEREBRUM', nama: 'Cerebrum', slug: 'cerebrum', logo: 'logo/icon-cerebrum.png', tes: [] },
   jadiasn,
   { kode: 'JADIPPPK', nama: 'JadiPPPK', slug: 'jadipppk', logo: 'logo/icon-jadipppk.png', tes: [] },
-  { kode: 'JADIBUMN', nama: 'JadiBUMN', slug: 'jadibumn', logo: 'logo/icon-jadibumn.png', tes: [] },
+  jadibumn,
   jadisekdin,
   { kode: 'JADIBEASISWA', nama: 'JadiBeasiswa', slug: 'jadibeasiswa', logo: 'logo/icon-jadibeasiswa.png', tes: [] },
   { kode: 'JADIOJK', nama: 'JadiOJK', slug: 'jadiojk', logo: 'logo/icon-jadiojk.png', tes: [] },
