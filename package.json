@@ -1,6 +1,6 @@
 {
   "name": "product-knowledge",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Basis pengetahuan produk lintas platform. Data tinggal di folder data/ sebagai TypeScript bersarang, bukan di database luar.",
   "scripts": {

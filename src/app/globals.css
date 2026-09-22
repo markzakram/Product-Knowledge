@@ -123,15 +123,37 @@ code {
 .merek {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   font-weight: 800;
   letter-spacing: -.03em;
   font-size: 16.5px;
   white-space: nowrap;
 }
+.merek-teks { display: flex; flex-direction: column; line-height: 1.15; }
+.merek-baris { display: flex; align-items: center; gap: 6px; }
+/* Versi sebagai lencana kecil terangkat, mengikuti pola ProductTrack. */
+.merek-versi {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--aksen);
+  background: var(--aksen-lembut);
+  border-radius: 4px;
+  padding: 1px 4px;
+  align-self: flex-start;
+  margin-top: -2px;
+}
+.merek-divisi {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--teks-2);
+  margin-top: 1px;
+}
 /* Mark logo transparan: bagian teal-nya gelap, jadi di mode gelap ia perlu
    sedikit dinaikkan kecerahannya agar tepinya tidak melebur ke latar. */
-.merek-mark { width: 28px; height: 28px; object-fit: contain; flex: 0 0 auto; }
+.merek-mark { width: 34px; height: 34px; object-fit: contain; flex: 0 0 auto; }
 [data-tema='gelap'] .merek-mark { filter: brightness(1.35) saturate(1.05); }
 .merek-tipis { font-weight: 500; color: var(--teks-2); }
 .merek:hover { text-decoration: none; }
