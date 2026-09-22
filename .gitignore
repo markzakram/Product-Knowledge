@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Next
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel
+
+# Local env (JANGAN commit kredensial!)
+.env
+.env.local
+.env*.local
+service-account.json
+*-service-account.json
+credentials.json
+*-credentials.json
+*.credentials.json
+
+# Lockfile tidak di-commit: Vercel install fresh dari package.json
+package-lock.json
+
+# File sementara Excel
+~$*.xlsx
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db
