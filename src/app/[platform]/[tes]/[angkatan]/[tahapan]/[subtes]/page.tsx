@@ -23,14 +23,13 @@ export default async function HalamanSubtes({
   }>;
 }) {
   const p = await params;
+  // Bagian "Mapping Produksi Konten" sengaja tidak ditampilkan dulu.
+  // Datanya tetap ada di data/ dan tetap dipakai halaman /dashboard;
+  // yang dilepas hanya tampilannya di halaman subtes.
   const jalur = cariSubtes(p.platform, p.tes, p.angkatan, p.tahapan, p.subtes);
   if (!jalur) notFound();
   const { platform, tes, angkatan, tahapan, subtes } = jalur;
 
-  const mapping = subtes.mapping ?? [];
-  const adaTersedia = mapping.some((m) => m.tersedia !== undefined);
-  const totalButuh = mapping.reduce((n, m) => n + m.dibutuhkan, 0);
-  const totalAda = mapping.reduce((n, m) => n + (m.tersedia ?? 0), 0);
 
   return (
     <>
@@ -102,72 +101,6 @@ export default async function HalamanSubtes({
             </li>
           ))}
         </ul>
-      )}
-
-      <h2>Mapping Produksi Konten</h2>
-      {mapping.length === 0 ? (
-        <Kosong teks="Belum ada target produksi" sebab="Subtes ini belum masuk mapping produksi konten." />
-      ) : (
-        <>
-          <div className="tabel-bungkus">
-            <table>
-              <thead>
-                <tr>
-                  <th>Jenis</th>
-                  <th className="angka">Paket</th>
-                  <th className="angka">Soal/paket</th>
-                  <th className="angka">Dibutuhkan</th>
-                  <th className="angka">Tersedia</th>
-                  <th className="angka">Kurang</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {mapping.map((m) => {
-                  const kurang = m.tersedia === undefined ? null : m.dibutuhkan - m.tersedia;
-                  return (
-                    <tr key={m.tipe}>
-                      <td>
-                        {m.tipe}
-                        {m.catatan && <div className="kartu-kecil">{m.catatan}</div>}
-                      </td>
-                      <td className="angka">{m.paket ?? '—'}</td>
-                      <td className="angka">{m.soalPerPaket ?? '—'}</td>
-                      <td className="angka">{m.dibutuhkan}</td>
-                      <td className="angka">{m.tersedia ?? '—'}</td>
-                      <td className={`angka${(kurang ?? 0) > 0 ? ' kurang-positif' : ''}`}>
-                        {kurang ?? '—'}
-                      </td>
-                      <td>{m.status ?? '—'}</td>
-                    </tr>
-                  );
-                })}
-                <tr>
-                  <td>
-                    <b>Total</b>
-                  </td>
-                  <td className="angka" />
-                  <td className="angka" />
-                  <td className="angka">
-                    <b>{totalButuh}</b>
-                  </td>
-                  <td className="angka">
-                    <b>{adaTersedia ? totalAda : '—'}</b>
-                  </td>
-                  <td className={`angka${adaTersedia && totalButuh - totalAda > 0 ? ' kurang-positif' : ''}`}>
-                    <b>{adaTersedia ? totalButuh - totalAda : '—'}</b>
-                  </td>
-                  <td />
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          {!adaTersedia && (
-            <p className="kartu-kecil">
-              Kolom tersedia belum diisi, jadi angka kurang belum bisa dihitung.
-            </p>
-          )}
-        </>
       )}
 
       <h2>Contoh Soal</h2>
