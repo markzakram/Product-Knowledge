@@ -50,6 +50,22 @@ export default async function HalamanAngkatan({
       </p>
       {angkatan.ringkasan && <p className="pengantar">{angkatan.ringkasan}</p>}
 
+      {/* Dokumen dihasilkan dari data yang sama dengan yang ditampilkan di
+          halaman ini — bukan berkas terpisah yang bisa ketinggalan zaman. */}
+      <div className="unduh-bar">
+        <span className="label-mini" style={{ margin: 0 }}>Unduh</span>
+        <a className="unduh-tombol" href={`/unduh?jenis=kurikulum&platform=${platform.slug}&tes=${tes.kode}&angkatan=${angkatan.kode}`}>
+          Kurikulum <span>.docx</span>
+        </a>
+        <a className="unduh-tombol" href={`/unduh?jenis=mapping&platform=${platform.slug}&tes=${tes.kode}&angkatan=${angkatan.kode}`}>
+          Mapping <span>.xlsx</span>
+        </a>
+        <span className="kartu-kecil">
+          Untuk PDF: buka Kurikulum di Word lalu simpan sebagai PDF, atau cetak
+          halaman ini lewat Ctrl+P.
+        </span>
+      </div>
+
       <dl className="spek">
         <div>
           <dt>Tahapan</dt>
