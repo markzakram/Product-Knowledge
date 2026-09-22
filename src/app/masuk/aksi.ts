@@ -10,7 +10,20 @@ export async function masuk(_: { galat?: string } | null, form: FormData) {
 
   if (!pinBenar(pin)) return { galat: 'PIN salah.' };
 
-  (await cookies()).set(NAMA_COOKIE, await buatCookie(), {
+  // PIN_SALT yang belum diisi membuat cookie tidak bisa ditandatangani. Tanpa
+  // penanganan ini gejalanya membingungkan: PIN benar, tapi tetap tidak masuk.
+  let cookie: string;
+  try {
+    cookie = await buatCookie();
+  } catch {
+    return {
+      galat:
+        'PIN benar, tapi PIN_SALT belum diisi di environment variable. ' +
+        'Isi PIN_SALT dengan teks acak minimal 16 karakter, lalu deploy ulang.',
+    };
+  }
+
+  (await cookies()).set(NAMA_COOKIE, cookie, {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',

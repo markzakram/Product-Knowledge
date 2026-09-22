@@ -144,7 +144,13 @@ riset kompetitif. Jangan kosongkan `VIEW_PIN` di produksi.
 2. Di Vercel: **Add New Project** → pilih repo-nya. Framework terdeteksi
    otomatis sebagai Next.js.
 3. **Project Settings → Environment Variables**: isi `VIEW_PIN` dan `PIN_SALT`.
+   Keduanya harus diisi bersamaan. Kalau `VIEW_PIN` diisi tapi `PIN_SALT`
+   kosong, PIN yang benar pun ditolak — aplikasi akan mengatakannya, tapi
+   lebih baik tidak sampai ke situ.
 4. Deploy.
+
+Sudah diuji: clone bersih dari repo ini, `npm install` tanpa lockfile, lalu
+`npm run build` — berhasil. Itu persis urutan yang dijalankan Vercel.
 
 Tidak ada kredensial Google, tidak ada spreadsheet yang perlu dibagikan.
 Setiap perubahan isi = commit baru = deploy baru.

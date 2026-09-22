@@ -1,4 +1,5 @@
 import type { Platform } from '@/lib/skema';
+import { jadiasn } from './jadiasn';
 import { jadipcpm } from './jadipcpm';
 import { jadisekdin } from './jadisekdin';
 
@@ -16,7 +17,7 @@ import { jadisekdin } from './jadisekdin';
  */
 export const PLATFORM: Platform[] = [
   { kode: 'CEREBRUM', nama: 'Cerebrum', slug: 'cerebrum', tes: [] },
-  { kode: 'JADIASN', nama: 'JadiASN', slug: 'jadiasn', tes: [] },
+  jadiasn,
   { kode: 'JADIPPPK', nama: 'JadiPPPK', slug: 'jadipppk', tes: [] },
   { kode: 'JADIBUMN', nama: 'JadiBUMN', slug: 'jadibumn', tes: [] },
   jadisekdin,
