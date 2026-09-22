@@ -1,9 +1,26 @@
-import { PLATFORM, ringkasPlatform, tautanPlatform } from '@/lib/data';
+import {
+  PLATFORM, ringkasPlatform, semuaAngkatan, semuaSubtes, jumlahContoh, tautanPlatform,
+} from '@/lib/data';
 
 export default function Beranda() {
   const ringkas = PLATFORM.map((p) => ({ platform: p, r: ringkasPlatform(p) }));
   const terisi = ringkas.filter((x) => x.r.subtes > 0);
   const kosong = ringkas.filter((x) => x.r.subtes === 0);
+
+  const subtes = semuaSubtes();
+  const total = {
+    angkatan: semuaAngkatan().length,
+    tahapan: semuaAngkatan().reduce((n, j) => n + j.angkatan.tahapan.length, 0),
+    subtes: subtes.length,
+    soal: subtes.reduce((n, j) => n + jumlahContoh(j.subtes), 0),
+  };
+  // Tanggal pembaruan terbaru dari seluruh angkatan — memberi tahu pembaca
+  // seberapa segar isinya, tanpa perlu membuka satu per satu.
+  const terbaru = semuaAngkatan()
+    .map((j) => j.angkatan.diperbarui)
+    .filter((d): d is string => Boolean(d))
+    .sort()
+    .pop();
 
   return (
     <>
@@ -60,6 +77,33 @@ export default function Beranda() {
           </div>
         </>
       )}
+
+      <div className="kaki-ringkas">
+        <dl className="spek">
+          <div>
+            <dt>Angkatan</dt>
+            <dd>{total.angkatan}</dd>
+          </div>
+          <div>
+            <dt>Tahapan</dt>
+            <dd>{total.tahapan}</dd>
+          </div>
+          <div>
+            <dt>Subtes</dt>
+            <dd>{total.subtes}</dd>
+          </div>
+          <div>
+            <dt>Contoh soal</dt>
+            <dd>{total.soal}</dd>
+          </div>
+        </dl>
+        <div className="kaki-tautan">
+          <a href="/banding">Banding subtes lintas platform →</a>
+          <a href="/dashboard">Dashboard produksi →</a>
+          <a href="/cek-data">Cek data →</a>
+          {terbaru && <span className="kartu-kecil">Isi terbaru diperbarui {terbaru}</span>}
+        </div>
+      </div>
     </>
   );
 }

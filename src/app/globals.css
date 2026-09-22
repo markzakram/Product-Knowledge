@@ -40,6 +40,12 @@
   --r: 16px;
   --r-kecil: 12px;
   --r-mini: 8px;
+
+  /* Lebar isi. Dulu 1120px, terlalu sempit di layar lebar sehingga menyisakan
+     ruang kosong besar di kiri dan kanan. Teks bacaan tetap dibatasi terpisah
+     lewat max-width pada .pengantar dan .pra — melebarkan bingkai tidak boleh
+     ikut memanjangkan baris kalimat. */
+  --lebar: 1440px;
 }
 
 [data-tema='gelap'] {
@@ -90,7 +96,7 @@ h1 { font-size: 32px; font-weight: 600; letter-spacing: -.025em; line-height: 1.
 h2 { font-size: 22px; font-weight: 600; letter-spacing: -.018em; margin: 40px 0 12px; }
 h3 { font-size: 16px; font-weight: 600; letter-spacing: -.01em; margin: 24px 0 8px; }
 
-.pengantar { color: var(--teks-2); margin: 0 0 10px; max-width: 70ch; }
+.pengantar { color: var(--teks-2); margin: 0 0 10px; max-width: 74ch; }
 
 code {
   font-family: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
@@ -100,7 +106,7 @@ code {
   border-radius: 6px;
 }
 
-.bingkai { max-width: 1120px; margin: 0 auto; padding: 0 22px 90px; }
+.bingkai { max-width: var(--lebar); margin: 0 auto; padding: 0 28px 90px; }
 
 /* ── Kepala ──────────────────────────────────────────────────────── */
 .kepala {
@@ -112,9 +118,9 @@ code {
   z-index: 20;
 }
 .kepala-isi {
-  max-width: 1120px;
+  max-width: var(--lebar);
   margin: 0 auto;
-  padding: 13px 22px;
+  padding: 13px 28px;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -234,7 +240,9 @@ code {
 /* ── Kartu ───────────────────────────────────────────────────────── */
 .petak {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  /* auto-fit, bukan auto-fill: dengan auto-fill kartu tetap sempit dan
+     menyisakan kolom kosong di kanan saat layarnya lebar. */
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 14px;
   margin-top: 16px;
 }
@@ -608,7 +616,11 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
 .tes-kepala h2 { margin: 0; font-size: 20px; }
 .tes-instansi { font-size: 13px; color: var(--teks-2); margin-top: 3px; }
 .tes-deskripsi { margin-top: 8px; }
-.tes-blok .petak { grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); }
+.tes-blok .petak {
+  /* Dibatasi 320px: satu angkatan sendirian tidak pantas melar selebar
+     bingkai, beda dengan kartu platform di beranda yang memang mengisi baris. */
+  grid-template-columns: repeat(auto-fill, minmax(212px, 320px));
+}
 .tes-blok .kartu { background: var(--latar); }
 
 .kartu-angka { display: flex; gap: 18px; }
@@ -871,7 +883,7 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 .banding-penilaian {
   font-size: 12.5px;
   color: var(--teks-2);
-  max-width: 300px;
+  max-width: 420px;
   line-height: 1.5;
 }
 
@@ -960,3 +972,25 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
   a { color: #000; text-decoration: none; }
   .kartu, .panel, .soal, .tes-blok { box-shadow: none; border-color: #ddd; }
 }
+
+/* ── Kaki beranda ────────────────────────────────────────────────────── */
+.kaki-ringkas {
+  margin-top: 46px;
+  padding-top: 24px;
+  border-top: 1px solid var(--garis);
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.kaki-ringkas .spek { margin: 0; }
+.kaki-ringkas .spek dd { font-size: 23px; }
+.kaki-tautan {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13.5px;
+}
+.kaki-tautan a { color: var(--aksen); font-weight: 600; }
+.kaki-tautan .kartu-kecil { margin-top: 4px; }
