@@ -5,9 +5,14 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f9f8f5",
-  "theme_color": "#0a6c78",
+  "theme_color": "#04773c",
   "lang": "id",
   "icons": [
-    { "src": "/logo/pk-mark.png", "sizes": "256x256", "type": "image/png", "purpose": "any" }
+    {
+      "src": "/logo/pk-mark.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }

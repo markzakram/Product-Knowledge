@@ -14,20 +14,24 @@
      terang — ia akan terbaca hampir hitam, persis masalah navy yang dulu.
      Jadi aksennya memakai teal sehue yang lebih terang, sementara teal
      aslinya dipakai untuk teks dan judul. */
-  --merek-teal: #003c48;
-  --merek-oranye: #fc8400;
+  --merek-hijau: #005028;
+  --merek-hijau-terang: #00b450;
 
-  --aksen: #0a6c78;
-  --aksen-2: #fc8400;
-  --aksen-lembut: #e6f4f5;
-  --aksen-garis: #9dd4dc;
+  /* Hijau yang agak gelap, sehue dengan logo. Hijau terang logo (#00b450)
+     hanya 2,6:1 di atas latar terang — terlalu tipis untuk teks dan tautan,
+     jadi ia dipakai sebagai warna kedua (ujung gradien, batang progres)
+     sementara aksennya memakai versi yang lebih gelap. */
+  --aksen: #04773c;
+  --aksen-2: #00b450;
+  --aksen-lembut: #e7f6ed;
+  --aksen-garis: #9ddcb4;
 
   --latar: #f9f8f5;
   --kartu: #ffffff;
   --redup: #f1efea;
-  --garis: #e3ded4;
-  --teks: #0f2e33;
-  --teks-2: #5f6b6d;
+  --garis: #e2ded6;
+  --teks: #13271b;
+  --teks-2: #5f6b62;
 
   --ok: #0f7b3f;      --ok-bg: #e6f4ec;
   --warn: #8a5a00;    --warn-bg: #fdf3e0;
@@ -49,20 +53,20 @@
 }
 
 [data-tema='gelap'] {
-  --merek-teal: #003c48;
-  --merek-oranye: #fc8400;
+  --merek-hijau: #005028;
+  --merek-hijau-terang: #00b450;
 
-  --aksen: #5ecdda;
-  --aksen-2: #fca22e;
-  --aksen-lembut: #0c262c;
-  --aksen-garis: #1b5561;
+  --aksen: #3ed07c;
+  --aksen-2: #8ae8ad;
+  --aksen-lembut: #0d2417;
+  --aksen-garis: #1d5837;
 
-  --latar: #101619;
-  --kartu: #182024;
-  --redup: #1b2429;
-  --garis: #2a373d;
-  --teks: #e8eceb;
-  --teks-2: #93a1a4;
+  --latar: #101613;
+  --kartu: #18201b;
+  --redup: #1b2420;
+  --garis: #2a372f;
+  --teks: #e8ece9;
+  --teks-2: #93a198;
 
   --ok: #5fd08a;      --ok-bg: #12291c;
   --warn: #e0b25f;    --warn-bg: #2a2113;

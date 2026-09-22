@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
 import './globals.css';
 import { NAMA_COOKIE, cookieSah, gerbangAktif } from '@/lib/sesi';
@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     'Informasi seleksi lintas platform: tahapan, subtes, materi, mapping produksi konten, dan contoh soal.',
 };
 
+/**
+ * Dideklarasikan lewat export `viewport`, bukan <meta> manual — kalau ditulis
+ * manual, Next tetap menyuntikkan miliknya sendiri dan halaman berakhir punya
+ * dua tag viewport yang saling bertentangan.
+ */
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f9f8f5' },
+    { media: '(prefers-color-scheme: dark)', color: '#101613' },
+  ],
+};
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const masuk = gerbangAktif()
     ? await cookieSah((await cookies()).get(NAMA_COOKIE)?.value)
@@ -20,8 +35,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
-        {/* viewport-fit=cover supaya isi tidak tertutup takik layar di iOS. */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/logo/pk-mark.png" />
         <meta name="mobile-web-app-capable" content="yes" />
