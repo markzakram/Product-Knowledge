@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="id" data-arah="tegas">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview Desain — Product Knowledge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ══ TIGA ARAH DESAIN ══════════════════════════════════════════════════
+   Tiap arah cuma mengganti variabel. Struktur HTML-nya identik, jadi
+   perbandingannya jujur: yang beda benar-benar hanya bahasa visualnya. */
+
+:root {
+  --r: 12px; --r-kecil: 8px; --lapang: 1;
+  --font: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Tegas & modern ── */
+[data-arah="tegas"] {
+  --aksen: #4f46e5; --aksen-2: #7c3aed; --aksen-lembut: #eef2ff;
+  --latar: #ffffff; --kartu: #ffffff; --redup: #f4f5f8;
+  --garis: #e4e6ec; --teks: #0f1117; --teks-2: #5c6274;
+  --r: 12px; --berat-judul: 800; --track: -0.03em;
+}
+[data-arah="tegas"][data-tema="gelap"] {
+  --aksen: #818cf8; --aksen-2: #a78bfa; --aksen-lembut: #1c1f38;
+  --latar: #0b0d12; --kartu: #13161d; --redup: #14171f;
+  --garis: #262a35; --teks: #eef0f5; --teks-2: #9aa1b4;
+}
+
+/* ── Hangat & ramah ── */
+[data-arah="hangat"] {
+  --aksen: #0d9488; --aksen-2: #d97706; --aksen-lembut: #ecfdf5;
+  --latar: #faf9f7; --kartu: #ffffff; --redup: #f3f1ed;
+  --garis: #e6e2da; --teks: #1c1917; --teks-2: #6b635a;
+  --r: 16px; --r-kecil: 12px; --lapang: 1.25; --berat-judul: 600; --track: -0.01em;
+}
+[data-arah="hangat"][data-tema="gelap"] {
+  --aksen: #2dd4bf; --aksen-2: #fbbf24; --aksen-lembut: #10241f;
+  --latar: #14171a; --kartu: #1b1f23; --redup: #1e2226;
+  --garis: #2e3439; --teks: #ecebe8; --teks-2: #9c958b;
+}
+
+/* ── Tenang & profesional ── */
+[data-arah="tenang"] {
+  --aksen: #2b5cb8; --aksen-2: #2b5cb8; --aksen-lembut: #eef3fc;
+  --latar: #ffffff; --kartu: #ffffff; --redup: #f6f7f9;
+  --garis: #e2e5ea; --teks: #14181f; --teks-2: #5b6472;
+  --r: 8px; --r-kecil: 6px; --berat-judul: 700; --track: -0.02em;
+}
+[data-arah="tenang"][data-tema="gelap"] {
+  --aksen: #7aa7f0; --aksen-2: #7aa7f0; --aksen-lembut: #16203a;
+  --latar: #0f1216; --kartu: #171b22; --redup: #161a20;
+  --garis: #2a3039; --teks: #e8ebef; --teks-2: #98a2b1;
+}
+
+/* status: sama di semua arah, karena maknanya tidak boleh berubah */
+:root { --ok: #0f7b3f; --ok-bg: #e6f4ec; --warn: #8a5a00; --warn-bg: #fdf3e0;
+        --bad: #a1251b; --bad-bg: #fbeceb; --netral: #5b6472; --netral-bg: #eef0f3; }
+[data-tema="gelap"] { --ok: #5fd08a; --ok-bg: #12291c; --warn: #e0b25f; --warn-bg: #2a2113;
+        --bad: #f08a80; --bad-bg: #2b1715; --netral: #98a2b1; --netral-bg: #1e232b; }
+
+* { box-sizing: border-box; }
+body { margin:0; background: var(--latar); color: var(--teks); font-family: var(--font);
+       font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+h1,h2,h3 { letter-spacing: var(--track); margin:0; }
+code { font-family: ui-monospace, 'Cascadia Code', monospace; font-size:.86em;
+       background: var(--redup); padding:2px 6px; border-radius:5px; }
+a { color: var(--aksen); }
+
+/* ══ PANEL KENDALI ══ */
+.kendali { position:sticky; top:0; z-index:50; background: var(--latar);
+  border-bottom:1px solid var(--garis); padding:14px 22px;
+  display:flex; gap:22px; align-items:center; flex-wrap:wrap; }
+.kendali b { font-size:15px; font-weight:800; letter-spacing:-.02em; }
+.grup { display:flex; gap:0; background: var(--redup); padding:3px;
+  border-radius:99px; border:1px solid var(--garis); }
+.grup button { border:0; background:transparent; color: var(--teks-2); cursor:pointer;
+  font:inherit; font-size:13px; font-weight:600; padding:6px 14px; border-radius:99px; }
+.grup button[aria-pressed="true"] { background: var(--kartu); color: var(--teks);
+  box-shadow: 0 1px 3px rgba(0,0,0,.14); }
+.label-grup { font-size:11px; font-weight:700; letter-spacing:.07em;
+  text-transform:uppercase; color: var(--teks-2); margin-right:-14px; }
+
+.bingkai { max-width:1080px; margin:0 auto; padding:0 22px 90px; }
+
+/* ══ BLOK REKOMENDASI ══ */
+.rek { margin-top:56px; padding-top:30px; border-top:1px solid var(--garis); }
+.rek:first-of-type { border-top:0; }
+.nomor { display:inline-flex; align-items:center; justify-content:center;
+  width:26px; height:26px; border-radius:8px; background: var(--aksen);
+  color:#fff; font-size:13px; font-weight:800; margin-right:10px; }
+[data-tema="gelap"] .nomor { color:#0b0d12; }
+.rek h2 { font-size:21px; font-weight: var(--berat-judul); display:flex;
+  align-items:center; margin-bottom:6px; }
+.rek > p { color: var(--teks-2); max-width:68ch; margin:0 0 18px; }
+
+.banding { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media (max-width: 820px) { .banding { grid-template-columns:1fr; } }
+.sisi { border:1px solid var(--garis); border-radius: var(--r); overflow:hidden;
+  background: var(--kartu); }
+.sisi > header { padding:8px 14px; font-size:11px; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase; border-bottom:1px solid var(--garis); }
+.sisi.sebelum > header { color: var(--bad); background: var(--bad-bg); }
+.sisi.sesudah > header { color: var(--ok); background: var(--ok-bg); }
+.isi { padding:18px; }
+
+/* ══ CONTOH: gaya LAMA (untuk kolom "sebelum") ══ */
+.lama { font-family:'Segoe UI', system-ui, sans-serif; font-size:15px; }
+.lama .kotak { border:1px solid var(--garis); border-radius:10px; padding:14px 16px;
+  background: var(--kartu); margin-bottom:10px; }
+.lama h4 { margin:0 0 4px; font-size:15px; font-weight:600; }
+.lama .kecil { font-size:13px; color: var(--teks-2); }
+.lama table { width:100%; border-collapse:collapse; font-size:14px; }
+.lama th { text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.04em;
+  color: var(--teks-2); padding:9px 12px; border-bottom:1px solid var(--garis); }
+.lama td { padding:9px 12px; border-bottom:1px solid var(--garis); vertical-align:top; }
+.lama .redup { opacity:.55; }
+
+/* ══ CONTOH: gaya BARU ══ */
+.petak { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; }
+.kartu { display:block; text-decoration:none; color:inherit; position:relative;
+  border:1px solid var(--garis); border-radius: var(--r); padding:16px;
+  background: var(--kartu); overflow:hidden;
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s; }
+.kartu::before { content:''; position:absolute; inset:0 0 auto 0; height:3px;
+  background: linear-gradient(90deg, var(--aksen), var(--aksen-2)); opacity:0;
+  transition:opacity .14s; }
+.kartu:hover { transform:translateY(-2px); border-color:transparent;
+  box-shadow:0 8px 24px rgba(0,0,0,.13); }
+.kartu:hover::before { opacity:1; }
+.kartu-judul { font-weight:700; font-size:15px; margin-bottom:3px; }
+.kartu-kecil { font-size:12.5px; color: var(--teks-2); }
+.angka-besar { font-size:26px; font-weight:800; letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums; line-height:1.1; }
+
+/* chip untuk platform kosong */
+.chip-baris { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+.chip { font-size:12.5px; font-weight:500; color: var(--teks-2); background: var(--redup);
+  border:1px solid var(--garis); border-radius:99px; padding:5px 13px; }
+
+/* lencana status */
+.lencana { display:inline-block; font-size:11px; font-weight:700; padding:2.5px 9px;
+  border-radius:99px; letter-spacing:.01em; }
+.l-ok{background:var(--ok-bg);color:var(--ok)} .l-warn{background:var(--warn-bg);color:var(--warn)}
+.l-bad{background:var(--bad-bg);color:var(--bad)} .l-netral{background:var(--netral-bg);color:var(--netral)}
+.l-aksen{background:var(--aksen-lembut);color:var(--aksen)}
+
+/* tabel tanpa kotak */
+.tabel-bersih { width:100%; border-collapse:collapse; font-size:14px; }
+.tabel-bersih th { text-align:left; font-size:11px; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; color: var(--teks-2); padding:0 12px 9px; }
+.tabel-bersih td { padding:11px 12px; border-top:1px solid var(--garis);
+  vertical-align:middle; }
+.tabel-bersih tbody tr:hover td { background: var(--redup); }
+.tabel-bersih .num { text-align:right; font-variant-numeric:tabular-nums; }
+
+/* batang progres */
+.bar-baris { display:flex; align-items:center; gap:14px; padding:11px 0;
+  border-top:1px solid var(--garis); }
+.bar-nama { flex:0 0 190px; font-size:13.5px; font-weight:600; }
+.bar-nama small { display:block; font-weight:400; color: var(--teks-2); font-size:11.5px; }
+.bar-luar { flex:1; height:9px; border-radius:99px; background: var(--redup);
+  overflow:hidden; position:relative; }
+.bar-dalam { height:100%; border-radius:99px;
+  background: linear-gradient(90deg, var(--aksen), var(--aksen-2)); }
+.bar-dalam.kurang { background: linear-gradient(90deg, var(--bad), var(--warn)); }
+.bar-angka { flex:0 0 120px; text-align:right; font-size:13px;
+  font-variant-numeric:tabular-nums; }
+.bar-angka b { font-weight:700; }
+
+/* skala tipografi */
+.skala > div { padding:9px 0; border-top:1px solid var(--garis); display:flex;
+  align-items:baseline; gap:16px; }
+.skala .tag { flex:0 0 96px; font-size:11px; color:var(--teks-2); font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; }
+
+/* kartu soal */
+.soal-baru { border:1px solid var(--garis); border-radius: var(--r); background: var(--kartu);
+  overflow:hidden; }
+.soal-kepala { display:flex; gap:8px; align-items:center; padding:11px 16px;
+  background: var(--redup); border-bottom:1px solid var(--garis); flex-wrap:wrap; }
+.soal-no { font-weight:800; font-size:13px; letter-spacing:-.01em; }
+.stimulus { margin:16px; padding:13px 15px; border-radius: var(--r-kecil);
+  background: var(--aksen-lembut); border-left:3px solid var(--aksen); }
+.stimulus-tag { font-size:10.5px; font-weight:700; letter-spacing:.07em;
+  text-transform:uppercase; color: var(--aksen); margin-bottom:5px; }
+.soal-badan { padding:0 16px 16px; }
+.opsi { list-style:none; padding:0; margin:14px 0 0; display:flex;
+  flex-direction:column; gap:5px; }
+.opsi li { display:flex; gap:11px; align-items:flex-start; padding:9px 12px;
+  border-radius: var(--r-kecil); border:1px solid transparent; font-size:14px; }
+.opsi li.benar { background: var(--ok-bg); border-color: var(--ok); }
+.opsi .huruf { font-family: ui-monospace, monospace; font-weight:700; font-size:12.5px;
+  width:21px; height:21px; flex:0 0 21px; border-radius:6px; background: var(--redup);
+  display:flex; align-items:center; justify-content:center; margin-top:1px; }
+.opsi li.benar .huruf { background: var(--ok); color: var(--kartu); }
+.pembahasan { margin-top:16px; border-top:1px dashed var(--garis); padding-top:14px; }
+.pembahasan-tag { font-size:10.5px; font-weight:700; letter-spacing:.07em;
+  text-transform:uppercase; color: var(--teks-2); margin-bottom:6px; }
+.pra { white-space:pre-wrap; margin:0; }
+
+/* judul halaman contoh */
+.kepala-halaman { border-bottom:1px solid var(--garis); padding-bottom:14px; margin-bottom:16px; }
+.kepala-halaman h3 { font-size:26px; font-weight: var(--berat-judul); }
+.remah { font-size:12.5px; color: var(--teks-2); margin-bottom:5px; }
+
+.catatan { font-size:13px; color: var(--teks-2); margin-top:12px;
+  padding-left:13px; border-left:2px solid var(--garis); }
+.kosong-lama { color: var(--teks-2); font-style:italic; }
+.kosong-baru { text-align:center; padding:26px 16px; border:1px dashed var(--garis);
+  border-radius: var(--r); color: var(--teks-2); font-size:13.5px; }
+.kosong-baru b { display:block; color: var(--teks); font-size:14.5px;
+  font-weight:600; margin-bottom:3px; font-style:normal; }
+</style>
+</head>
+<body>
+
+<div class="kendali">
+  <b>Preview Desain</b>
+  <div>
+    <span class="label-grup">Arah</span>
+    <div class="grup" id="grupArah" style="display:inline-flex;margin-left:18px">
+      <button data-a="tegas" aria-pressed="true">Tegas</button>
+      <button data-a="hangat" aria-pressed="false">Hangat</button>
+      <button data-a="tenang" aria-pressed="false">Tenang</button>
+    </div>
+  </div>
+  <div>
+    <span class="label-grup">Tema</span>
+    <div class="grup" id="grupTema" style="display:inline-flex;margin-left:18px">
+      <button data-t="terang" aria-pressed="false">Terang</button>
+      <button data-t="gelap" aria-pressed="false">Gelap</button>
+      <button data-t="sistem" aria-pressed="true">Sistem</button>
+    </div>
+  </div>
+</div>
+
+<div class="bingkai">
+
+<!-- 1 ─────────────────────────────────────────────────────── -->
+<section class="rek">
+  <h2><span class="nomor">1</span>Pemilih tema</h2>
+  <p>Tombol di atas <b>sudah berfungsi</b> — coba tekan. Tiga posisi: terang, gelap,
+  dan ikut sistem. Pilihannya disimpan dan diterapkan sebelum halaman digambar,
+  jadi tidak ada kedipan putih saat memuat dalam mode gelap.</p>
+  <div class="catatan">Di aplikasi sekarang, CSS-nya sudah menunggu atribut
+  <code>data-theme</code> tapi tidak ada kode yang menuliskannya. Jadi ini bukan
+  fitur baru, melainkan menyelesaikan yang sudah setengah jadi.</div>
+</section>
+
+<!-- 2 ─────────────────────────────────────────────────────── -->
+<section class="rek">
+  <h2><span class="nomor">2</span>Hierarki tiga tingkat</h2>
+  <p>Sekarang semua elemen memakai kotak yang sama, jadi mata tidak tahu mana yang
+  penting. Usulannya: halaman punya judul tegas, kartu punya elevasi, dan baris
+  data dilepas dari kotaknya.</p>
+  <div class="banding">
+    <div class="sisi sebelum"><header>Sekarang</header><div class="isi lama">
+      <div class="kotak">
+        <h4>Tahap 2: Seleksi Pengetahuan Teknis</h4>
+        <div class="kecil">Pengetahuan Umum, Kebanksentralan, dan Bahasa Inggris.</div>
+        <div class="kotak" style="margin-top:12px">
+          <table><thead><tr><th>Subtes</th><th>Soal</th><th>Waktu</th></tr></thead>
+          <tbody>
+            <tr><td>Pengetahuan Umum (TPU)</td><td>50</td><td>30 menit</td></tr>
+            <tr><td>Kebanksentralan (TPK)</td><td>70</td><td>40 menit</td></tr>
+            <tr><td>Bahasa Inggris — Structure</td><td>20</td><td>12 menit 30 detik</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+      <div class="kecil" style="margin-top:8px">Kotak di dalam kotak, dua-duanya
+      berbobot sama.</div>
+    </div></div>
+    <div class="sisi sesudah"><header>Usulan</header><div class="isi">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:3px">
+        <h3 style="font-size:17px;font-weight:700">Seleksi Pengetahuan Teknis</h3>
+        <span class="lencana l-ok">Terkonfirmasi</span>
+        <span class="lencana l-netral">online</span>
+      </div>
+      <div class="kartu-kecil" style="margin-bottom:14px">Tahap 2 · Pengetahuan Umum,
+      Kebanksentralan, dan Bahasa Inggris.</div>
+      <table class="tabel-bersih">
+        <thead><tr><th>Subtes</th><th class="num">Soal</th><th class="num">Waktu</th><th class="num">Contoh</th></tr></thead>
+        <tbody>
+          <tr><td><b>Pengetahuan Umum (TPU)</b></td><td class="num">50</td><td class="num">30′</td><td class="num">—</td></tr>
+          <tr><td><b>Kebanksentralan (TPK)</b></td><td class="num">70</td><td class="num">40′</td><td class="num">—</td></tr>
+          <tr><td><b>Bahasa Inggris — Structure</b></td><td class="num">20</td><td class="num">12′30″</td><td class="num">1</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+</section>
+
+<!-- 3 ─────────────────────────────────────────────────────── -->
+<section class="rek">
+  <h2><span class="nomor">3</span>Warna aksen yang benar-benar dipakai</h2>
+  <p>Aksen sekarang hanya muncul di lencana. Usulannya ia dipakai di garis atas kartu
+  saat disorot, batang progres, tautan, dan penanda stimulus — sehingga halaman punya
+  karakter tanpa jadi ramai.</p>
+  <div class="banding">
+    <div class="sisi sebelum"><header>Sekarang</header><div class="isi lama">
+      <div class="kotak"><h4>JadiPCPM</h4>
+        <div class="kecil">1 tes · 1 angkatan · 12 subtes · 4 contoh soal</div></div>
+      <div class="kotak"><h4>JadiSekdin</h4>
+        <div class="kecil">2 tes · 2 angkatan · 20 subtes · 12 contoh soal</div></div>
+      <div class="kecil" style="margin-top:8px">Seluruhnya abu-abu.</div>
+    </div></div>
+    <div class="sisi sesudah"><header>Usulan · sorot kartunya</header><div class="isi">
+      <div class="petak" style="grid-template-columns:1fr">
+        <a class="kartu" href="#">
+          <div class="kartu-judul">JadiPCPM</div>
+          <div class="kartu-kecil" style="margin-bottom:9px">PCPM Bank Indonesia</div>
+          <div style="display:flex;gap:16px">
+            <div><div class="angka-besar">12</div><div class="kartu-kecil">subtes</div></div>
+            <div><div class="angka-besar">4</div><div class="kartu-kecil">contoh soal</div></div>
+          </div>
+        </a>
+        <a class="kartu" href="#">
+          <div class="kartu-judul">JadiSekdin</div>
+          <div class="kartu-kecil" style="margin-bottom:9px">IPDN · PKN STAN</div>
+          <div style="display:flex;gap:16px">
+            <div><div class="angka-besar">20</div><div class="kartu-kecil">subtes</div></div>
+            <div><div class="angka-besar">12</div><div class="kartu-kecil">contoh soal</div></div>
+          </div>
+        </a>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 4 ─────────────────────────────────────────────────────── -->
+<section class="rek">
+  <h2><span class="nomor">4</span>Beranda: pisahkan yang terisi</h2>
+  <p>Sekarang 9 dari 12 kartu bertuliskan “Belum ada data”. Kesan pertamanya produk
+  belum jadi. Usulannya yang terisi tampil penuh, yang belum cukup jadi chip —
+  tetap jujur, tapi tidak lagi mendominasi layar.</p>
+  <div class="banding">
+    <div class="sisi sebelum"><header>Sekarang</header><div class="isi lama">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+        <div class="kotak redup" style="margin:0"><h4>Cerebrum</h4><div class="kecil">Belum ada data</div></div>
+        <div class="kotak" style="margin:0"><h4>JadiASN</h4><div class="kecil">1 tes · 5 subtes</div></div>
+        <div class="kotak redup" style="margin:0"><h4>JadiPPPK</h4><div class="kecil">Belum ada data</div></div>
+        <div class="kotak redup" style="margin:0"><h4>JadiBUMN</h4><div class="kecil">Belum ada data</div></div>
+        <div class="kotak" style="margin:0"><h4>JadiSekdin</h4><div class="kecil">2 tes · 20 subtes</div></div>
+        <div class="kotak redup" style="margin:0"><h4>JadiBeasiswa</h4><div class="kecil">Belum ada data</div></div>
+      </div>
+      <div class="kecil" style="margin-top:9px">Yang kosong memakan ruang sama
+      besarnya dengan yang terisi.</div>
+    </div></div>
+    <div class="sisi sesudah"><header>Usulan</header><div class="isi">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teks-2);margin-bottom:9px">Siap dipakai · 3</div>
+      <div class="petak">
+        <a class="kartu" href="#"><div class="kartu-judul">JadiSekdin</div>
+          <div class="kartu-kecil" style="margin-bottom:7px">2 tes · 2 angkatan</div>
+          <div class="angka-besar">20</div><div class="kartu-kecil">subtes</div></a>
+        <a class="kartu" href="#"><div class="kartu-judul">JadiPCPM</div>
+          <div class="kartu-kecil" style="margin-bottom:7px">1 tes · 1 angkatan</div>
+          <div class="angka-besar">12</div><div class="kartu-kecil">subtes</div></a>
+        <a class="kartu" href="#"><div class="kartu-judul">JadiASN</div>
+          <div class="kartu-kecil" style="margin-bottom:7px">1 tes · 1 angkatan</div>
+          <div class="angka-besar">5</div><div class="kartu-kecil">subtes</div></a>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teks-2);margin:20px 0 0">Belum ada data · 9</div>
+      <div class="chip-baris">
+        <span class="chip">Cerebrum</span><span class="chip">JadiPPPK</span>
+        <span class="chip">JadiBUMN</span><span class="chip">JadiBeasiswa</span>
+        <span class="chip">JadiOJK</span><span class="chip">JadiPrajurit</span>
+        <span class="chip">JadiPolisi</span><span class="chip">JagoTPA</span>
+        <span class="chip">JadiPPG</span>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 5 ─────────────────────────────────────────────────────── -->
+<section class="rek">
+  <h2><span class="nomor">5</span>Dashboard dengan batang progres</h2>
+  <p>Angka aslinya dari proyekmu. Tabel memberi tahu <i>berapa</i>; batang memberi tahu
+  <i>seberapa jauh</i> — dan itu yang dicari saat membuka dashboard produksi.</p>
+  <div class="banding">
+    <div class="sisi sebelum"><header>Sekarang</header><div class="isi lama">
+      <table><thead><tr><th>Subtes</th><th>Butuh</th><th>Ada</th><th>Kurang</th></tr></thead>
+      <tbody>
+        <tr><td>Kebanksentralan (TPK)</td><td>750</td><td>525</td><td>225</td></tr>
+        <tr><td>Written Expression</td><td>250</td><td>124</td><td>126</td></tr>
+        <tr><td>Structure</td><td>250</td><td>125</td><td>125</td></tr>
+      </tbody></table>
+      <div class="kecil" style="margin-top:9px">Harus dibaca angka per angka untuk
+      tahu mana yang paling gawat.</div>
+    </div></div>
+    <div class="sisi sesudah"><header>Usulan</header><div class="isi">
+      <div style="display:flex;gap:26px;margin-bottom:16px">
+        <div><div class="angka-besar" style="color:var(--bad)">476</div>
+          <div class="kartu-kecil">total kurang</div></div>
+        <div><div class="angka-besar">3</div><div class="kartu-kecil">subtes kurang</div></div>
+        <div><div class="angka-besar">30</div><div class="kartu-kecil">belum diisi</div></div>
+      </div>
+      <div class="bar-baris">
+        <div class="bar-nama">Kebanksentralan<small>PCPM 41 · Tahap 2</small></div>
+        <div class="bar-luar"><div class="bar-dalam kurang" style="width:70%"></div></div>
+        <div class="bar-angka">525 / 750 · <b style="color:var(--bad)">−225</b></div>
+      </div>
+      <div class="bar-baris">
+        <div class="bar-nama">Written Expression<small>PCPM 41 · Tahap 2</small></div>
+        <div class="bar-luar"><div class="bar-dalam kurang" style="width:49.6%"></div></div>
+        <div class="bar-angka">124 / 250 · <b style="color:var(--bad)">−126</b></div>
+      </div>
+      <div class="bar-baris">
+        <div class="bar-nama">Structure<small>PCPM 41 · Tahap 2</small></div>
+        <div class="bar-luar"><div class="bar-dalam kurang" style="width:50%"></div></div>
+        <div class="bar-angka">125 / 250 · <b style="color:var(--bad)">−125</b></div>
+      </div>
+      <div class="bar-baris">
+        <div class="bar-nama">TWK<small>SKD · bank bersama</small></div>
+        <div class="bar-luar"><div class="bar-dalam" style="width:100%"></div></div>
+        <div class="bar-angka">2016 / 900 · <b style="color:var(--ok)">cukup</b></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 6 ─────────────────────────────────────────────────────── -->
+<section class="rek">
+  <h2><span class="nomor">6</span>Skala tipografi</h2>
+  <p>Sekarang 26 / 18 / 15 px — lompatannya terlalu kecil untuk membentuk ritme.
+  Usulannya lompatan lebih tegas plus angka tabular supaya kolom angka lurus.</p>
+  <div class="banding">
+    <div class="sisi sebelum"><header>Sekarang</header><div class="isi lama skala">
+      <div><span class="tag">h1 · 26px</span><span style="font-size:26px;font-weight:600">Verbal</span></div>
+      <div><span class="tag">h2 · 18px</span><span style="font-size:18px;font-weight:600">Mapping Produksi</span></div>
+      <div><span class="tag">h3 · 15px</span><span style="font-size:15px;font-weight:600">Materi</span></div>
+      <div><span class="tag">badan · 15px</span><span style="font-size:15px">Setiap 1 narasi digunakan untuk 2 soal</span></div>
+      <div><span class="tag">angka</span><span style="font-size:17px;font-weight:600">1320 · 920 · 2540</span></div>
+    </div></div>
+    <div class="sisi sesudah"><header>Usulan</header><div class="isi skala">
+      <div><span class="tag">h1 · 32px</span><span style="font-size:32px;font-weight:var(--berat-judul);letter-spacing:var(--track)">Verbal</span></div>
+      <div><span class="tag">h2 · 22px</span><span style="font-size:22px;font-weight:700;letter-spacing:-.02em">Mapping Produksi</span></div>
+      <div><span class="tag">h3 · 16px</span><span style="font-size:16px;font-weight:600">Materi</span></div>
+      <div><span class="tag">badan · 15px</span><span style="font-size:15px">Setiap 1 narasi digunakan untuk 2 soal</span></div>
+      <div><span class="tag">angka</span><span style="font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em">1320 · 920 · 2540</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 7 ─────────────────────────────────────────────────────── -->
+<section class="rek">
+  <h2><span class="nomor">7</span>Kartu soal</h2>
+  <p>Ini etalase produknya — soal, kunci, dan pembahasan. Sekarang tampil sebagai kotak
+  datar. Usulannya stimulus dibedakan tegas, opsi jadi baris yang bisa dipindai, dan
+  kunci ditandai tanpa perlu dicari.</p>
+  <div class="banding">
+    <div class="sisi sebelum"><header>Sekarang</header><div class="isi lama">
+      <div class="kotak">
+        <div style="margin-bottom:9px"><b>Soal 1</b>
+          <span class="lencana l-netral">benar_salah</span>
+          <span class="lencana l-netral">sedang</span></div>
+        <div style="border-left:3px solid var(--aksen);background:var(--aksen-lembut);padding:9px 12px;margin-bottom:11px">
+          <div class="kecil">STIMULUS</div>
+          Empat teman memesan minuman berbeda: Kopi, Teh, Jus, dan Susu.
+        </div>
+        Pernyataan: Joko memesan Kopi.
+        <ul style="list-style:none;padding:0;margin:10px 0 0">
+          <li style="padding:5px 10px;background:var(--ok-bg);color:var(--ok);font-weight:600">A. Benar ✓</li>
+          <li style="padding:5px 10px">B. Salah</li>
+          <li style="padding:5px 10px">C. Tidak Dapat Ditentukan</li>
+        </ul>
+      </div>
+    </div></div>
+    <div class="sisi sesudah"><header>Usulan</header><div class="isi" style="padding:0">
+      <div class="soal-baru" style="border:0;border-radius:0">
+        <div class="soal-kepala">
+          <span class="soal-no">SOAL 1</span>
+          <span class="lencana l-aksen">Benar / Salah</span>
+          <span class="lencana l-warn">Sedang</span>
+          <span class="lencana l-ok" style="margin-left:auto">Final</span>
+        </div>
+        <div class="stimulus">
+          <div class="stimulus-tag">Stimulus · dipakai 2 soal</div>
+          <p class="pra" style="font-size:14px">Empat teman, yaitu Gani, Hana, Ivan, dan Joko, masing-masing memesan minuman berbeda: Kopi, Teh, Jus, dan Susu.
+
+Ketentuan:
+- Hana memesan Teh.
+- Gani tidak memesan Kopi maupun Jus.
+- Ivan memesan Jus.</p>
+        </div>
+        <div class="soal-badan">
+          <p style="margin:0;font-weight:500">Pernyataan: Joko memesan Kopi.</p>
+          <ul class="opsi">
+            <li class="benar"><span class="huruf">A</span><span>Benar</span>
+              <span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--ok)">KUNCI</span></li>
+            <li><span class="huruf">B</span><span>Salah</span></li>
+            <li><span class="huruf">C</span><span>Tidak Dapat Ditentukan</span></li>
+          </ul>
+          <div class="pembahasan">
+            <div class="pembahasan-tag">Pembahasan</div>
+            <p class="pra" style="font-size:14px">Hana memesan Teh dan Ivan memesan Jus. Gani tidak boleh Kopi maupun Jus, sehingga sisanya Susu. Minuman terakhir, Kopi, otomatis milik Joko.
+
+Kesimpulan: pernyataan BENAR.</p>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- bonus ──────────────────────────────────────────────────── -->
+<section class="rek">
+  <h2><span class="nomor">+</span>Keadaan kosong</h2>
+  <p>Banyak halaman akan kosong sampai 9 platform sisanya terisi. Sekarang muncul
+  sebagai teks miring abu; usulannya diberi bentuk supaya terbaca sebagai
+  “memang belum”, bukan seperti halaman gagal memuat.</p>
+  <div class="banding">
+    <div class="sisi sebelum"><header>Sekarang</header><div class="isi lama">
+      <p class="kosong-lama">Belum ada contoh soal untuk subtes ini.</p>
+    </div></div>
+    <div class="sisi sesudah"><header>Usulan</header><div class="isi">
+      <div class="kosong-baru">
+        <b>Belum ada contoh soal</b>
+        Dokumen kurikulum menunjuk ke Panduan Produksi Soal TIU JadiASN.pdf,
+        yang belum ada di repo.
+      </div>
+    </div></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+const html = document.documentElement;
+const qArah = document.getElementById('grupArah');
+const qTema = document.getElementById('grupTema');
+
+function tandai(grup, attr, nilai) {
+  grup.querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset[attr] === nilai)));
+}
+
+function terapkanTema(pilihan) {
+  if (pilihan === 'sistem') {
+    const gelap = matchMedia('(prefers-color-scheme: dark)').matches;
+    html.setAttribute('data-tema', gelap ? 'gelap' : 'terang');
+  } else {
+    html.setAttribute('data-tema', pilihan);
+  }
+  tandai(qTema, 't', pilihan);
+  try { localStorage.setItem('pk-tema', pilihan); } catch {}
+}
+
+qArah.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  html.setAttribute('data-arah', b.dataset.a);
+  tandai(qArah, 'a', b.dataset.a);
+  try { localStorage.setItem('pk-arah', b.dataset.a); } catch {}
+});
+
+qTema.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  terapkanTema(b.dataset.t);
+});
+
+let arah = 'tegas', tema = 'sistem';
+try {
+  arah = localStorage.getItem('pk-arah') || arah;
+  tema = localStorage.getItem('pk-tema') || tema;
+} catch {}
+html.setAttribute('data-arah', arah);
+tandai(qArah, 'a', arah);
+terapkanTema(tema);
+
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  if (localStorage.getItem('pk-tema') === 'sistem') terapkanTema('sistem');
+});
+</script>
+</body>
+</html>

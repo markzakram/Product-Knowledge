@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import './globals.css';
 import { NAMA_COOKIE, cookieSah, gerbangAktif } from '@/lib/sesi';
+import { PemilihTema, SKRIP_TEMA } from './tema';
 
 export const metadata: Metadata = {
   title: 'Product Knowledge',
@@ -15,7 +16,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     : false;
 
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+        {/* Menyetel tema sebelum paint, supaya mode gelap tidak berkedip putih. */}
+        <script dangerouslySetInnerHTML={{ __html: SKRIP_TEMA }} />
+      </head>
       <body>
         <header className="kepala">
           <div className="kepala-isi">
@@ -34,6 +45,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <a href="/dashboard">Dashboard</a>
               <a href="/cek-data">Cek Data</a>
               {masuk && <a href="/keluar">Keluar</a>}
+              <PemilihTema />
             </nav>
           </div>
         </header>

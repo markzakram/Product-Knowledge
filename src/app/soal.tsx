@@ -6,57 +6,88 @@ const WARNA_REVIEW: Record<string, string> = {
   draft: 'lencana lencana-abu',
 };
 
+const WARNA_TINGKAT: Record<string, string> = {
+  mudah: 'lencana lencana-hijau',
+  sedang: 'lencana lencana-kuning',
+  sulit: 'lencana lencana-merah',
+};
+
+const LABEL_TIPE: Record<string, string> = {
+  pg: 'Pilihan ganda',
+  pg_kompleks: 'PG kompleks',
+  isian_singkat: 'Isian singkat',
+  benar_salah: 'Benar / Salah',
+  skala: 'Berskala',
+};
+
 function KartuSoal({ soal }: { soal: Soal }) {
   const kunci = soal.kunci.trim().toUpperCase();
-  const pilihan = (soal.opsi ?? []).length > 0;
+  const opsi = soal.opsi ?? [];
+  // Soal berskala tidak punya "jawaban benar" tunggal; kuncinya adalah opsi
+  // berskor tertinggi. Labelnya dibedakan supaya tidak salah dibaca.
+  const berskala = soal.tipe === 'skala';
 
   return (
     <article className="soal">
       <div className="soal-kepala">
-        <span className="soal-nomor">Soal {soal.nomor}</span>
-        <span className="lencana lencana-abu">{soal.tipe}</span>
-        {soal.tingkat && <span className="lencana lencana-abu">{soal.tingkat}</span>}
+        <span className="soal-nomor">SOAL {soal.nomor}</span>
+        <span className="lencana lencana-aksen">{LABEL_TIPE[soal.tipe] ?? soal.tipe}</span>
+        {soal.tingkat && (
+          <span className={WARNA_TINGKAT[soal.tingkat] ?? 'lencana lencana-abu'}>
+            {soal.tingkat}
+          </span>
+        )}
         {soal.status && (
-          <span className={WARNA_REVIEW[soal.status] ?? 'lencana lencana-abu'}>{soal.status}</span>
+          <span
+            className={WARNA_REVIEW[soal.status] ?? 'lencana lencana-abu'}
+            style={{ marginLeft: 'auto' }}
+          >
+            {soal.status}
+          </span>
         )}
       </div>
 
-      <p className="pra">{soal.pertanyaan}</p>
-
-      {soal.gambar && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className="gambar-soal" src={`/${soal.gambar}`} alt={`Gambar soal ${soal.nomor}`} />
-      )}
-
-      {pilihan ? (
-        <ul className="opsi">
-          {soal.opsi!.map((o) => (
-            <li key={o.label} className={o.label === kunci ? 'benar' : undefined}>
-              <span className="opsi-label">{o.label}.</span>
-              <span>{o.teks}</span>
-              {o.label === kunci && (
-                <span style={{ marginLeft: 'auto' }} aria-label="kunci jawaban">
-                  ✓
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="kunci-isian">
-          Jawaban: <b>{soal.kunci || '—'}</b>
+      <div className="soal-badan">
+        <p className="pra" style={{ fontWeight: 500 }}>
+          {soal.pertanyaan}
         </p>
-      )}
 
-      <div className="pembahasan">
-        {soal.pembahasan ? (
-          <>
-            <div className="pembahasan-label">Pembahasan</div>
-            <p className="pra">{soal.pembahasan}</p>
-          </>
-        ) : (
-          <span className="lencana lencana-merah">Pembahasan belum diisi</span>
+        {soal.gambar && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className="gambar-soal" src={`/${soal.gambar}`} alt={`Gambar soal ${soal.nomor}`} />
         )}
+
+        {opsi.length > 0 ? (
+          <ul className="opsi">
+            {opsi.map((o) => {
+              const ini = o.label === kunci;
+              return (
+                <li key={o.label} className={ini ? 'benar' : undefined}>
+                  <span className="opsi-label">{o.label}</span>
+                  <span>{o.teks}</span>
+                  {ini && (
+                    <span className="tanda-kunci">{berskala ? 'SKOR TERTINGGI' : 'KUNCI'}</span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="kunci-isian">
+            Jawaban: <b>{soal.kunci || '—'}</b>
+          </p>
+        )}
+
+        <div className="pembahasan">
+          {soal.pembahasan ? (
+            <>
+              <div className="pembahasan-label">Pembahasan</div>
+              <p className="pra">{soal.pembahasan}</p>
+            </>
+          ) : (
+            <span className="lencana lencana-merah">Pembahasan belum diisi</span>
+          )}
+        </div>
       </div>
     </article>
   );
@@ -70,9 +101,19 @@ export function KartuKelompok({ kelompok }: { kelompok: Kelompok }) {
   const { stimulus, soal } = kelompok;
   const punyaStimulus = stimulus && (stimulus.isi || stimulus.gambar || stimulus.judul);
 
+  if (!punyaStimulus) {
+    return (
+      <>
+        {soal.map((s) => (
+          <KartuSoal key={s.nomor} soal={s} />
+        ))}
+      </>
+    );
+  }
+
   return (
-    <div className={punyaStimulus ? 'kelompok' : undefined}>
-      {punyaStimulus && (
+    <div className="kelompok">
+      <div className="soal" style={{ paddingBottom: 18 }}>
         <div className="stimulus">
           <div className="stimulus-label">
             Stimulus{stimulus.judul ? ` · ${stimulus.judul}` : ''}
@@ -84,10 +125,12 @@ export function KartuKelompok({ kelompok }: { kelompok: Kelompok }) {
             <img className="gambar-soal" src={`/${stimulus.gambar}`} alt="Gambar stimulus" />
           )}
         </div>
-      )}
-      {soal.map((s) => (
-        <KartuSoal key={s.nomor} soal={s} />
-      ))}
+        <div style={{ padding: '0 18px' }}>
+          {soal.map((s) => (
+            <KartuSoal key={s.nomor} soal={s} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

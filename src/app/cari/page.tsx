@@ -31,7 +31,7 @@ export default async function HalamanCari({
       )}
 
       {kueri && hasil.length === 0 && (
-        <Kosong teks="Tidak ada yang cocok. Coba kata yang lebih pendek, atau satu kata saja." />
+        <Kosong teks="Tidak ada yang cocok" sebab="Coba kata yang lebih pendek, atau satu kata saja." />
       )}
 
       {hasil.map((h, i) => (

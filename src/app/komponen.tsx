@@ -18,13 +18,26 @@ export function Remah({ jejak }: { jejak: { teks: string; ke?: string }[] }) {
   );
 }
 
-export function Kosong({ teks }: { teks: string }) {
-  return <p className="kosong">{teks}</p>;
+/**
+ * Keadaan kosong.
+ *
+ * Banyak halaman memang belum terisi. Diberi bentuk supaya terbaca sebagai
+ * "memang belum ada", bukan seperti halaman yang gagal memuat. `sebab`
+ * dipakai kalau alasannya diketahui — itu jauh lebih menolong daripada
+ * sekadar mengatakan tidak ada.
+ */
+export function Kosong({ teks, sebab }: { teks: string; sebab?: string }) {
+  return (
+    <div className="kosong">
+      <b>{teks}</b>
+      {sebab}
+    </div>
+  );
 }
 
 export function Waktu({ menit }: { menit?: number }) {
   if (menit === undefined) return <>—</>;
   const utuh = Math.floor(menit);
   const detik = Math.round((menit - utuh) * 60);
-  return <>{detik ? `${utuh} menit ${detik} detik` : `${utuh} menit`}</>;
+  return <>{detik ? `${utuh}′ ${detik}″` : `${utuh} menit`}</>;
 }

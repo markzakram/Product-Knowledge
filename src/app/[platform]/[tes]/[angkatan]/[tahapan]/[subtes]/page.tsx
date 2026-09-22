@@ -92,7 +92,7 @@ export default async function HalamanSubtes({
 
       <h2>Materi</h2>
       {(subtes.materi ?? []).length === 0 ? (
-        <Kosong teks="Belum ada rincian materi untuk subtes ini." />
+        <Kosong teks="Belum ada rincian materi" sebab="Materi subtes ini belum dipecah di dokumen sumbernya." />
       ) : (
         <ul className="daftar">
           {subtes.materi!.map((m) => (
@@ -106,7 +106,7 @@ export default async function HalamanSubtes({
 
       <h2>Mapping Produksi Konten</h2>
       {mapping.length === 0 ? (
-        <Kosong teks="Belum ada target produksi untuk subtes ini." />
+        <Kosong teks="Belum ada target produksi" sebab="Subtes ini belum masuk mapping produksi konten." />
       ) : (
         <>
           <div className="tabel-bungkus">
@@ -172,7 +172,9 @@ export default async function HalamanSubtes({
 
       <h2>Contoh Soal</h2>
       {(subtes.contoh ?? []).length === 0 ? (
-        <Kosong teks="Belum ada contoh soal untuk subtes ini." />
+        <Kosong teks="Belum ada contoh soal"
+          sebab={subtes.catatan ?? "Contoh soal untuk subtes ini belum dimasukkan."}
+        />
       ) : (
         subtes.contoh!.map((kelompok, i) => <KartuKelompok key={i} kelompok={kelompok} />)
       )}

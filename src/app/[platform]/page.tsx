@@ -22,7 +22,7 @@ export default async function HalamanPlatform({
       {platform.deskripsi && <p className="pengantar">{platform.deskripsi}</p>}
 
       {platform.tes.length === 0 ? (
-        <Kosong teks="Belum ada tes yang terdaftar untuk platform ini." />
+        <Kosong teks="Belum ada tes" sebab="Platform ini belum punya tes yang terdaftar." />
       ) : (
         platform.tes.map((tes) => (
           <section key={tes.kode}>
@@ -36,7 +36,7 @@ export default async function HalamanPlatform({
             {tes.deskripsi && <p className="pengantar">{tes.deskripsi}</p>}
 
             {tes.angkatan.length === 0 ? (
-              <Kosong teks="Belum ada angkatan yang terdaftar." />
+              <Kosong teks="Belum ada angkatan" sebab="Tes ini belum punya angkatan yang datanya ditulis." />
             ) : (
               <div className="petak">
                 {[...tes.angkatan]

@@ -58,7 +58,7 @@ export default async function HalamanAngkatan({
           )}
 
           {tahapan.subtes.length === 0 ? (
-            <Kosong teks="Belum ada subtes untuk tahapan ini." />
+            <Kosong teks="Belum ada subtes" sebab="Tahapan ini belum dirinci, atau memang bukan tes tertulis." />
           ) : (
             <div className="tabel-bungkus">
               <table>
