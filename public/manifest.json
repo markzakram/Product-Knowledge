@@ -1,0 +1,13 @@
+{
+  "name": "Product Knowledge — Divisi Produk",
+  "short_name": "ProductKnowledge",
+  "description": "Informasi seleksi lintas platform: tahapan, subtes, materi, dan contoh soal.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9f8f5",
+  "theme_color": "#0a6c78",
+  "lang": "id",
+  "icons": [
+    { "src": "/logo/pk-mark.png", "sizes": "256x256", "type": "image/png", "purpose": "any" }
+  ]
+}

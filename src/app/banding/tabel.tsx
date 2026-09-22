@@ -198,9 +198,9 @@ export function TabelBanding({ baris }: { baris: BarisSubtes[] }) {
                       </span>
                       <div className="kartu-kecil">{b.tahapan}</div>
                     </td>
-                    <td className="angka">{b.jumlahSoal ?? '—'}</td>
-                    <td className="angka">{waktuTeks(b.waktuMenit)}</td>
-                    <td className="angka">
+                    <td className="angka" data-label="Soal">{b.jumlahSoal ?? '—'}</td>
+                    <td className="angka" data-label="Waktu">{waktuTeks(b.waktuMenit)}</td>
+                    <td className="angka" data-label="Contoh">
                       {b.contoh ? (
                         <span className="lencana lencana-hijau">{b.contoh}</span>
                       ) : (

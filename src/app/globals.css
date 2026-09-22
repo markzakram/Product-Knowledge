@@ -994,3 +994,160 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 }
 .kaki-tautan a { color: var(--aksen); font-weight: 600; }
 .kaki-tautan .kartu-kecil { margin-top: 4px; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   PONSEL
+
+   Breakpoint 767.98px, bukan 767px: lebar pecahan pada layar ber-DPI ganjil
+   akan jatuh di celah antara aturan ini dan aturan desktop. Mengikuti pola
+   yang sudah dipakai di task-tracker.
+   ══════════════════════════════════════════════════════════════════════ */
+.nav-bawah { display: none; }
+
+@media (max-width: 767.98px) {
+  /* ── Header diringkas ──────────────────────────────────────────────
+     Sebelumnya semua membungkus ke bawah dan headernya jadi 210px —
+     seperempat layar, padahal ia lengket di atas. Versi dan "Divisi
+     Produk" disembunyikan karena keduanya keterangan, bukan navigasi. */
+  .merek-versi, .merek-divisi { display: none; }
+  .merek-mark { width: 26px; height: 26px; }
+  .merek { font-size: 14.5px; gap: 7px; }
+  .kepala-isi { padding: 8px 14px; gap: 8px; row-gap: 8px; }
+  /* Kotak cari dikeluarkan dari header dan pindah ke bilah bawah sebagai
+     menu "Cari". Ini yang akhirnya memangkas header dari 210px jadi satu
+     baris — merapatkan saja tidak cukup, karena merek dan pemilih tema
+     memang tidak muat sebaris bersama kotak cari selebar apa pun. */
+  .kepala .cari { display: none; }
+  .nav { margin-left: auto; width: auto; gap: 2px; }
+  /* Tautan nav pindah ke bilah bawah; yang tersisa di header cuma tema. */
+  .nav > a { display: none; }
+  /* Dirapatkan supaya merek dan pemilih tema muat sebaris. Tanpa ini
+     keduanya 363px sementara ruangnya 343px, dan temanya turun ke baris
+     sendiri — menambah 36px pada header yang lengket di atas layar. */
+  .tema-grup { padding: 2px; gap: 1px; }
+  .tema-grup button { padding: 0 9px; font-size: 11.5px; letter-spacing: -.01em; }
+
+  .bingkai { padding: 0 16px 96px; }
+
+  /* ── Target sentuh 44px ────────────────────────────────────────────
+     Ukuran minimum yang nyaman ditekan jempol. Kotak centang dikecualikan
+     karena ia dibungkus label yang sudah 44px; memaksa min-height di sini
+     justru melarkannya jadi persegi panjang. */
+  .cari input,
+  .saring input[type='search'],
+  .saring select,
+  .saring-hapus,
+  .tombol-buka,
+  .unduh-tombol,
+  .tema-grup button,
+  .lipat summary,
+  .chip { min-height: 44px; }
+  .saring-centang { min-height: 44px; }
+  .saring-centang input[type='checkbox'] { min-height: 0; width: 20px; height: 20px; }
+  .chip { display: inline-flex; align-items: center; padding: 0 14px; }
+  .unduh-tombol { flex: 1 1 140px; justify-content: center; }
+
+  /* ── Bilah nav bawah ───────────────────────────────────────────────── */
+  .nav-bawah {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 30;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background: color-mix(in srgb, var(--latar) 94%, transparent);
+    backdrop-filter: saturate(150%) blur(10px);
+    border-top: 1px solid var(--garis);
+    /* Ruang aman iOS supaya tombol tidak tertutup batang gestur. */
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .nav-bawah a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 56px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--teks-2);
+    text-decoration: none;
+  }
+  .nav-bawah a span { font-size: 16px; line-height: 1; }
+  .nav-bawah a { font-size: 10.5px; }
+  .nav-bawah a:active { color: var(--aksen); background: var(--redup); }
+
+  /* ── Tata letak lain ───────────────────────────────────────────────── */
+  .spek { gap: 18px; }
+  .spek dd { font-size: 21px; }
+  .tahap { gap: 11px; }
+  .tahap-nomor { flex-basis: 28px; width: 28px; height: 28px; font-size: 12px; }
+  .tahap::before { left: 13px; top: 30px; }
+  .kaki-ringkas { gap: 20px; }
+  .latihan-bar { gap: 10px; }
+  .latihan-bar .kartu-kecil { margin-left: 0; }
+
+  /* Tabel tetap bisa digeser mendatar, tapi diberi isyarat bahwa ia bisa. */
+  .tabel-bungkus { -webkit-overflow-scrolling: touch; }
+}
+
+/* Halaman banding: tabel 7 kolom mustahil dibaca di 375px, jadi tiap baris
+   diubah jadi kartu bertumpuk dengan label kolomnya sendiri. */
+@media (max-width: 767.98px) {
+  .tabel-banding thead { display: none; }
+  .tabel-banding, .tabel-banding tbody, .tabel-banding tr, .tabel-banding td { display: block; width: 100%; }
+  .tabel-banding tr {
+    border: 1px solid var(--garis);
+    border-radius: var(--r-kecil);
+    background: var(--kartu);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: var(--bayang);
+  }
+  .tabel-banding tbody tr:hover td { background: transparent; }
+  .tabel-banding td { border: 0; padding: 3px 0; }
+  .tabel-banding td.angka { text-align: left; }
+  /* Kolom angka diberi label lewat atribut data supaya tidak kehilangan
+     artinya setelah kepala tabel disembunyikan. */
+  .tabel-banding td[data-label]::before {
+    content: attr(data-label) ': ';
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--teks-2);
+  }
+  .banding-penilaian { max-width: none; padding-top: 8px !important; border-top: 1px solid var(--garis) !important; margin-top: 6px; }
+}
+
+/* ── Kotak cari di halaman pencarian ─────────────────────────────────── */
+.cari-halaman { display: flex; gap: 9px; margin: 14px 0 6px; }
+.cari-halaman input {
+  flex: 1;
+  padding: 11px 16px;
+  border: 1px solid var(--garis);
+  border-radius: 99px;
+  background: var(--kartu);
+  color: var(--teks);
+  font-size: 15px;
+  font-family: inherit;
+}
+.cari-halaman input:focus {
+  outline: none;
+  border-color: var(--aksen);
+  box-shadow: 0 0 0 3px var(--aksen-lembut);
+}
+.cari-halaman button {
+  border: 0;
+  border-radius: 99px;
+  background: var(--aksen);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 0 22px;
+  cursor: pointer;
+}
+[data-tema='gelap'] .cari-halaman button { color: #0c262c; }
+@media (max-width: 767.98px) {
+  .cari-halaman input, .cari-halaman button { min-height: 44px; }
+}

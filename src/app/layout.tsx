@@ -20,6 +20,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
+        {/* viewport-fit=cover supaya isi tidak tertutup takik layar di iOS. */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/logo/pk-mark.png" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="ProductKnowledge" />
+        {/* "default", bukan "black-translucent": yang terakhir menaruh isi di
+            bawah bilah status iOS dan seluruh header harus digeser sendiri. */}
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -70,6 +80,31 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
         </header>
         <div className="bingkai">{children}</div>
+
+        {/* Nav bawah hanya tampil di ponsel. Header jadi ringkas, dan tautan
+            utama berada di jangkauan jempol alih-alih di ujung atas layar. */}
+        <nav className="nav-bawah" aria-label="Navigasi utama">
+          <a href="/">
+            <span aria-hidden>▦</span>
+            Platform
+          </a>
+          <a href="/cari">
+            <span aria-hidden>⌕</span>
+            Cari
+          </a>
+          <a href="/banding">
+            <span aria-hidden>⇄</span>
+            Banding
+          </a>
+          <a href="/dashboard">
+            <span aria-hidden>▤</span>
+            Dashboard
+          </a>
+          <a href="/cek-data">
+            <span aria-hidden>✓</span>
+            Cek Data
+          </a>
+        </nav>
       </body>
     </html>
   );

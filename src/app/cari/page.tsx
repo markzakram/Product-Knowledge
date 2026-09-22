@@ -20,6 +20,19 @@ export default async function HalamanCari({
   return (
     <>
       <h1>Pencarian</h1>
+      {/* Kotak cari sendiri. Di ponsel kotak di header disembunyikan supaya
+          header cukup satu baris, jadi halaman ini harus bisa berdiri sendiri. */}
+      <form className="cari-halaman" action="/cari">
+        <input
+          type="search"
+          name="q"
+          defaultValue={kueri}
+          placeholder="Ketik yang dicari…"
+          aria-label="Cari"
+          autoComplete="off"
+        />
+        <button type="submit">Cari</button>
+      </form>
       {!kueri ? (
         <>
           <p className="pengantar">
