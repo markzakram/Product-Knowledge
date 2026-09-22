@@ -15,7 +15,11 @@ export default async function Masuk({
   return (
     <div className="masuk-bingkai">
       <div className="masuk-kotak">
-        <h1 style={{ marginTop: 0, fontSize: 20 }}>Product Knowledge</h1>
+        <div className="masuk-merek">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo/pk-mark.png" alt="" aria-hidden />
+          <h1>Product Knowledge</h1>
+        </div>
         <p className="kartu-kecil">
           Masukkan PIN tim. Isinya berupa riset dan contoh soal internal, jadi
           jangan sebarkan tautannya ke luar perusahaan.

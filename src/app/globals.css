@@ -9,17 +9,25 @@
 
 :root,
 [data-tema='terang'] {
-  --aksen: #0d9488;
-  --aksen-2: #d97706;
-  --aksen-lembut: #ecfdf5;
-  --aksen-garis: #99f6e4;
+  /* Diturunkan dari logo: teal #003c48 dan oranye #fc8400.
+     Teal logo terlalu gelap untuk dipakai sebagai warna tautan di atas latar
+     terang — ia akan terbaca hampir hitam, persis masalah navy yang dulu.
+     Jadi aksennya memakai teal sehue yang lebih terang, sementara teal
+     aslinya dipakai untuk teks dan judul. */
+  --merek-teal: #003c48;
+  --merek-oranye: #fc8400;
 
-  --latar: #faf9f7;
+  --aksen: #0a6c78;
+  --aksen-2: #fc8400;
+  --aksen-lembut: #e6f4f5;
+  --aksen-garis: #9dd4dc;
+
+  --latar: #f9f8f5;
   --kartu: #ffffff;
-  --redup: #f3f1ed;
-  --garis: #e6e2da;
-  --teks: #1c1917;
-  --teks-2: #6b635a;
+  --redup: #f1efea;
+  --garis: #e3ded4;
+  --teks: #0f2e33;
+  --teks-2: #5f6b6d;
 
   --ok: #0f7b3f;      --ok-bg: #e6f4ec;
   --warn: #8a5a00;    --warn-bg: #fdf3e0;
@@ -35,17 +43,20 @@
 }
 
 [data-tema='gelap'] {
-  --aksen: #2dd4bf;
-  --aksen-2: #fbbf24;
-  --aksen-lembut: #10241f;
-  --aksen-garis: #17564d;
+  --merek-teal: #003c48;
+  --merek-oranye: #fc8400;
 
-  --latar: #14171a;
-  --kartu: #1b1f23;
-  --redup: #1e2226;
-  --garis: #2e3439;
-  --teks: #ecebe8;
-  --teks-2: #9c958b;
+  --aksen: #5ecdda;
+  --aksen-2: #fca22e;
+  --aksen-lembut: #0c262c;
+  --aksen-garis: #1b5561;
+
+  --latar: #101619;
+  --kartu: #182024;
+  --redup: #1b2429;
+  --garis: #2a373d;
+  --teks: #e8eceb;
+  --teks-2: #93a1a4;
 
   --ok: #5fd08a;      --ok-bg: #12291c;
   --warn: #e0b25f;    --warn-bg: #2a2113;
@@ -110,12 +121,26 @@ code {
   flex-wrap: wrap;
 }
 .merek {
-  font-weight: 700;
-  letter-spacing: -.025em;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 800;
+  letter-spacing: -.03em;
   font-size: 16.5px;
   white-space: nowrap;
 }
-.merek:hover { text-decoration: none; color: var(--aksen); }
+/* Mark logo transparan: bagian teal-nya gelap, jadi di mode gelap ia perlu
+   sedikit dinaikkan kecerahannya agar tepinya tidak melebur ke latar. */
+.merek-mark { width: 28px; height: 28px; object-fit: contain; flex: 0 0 auto; }
+[data-tema='gelap'] .merek-mark { filter: brightness(1.35) saturate(1.05); }
+.merek-tipis { font-weight: 500; color: var(--teks-2); }
+.merek:hover { text-decoration: none; }
+.merek:hover .merek-tipis { color: var(--aksen); }
+
+.masuk-merek { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.masuk-merek img { width: 38px; height: 38px; object-fit: contain; }
+[data-tema='gelap'] .masuk-merek img { filter: brightness(1.35) saturate(1.05); }
+.masuk-merek h1 { margin: 0; font-size: 20px; font-weight: 700; }
 .nav { display: flex; gap: 6px; margin-left: auto; align-items: center; flex-wrap: wrap; }
 .nav a {
   color: var(--teks-2);

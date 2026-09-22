@@ -31,7 +31,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <header className="kepala">
           <div className="kepala-isi">
             <a href="/" className="merek">
-              Product Knowledge
+              {/* Mark saja, bukan lockup: wordmark logo berwarna teal gelap
+                  di atas latar transparan, jadi ia hilang di mode gelap.
+                  Teksnya dirender HTML supaya ikut tema dan tetap tajam. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="merek-mark" src="/logo/pk-mark.png" alt="" aria-hidden />
+              <span>
+                Product <span className="merek-tipis">Knowledge</span>
+              </span>
             </a>
             <form className="cari" action="/cari">
               <input
