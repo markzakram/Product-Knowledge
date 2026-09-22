@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import type { Kelompok, Soal } from '@/lib/skema';
 
 const WARNA_REVIEW: Record<string, string> = {
@@ -20,12 +23,27 @@ const LABEL_TIPE: Record<string, string> = {
   skala: 'Berskala',
 };
 
-function KartuSoal({ soal }: { soal: Soal }) {
+const KUNCI_SIMPAN = 'pk-latihan';
+
+function KartuSoal({
+  soal,
+  latihan,
+  terbuka,
+  onBuka,
+}: {
+  soal: Soal;
+  latihan: boolean;
+  terbuka: boolean;
+  onBuka: () => void;
+}) {
   const kunci = soal.kunci.trim().toUpperCase();
   const opsi = soal.opsi ?? [];
   // Soal berskala tidak punya "jawaban benar" tunggal; kuncinya adalah opsi
   // berskor tertinggi. Labelnya dibedakan supaya tidak salah dibaca.
   const berskala = soal.tipe === 'skala';
+  // Jawaban disembunyikan hanya kalau mode latihan menyala DAN soal ini
+  // belum dibuka. Tiap soal dibuka sendiri-sendiri, bukan sekaligus.
+  const tutup = latihan && !terbuka;
 
   return (
     // id dipakai tautan hasil pencarian dan berbagi satu soal
@@ -61,7 +79,7 @@ function KartuSoal({ soal }: { soal: Soal }) {
         {opsi.length > 0 ? (
           <ul className="opsi">
             {opsi.map((o) => {
-              const ini = o.label === kunci;
+              const ini = o.label === kunci && !tutup;
               return (
                 <li key={o.label} className={ini ? 'benar' : undefined}>
                   <span className="opsi-label">{o.label}</span>
@@ -75,42 +93,58 @@ function KartuSoal({ soal }: { soal: Soal }) {
           </ul>
         ) : (
           <p className="kunci-isian">
-            Jawaban: <b>{soal.kunci || '—'}</b>
+            Jawaban: <b>{tutup ? '•••' : soal.kunci || '—'}</b>
           </p>
         )}
 
-        <div className="pembahasan">
-          {soal.pembahasan ? (
-            <>
-              <div className="pembahasan-label">Pembahasan</div>
-              <p className="pra">{soal.pembahasan}</p>
-            </>
-          ) : (
-            <span className="lencana lencana-merah">Pembahasan belum diisi</span>
-          )}
-        </div>
+        {tutup ? (
+          <div className="pembahasan">
+            <button type="button" className="tombol-buka" onClick={onBuka}>
+              Lihat jawaban dan pembahasan
+            </button>
+          </div>
+        ) : (
+          <div className="pembahasan">
+            {soal.pembahasan ? (
+              <>
+                <div className="pembahasan-label">Pembahasan</div>
+                <p className="pra">{soal.pembahasan}</p>
+              </>
+            ) : (
+              <span className="lencana lencana-merah">Pembahasan belum diisi</span>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );
 }
 
-/**
- * Satu kelompok = satu stimulus dengan soal-soal yang memakainya.
- * Stimulus ditampilkan sekali di atas, bukan diulang di tiap soal.
- */
-export function KartuKelompok({ kelompok }: { kelompok: Kelompok }) {
+function Kelompokan({
+  kelompok,
+  latihan,
+  dibuka,
+  buka,
+}: {
+  kelompok: Kelompok;
+  latihan: boolean;
+  dibuka: Set<string>;
+  buka: (id: string) => void;
+}) {
   const { stimulus, soal } = kelompok;
   const punyaStimulus = stimulus && (stimulus.isi || stimulus.gambar || stimulus.judul);
 
-  if (!punyaStimulus) {
-    return (
-      <>
-        {soal.map((s) => (
-          <KartuSoal key={s.nomor} soal={s} />
-        ))}
-      </>
-    );
-  }
+  const daftar = soal.map((s) => (
+    <KartuSoal
+      key={s.nomor}
+      soal={s}
+      latihan={latihan}
+      terbuka={dibuka.has(String(s.nomor))}
+      onBuka={() => buka(String(s.nomor))}
+    />
+  ));
+
+  if (!punyaStimulus) return <>{daftar}</>;
 
   return (
     <div className="kelompok">
@@ -126,12 +160,87 @@ export function KartuKelompok({ kelompok }: { kelompok: Kelompok }) {
             <img className="gambar-soal" src={`/${stimulus.gambar}`} alt="Gambar stimulus" />
           )}
         </div>
-        <div style={{ padding: '0 18px' }}>
-          {soal.map((s) => (
-            <KartuSoal key={s.nomor} soal={s} />
-          ))}
-        </div>
+        <div style={{ padding: '0 18px' }}>{daftar}</div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Daftar contoh soal dengan mode latihan.
+ *
+ * Datanya sudah ada; yang kurang hanya pilihan untuk tidak melihat jawabannya
+ * dulu. Dengan satu sakelar, halaman ini berubah dari etalase jadi bahan
+ * latihan — tanpa menambah data apa pun.
+ *
+ * Pilihan modenya disimpan supaya tidak perlu dinyalakan ulang tiap pindah
+ * subtes; orang yang sedang berlatih biasanya melewati beberapa subtes
+ * berturut-turut.
+ */
+export function DaftarSoal({ contoh }: { contoh: Kelompok[] }) {
+  const [latihan, setLatihan] = useState(false);
+  const [dibuka, setDibuka] = useState<Set<string>>(new Set());
+  const [siap, setSiap] = useState(false);
+
+  useEffect(() => {
+    try {
+      setLatihan(localStorage.getItem(KUNCI_SIMPAN) === 'ya');
+    } catch {
+      /* localStorage bisa diblokir; biarkan mati. */
+    }
+    setSiap(true);
+  }, []);
+
+  function ubahMode(nyala: boolean) {
+    setLatihan(nyala);
+    setDibuka(new Set());
+    try {
+      localStorage.setItem(KUNCI_SIMPAN, nyala ? 'ya' : 'tidak');
+    } catch {
+      /* Tidak tersimpan, tapi tetap berlaku untuk sesi ini. */
+    }
+  }
+
+  const total = contoh.reduce((n, k) => n + k.soal.length, 0);
+
+  return (
+    <>
+      <div className="latihan-bar">
+        <label className="saring-centang">
+          <input
+            type="checkbox"
+            checked={siap && latihan}
+            onChange={(e) => ubahMode(e.target.checked)}
+          />
+          Mode latihan — sembunyikan jawaban
+        </label>
+        {latihan && (
+          <>
+            <span className="kartu-kecil">
+              {dibuka.size} dari {total} terbuka
+            </span>
+            {dibuka.size > 0 && (
+              <button
+                type="button"
+                className="saring-hapus"
+                onClick={() => setDibuka(new Set())}
+              >
+                Tutup semua
+              </button>
+            )}
+          </>
+        )}
+      </div>
+
+      {contoh.map((kelompok, i) => (
+        <Kelompokan
+          key={i}
+          kelompok={kelompok}
+          latihan={siap && latihan}
+          dibuka={dibuka}
+          buka={(id) => setDibuka((s) => new Set(s).add(id))}
+        />
+      ))}
+    </>
   );
 }

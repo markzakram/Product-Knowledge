@@ -4,7 +4,7 @@ import {
   tautanAngkatan, tautanPlatform, tautanSubtes,
 } from '@/lib/data';
 import { Remah, Status, Kosong, Waktu } from '../../../../../komponen';
-import { KartuKelompok } from '../../../../../soal';
+import { DaftarSoal } from '../../../../../soal';
 
 export function generateStaticParams() {
   return semuaSubtes().map((j) => ({
@@ -111,7 +111,7 @@ export default async function HalamanSubtes({
           sebab={subtes.catatan ?? "Contoh soal untuk subtes ini belum dimasukkan."}
         />
       ) : (
-        subtes.contoh!.map((kelompok, i) => <KartuKelompok key={i} kelompok={kelompok} />)
+        <DaftarSoal contoh={subtes.contoh!} />
       )}
 
       {/* Navigasi menyamping. Orang meninjau subtes berurutan; tanpa ini tiap
