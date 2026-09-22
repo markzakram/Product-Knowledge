@@ -1,4 +1,5 @@
 import type { Tahapan } from '@/lib/skema';
+import { contohTwk, contohTiu, contohTkp } from './contoh-skd';
 
 /**
  * Seleksi Kompetensi Dasar CPNS.
@@ -39,6 +40,7 @@ Nilai ambang batas:
           catatan: `Angka dari Mapping ASN.xlsx. Bank soal SKD dipakai bersama JadiSekdin, karena subtesnya sama persis. Sheet berlabel "15 Paket" tetapi totalnya sama dengan 30 paket, jadi jumlah paket sengaja dikosongkan.` },
       ],
       contoh: [
+        ...contohTwk,
         {
           soal: [
         {
@@ -108,7 +110,6 @@ Nasionalisme multikultural sama dengan Bhinneka Tunggal Ika, berbeda tapi tetap 
       waktuMenit: 100,
       formatKetentuan: `100 menit untuk peserta umum dan 130 menit untuk penyandang disabilitas. Ketiga subtes dikerjakan serentak dalam satu sesi.`,
       penilaian: `Benar 5 poin. Salah atau tidak menjawab 0 poin. Skor maksimal 175. Nilai ambang batas 80.`,
-      catatan: `Contoh soal belum dimasukkan. Dokumen kurikulum menunjuk ke "Panduan Produksi Soal TIU JadiASN.pdf" yang belum ada di repo.`,
       materi: [
         { nama: `Verbal`, catatan: `Analogi, silogisme, dan analitis.` },
         { nama: `Numerik`, catatan: `Berhitung, deret angka, perbandingan kuantitatif, dan soal cerita.` },
@@ -118,6 +119,7 @@ Nasionalisme multikultural sama dengan Bhinneka Tunggal Ika, berbeda tapi tetap 
         { tipe: 'tryout', soalPerPaket: 35, dibutuhkan: 1050, tersedia: 2088, status: 'selesai',
           catatan: `Angka dari Mapping ASN.xlsx. Bank soal SKD dipakai bersama JadiSekdin, karena subtesnya sama persis. Sheet berlabel "15 Paket" tetapi totalnya sama dengan 30 paket, jadi jumlah paket sengaja dikosongkan.` },
       ],
+      contoh: contohTiu,
     },
     {
       kode: 'tkp',
@@ -126,7 +128,7 @@ Nasionalisme multikultural sama dengan Bhinneka Tunggal Ika, berbeda tapi tetap 
       waktuMenit: 100,
       formatKetentuan: `Soal berskala: setiap opsi punya skor, tidak ada opsi yang sepenuhnya salah. 100 menit untuk peserta umum dan 130 menit untuk penyandang disabilitas. Ketiga subtes dikerjakan serentak dalam satu sesi.`,
       penilaian: `Skor per opsi paling rendah 1 dan paling tinggi 5. Tidak menjawab 0. Skor maksimal 225. Nilai ambang batas 166.`,
-      catatan: `Materi mengacu pada nilai dasar ASN BerAKHLAK. Contoh soal belum dimasukkan; dokumen menunjuk ke "Panduan Produksi Soal TKP JadiASN.pdf" yang belum ada di repo.`,
+      catatan: `Materi mengacu pada nilai dasar ASN BerAKHLAK.`,
       materi: [
         { nama: `Pelayanan Publik` },
         { nama: `Jejaring Kerja` },
@@ -139,6 +141,7 @@ Nasionalisme multikultural sama dengan Bhinneka Tunggal Ika, berbeda tapi tetap 
         { tipe: 'tryout', soalPerPaket: 45, dibutuhkan: 1350, tersedia: 1536, status: 'selesai',
           catatan: `Angka dari Mapping ASN.xlsx. Bank soal SKD dipakai bersama JadiSekdin, karena subtesnya sama persis. Sheet berlabel "15 Paket" tetapi totalnya sama dengan 30 paket, jadi jumlah paket sengaja dikosongkan.` },
       ],
+      contoh: contohTkp,
     },
   ],
 };

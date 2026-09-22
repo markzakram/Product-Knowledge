@@ -1,4 +1,5 @@
 import type { Tahapan } from '@/lib/skema';
+import { contohTwk, contohTiu, contohTkp } from './contoh-skd';
 
 /**
  * Seleksi Kompetensi Dasar (SKD) 2026.
@@ -46,6 +47,7 @@ Jalur Afirmasi Kewilayahan: nilai kumulatif SKD 281 dengan TIU minimal 55.`,
         },
       ],
       contoh: [
+        ...contohTwk,
         {
         soal: [
         {          nomor: 1,
@@ -129,6 +131,7 @@ Cara cepat: Menghargai jasa pahlawan berarti menjaga ingatan kolektif bangsa dan
         },
       ],
       contoh: [
+        ...contohTiu,
         {
         soal: [
         {          nomor: 1,
@@ -208,6 +211,7 @@ E. Penggabungan dari arwana dan koi TIDAK menghasilkan hiu`,
         },
       ],
       contoh: [
+        ...contohTkp,
         {
         soal: [
         {
