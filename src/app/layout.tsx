@@ -61,6 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <kbd className="cari-kunci" aria-hidden>/</kbd>
             </form>
             <nav className="nav">
+              <a href="/banding">Banding</a>
               <a href="/dashboard">Dashboard</a>
               <a href="/cek-data">Cek Data</a>
               {masuk && <a href="/keluar">Keluar</a>}
