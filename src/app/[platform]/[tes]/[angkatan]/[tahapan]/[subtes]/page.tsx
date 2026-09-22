@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import {
-  cariSubtes, semuaSubtes, jumlahContoh, labelTahapan, tautanAngkatan, tautanPlatform,
+  cariSubtes, semuaSubtes, jumlahContoh, labelTahapan, tetanggaSubtes,
+  tautanAngkatan, tautanPlatform, tautanSubtes,
 } from '@/lib/data';
 import { Remah, Status, Kosong, Waktu } from '../../../../../komponen';
 import { KartuKelompok } from '../../../../../soal';
@@ -29,6 +30,7 @@ export default async function HalamanSubtes({
   const jalur = cariSubtes(p.platform, p.tes, p.angkatan, p.tahapan, p.subtes);
   if (!jalur) notFound();
   const { platform, tes, angkatan, tahapan, subtes } = jalur;
+  const tetangga = tetanggaSubtes(jalur);
 
 
   return (
@@ -111,6 +113,38 @@ export default async function HalamanSubtes({
       ) : (
         subtes.contoh!.map((kelompok, i) => <KartuKelompok key={i} kelompok={kelompok} />)
       )}
+
+      {/* Navigasi menyamping. Orang meninjau subtes berurutan; tanpa ini tiap
+          perpindahan berarti mundur dua kali lewat remah. */}
+      <nav className="tetangga" aria-label="Subtes lain di angkatan ini">
+        {tetangga.sebelum ? (
+          <a className="tetangga-sisi" href={tautanSubtes(tetangga.sebelum)}>
+            <span className="tetangga-arah">← Sebelumnya</span>
+            <span className="tetangga-nama">{tetangga.sebelum.subtes.nama}</span>
+            <span className="tetangga-tahap">
+              {labelTahapan(angkatan, tetangga.sebelum.tahapan)}
+            </span>
+          </a>
+        ) : (
+          <span className="tetangga-sisi tetangga-mati">Subtes pertama</span>
+        )}
+
+        <span className="tetangga-hitung">
+          {tetangga.ke} dari {tetangga.dari}
+        </span>
+
+        {tetangga.sesudah ? (
+          <a className="tetangga-sisi tetangga-kanan" href={tautanSubtes(tetangga.sesudah)}>
+            <span className="tetangga-arah">Berikutnya →</span>
+            <span className="tetangga-nama">{tetangga.sesudah.subtes.nama}</span>
+            <span className="tetangga-tahap">
+              {labelTahapan(angkatan, tetangga.sesudah.tahapan)}
+            </span>
+          </a>
+        ) : (
+          <span className="tetangga-sisi tetangga-kanan tetangga-mati">Subtes terakhir</span>
+        )}
+      </nav>
     </>
   );
 }

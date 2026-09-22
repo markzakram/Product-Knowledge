@@ -28,7 +28,8 @@ function KartuSoal({ soal }: { soal: Soal }) {
   const berskala = soal.tipe === 'skala';
 
   return (
-    <article className="soal">
+    // id dipakai tautan hasil pencarian dan berbagi satu soal
+    <article className="soal" id={`soal-${soal.nomor}`}>
       <div className="soal-kepala">
         <span className="soal-nomor">SOAL {soal.nomor}</span>
         <span className="lencana lencana-aksen">{LABEL_TIPE[soal.tipe] ?? soal.tipe}</span>

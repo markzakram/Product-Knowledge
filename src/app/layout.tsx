@@ -4,6 +4,7 @@ import './globals.css';
 import { NAMA_COOKIE, cookieSah, gerbangAktif } from '@/lib/sesi';
 import { PemilihTema, SKRIP_TEMA } from './tema';
 import pkg from '../../package.json';
+import { PintasanCari } from './pintasan';
 
 export const metadata: Metadata = {
   title: 'Product Knowledge',
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script dangerouslySetInnerHTML={{ __html: SKRIP_TEMA }} />
       </head>
       <body>
+        <PintasanCari />
         <header className="kepala">
           <div className="kepala-isi">
             <a href="/" className="merek">
@@ -49,11 +51,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </a>
             <form className="cari" action="/cari">
               <input
+                id="kotak-cari"
                 type="search"
                 name="q"
-                placeholder="Cari platform, tahapan, subtes, materi, soal…"
+                placeholder="Cari ambang batas, subtes, materi, soal…"
                 aria-label="Cari"
+                autoComplete="off"
               />
+              <kbd className="cari-kunci" aria-hidden>/</kbd>
             </form>
             <nav className="nav">
               <a href="/dashboard">Dashboard</a>

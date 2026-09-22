@@ -75,6 +75,30 @@ export const tautanAngkatan = (j: JalurAngkatan) =>
 export const tautanSubtes = (j: JalurSubtes) =>
   `/${j.platform.slug}/${j.tes.kode}/${j.angkatan.kode}/${j.tahapan.kode}/${j.subtes.kode}`;
 
+/**
+ * Subtes sebelum dan sesudah, dalam urutan tahapan lalu subtes.
+ *
+ * Orang meninjau subtes berurutan — TWK lalu TIU lalu TKP. Tanpa ini, tiap
+ * perpindahan berarti mundur dua kali lewat remah. Melintasi batas tahapan
+ * dengan sengaja: setelah subtes terakhir Tahap 1, yang berikutnya adalah
+ * subtes pertama Tahap 2, bukan buntu.
+ */
+export function tetanggaSubtes(j: JalurSubtes) {
+  const runtun: JalurSubtes[] = [];
+  for (const tahapan of j.angkatan.tahapan) {
+    for (const subtes of tahapan.subtes) {
+      runtun.push({ platform: j.platform, tes: j.tes, angkatan: j.angkatan, tahapan, subtes });
+    }
+  }
+  const i = runtun.findIndex((x) => x.subtes === j.subtes && x.tahapan === j.tahapan);
+  return {
+    sebelum: i > 0 ? runtun[i - 1] : null,
+    sesudah: i >= 0 && i < runtun.length - 1 ? runtun[i + 1] : null,
+    ke: i + 1,
+    dari: runtun.length,
+  };
+}
+
 // ─── Penjelajahan menyeluruh ─────────────────────────────────────────────
 
 /** Semua angkatan di semua platform, beserta jalurnya. */
