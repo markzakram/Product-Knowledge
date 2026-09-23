@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import {
   cariAngkatan, semuaAngkatan, jumlahContoh, tautanPlatform, tautanSubtes,
 } from '@/lib/data';
-import { Remah, Status, Waktu } from '../../../komponen';
+import { Remah, Status, Waktu, LegendaStatus } from '../../../komponen';
 
 export function generateStaticParams() {
   return semuaAngkatan().map((j) => ({
@@ -150,6 +150,8 @@ export default async function HalamanAngkatan({
           );
         })}
       </ol>
+
+      <LegendaStatus ada={[angkatan.status, ...angkatan.tahapan.map((t) => t.status)]} />
 
       {(angkatan.info ?? []).length > 0 && (
         <>

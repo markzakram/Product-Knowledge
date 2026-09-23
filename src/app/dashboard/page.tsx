@@ -2,7 +2,7 @@ import {
   gapProduksi, mappingBelumDiisi, semuaAngkatan, semuaSubtes, labelTahapan,
   tautanAngkatan, tautanSubtes,
 } from '@/lib/data';
-import { Status, Kosong } from '../komponen';
+import { Status, Kosong, LegendaStatus } from '../komponen';
 
 /** Subtes yang targetnya sudah terpenuhi — ditampilkan sebagai pembanding. */
 function sudahCukup() {
@@ -184,6 +184,7 @@ export default function Dashboard() {
           </table>
         </div>
       )}
+      <LegendaStatus ada={belumLengkap.flatMap((x) => x.belum.map((t) => t.status))} />
     </>
   );
 }

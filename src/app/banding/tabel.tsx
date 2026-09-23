@@ -193,7 +193,10 @@ export function TabelBanding({ baris }: { baris: BarisSubtes[] }) {
                       </div>
                     </td>
                     <td>
-                      <span className={LABEL_STATUS[b.status].kelas}>
+                      <span
+                        className={LABEL_STATUS[b.status].kelas}
+                        title={`${LABEL_STATUS[b.status].arti} ${LABEL_STATUS[b.status].boleh}`}
+                      >
                         {LABEL_STATUS[b.status].teks}
                       </span>
                       <div className="kartu-kecil">{b.tahapan}</div>

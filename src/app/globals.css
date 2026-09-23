@@ -1155,3 +1155,23 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 @media (max-width: 767.98px) {
   .cari-halaman input, .cari-halaman button { min-height: 44px; }
 }
+
+/* ── Legenda arti status ─────────────────────────────────────────────── */
+.legenda {
+  margin-top: 18px;
+  padding: 13px 16px;
+  border: 1px solid var(--garis);
+  border-left: 3px solid var(--warn);
+  border-radius: var(--r-kecil);
+  background: var(--kartu);
+}
+.legenda dl { margin: 6px 0 0; display: grid; gap: 7px; }
+.legenda dl > div { display: grid; grid-template-columns: 132px 1fr; gap: 12px; align-items: baseline; }
+.legenda dt { margin: 0; }
+.legenda dd { margin: 0; font-size: 13.5px; color: var(--teks-2); }
+.legenda dd b { color: var(--teks); font-weight: 600; }
+/* Lencana status yang punya penjelasan diberi kursor bantuan di desktop. */
+.lencana[title] { cursor: help; }
+@media (max-width: 767.98px) {
+  .legenda dl > div { grid-template-columns: 1fr; gap: 3px; }
+}

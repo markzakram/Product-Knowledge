@@ -2,7 +2,45 @@ import { LABEL_STATUS, type StatusData } from '@/lib/skema';
 
 export function Status({ nilai }: { nilai: StatusData }) {
   const s = LABEL_STATUS[nilai] ?? LABEL_STATUS.terkonfirmasi;
-  return <span className={s.kelas}>{s.teks}</span>;
+  // title untuk desktop (muncul saat disorot). Di layar sentuh tidak ada
+  // sorot, jadi halaman yang memuat status tidak-pasti juga memasang
+  // LegendaStatus di bawah.
+  return (
+    <span className={s.kelas} title={`${s.arti} ${s.boleh}`}>
+      {s.teks}
+    </span>
+  );
+}
+
+/**
+ * Keterangan arti status, dalam bentuk tulisan.
+ *
+ * Hanya tampil kalau halamannya memang memuat status yang tidak pasti. Di
+ * halaman yang seluruhnya terkonfirmasi, legenda ini cuma jadi derau.
+ */
+export function LegendaStatus({ ada }: { ada: StatusData[] }) {
+  const unik = [...new Set(ada)];
+  if (!unik.some((s) => s !== 'terkonfirmasi')) return null;
+  const urutan: StatusData[] = ['terkonfirmasi', 'indikasi', 'coming_soon'];
+  return (
+    <div className="legenda" role="note" aria-label="Arti status data">
+      <div className="label-mini">Arti status</div>
+      <dl>
+        {urutan
+          .filter((s) => unik.includes(s))
+          .map((s) => (
+            <div key={s}>
+              <dt>
+                <span className={LABEL_STATUS[s].kelas}>{LABEL_STATUS[s].teks}</span>
+              </dt>
+              <dd>
+                {LABEL_STATUS[s].arti} <b>{LABEL_STATUS[s].boleh}</b>
+              </dd>
+            </div>
+          ))}
+      </dl>
+    </div>
+  );
 }
 
 export function Remah({ jejak }: { jejak: { teks: string; ke?: string }[] }) {

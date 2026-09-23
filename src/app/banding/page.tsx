@@ -1,5 +1,6 @@
 import { semuaSubtes, jumlahContoh, labelTahapan, tautanSubtes } from '@/lib/data';
 import { TabelBanding, type BarisSubtes } from './tabel';
+import { LegendaStatus } from '../komponen';
 
 /**
  * Banding lintas platform.
@@ -41,6 +42,7 @@ export default function HalamanBanding() {
         menjawab pertanyaan menyilang — subtes mana yang muncul di banyak
         platform, dan di mana ketentuannya berbeda.
       </p>
+      <LegendaStatus ada={baris.map((b) => b.status)} />
       <TabelBanding baris={baris} />
     </>
   );

@@ -146,8 +146,34 @@ export interface Platform {
   tes: Tes[];
 }
 
-export const LABEL_STATUS: Record<StatusData, { teks: string; kelas: string }> = {
-  terkonfirmasi: { teks: 'Terkonfirmasi', kelas: 'lencana lencana-hijau' },
-  indikasi: { teks: 'Indikasi', kelas: 'lencana lencana-kuning' },
-  coming_soon: { teks: 'Belum ada data', kelas: 'lencana lencana-abu' },
+/**
+ * Arti tiap status, ditulis untuk PEMBACA yang akan meneruskannya ke peserta —
+ * CS dan marketing — bukan untuk penyusun data.
+ *
+ * `boleh` adalah inti yang harus terbaca sekilas: apa yang boleh dan tidak
+ * boleh dilakukan dengan informasi berstatus ini. Itulah alasan sistem status
+ * ada; lencana tanpa penjelasan hanya jadi warna.
+ */
+export const LABEL_STATUS: Record<
+  StatusData,
+  { teks: string; kelas: string; arti: string; boleh: string }
+> = {
+  terkonfirmasi: {
+    teks: 'Terkonfirmasi',
+    kelas: 'lencana lencana-hijau',
+    arti: 'Bersumber dari pengumuman resmi atau dokumen yang sudah diverifikasi.',
+    boleh: 'Boleh disampaikan ke peserta.',
+  },
+  indikasi: {
+    teks: 'Indikasi',
+    kelas: 'lencana lencana-kuning',
+    arti: 'Pola dari riset, pengalaman alumni, atau rekonstruksi tim — belum ada pengumuman resmi.',
+    boleh: 'Jangan sampaikan ke peserta sebagai kepastian.',
+  },
+  coming_soon: {
+    teks: 'Belum ada data',
+    kelas: 'lencana lencana-abu',
+    arti: 'Belum ada informasi sama sekali untuk bagian ini.',
+    boleh: 'Jangan menebak isinya.',
+  },
 };
