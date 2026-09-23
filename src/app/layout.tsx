@@ -85,6 +85,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </form>
             <nav className="nav">
               <a href="/banding">Banding</a>
+              <a href="/kelengkapan">Kelengkapan</a>
               <a href="/dashboard">Dashboard</a>
               <a href="/cek-data">Cek Data</a>
               {masuk && <a href="/keluar">Keluar</a>}

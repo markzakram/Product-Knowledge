@@ -89,6 +89,7 @@ Tes Hitung Cepat dan Tes Matematika Umum kadang hanya salah satu yang diujikan.`
     },
     {
       kode: 'deskripsi-diri',
+      bankSoal: false,
       nama: 'Tes Deskripsi Diri',
       waktuMenit: 10,
       formatKetentuan: 'Uraian bebas, bukan pilihan ganda.',
@@ -103,6 +104,7 @@ Tes Hitung Cepat dan Tes Matematika Umum kadang hanya salah satu yang diujikan.`
     },
     {
       kode: 'pauli',
+      bankSoal: false,
       nama: 'Tes Pauli',
       waktuMenit: 60,
       formatKetentuan: 'Penjumlahan berantai, sekitar 2.000 operasi. Dinilai dari kecepatan, ketelitian, dan konsistensi.',
@@ -110,6 +112,7 @@ Tes Hitung Cepat dan Tes Matematika Umum kadang hanya salah satu yang diujikan.`
     },
     {
       kode: 'wartegg',
+      bankSoal: false,
       nama: 'Tes Wartegg',
       waktuMenit: 15,
       formatKetentuan: '8 kotak gambar yang harus dilanjutkan peserta.',
@@ -117,6 +120,7 @@ Tes Hitung Cepat dan Tes Matematika Umum kadang hanya salah satu yang diujikan.`
     },
     {
       kode: 'dap-baum',
+      bankSoal: false,
       nama: 'Tes Draw A Person (DAP) dan Tes Baum',
       waktuMenit: 10,
       formatKetentuan: 'Menggambar orang dan pohon.',

@@ -88,6 +88,16 @@ export interface Subtes {
   materi?: Materi[];
   mapping?: Mapping[];
   contoh?: Kelompok[];
+  /**
+   * `false` untuk subtes yang memang TIDAK PUNYA butir soal: tes proyektif
+   * (Wartegg, DAP), lembar kerja (Pauli), uraian bebas, tes fisik dan
+   * kesehatan, atau aplikasi terpisah (GBA).
+   *
+   * Sengaja field eksplisit, bukan dideteksi dari teks catatan. Mencocokkan
+   * kalimat seperti "bukan tes tertulis" rapuh: satu penulisan ulang catatan
+   * dan subtesnya diam-diam masuk daftar kekurangan di halaman Kelengkapan.
+   */
+  bankSoal?: false;
 }
 
 export interface Tahapan {

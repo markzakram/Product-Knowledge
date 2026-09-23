@@ -254,3 +254,84 @@ export function periksaIsi(): Temuan[] {
 
   return temuan;
 }
+
+// ─── Kelengkapan isi ─────────────────────────────────────────────────────
+
+/** Subtes yang memang punya butir soal, jadi layak punya contoh soal. */
+export const butuhContoh = (s: Subtes) => s.bankSoal !== false;
+
+export interface CelahSubtes {
+  jalur: JalurSubtes;
+  /** Berapa tes yang memakai subtes ini (lebih dari satu = dipakai bersama). */
+  dipakaiDi: number;
+}
+
+export interface KelengkapanPlatform {
+  platform: Platform;
+  butuh: number;
+  ada: number;
+  tanpaContoh: CelahSubtes[];
+  tanpaMateri: CelahSubtes[];
+  tahapanTidakPasti: { jalur: JalurAngkatan; tahapan: Tahapan }[];
+  /** Subtes yang sengaja tidak dihitung karena memang tak punya butir soal. */
+  tanpaBankSoal: CelahSubtes[];
+}
+
+/**
+ * Daftar kerja isi yang belum lengkap, per platform.
+ *
+ * Dihitung per OBJEK subtes, bukan per jalur. SKD sekolah kedinasan adalah
+ * satu objek yang dirujuk IPDN dan PKN STAN; kalau dihitung per jalur, satu
+ * kekurangan muncul dua kali, padahal mengisinya sekali sudah menyelesaikan
+ * keduanya. Daftar kerja yang menggandakan pekerjaan menyesatkan tim.
+ */
+export function kelengkapan() {
+  const hasil: KelengkapanPlatform[] = [];
+
+  for (const platform of PLATFORM) {
+    const perObjek = new Map<Subtes, CelahSubtes>();
+    for (const j of semuaSubtes()) {
+      if (j.platform !== platform) continue;
+      const ada = perObjek.get(j.subtes);
+      if (ada) ada.dipakaiDi++;
+      else perObjek.set(j.subtes, { jalur: j, dipakaiDi: 1 });
+    }
+    const semua = [...perObjek.values()];
+    const layak = semua.filter((c) => butuhContoh(c.jalur.subtes));
+
+    const tahapanTidakPasti: KelengkapanPlatform['tahapanTidakPasti'] = [];
+    const sudahTahap = new Set<Tahapan>();
+    for (const j of semuaAngkatan()) {
+      if (j.platform !== platform) continue;
+      for (const t of j.angkatan.tahapan) {
+        if (t.status === 'terkonfirmasi' || sudahTahap.has(t)) continue;
+        sudahTahap.add(t);
+        tahapanTidakPasti.push({ jalur: j, tahapan: t });
+      }
+    }
+
+    hasil.push({
+      platform,
+      butuh: layak.length,
+      ada: layak.filter((c) => jumlahContoh(c.jalur.subtes) > 0).length,
+      tanpaContoh: layak.filter((c) => jumlahContoh(c.jalur.subtes) === 0),
+      tanpaMateri: layak.filter((c) => (c.jalur.subtes.materi ?? []).length === 0),
+      tahapanTidakPasti,
+      tanpaBankSoal: semua.filter((c) => !butuhContoh(c.jalur.subtes)),
+    });
+  }
+
+  const terisi = hasil.filter((h) => h.butuh + h.tanpaBankSoal.length > 0);
+  return {
+    terisi: terisi.sort((a, b) => b.tanpaContoh.length - a.tanpaContoh.length),
+    kosong: hasil.filter((h) => h.butuh + h.tanpaBankSoal.length === 0).map((h) => h.platform),
+    total: {
+      butuh: terisi.reduce((n, h) => n + h.butuh, 0),
+      ada: terisi.reduce((n, h) => n + h.ada, 0),
+      tanpaContoh: terisi.reduce((n, h) => n + h.tanpaContoh.length, 0),
+      tanpaMateri: terisi.reduce((n, h) => n + h.tanpaMateri.length, 0),
+      tahapanTidakPasti: terisi.reduce((n, h) => n + h.tahapanTidakPasti.length, 0),
+      tanpaBankSoal: terisi.reduce((n, h) => n + h.tanpaBankSoal.length, 0),
+    },
+  };
+}

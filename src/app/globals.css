@@ -1191,3 +1191,35 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 }
 .saring-salin:hover { border-color: var(--aksen); }
 @media (max-width: 767.98px) { .saring-salin { min-height: 44px; } }
+
+/* ── Halaman kelengkapan ─────────────────────────────────────────────── */
+.lengkap-induk {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--garis);
+  border-radius: var(--r);
+  background: var(--kartu);
+  box-shadow: var(--bayang);
+}
+.lengkap-angka { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.lengkap-induk .bar-luar { height: 11px; }
+
+.lengkap-blok {
+  margin-top: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--garis);
+  border-radius: var(--r);
+  background: var(--kartu);
+}
+.lengkap-kepala { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.lengkap-nama { font-weight: 700; font-size: 16px; }
+.lengkap-bar { flex: 1 1 140px; min-width: 100px; }
+.lengkap-persen { font-variant-numeric: tabular-nums; min-width: 40px; text-align: right; }
+.lengkap-kecuali { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--garis); }
+
+.celah-petak { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-top: 14px; }
+.celah { background: var(--redup); border-radius: var(--r-kecil); padding: 11px 13px; }
+.celah-kepala { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.celah ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.celah li { font-size: 13.5px; line-height: 1.5; }
+.celah li a { font-weight: 600; }

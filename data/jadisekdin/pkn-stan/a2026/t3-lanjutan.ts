@@ -81,6 +81,7 @@ export const tahapLanjutan: Tahapan = {
     },
     {
       kode: 'kesehatan',
+      bankSoal: false,
       nama: 'Tes Kesehatan',
       formatKetentuan:
         'Tinggi badan, berat badan, tekanan darah, tekanan nadi, mata, dan kulit termasuk tato dan tindik.',
@@ -88,6 +89,7 @@ export const tahapLanjutan: Tahapan = {
     },
     {
       kode: 'kebugaran',
+      bankSoal: false,
       nama: 'Tes Kebugaran',
       formatKetentuan: 'Lari 12 menit mengelilingi lintasan dan shuttle run.',
       catatan: 'Bukan tes tertulis, tidak ada bank soal.',

@@ -99,6 +99,7 @@ export default function Beranda() {
         </dl>
         <div className="kaki-tautan">
           <a href="/banding">Banding subtes lintas platform →</a>
+          <a href="/kelengkapan">Kelengkapan isi →</a>
           <a href="/dashboard">Dashboard produksi →</a>
           <a href="/cek-data">Cek data →</a>
           {terbaru && <span className="kartu-kecil">Isi terbaru diperbarui {terbaru}</span>}

@@ -110,6 +110,7 @@ Struktur ini rekonstruksi tim riset dari psikotes yang pernah dipakai vendor rek
     },
     {
       kode: 'gba',
+      bankSoal: false,
       nama: 'Game-Based Assessment (GBA)',
       formatKetentuan: 'Pertamina Net Zero. Peserta mengunduh aplikasi tersendiri.',
       catatan: 'Bukan soal pilihan ganda, tidak punya bank soal.',
