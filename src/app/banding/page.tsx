@@ -1,5 +1,5 @@
 import { semuaSubtes, jumlahContoh, labelTahapan, tautanSubtes } from '@/lib/data';
-import { TabelBanding, type BarisSubtes } from './tabel';
+import { TabelBanding, type BarisSubtes, type SaringanAwal } from './tabel';
 import { LegendaStatus } from '../komponen';
 
 /**
@@ -15,7 +15,26 @@ import { LegendaStatus } from '../komponen';
  * JadiASN dengan ambang batas 166 dan di JadiSekdin dengan 156, dan keduanya
  * harus terlihat berdampingan.
  */
-export default function HalamanBanding() {
+/**
+ * Saringan dibaca DI SERVER lalu diserahkan sebagai nilai awal. Kalau dibaca
+ * di klien, server merender tabel tanpa saringan dulu lalu klien menyaringnya:
+ * tabelnya berkedip dan React memperingatkan hydration mismatch. Dengan cara
+ * ini HTML pertama yang dikirim sudah tersaring — tautan yang dibagikan
+ * langsung menampilkan hasil yang dimaksud.
+ */
+export default async function HalamanBanding({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | undefined>>;
+}) {
+  const sp = await searchParams;
+  const awal: SaringanAwal = {
+    q: sp.q ?? '',
+    platform: sp.platform ?? '',
+    status: sp.status ?? '',
+    urut: sp.urut ?? '',
+    contoh: sp.contoh === '1',
+  };
   const baris: BarisSubtes[] = semuaSubtes().map((j) => ({
     platform: j.platform.nama,
     slugPlatform: j.platform.slug,
@@ -43,7 +62,7 @@ export default function HalamanBanding() {
         platform, dan di mana ketentuannya berbeda.
       </p>
       <LegendaStatus ada={baris.map((b) => b.status)} />
-      <TabelBanding baris={baris} />
+      <TabelBanding baris={baris} awal={awal} />
     </>
   );
 }

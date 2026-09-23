@@ -1175,3 +1175,19 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 @media (max-width: 767.98px) {
   .legenda dl > div { grid-template-columns: 1fr; gap: 3px; }
 }
+
+/* ── Hasil saringan + salin tautan ───────────────────────────────────── */
+.saring-hasil { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.saring-salin {
+  border: 1px solid var(--aksen-garis);
+  background: var(--aksen-lembut);
+  color: var(--aksen);
+  border-radius: 99px;
+  padding: 5px 13px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.saring-salin:hover { border-color: var(--aksen); }
+@media (max-width: 767.98px) { .saring-salin { min-height: 44px; } }

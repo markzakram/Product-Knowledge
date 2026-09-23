@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { StatusData } from '@/lib/skema';
 import { LABEL_STATUS } from '@/lib/skema';
 
@@ -24,6 +24,18 @@ export interface BarisSubtes {
 
 type Urut = 'bawaan' | 'soal' | 'waktu' | 'contoh' | 'subtes';
 
+const URUT_SAH: Urut[] = ['bawaan', 'soal', 'waktu', 'contoh', 'subtes'];
+const STATUS_SAH = ['terkonfirmasi', 'indikasi', 'coming_soon'];
+
+/** Nilai mentah dari URL, belum divalidasi. */
+export interface SaringanAwal {
+  q: string;
+  platform: string;
+  status: string;
+  urut: string;
+  contoh: boolean;
+}
+
 const rapikan = (s: string) =>
   s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
@@ -34,17 +46,52 @@ function waktuTeks(menit: number | null) {
   return detik ? `${utuh}′ ${detik}″` : `${utuh}′`;
 }
 
-export function TabelBanding({ baris }: { baris: BarisSubtes[] }) {
-  const [kueri, setKueri] = useState('');
-  const [platform, setPlatform] = useState('');
-  const [status, setStatus] = useState('');
-  const [hanyaBerisi, setHanyaBerisi] = useState(false);
-  const [urut, setUrut] = useState<Urut>('bawaan');
-
+export function TabelBanding({ baris, awal }: { baris: BarisSubtes[]; awal: SaringanAwal }) {
   const daftarPlatform = useMemo(
     () => [...new Set(baris.map((b) => b.platform))].sort(),
     [baris],
   );
+
+  // Nilai dari URL divalidasi dulu. Tautan bisa disunting tangan atau
+  // terpotong saat disalin; nilai yang tidak dikenal diabaikan, bukan
+  // dibiarkan menghasilkan tabel kosong tanpa penjelasan.
+  const [kueri, setKueri] = useState(awal.q.slice(0, 120));
+  const [platform, setPlatform] = useState(
+    daftarPlatform.includes(awal.platform) ? awal.platform : '',
+  );
+  const [status, setStatus] = useState(STATUS_SAH.includes(awal.status) ? awal.status : '');
+  const [hanyaBerisi, setHanyaBerisi] = useState(awal.contoh);
+  const [urut, setUrut] = useState<Urut>(
+    URUT_SAH.includes(awal.urut as Urut) ? (awal.urut as Urut) : 'bawaan',
+  );
+  const [tersalin, setTersalin] = useState(false);
+
+  // Saringan disimpan di URL supaya bisa dibagikan dan bertahan saat muat
+  // ulang. replaceState, bukan push: tiap huruf yang diketik tidak boleh
+  // menambah satu entri riwayat — tombol Kembali harus keluar dari halaman.
+  useEffect(() => {
+    const p = new URLSearchParams();
+    if (kueri.trim()) p.set('q', kueri.trim());
+    if (platform) p.set('platform', platform);
+    if (status) p.set('status', status);
+    if (urut !== 'bawaan') p.set('urut', urut);
+    if (hanyaBerisi) p.set('contoh', '1');
+    const cari = p.toString();
+    const tujuan = `${location.pathname}${cari ? `?${cari}` : ''}`;
+    if (tujuan !== `${location.pathname}${location.search}`) {
+      history.replaceState(null, '', tujuan);
+    }
+    setTersalin(false);
+  }, [kueri, platform, status, urut, hanyaBerisi]);
+
+  async function salinTautan() {
+    try {
+      await navigator.clipboard.writeText(location.href);
+      setTersalin(true);
+    } catch {
+      /* Clipboard bisa ditolak peramban; tautannya tetap ada di bilah alamat. */
+    }
+  }
 
   const tersaring = useMemo(() => {
     const kata = rapikan(kueri).split(' ').filter(Boolean);
@@ -140,10 +187,17 @@ export function TabelBanding({ baris }: { baris: BarisSubtes[] }) {
         )}
       </div>
 
-      <p className="kartu-kecil" style={{ marginTop: 10 }}>
-        {tersaring.length} dari {baris.length} subtes
-        {adaSaringan ? ' cocok dengan saringan' : ''}.
-      </p>
+      <div className="saring-hasil">
+        <span className="kartu-kecil">
+          {tersaring.length} dari {baris.length} subtes
+          {adaSaringan ? ' cocok dengan saringan' : ''}.
+        </span>
+        {adaSaringan && (
+          <button type="button" className="saring-salin" onClick={salinTautan}>
+            {tersalin ? 'Tautan tersalin ✓' : 'Salin tautan saringan ini'}
+          </button>
+        )}
+      </div>
 
       {tersaring.length === 0 ? (
         <div className="kosong">
