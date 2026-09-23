@@ -230,6 +230,7 @@ Kondisi : nilai siswa banyak yang meningkat, kita sebut sebagai q
 Kondisi : guru tidak perlu mengadakan ujian remedial bagi siswa s
 Dari kedua kondisi tersebut maka kita dapat sebuah kesimpulan untuk pernyataan kedua yaitu q s
 Maka akan muncul hasil seperti berikut :
+⟦gambar:gambar/jadiasn/ckeditor_1622434042.JPG⟧
 Untuk menyelesaikan pernyataan diatas, akan digunakan logika silogisme dimana kita akan saling menghilangkan q dari kedua pernyataan tersebut dan akan menghasilkan pernyataan seperti berikut p s.
 q = jika guru memberikan latihan pengayaan
 s = Guru tidak mengadakan remedial
@@ -266,6 +267,7 @@ suhu permukaan bumi tidak bertambah, sebagai -s
 kedua fakta tersebut dihubungkan dengan kata atau, kita tuliskan v
 maka kesimpulannya p v -s
 Sekarang kita simpulkan :
+⟦gambar:gambar/jadiasn/ckeditor_1622435308.JPG⟧
 Pada bagian pernyataan kita akan lakukan proses untuk mencari hasil untuk fakta dari soal sebagai berikut :
 Pernyataan pertama : menggunakan modus ponen
 p sebagai sebab, dan q sebagai akibat

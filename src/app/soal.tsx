@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { Kelompok, Soal } from '@/lib/skema';
+import { TeksBergambar } from './teks-bergambar';
 
 const WARNA_REVIEW: Record<string, string> = {
   final: 'lencana lencana-hijau',
@@ -68,7 +69,7 @@ function KartuSoal({
 
       <div className="soal-badan">
         <p className="pra" style={{ fontWeight: 500 }}>
-          {soal.pertanyaan}
+          <TeksBergambar teks={soal.pertanyaan} />
         </p>
 
         {soal.gambar && (
@@ -83,7 +84,9 @@ function KartuSoal({
               return (
                 <li key={o.label} className={ini ? 'benar' : undefined}>
                   <span className="opsi-label">{o.label}</span>
-                  <span>{o.teks}</span>
+                  <span>
+                    <TeksBergambar teks={o.teks} />
+                  </span>
                   {ini && (
                     <span className="tanda-kunci">{berskala ? 'SKOR TERTINGGI' : 'KUNCI'}</span>
                   )}
@@ -108,7 +111,9 @@ function KartuSoal({
             {soal.pembahasan ? (
               <>
                 <div className="pembahasan-label">Pembahasan</div>
-                <p className="pra">{soal.pembahasan}</p>
+                <p className="pra">
+                  <TeksBergambar teks={soal.pembahasan} />
+                </p>
               </>
             ) : (
               <span className="lencana lencana-merah">Pembahasan belum diisi</span>
@@ -154,7 +159,11 @@ function Kelompokan({
             Stimulus{stimulus.judul ? ` · ${stimulus.judul}` : ''}
             {soal.length > 1 && ` · dipakai ${soal.length} soal`}
           </div>
-          {stimulus.isi && <p className="pra">{stimulus.isi}</p>}
+          {stimulus.isi && (
+            <p className="pra">
+              <TeksBergambar teks={stimulus.isi} />
+            </p>
+          )}
           {stimulus.gambar && (
             // eslint-disable-next-line @next/next/no-img-element
             <img className="gambar-soal" src={`/${stimulus.gambar}`} alt="Gambar stimulus" />

@@ -67,7 +67,9 @@ Harus paham 2 poin :
 2.PermenpanRB No. 38 Tahun 2017
 3.Tentang Standar Kompetensi ASN
 Berikut ini adalah definisi dari Integritas secara Istilah berdasarkan PermenpanRB No. 38 Tahun 2017
+⟦gambar:gambar/jadisekdin/ckeditor_1622336544.png⟧
 Sedangkan ini adalah definisi dari integritas secara Bahasa menurut KBBI.
+⟦gambar:gambar/jadisekdin/ckeditor_1622336879.png⟧
 Implementasi yang paling utama dari Integritas itu adalah KEJUJURAN, maka yang paling tepat adalah jawaban yang A`,
       status: 'direview',
     },
@@ -92,6 +94,7 @@ Peraturan Pemerintahan Nomor 66 Tahun 1951
 Telah Dibuat Undang-Undang
 28 Oktober 1951
 sebagai Lambang Negara.
+⟦gambar:gambar/jadisekdin/ckeditor_1624073062.JPG⟧
 Semboyan Bhinneka Tunggal Ika pada cakar burung Garuda pada Lambang Negara Indonesia ditetapkan secara resmi menjadi salah satu bagian NKRI.`,
       status: 'direview',
     },

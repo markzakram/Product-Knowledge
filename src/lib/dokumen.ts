@@ -25,9 +25,17 @@ function waktuTeks(menit?: number) {
   return detik ? `${utuh} menit ${detik} detik` : `${utuh} menit`;
 }
 
-/** Teks berbaris jadi beberapa paragraf; satu Paragraph per baris. */
+/**
+ * Teks berbaris jadi beberapa paragraf; satu Paragraph per baris.
+ *
+ * Penanda gambar diganti keterangan. Menyematkan berkas gambarnya ke .docx
+ * butuh membaca public/ dari fungsi serverless, padahal di Vercel isi public/
+ * dilayani CDN dan tidak ikut dalam bundel fungsi — pembacaannya akan gagal
+ * di produksi walau jalan di lokal.
+ */
 function paragraf(teks: string, opsi: { kecil?: boolean } = {}) {
-  return teks.split('\n').map(
+  const bersih = teks.replace(/⟦gambar:[^⟧]+⟧/g, '[Gambar — lihat di aplikasi Product Knowledge]');
+  return bersih.split('\n').map(
     (b) =>
       new Paragraph({
         children: [new TextRun({ text: b, size: opsi.kecil ? 20 : 22 })],
@@ -218,7 +226,7 @@ export async function kurikulumDocx(
             anak.push(
               new Paragraph({
                 indent: { left: 360 },
-                children: [new TextRun({ text: `${o.label}. ${o.teks}`, size: 22 })],
+                children: [new TextRun({ text: `${o.label}. ${o.teks.replace(/⟦gambar:[^⟧]+⟧/g, '[Gambar]')}`, size: 22 })],
               }),
             );
           }

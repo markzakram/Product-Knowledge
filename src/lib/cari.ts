@@ -22,6 +22,9 @@ import {
 } from './data';
 import type { Subtes, Tahapan } from './skema';
 
+/** Penanda gambar tidak boleh ikut dicocokkan atau tampil di cuplikan. */
+const tanpaPenanda = (s: string) => s.replace(/⟦gambar:[^⟧]+⟧/g, ' ');
+
 export type JenisHasil =
   | 'platform' | 'tes' | 'angkatan' | 'tahapan' | 'subtes' | 'materi' | 'soal' | 'info';
 
@@ -103,11 +106,12 @@ function pilihLadang(ladang: Ladang[], kata: string[]) {
   let terbaik: { l: Ladang; skor: number } | null = null;
   let total = 0;
   for (const l of ladang) {
-    if (!l.teks) continue;
-    const s = cocok(l.teks, kata) * l.bobot;
+    const teks = tanpaPenanda(l.teks);
+    if (!teks.trim()) continue;
+    const s = cocok(teks, kata) * l.bobot;
     if (s === 0) continue;
     total += s;
-    if (!terbaik || s > terbaik.skor) terbaik = { l, skor: s };
+    if (!terbaik || s > terbaik.skor) terbaik = { l: { ...l, teks }, skor: s };
   }
   return terbaik ? { asal: terbaik.l.asal, teks: terbaik.l.teks, total } : null;
 }

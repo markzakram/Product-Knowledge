@@ -33,6 +33,10 @@ export const config = {
     // Nama berkas dan /masuk diberi batas (?:$|/) supaya yang lolos hanya jalur
     // itu PERSIS. Tanpa batas, lookahead cuma mencocokkan awalan: /masuk-admin
     // atau /manifest.jsonx di masa depan ikut terbuka tanpa PIN.
-    '/((?!(?:masuk|favicon\\.ico|icon\\.png|apple-icon\\.png|manifest\\.json)(?:$|/)|_next/static/|_next/image|logo/|gambar/).*)',
+    // gambar/ SENGAJA tidak dibebaskan: isinya gambar soal dan pembahasan,
+    // bagian dari konten rahasia. Pengunjung yang sudah masuk tetap bisa
+    // memuatnya karena permintaan gambar dari asal yang sama ikut membawa
+    // cookie sesi.
+    '/((?!(?:masuk|favicon\\.ico|icon\\.png|apple-icon\\.png|manifest\\.json)(?:$|/)|_next/static/|_next/image|logo/).*)',
   ],
 };

@@ -126,6 +126,13 @@ async function ambilSoal(page, url, batas) {
         String(h || '')
           .replace(/<style[\s\S]*?<\/style>/gi, '')
           .replace(/<script[\s\S]*?<\/script>/gi, '')
+          // Gambar diubah jadi PENANDA di posisinya sebelum tag lain dibuang.
+          // Dulu baris di bawah menghapus semua tag termasuk <img>, sehingga
+          // gambar di pembahasan — tabel kebenaran silogisme, pola figural —
+          // hilang diam-diam dan teksnya merujuk ke sesuatu yang tak ada.
+          // Penanda dijaga di baris sendiri supaya posisinya di antara
+          // kalimat tetap sama dengan aslinya.
+          .replace(/<img[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi, `${NL}⟦gambar:$1⟧${NL}`)
           .replace(/<br\s*\/?>/gi, NL)
           .replace(/<\/(p|div|li|tr|h[1-6])>/gi, NL)
           .replace(/<[^>]+>/g, '')
@@ -278,6 +285,64 @@ function pembahasanBerisi(teks, kunci) {
 // ── Jalan ───────────────────────────────────────────────────────────────
 const ctx = await browserContext({ headless: true });
 const page = await ctx.newPage();
+
+// ── Pengunduh gambar ────────────────────────────────────────────────────
+// Gambar dari Markaz diunduh ke public/gambar/<platform>/ supaya situsnya
+// berdiri sendiri: kalau bucket asalnya berubah, gambarnya tidak ikut putus.
+
+/** Hanya host yang memang dipakai Markaz. Scraper tidak boleh jadi pengunduh
+ *  URL sembarangan hanya karena sebuah soal memuat tautan gambar. */
+const HOST_GAMBAR = /^https:\/\/(storage\.googleapis\.com|st-\d+\.cerebrum\.id)\//i;
+const BATAS_BYTE = 3 * 1024 * 1024;
+const POLA_PENANDA = /⟦gambar:([^⟧]+)⟧/g;
+
+async function unduhGambar(daftar, platform) {
+  const dir = path.join('public', 'gambar', platform);
+  await mkdir(dir, { recursive: true });
+  const peta = new Map(); // url asal -> jalur lokal
+  const catatan = { diunduh: 0, dipakaiUlang: 0, ditolak: [] };
+
+  async function satu(url) {
+    if (peta.has(url)) { catatan.dipakaiUlang++; return peta.get(url); }
+    if (!HOST_GAMBAR.test(url)) { catatan.ditolak.push(`host tidak dikenal: ${url}`); return null; }
+    const nama = decodeURIComponent(url.split('?')[0].split('/').pop() || '')
+      .replace(/[^A-Za-z0-9._-]+/g, '_').slice(-80);
+    if (!/\.(png|jpe?g|gif|webp|svg)$/i.test(nama)) { catatan.ditolak.push(`bukan berkas gambar: ${url}`); return null; }
+    try {
+      const r = await fetch(url);
+      if (!r.ok) { catatan.ditolak.push(`HTTP ${r.status}: ${url}`); return null; }
+      const buf = Buffer.from(await r.arrayBuffer());
+      if (buf.length > BATAS_BYTE) { catatan.ditolak.push(`terlalu besar (${buf.length} B): ${url}`); return null; }
+      await writeFile(path.join(dir, nama), buf);
+      catatan.diunduh++;
+      const lokal = `gambar/${platform}/${nama}`;
+      peta.set(url, lokal);
+      return lokal;
+    } catch (e) {
+      catatan.ditolak.push(`${e.message}: ${url}`);
+      return null;
+    }
+  }
+
+  async function ganti(teks) {
+    let hasil = teks;
+    for (const [penanda, url] of [...teks.matchAll(POLA_PENANDA)]) {
+      const lokal = await satu(url);
+      // Gambar yang gagal diunduh TIDAK dihapus diam-diam lagi: penandanya
+      // tetap menunjuk URL asal, jadi halaman masih bisa memuatnya dari sana.
+      if (lokal) hasil = hasil.replace(penanda, `⟦gambar:${lokal}⟧`);
+    }
+    return hasil;
+  }
+
+  for (const q of daftar) {
+    q.pertanyaan = await ganti(q.pertanyaan);
+    q.pembahasan = await ganti(q.pembahasan);
+    for (const o of q.opsi) o.teks = await ganti(o.teks);
+  }
+  return catatan;
+}
+
 const hasil = [];
 
 try {
@@ -336,7 +401,8 @@ try {
             // dan soal seperti itu tidak boleh dipakai.
             isiKosong: !pertanyaan.trim(),
             audio: q.audio,
-            gambar: q.gambar,
+            // Gambar kini disimpan INLINE sebagai penanda di teksnya.
+            gambar: '',
           };
         });
         const berisi = rapi.filter((q) => q.pembahasanBerisi).length;
@@ -352,6 +418,11 @@ try {
       }
     }
   }
+
+  const g = await unduhGambar(hasil, platform);
+  console.log(`
+Gambar: ${g.diunduh} diunduh, ${g.dipakaiUlang} dipakai ulang, ${g.ditolak.length} ditolak`);
+  g.ditolak.slice(0, 5).forEach((d) => console.log(`   ! ${d}`));
 
   await mkdir(path.dirname(fileKeluar), { recursive: true });
   await writeFile(fileKeluar, JSON.stringify(hasil, null, 2), 'utf8');
