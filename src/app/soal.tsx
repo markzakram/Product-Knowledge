@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { Kelompok, Soal } from '@/lib/skema';
-import { TeksBergambar } from './teks-bergambar';
+import type { KelompokSiap, SoalSiap } from '@/lib/bagian';
+import { IsiKaya } from './isi-kaya';
 
 const WARNA_REVIEW: Record<string, string> = {
   final: 'lencana lencana-hijau',
@@ -32,7 +32,7 @@ function KartuSoal({
   terbuka,
   onBuka,
 }: {
-  soal: Soal;
+  soal: SoalSiap;
   latihan: boolean;
   terbuka: boolean;
   onBuka: () => void;
@@ -69,7 +69,7 @@ function KartuSoal({
 
       <div className="soal-badan">
         <p className="pra" style={{ fontWeight: 500 }}>
-          <TeksBergambar teks={soal.pertanyaan} />
+          <IsiKaya bagian={soal.pertanyaan} />
         </p>
 
         {soal.gambar && (
@@ -85,7 +85,7 @@ function KartuSoal({
                 <li key={o.label} className={ini ? 'benar' : undefined}>
                   <span className="opsi-label">{o.label}</span>
                   <span>
-                    <TeksBergambar teks={o.teks} />
+                    <IsiKaya bagian={o.teks} />
                   </span>
                   {ini && (
                     <span className="tanda-kunci">{berskala ? 'SKOR TERTINGGI' : 'KUNCI'}</span>
@@ -108,11 +108,11 @@ function KartuSoal({
           </div>
         ) : (
           <div className="pembahasan">
-            {soal.pembahasan ? (
+            {soal.pembahasan.length > 0 ? (
               <>
                 <div className="pembahasan-label">Pembahasan</div>
                 <p className="pra">
-                  <TeksBergambar teks={soal.pembahasan} />
+                  <IsiKaya bagian={soal.pembahasan} />
                 </p>
               </>
             ) : (
@@ -131,13 +131,13 @@ function Kelompokan({
   dibuka,
   buka,
 }: {
-  kelompok: Kelompok;
+  kelompok: KelompokSiap;
   latihan: boolean;
   dibuka: Set<string>;
   buka: (id: string) => void;
 }) {
   const { stimulus, soal } = kelompok;
-  const punyaStimulus = stimulus && (stimulus.isi || stimulus.gambar || stimulus.judul);
+  const punyaStimulus = stimulus && (stimulus.isi?.length || stimulus.gambar || stimulus.judul);
 
   const daftar = soal.map((s) => (
     <KartuSoal
@@ -159,9 +159,9 @@ function Kelompokan({
             Stimulus{stimulus.judul ? ` · ${stimulus.judul}` : ''}
             {soal.length > 1 && ` · dipakai ${soal.length} soal`}
           </div>
-          {stimulus.isi && (
+          {stimulus.isi && stimulus.isi.length > 0 && (
             <p className="pra">
-              <TeksBergambar teks={stimulus.isi} />
+              <IsiKaya bagian={stimulus.isi} />
             </p>
           )}
           {stimulus.gambar && (
@@ -186,7 +186,7 @@ function Kelompokan({
  * subtes; orang yang sedang berlatih biasanya melewati beberapa subtes
  * berturut-turut.
  */
-export function DaftarSoal({ contoh }: { contoh: Kelompok[] }) {
+export function DaftarSoal({ contoh }: { contoh: KelompokSiap[] }) {
   const [latihan, setLatihan] = useState(false);
   const [dibuka, setDibuka] = useState<Set<string>>(new Set());
   const [siap, setSiap] = useState(false);

@@ -27,6 +27,15 @@ export interface Opsi {
   teks: string;
 }
 
+/**
+ * Teks soal (pertanyaan, opsi, pembahasan, stimulus) boleh memuat:
+ *   - gambar: ⟦gambar:gambar/<platform>/<berkas>⟧ di posisinya;
+ *   - rumus LaTeX di antara \( dan \), dirender KaTeX di server. Karena teks
+ *     ditulis sebagai template literal, garis miringnya DIGANDAKAN di berkas:
+ *     `nilai \\(\\frac{1}{2}\\) dari x`. Rumus yang menempati satu baris
+ *     sendiri tampil sebagai blok. Koma desimal ditulis biasa ("0,6").
+ * Rumus yang gagal diurai muncul sebagai temuan di halaman Cek Data.
+ */
 export interface Soal {
   nomor: number;
   tipe: TipeSoal;

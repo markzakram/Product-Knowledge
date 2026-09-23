@@ -6,6 +6,7 @@ import {
 import ExcelJS from 'exceljs';
 import type { Angkatan, Platform, Tes } from './skema';
 import { jumlahContoh } from './data';
+import { POLA_RUMUS, latexKeTeks } from './rumus';
 
 const BULAN = [
   'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -32,9 +33,14 @@ function waktuTeks(menit?: number) {
  * butuh membaca public/ dari fungsi serverless, padahal di Vercel isi public/
  * dilayani CDN dan tidak ikut dalam bundel fungsi — pembacaannya akan gagal
  * di produksi walau jalan di lokal.
+ *
+ * Rumus LaTeX ditulis sebagai teks biasa (pecahan jadi a/b, pangkat jadi
+ * superskrip) — pendekatan, karena Word tidak membaca LaTeX.
  */
 function paragraf(teks: string, opsi: { kecil?: boolean } = {}) {
-  const bersih = teks.replace(/⟦gambar:[^⟧]+⟧/g, '[Gambar — lihat di aplikasi Product Knowledge]');
+  const bersih = teks
+    .replace(/⟦gambar:[^⟧]+⟧/g, '[Gambar — lihat di aplikasi Product Knowledge]')
+    .replace(POLA_RUMUS, (_, latex: string) => latexKeTeks(latex));
   return bersih.split('\n').map(
     (b) =>
       new Paragraph({
@@ -226,7 +232,7 @@ export async function kurikulumDocx(
             anak.push(
               new Paragraph({
                 indent: { left: 360 },
-                children: [new TextRun({ text: `${o.label}. ${o.teks.replace(/⟦gambar:[^⟧]+⟧/g, '[Gambar]')}`, size: 22 })],
+                children: [new TextRun({ text: `${o.label}. ${o.teks.replace(/⟦gambar:[^⟧]+⟧/g, '[Gambar]').replace(POLA_RUMUS, (_, latex: string) => latexKeTeks(latex))}`, size: 22 })],
               }),
             );
           }

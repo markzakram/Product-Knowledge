@@ -49,23 +49,17 @@ Jawaban: C`,
       ],
       kunci: 'D',
       pembahasan: `Semakin kecil waktu tempuh untuk jarak yang sama berarti kecepatannya lebih besar. Artinya waktu tempuh dan kecepatan antara dua orang merupakan perbandingan terbalik
-(kecepatan
-Paxton)/(kecepatan
-Ijah) = (waktu
-tempuh
-Ijah)/(waktu
-tempuh
-Paxton)
+\\(\\frac{\\text{kecepatan}\\ \\text{Paxton}}{\\text{kecepatan}\\ \\text{Ijah}}=\\frac{\\text{waktu}\\ \\text{tempuh}\\ \\text{Ijah}}{\\text{waktu}\\ \\text{tempuh}\\ \\text{Paxton}}\\)
 Hitung menggunakan persamaan di atas:
-v_(P)/(v_(P) + 0,6) = (9 + ³⁶⁄₆₀)/10
-v_(P)/(v_(P) + 0,6) = (⁹⁰⁄₁₀ + ⁶⁄₁₀)/10
-v_(P)/(v_(P) + 0,6) = ⁹⁶⁄₁₀₀ = ²⁴⁄₂₅
-Selesaikan untuk menghitung v_(P):
-25v_(P)= 24v_(P)+ 24 × 0,6
-v_(P)= 14,4 km/jam
+\\(\\frac{v_{P}}{v_{P}+0,6}=\\frac{9+\\frac{36}{60}}{10}\\)
+\\(\\frac{v_{P}}{v_{P}+0,6}=\\frac{\\frac{90}{10}+\\frac{6}{10}}{10}\\)
+\\(\\frac{v_{P}}{v_{P}+0,6}=\\frac{96}{100}=\\frac{24}{25}\\)
+Selesaikan untuk menghitung \\(v_{P}\\):
+25\\(v_{P}\\)= 24\\(v_{P}\\)+ 24 × 0,6
+\\(v_{P}\\)= 14,4 km/jam
 Kemudian dengan pengetahuan bahwa jarak tempuh sama dengan 400n meter, waktu tempuh 10 menit, dan kecepatan rata-rata 14,4 km/jam untuk Paxton, maka kita bisa menghitung
-400n/¹⁰⁄₆₀ = 14400
-n = 144 × ¹⁄₆ × ¹⁄₄ = 6`,
+\\(\\frac{400n}{\\frac{10}{60}}=14400\\)
+\\(n=144\\times \\frac{1}{6}\\times \\frac{1}{4}=6\\)`,
       status: 'direview',
     },
     {
@@ -81,9 +75,9 @@ n = 144 × ¹⁄₆ × ¹⁄₄ = 6`,
       ],
       kunci: 'E',
       pembahasan: `Persamaan untuk menghitung volume silinder adalah πr² t dengan r adalah jari-jari (setengah diameter) dan t adalah tinggi silinder. Namun gayung dan ember sama-sama berbentuk silinder, sehingga memudahkan perhitungan. Kita tidak perlu menghitung volume gayung dan ember secara terpisah, melainkan langsung membandingkan volume keduanya:
-V_(ember)/V_(gayung) = (π × r_(ember)² × t_(ember))/(π × r_(gayung)² × t_(gayung)) = (r_(ember)² × t_(ember))/(r_(gayung)² × t_(gayung))
+\\(\\frac{V_{\\text{ember}}}{V_{\\text{gayung}}}=\\frac{\\pi \\times r_{\\text{ember}}^{2}\\times t_{\\text{ember}}}{\\pi \\times r_{\\text{gayung}}^{2}\\times t_{\\text{gayung}}}=\\frac{r_{\\text{ember}}^{2}\\times t_{\\text{ember}}}{r_{\\text{gayung}}^{2}\\times t_{\\text{gayung}}}\\)
 Masukkan ukurannya sehingga:
-V_(ember)/V_(gayung) = ((49/2)² × 80)/((14/2)² × 20) = (49² × 4)/14² = (49² × 4)/14² = (7² × 4)/2² = 49
+\\(\\frac{V_{\\text{ember}}}{V_{\\text{gayung}}}=\\frac{(49/2{)}^{2}\\times 80}{(14/2{)}^{2}\\times 20}=\\frac{{49}^{2}\\times 4}{{14}^{2}}=\\frac{{49}^{2}\\times 4}{{14}^{2}}=\\frac{7^{2}\\times 4}{2^{2}}=49\\)
 yang artinya perlu 49 kali mengisi penuh gayung untuk memenuhi ember.
 Jawaban: E`,
       status: 'direview',
@@ -161,14 +155,14 @@ Jika ada ROGStore yang ternyata kunjungan web nya lebih besar dari Pemmz namun l
       pembahasan: `Jawaban : E. 360.000
 Pembahasan :
 Diketahui
-K_(Pemmz) = Kunjungan web Pemmz =99.700
-K_(PlazaKamera)= Kunjungan web Plaza Kamera =368.500
-K_(Pemmz) < K_(ROGStore) < K_(PlazaKamera)
+\\(K_{Pemmz}\\) = Kunjungan web Pemmz =99.700
+\\(K_{PlazaKamera}\\)= Kunjungan web Plaza Kamera =368.500
+\\(K_{Pemmz}\\) < \\(K_{ROGStore}\\) < \\(K_{PlazaKamera}\\)
 Ditanyakan:
-K_(ROGStore) = Kunjungan web ROGStore
+\\(K_{ROGStore}\\) = Kunjungan web ROGStore
 Jawab:
-K_(Pemmz)< K_(ROGStore) < K_(PlazaKamera)
-99.700 < K_(ROGStore) < 368.500
+\\(K_{Pemmz}\\)< \\(K_{ROGStore}\\) < \\(K_{PlazaKamera}\\)
+99.700 < \\(K_{ROGStore}\\) < 368.500
 Artinya kunjungan web di ROGStore diantara 99.700 dan 368.500. Yang memenuhi hanya pada option E`,
       status: 'direview',
     },
@@ -212,7 +206,7 @@ Jika tidak ada sungai di Kab. Kuningan, berapa persentase wisata air di Kab. Kun
       ],
       kunci: 'E',
       pembahasan: `Pembahasan:
-Berdasarkan grafik, presentase wisata air sungai adalah 32% dan persentase wisata air dari irigasi dan embung adalah 38%. Jika tidak ada sungai maka persentase tersisa 68%. Dengan demikian persentase wisata air dari irigasi dan embung menjadi 38%/68% × 100% ≈ 56%
+Berdasarkan grafik, presentase wisata air sungai adalah 32% dan persentase wisata air dari irigasi dan embung adalah 38%. Jika tidak ada sungai maka persentase tersisa 68%. Dengan demikian persentase wisata air dari irigasi dan embung menjadi \\(\\frac{38\\%}{68\\%}\\times 100\\%\\approx 56\\%\\)
 Jawaban: E`,
       status: 'direview',
     },
@@ -241,10 +235,10 @@ Total pekerja disabilitas tahun 2020 =225.048 pekerja.
 Ditanyakan:
 Jumlah pekerja disabilitas sebagai buruh/ karyawan tahun 2020.
 Jawab:
-Jumlah disabilitas sebagai buruh atau karyawan (2020) = 225.048 × 20,68%
-= 225.048 × 20,68/100
-= 225.048 × 0,2068
-= 46.540pekerja`,
+Jumlah disabilitas sebagai buruh atau karyawan (2020)\\(=225.048\\times 20,68\\%\\)
+\\(=225.048\\times \\frac{20,68}{100}\\)
+\\(=225.048\\times 0,2068\\)
+\\(=46.540\\text{pekerja}\\)`,
       status: 'direview',
     },
     ],

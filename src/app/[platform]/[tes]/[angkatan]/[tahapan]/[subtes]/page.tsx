@@ -4,7 +4,10 @@ import {
   tautanAngkatan, tautanPlatform, tautanSubtes,
 } from '@/lib/data';
 import { Remah, Status, Kosong, Waktu } from '../../../../../komponen';
+import { siapkanKelompok } from '@/lib/isi-kaya';
 import { DaftarSoal } from '../../../../../soal';
+// Gaya dan fon rumus KaTeX. Rumusnya sendiri dirender di server.
+import 'katex/dist/katex.min.css';
 
 export function generateStaticParams() {
   return semuaSubtes().map((j) => ({
@@ -111,7 +114,7 @@ export default async function HalamanSubtes({
           sebab={subtes.catatan ?? "Contoh soal untuk subtes ini belum dimasukkan."}
         />
       ) : (
-        <DaftarSoal contoh={subtes.contoh!} />
+        <DaftarSoal contoh={siapkanKelompok(subtes.contoh!)} />
       )}
 
       {/* Navigasi menyamping. Orang meninjau subtes berurutan; tanpa ini tiap

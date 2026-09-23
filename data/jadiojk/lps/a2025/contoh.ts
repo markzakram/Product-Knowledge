@@ -132,12 +132,12 @@ Jawaban yang benar adalah C. 300`,
       tipe: 'pg',
       pertanyaan: `Diketahui:
 P | Q
-16 + 31−4 × 7 | 6 + 11 + (−7) × (−3)
+\\(16+31-4\\times 7\\) | \\(6+11+\\left( -7 \\right)\\times \\left( -3 \\right)\\)
 Manakah hubungan yang benar antara kuantitas P dan Q berikut berdasarkan informasi yang diberikan?`,
       opsi: [
         { label: 'A', teks: `P > 3Q` },
-        { label: 'B', teks: `3P < ¹⁄₂Q` },
-        { label: 'C', teks: `4P < ³⁄₂Q` },
+        { label: 'B', teks: `\\(3P<\\frac{1}{2}Q\\)` },
+        { label: 'C', teks: `\\(4P<\\frac{3}{2}Q\\)` },
         { label: 'D', teks: `P < 2Q` },
         { label: 'E', teks: `Hubungan P dan Q tidak dapat ditentukan` },
       ],
@@ -145,17 +145,17 @@ Manakah hubungan yang benar antara kuantitas P dan Q berikut berdasarkan informa
       pembahasan: `Jawaban: D. P < 2Q
 Pembahasan:
 Menentukan nilai P
-P | = | 16 + 31−4 × 7
-| = | 16 + 31−28
-| = | 19
+\\(P = 16+31-4\\times 7\\)
+\\(= 16+31-28\\)
+\\(= 19\\)
 Menentukan nilai Q
-Q | = | 6 + 11 + (−7) × (−3)
-| = | 6 + 11 + 21
-| = | 38
+\\(Q = 6+11+\\left( -7 \\right)\\times \\left( -3 \\right)\\)
+\\(= 6+11+21\\)
+\\(= 38\\)
 Menentukan perbandingan nilai P dan Q
-P:Q | = | 19:38
-| = | ¹⁹⁄₁₉:³⁸⁄₁₉
-| = | 1:2
+\\(P:Q = 19:38\\)
+\\(= \\frac{19}{19}:\\frac{38}{19}\\)
+\\(= 1:2\\)
 Gunakan nilai perbandingan tersebut untuk menentukan hubungan yang benar antara kuantitas P dan Q, maka didapatkan yang benar adalah P < 2Q.`,
       status: 'direview',
     },
@@ -218,9 +218,9 @@ Harga sekodi kaos: 980.000
 Harga satuan kaos: 980.000: 20=49.000
 Persentase keuntungan: 18 %
 Persentase diskon:30 %
-Harga yang harus dipasang:(100% + 18%)/100% × 100%/(100%−30%) × 49.000
-Harga yang harus dipasang:118%/100% × 100%/70% × 49.000
-Harga yang harus dipasang:¹¹⁸⁄₇₀ × 49.000
+Harga yang harus \\(dipasang:\\frac{100\\%+18\\%}{100\\%}\\times \\frac{100\\%}{100\\%-30\\%}\\times 49.000\\)
+Harga yang harus dipasang\\(:\\frac{118\\%}{100\\%}\\times \\frac{100\\%}{70\\%}\\times 49.000\\)
+Harga yang harus dipasang\\(:\\frac{118}{70}\\times 49.000\\)
 Harga yang harus dipasang
 ⟦gambar:gambar/jadiojk/a98c1b0bbd327897ded3e1a13556bb88-07d3c0dc.webp⟧
 Maka yang harus dipasang adalah 82.600`,
@@ -369,7 +369,7 @@ Penarikan kesimpulan dari pernyataan 2 dan 3:
 Pernyataan 2: q → r
 Pernyataan 3: ~q
 Kesimpulan : TIDAK ADA KESIMPULAN YANG VALID
-Jadi, kesimpulan yang tepat adalah lagu Nadia tidak tecipta dari keresahannya yang orisinal (tidak diciptakan dengan jujur ≅ ~p).`,
+Jadi, kesimpulan yang tepat adalah lagu Nadia tidak tecipta dari keresahannya yang orisinal (tidak diciptakan dengan jujur \\(≅\\) ~p).`,
       status: 'direview',
     },
     ],

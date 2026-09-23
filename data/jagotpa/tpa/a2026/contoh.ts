@@ -120,21 +120,21 @@ export const contohKuantitatif: Kelompok[] = [
     {
       nomor: 1,
       tipe: 'pg',
-      pertanyaan: `Misalkan f(x) = 1/(1 + x). Maka f(f(f(x))) = …`,
+      pertanyaan: `Misalkan \\(f(x)=\\frac{1}{1+x}\\). Maka \\(f(f(f(x)))=\\ldots\\)`,
       opsi: [
-        { label: 'A', teks: `(1/(1 + x))³` },
-        { label: 'B', teks: `1/(1 + x³)` },
-        { label: 'C', teks: `3/(1 + 1/x³)` },
-        { label: 'D', teks: `3 + 1/x` },
-        { label: 'E', teks: `1/(1 + 1/(1 + 1/(1 + x)))` },
+        { label: 'A', teks: `\\({\\left( \\frac{1}{1+x} \\right)}^{3}\\)` },
+        { label: 'B', teks: `\\(\\frac{1}{1+x^{3}}\\)` },
+        { label: 'C', teks: `\\(\\frac{3}{1+\\frac{1}{x^{3}}}\\)` },
+        { label: 'D', teks: `\\(3+\\frac{1}{x}\\)` },
+        { label: 'E', teks: `\\(\\frac{1}{1+\\frac{1}{1+\\frac{1}{1+x}}}\\)` },
       ],
       kunci: 'E',
       pembahasan: `Jawaban: E
 Pembahasan:
-Diketahui: f(x) = 1/(1 + x)
-Maka: f(f(f(x))) = 1/(1 + f(f(x)))
-Karena: f(f(x)) = 1/(1 + 1/(1 + x))
-Jadi bentuk lengkapnya adalah: f(f(f(x))) = 1/(1 + 1/(1 + 1/(1 + x)))`,
+Diketahui: \\(f(x)=\\frac{1}{1+x}\\)
+Maka: \\(f(f(f(x)))=\\frac{1}{1+f(f(x))}\\)
+Karena: \\(f(f(x))=\\frac{1}{1+\\frac{1}{1+x}}\\)
+Jadi bentuk lengkapnya adalah: \\(f(f(f(x)))=\\frac{1}{1+\\frac{1}{1+\\frac{1}{1+x}}}\\)`,
       status: 'direview',
     },
     {
@@ -146,7 +146,7 @@ Jadi bentuk lengkapnya adalah: f(f(f(x))) = 1/(1 + 1/(1 + 1/(1 + x)))`,
         { label: 'B', teks: `p + r = 2q` },
         { label: 'C', teks: `p + q + r = 9` },
         { label: 'D', teks: `p - q = 2` },
-        { label: 'E', teks: `q = (p−r)/2` },
+        { label: 'E', teks: `\\(q=\\frac{p-r}{2}\\)` },
       ],
       kunci: 'B',
       pembahasan: `- Misalkan bilangan genap berurutan itu: p, q, r
@@ -175,57 +175,57 @@ Maka jawaban yang benar adalah: b. p + r = 2q`,
     {
       nomor: 3,
       tipe: 'pg',
-      pertanyaan: `(1−√2)/(1 + √2) + (1 + √2)/(1−√2)`,
+      pertanyaan: `\\(\\frac{1-\\sqrt{2}}{1+\\sqrt{2}}+\\frac{1+\\sqrt{2}}{1-\\sqrt{2}}\\)`,
       opsi: [
         { label: 'A', teks: `-6` },
-        { label: 'B', teks: `−4√2` },
-        { label: 'C', teks: `4√2` },
-        { label: 'D', teks: `√2/2` },
-        { label: 'E', teks: `−√2/2` },
+        { label: 'B', teks: `\\(-4\\sqrt{2}\\)` },
+        { label: 'C', teks: `\\(4\\sqrt{2}\\)` },
+        { label: 'D', teks: `\\(\\frac{\\sqrt{2}}{2}\\)` },
+        { label: 'E', teks: `\\(-\\frac{\\sqrt{2}}{2}\\)` },
       ],
       kunci: 'A',
       pembahasan: `Jawaban: A
 Pembahasan:
-- Gunakan identitas: a/b + b/a = (a² + b²)/ab
-- Ambil: a = 1,b = √2
+- Gunakan identitas: \\(\\frac{a}{b}+\\frac{b}{a}=\\frac{a^{2}+b^{2}}{ab}\\)
+- Ambil: \\(a=1,b=\\sqrt{2}\\)
 - Hitung:
-(1−√2)/(1 + √2) + (1 + √2)/(1−√2)
-= (a−b)/(a + b) + (a + b)/(a−b)
-= ((a−b)² + (a + b)²)/((a + b)(a−b))
-= (a²−2ab + b² + a² + 2ab + b²)/(a²−b²)
-= (2a² + 2b²)/(a²−b²)
-= (2(a² + b²))/(a²−b²)
-Ingat a = 1 ⇔ a² = 1,b = √2 ⇔ b² = 2
-(2(a² + b²))/(a²−b²)
-= (2(1 + 2))/(1−2)
-= 2(3)/(−1)
-= −6`,
+\\(\\frac{1-\\sqrt{2}}{1+\\sqrt{2}}+\\frac{1+\\sqrt{2}}{1-\\sqrt{2}}\\)
+\\(=\\frac{a-b}{a+b}+\\frac{a+b}{a-b}\\)
+\\(=\\frac{(a-b{)}^{2}+(a+b{)}^{2}}{(a+b)(a-b)}\\)
+\\(=\\frac{a^{2}-2ab+b^{2}+a^{2}+2ab+b^{2}}{a^{2}-b^{2}}\\)
+\\(=\\frac{2a^{2}+2b^{2}}{a^{2}-b^{2}}\\)
+\\(=\\frac{2\\left( a^{2}+b^{2} \\right)}{a^{2}-b^{2}}\\)
+Ingat \\(a=1\\Leftrightarrow a^{2}=1,b=\\sqrt{2}\\Leftrightarrow b^{2}=2\\)
+\\(\\frac{2\\left( a^{2}+b^{2} \\right)}{a^{2}-b^{2}}\\)
+\\(=\\frac{2(1+2)}{1-2}\\)
+\\(=\\frac{2(3)}{-1}\\)
+\\(=-6\\)`,
       status: 'direview',
     },
     {
       nomor: 4,
       tipe: 'pg',
-      pertanyaan: `6√75−7√98 + 3√72 dapat disederhanakan menjadi ...`,
+      pertanyaan: `\\(6\\sqrt{75}-7\\sqrt{98}+3\\sqrt{72}\\) dapat disederhanakan menjadi ...`,
       opsi: [
-        { label: 'A', teks: `12√3 + 31√2` },
-        { label: 'B', teks: `31√2−30√3` },
-        { label: 'C', teks: `30√3−31√2` },
-        { label: 'D', teks: `30√3 + 31√2` },
-        { label: 'E', teks: `18√5−27√2` },
+        { label: 'A', teks: `\\(12\\sqrt{3}+31\\sqrt{2}\\)` },
+        { label: 'B', teks: `\\(31\\sqrt{2}-30\\sqrt{3}\\)` },
+        { label: 'C', teks: `\\(30\\sqrt{3}-31\\sqrt{2}\\)` },
+        { label: 'D', teks: `\\(30\\sqrt{3}+31\\sqrt{2}\\)` },
+        { label: 'E', teks: `\\(18\\sqrt{5}-27\\sqrt{2}\\)` },
       ],
       kunci: 'C',
       pembahasan: `Jawaban: C
 Pembahasan:
-6√75−7√98 + 3√72 = 6√25·3−7√49·2 + 3√36·2
-= 6·5√3−7·7√2 + 3·6√2
-= 30√3−49√2 + 18√2
-= 30√3−31√2`,
+\\(6\\sqrt{75}-7\\sqrt{98}+3\\sqrt{72}=6\\sqrt{25\\cdot 3}-7\\sqrt{49\\cdot 2}+3\\sqrt{36\\cdot 2}\\)
+\\(=6\\cdot 5\\sqrt{3}-7\\cdot 7\\sqrt{2}+3\\cdot 6\\sqrt{2}\\)
+\\(=30\\sqrt{3}-49\\sqrt{2}+18\\sqrt{2}\\)
+\\(=30\\sqrt{3}-31\\sqrt{2}\\)`,
       status: 'direview',
     },
     {
       nomor: 5,
       tipe: 'pg',
-      pertanyaan: `Jika x³ + y³ = 5 dan x³−y³ = 12, maka x⁶−y⁶ = …`,
+      pertanyaan: `Jika \\(x^{3}+y^{3}=5\\) dan \\(x^{3}-y^{3}=12\\), maka \\(x^{6}-y^{6}=\\ldots\\)`,
       opsi: [
         { label: 'A', teks: `13` },
         { label: 'B', teks: `56` },
@@ -237,17 +237,17 @@ Pembahasan:
       pembahasan: `Jawaban: C
 Pembahasan:
 - Diketahui:
-x³ + y³ = 5
-x³−y³ = 12
+\\(x^{3}+y^{3}=5\\)
+\\(x^{3}-y^{3}=12\\)
 - Ditanya:
-x⁶−y⁶
+\\(x^{6}-y^{6}\\)
 - Gunakan bentuk selisih kuadrat:
-x⁶−y⁶ = (x³)²−(y³)²
-- Karena bentuknya a²−b², maka:
-(x³)²−(y³)² = (x³ + y³)(x³−y³)
+\\(x^{6}-y^{6}={\\left( x^{3} \\right)}^{2}-{\\left( y^{3} \\right)}^{2}\\)
+- Karena bentuknya \\(a^2-b^2\\), maka:
+\\({\\left( x^{3} \\right)}^{2}-{\\left( y^{3} \\right)}^{2}=\\left( x^{3}+y^{3} \\right)\\left( x^{3}-y^{3} \\right)\\)
 - Substitusi nilai yang diketahui:
-x⁶−y⁶ = 5 × 12
-x⁶−y⁶ = 60`,
+\\(x^{6}-y^{6}=5\\times 12\\)
+\\(x^{6}-y^{6}=60\\)`,
       status: 'direview',
     },
     ],

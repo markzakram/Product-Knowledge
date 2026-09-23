@@ -45,112 +45,168 @@ export function olahHTML({ soal, pembahasan }) {
   };
 
   /**
-   * Superskrip/subskrip jadi karakter Unicode bila semua hurufnya punya
-   * padanan dan cukup pendek; selain itu ditulis eksplisit ^(…) / _(…).
-   * Tulisan eksplisit memang kurang cantik, tapi tidak pernah salah baca —
-   * yang dihindari adalah "2x2", bukan tanda kurung.
+   * <sup>/<sub> sederhana jadi karakter Unicode (x², H₂O, 10⁻³): rapi dan
+   * tetap bisa dicari. null bila ada huruf tanpa padanan atau terlalu
+   * panjang — yang seperti itu jadi LaTeX (lihat angkatHtml).
    */
-  const angkat = (t, peta, tanda) => {
+  const unicode = (t, peta) => {
     const s = t.replace(/\s+/g, '');
     if (!s) return '';
     const hasil = [...s].map((c) => peta[c]);
     const angkaSaja = /^[0-9+\-−=()]+$/.test(s);
-    if (hasil.every(Boolean) && (angkaSaja || s.length <= 4)) return hasil.join('');
-    return `${tanda}(${s})`;
-  };
-  const naik = (t) => angkat(t, SUP, '^');
-  const turun = (t) => angkat(t, SUB, '_');
-
-  /** Operand diberi kurung hanya bila memuat operator: 3/8 tetap 3/8, (x+1)/3 berkurung. */
-  const kurung = (t) => (/[+\-−×÷/=\s]/.test(t) ? `(${t})` : t);
-  const AWAL_SUP = /^[⁰¹²³⁴⁵⁶⁷⁸⁹]/;
-
-  /** Pecahan angka jadi ³⁄₈: rapat, tak ambigu, dan bilangan campuran 3⁵⁄₆ tetap terbaca. */
-  const pecahan = (a, b) => {
-    if (/^\d{1,3}$/.test(a) && /^\d{1,3}$/.test(b)) return `${naik(a)}⁄${turun(b)}`;
-    return `${kurung(a)}/${kurung(b)}`;
+    return hasil.every(Boolean) && (angkaSaja || s.length <= 4) ? hasil.join('') : null;
   };
 
-  // ── MathML ─────────────────────────────────────────────────────────────
-  const OPERATOR_SPASI = /^[=<>≤≥≠≈±+×÷→⇒⇔∈]$/;
-  function mathml(el) {
+  // ── MathML -> LaTeX ────────────────────────────────────────────────────
+  // Rumus disimpan sebagai LaTeX di antara \( dan \) dan dirender KaTeX di
+  // situs. Versi sebelumnya meratakan MathML ke teks Unicode, sehingga
+  // pecahan bertumpuk terbaca "(9 + ³⁶⁄₆₀)/10" dan indeks huruf besar
+  // terbaca "v_(P)".
+  const LATEX_KARAKTER = {
+    '×': '\\times ', '·': '\\cdot ', '÷': '\\div ', '±': '\\pm ', '∓': '\\mp ',
+    '≤': '\\le ', '≥': '\\ge ', '≠': '\\ne ', '≈': '\\approx ', '≡': '\\equiv ',
+    '∼': '\\sim ', '→': '\\to ', '⇒': '\\Rightarrow ', '⇔': '\\Leftrightarrow ',
+    '←': '\\leftarrow ', '↔': '\\leftrightarrow ', '∞': '\\infty ', '…': '\\ldots ',
+    '⋯': '\\cdots ', '∈': '\\in ', '∉': '\\notin ', '⊂': '\\subset ', '⊆': '\\subseteq ',
+    '∪': '\\cup ', '∩': '\\cap ', '∅': '\\emptyset ', '∠': '\\angle ', '△': '\\triangle ',
+    '⊥': '\\perp ', '∥': '\\parallel ', '∧': '\\land ', '∨': '\\lor ', '¬': '\\neg ',
+    '∴': '\\therefore ', '∑': '\\sum ', '∏': '\\prod ', '∫': '\\int ', '∂': '\\partial ',
+    '°': '^{\\circ}', '%': '\\%', '{': '\\{', '}': '\\}', '&': '\\&', '#': '\\#',
+    '$': '\\$', '−': '-', '–': '-', '′': "'", '″': "''",
+    'α': '\\alpha ', 'β': '\\beta ', 'γ': '\\gamma ', 'δ': '\\delta ', 'ε': '\\varepsilon ',
+    'θ': '\\theta ', 'λ': '\\lambda ', 'μ': '\\mu ', 'π': '\\pi ', 'ρ': '\\rho ',
+    'σ': '\\sigma ', 'τ': '\\tau ', 'φ': '\\varphi ', 'ω': '\\omega ', 'Δ': '\\Delta ',
+    'Σ': '\\Sigma ', 'Ω': '\\Omega ', 'Π': '\\Pi ', 'Φ': '\\Phi ', 'Θ': '\\Theta ',
+    'Λ': '\\Lambda ',
+  };
+  const latexKarakter = (t) => [...t].map((c) => LATEX_KARAKTER[c] ?? c).join('');
+  const escTeks = (t) => t.replace(/[\\{}$&#^_%~]/g, (c) =>
+    c === '\\' ? '\\textbackslash{}' : c === '^' ? '\\^{}' : c === '~' ? '\\~{}' : '\\' + c);
+  const FUNGSI = new Set(['sin', 'cos', 'tan', 'cot', 'sec', 'csc', 'log', 'ln', 'lim', 'max', 'min', 'exp', 'det']);
+  // Dasar pangkat/indeks diberi kurung kurawal kecuali sudah satu satuan.
+  const dasar = (a) => (/^([A-Za-z0-9]|\\[A-Za-z]+ ?)$/.test(a.trim()) ? a.trim() : `{${a.trim()}}`);
+  const AKSEN = {
+    '¯': '\\overline', '‾': '\\overline', '_': '\\overline', '―': '\\overline', '-': '\\overline',
+    '→': '\\vec', '^': '\\hat', 'ˆ': '\\hat', '~': '\\tilde', '˜': '\\tilde', '˙': '\\dot', '¨': '\\ddot',
+  };
+  const BESAR = new Set(['∑', '∏', '∫', 'lim']);
+
+  function latex(el) {
     const tag = el.localName.toLowerCase();
     const anak = [...el.children];
-    const gabung = () => {
-      let out = '';
-      for (const a of anak) {
-        const t = mathml(a);
-        // Bilangan campuran: <mn>3</mn><mfrac>5 6</mfrac> harus 3⁵⁄₆, bukan "35/6".
-        if (a.localName.toLowerCase() === 'mfrac' && /\d$/.test(out) && !AWAL_SUP.test(t)) out += ' ';
-        out += t;
-      }
-      return out;
-    };
+    const semua = () => anak.map(latex).join('');
     switch (tag) {
       case 'annotation':
       case 'annotation-xml':
         return '';
-      case 'mi':
-      case 'mn':
-      case 'ms':
-        return el.textContent.trim();
-      case 'mtext':
-        return el.textContent.replace(/\s+/g, ' ');
-      case 'mo': {
-        const t = el.textContent.trim().replace('-', '−');
-        return OPERATOR_SPASI.test(t) ? ` ${t} ` : t;
+      case 'mi': {
+        // Kata utuh ("kecepatan", "Paxton") ditulis tegak seperti teks,
+        // bukan huruf miring yang dibaca sebagai perkalian variabel.
+        const t = el.textContent.trim();
+        if (t.length > 1 && /^[A-Za-z]+$/.test(t)) return FUNGSI.has(t) ? `\\${t} ` : `\\text{${t}}`;
+        return latexKarakter(t);
       }
+      case 'mn':
+      case 'mo':
+        return latexKarakter(el.textContent.trim());
+      case 'mtext': {
+        const t = el.textContent.replace(/\s+/g, ' ');
+        return t.trim() ? `\\text{${escTeks(t)}}` : '\\ ';
+      }
+      case 'ms':
+        return `\\text{"${escTeks(el.textContent)}"}`;
       case 'mspace':
-        return ' ';
+        return '\\,';
       case 'mfrac': {
-        const [a = '', b = ''] = anak.map((x) => mathml(x).trim());
-        return pecahan(a, b);
+        const [a = '', b = ''] = anak.map((x) => latex(x).trim());
+        return `\\frac{${a}}{${b}}`;
       }
       case 'msup': {
-        const [a = '', b = ''] = anak.map(mathml);
-        return a + (/^[oOº°∘]$/.test(b.trim()) ? '°' : naik(b));
+        const [a = '', b = ''] = anak.map(latex);
+        if (/^[oOº°∘]$/.test(anak[1]?.textContent.trim() ?? '')) return `${a.trim()}^{\\circ}`;
+        return `${dasar(a)}^{${b.trim()}}`;
       }
       case 'msub': {
-        const [a = '', b = ''] = anak.map(mathml);
-        return a + turun(b);
+        const [a = '', b = ''] = anak.map(latex);
+        return `${dasar(a)}_{${b.trim()}}`;
       }
       case 'msubsup': {
-        const [a = '', b = '', c = ''] = anak.map(mathml);
-        return a + turun(b) + naik(c);
+        const [a = '', b = '', c = ''] = anak.map(latex);
+        return `${dasar(a)}_{${b.trim()}}^{${c.trim()}}`;
       }
       case 'msqrt':
-        return `√${kurung(gabung().trim())}`;
+        return `\\sqrt{${semua().trim()}}`;
       case 'mroot': {
-        const [a = '', b = ''] = anak.map(mathml);
-        return `${naik(b)}√${kurung(a.trim())}`;
+        const [a = '', b = ''] = anak.map(latex);
+        return `\\sqrt[${b.trim()}]{${a.trim()}}`;
       }
       case 'mfenced': {
-        const buka = el.getAttribute('open') ?? '(';
-        const tutup = el.getAttribute('close') ?? ')';
-        return buka + anak.map(mathml).join(el.getAttribute('separators') ?? ',') + tutup;
+        const kurawal = (k) => (k === '{' ? '\\{' : k === '}' ? '\\}' : k || '.');
+        const pemisah = (el.getAttribute('separators') ?? ',').trim().charAt(0);
+        return `\\left${kurawal(el.getAttribute('open') ?? '(')} ${anak.map(latex).join(pemisah)} ` +
+          `\\right${kurawal(el.getAttribute('close') ?? ')')}`;
       }
       case 'mover': {
-        const [a = '', b = ''] = anak.map(mathml);
-        if (/^[¯‾_―-]$/.test(b.trim())) return [...a].map((c) => c + '̅').join('');
-        if (/^[→⃗]$/.test(b.trim())) return a + '⃗';
-        return a + naik(b);
+        const [a = '', b = ''] = anak.map(latex);
+        const aksen = AKSEN[anak[1]?.textContent.trim() ?? ''];
+        return aksen ? `${aksen}{${a.trim()}}` : `\\overset{${b.trim()}}{${a.trim()}}`;
       }
       case 'munder': {
-        const [a = '', b = ''] = anak.map(mathml);
-        return a + turun(b);
+        const [a = '', b = ''] = anak.map(latex);
+        if (BESAR.has(anak[0]?.textContent.trim() ?? '')) return `${a.trim()}_{${b.trim()}}`;
+        return `\\underset{${b.trim()}}{${a.trim()}}`;
       }
       case 'munderover': {
-        const [a = '', b = '', c = ''] = anak.map(mathml);
-        return a + turun(b) + naik(c);
+        const [a = '', b = '', c = ''] = anak.map(latex);
+        if (BESAR.has(anak[0]?.textContent.trim() ?? '')) return `${a.trim()}_{${b.trim()}}^{${c.trim()}}`;
+        return `\\overset{${c.trim()}}{\\underset{${b.trim()}}{${a.trim()}}}`;
       }
-      case 'mtable':
-        return NL + anak.map(mathml).join(NL) + NL;
+      case 'mtable': {
+        const baris = anak.map(latex).filter((b) => b.replace(/[&\s]/g, ''));
+        // Editor rumus Markaz memakai tabel KOSONG sebagai spasi antarkata:
+        // "kecepatan<mtable/>Paxton". Diterjemahkan jadi matriks, lebarnya nol
+        // dan kata-katanya menempel ("kecepatanPaxton").
+        if (!baris.length) return '\\ ';
+        return `\\begin{matrix}${baris.join(' \\\\ ')}\\end{matrix}`;
+      }
       case 'mtr':
+        return anak.map(latex).join(' & ');
       case 'mlabeledtr':
-        return anak.map(mathml).join(' | ');
+        return anak.slice(1).map(latex).join(' & ');
+      case 'mphantom':
+        return `\\phantom{${semua()}}`;
       default:
-        return anak.length ? gabung() : el.textContent;
+        return anak.length ? semua() : latexKarakter(el.textContent.trim());
     }
+  }
+
+  /**
+   * Satu <math> -> satu atau beberapa rumus \(…\). Editor Markaz menyusun
+   * langkah-langkah hitungan sebagai <mtable> di puncak rumus; tiap barisnya
+   * dijadikan rumus sendiri di baris sendiri, seperti tampilan aslinya, dan
+   * baris kosong pemberi jarak dibuang. Anotasi LaTeX dari editor rumus,
+   * bila ada, dipakai apa adanya karena paling setia pada aslinya.
+   */
+  function rumus(el) {
+    const anotasi = [...el.querySelectorAll('annotation')]
+      .find((a) => /tex/i.test(a.getAttribute('encoding') || ''));
+    if (anotasi && anotasi.textContent.trim()) return `\\(${anotasi.textContent.trim()}\\)`;
+    let puncak = el;
+    for (;;) {
+      const nama = puncak.localName.toLowerCase();
+      if (nama === 'semantics' && puncak.children[0]) { puncak = puncak.children[0]; continue; }
+      if (/^(math|mrow|mstyle|mpadded)$/.test(nama) && puncak.children.length === 1) { puncak = puncak.children[0]; continue; }
+      break;
+    }
+    if (puncak.localName.toLowerCase() === 'mtable') {
+      const baris = [...puncak.children]
+        .map((tr) => [...tr.children].slice(tr.localName.toLowerCase() === 'mlabeledtr' ? 1 : 0).map(latex).join(' ').trim())
+        .filter(Boolean);
+      return NL + baris.map((b) => `\\(${b}\\)`).join(NL) + NL;
+    }
+    const isi = latex(el).trim();
+    if (!isi) return '';
+    return el.getAttribute('display') === 'block' ? `${NL}\\(${isi}\\)${NL}` : `\\(${isi}\\)`;
   }
 
   // ── Penelusuran HTML ───────────────────────────────────────────────────
@@ -195,13 +251,47 @@ export function olahHTML({ soal, pembahasan }) {
   // menyusun opsi Error Recognition — penandanya tak pernah ikut tersimpan.
   let tandaiTekanan = false;
 
+  /**
+   * <sup>/<sub> di teks biasa. Yang sederhana tetap karakter Unicode. Yang
+   * tidak punya padanan — indeks huruf besar, kata — jadi LaTeX bersama
+   * DASARNYA, diambil dari ujung teks sebelumnya: "25v<sub>P</sub>" menjadi
+   * "25\(v_{P}\)", bukan "25v_(P)".
+   */
+  function angkatHtml(el, nama, sebelum) {
+    const t = [...el.childNodes].map(teks).join('').replace(/\s+/g, ' ').trim();
+    if (!t) return sebelum;
+    if (nama === 'sup') {
+      // Derajat diketik sebagai huruf o terangkat: -10<sup>o</sup>C, 30<sup>o</sup>.
+      // Dibaca "ᵒ" ia tampak seperti huruf, bukan satuan.
+      if (/^[oOº°]$/.test(t)) return sebelum + '°';
+      if (t === '0' && /^\s*[CFK]\b/.test(el.nextSibling?.textContent || '')) return sebelum + '°';
+    }
+    const uni = unicode(t, nama === 'sup' ? SUP : SUB);
+    if (uni !== null) return sebelum + uni;
+    const m = sebelum.match(/([A-Za-z]|\d+)$/);
+    const dasarnya = m ? m[1] : '';
+    const isi = /^[A-Za-z][A-Za-z-]+$/.test(t) || /\s/.test(t) ? `\\text{${escTeks(t)}}` : latexKarakter(t);
+    return sebelum.slice(0, sebelum.length - dasarnya.length) +
+      `\\(${dasarnya || '{}'}${nama === 'sup' ? '^' : '_'}{${isi}}\\)`;
+  }
+
   function teks(node) {
-    if (node.nodeType === 3) return node.textContent.replace(/[\s ]+/g, ' ');
+    // \s di JavaScript sudah mencakup spasi tak-putus (&nbsp;).
+    if (node.nodeType === 3) return node.textContent.replace(/\s+/g, ' ');
     if (node.nodeType !== 1) return '';
     const el = node;
     const tag = el.localName.toLowerCase();
     if (BUANG.has(tag)) return '';
-    const isi = () => [...el.childNodes].map(teks).join('');
+    // Anak diproses berurutan, bukan dipetakan sendiri-sendiri: <sup>/<sub>
+    // butuh teks SEBELUMNYA untuk mengambil dasarnya.
+    const isi = () => {
+      let out = '';
+      for (const anak of el.childNodes) {
+        const nama = anak.nodeType === 1 ? anak.localName.toLowerCase() : '';
+        out = nama === 'sup' || nama === 'sub' ? angkatHtml(anak, nama, out) : out + teks(anak);
+      }
+      return out;
+    };
 
     if (tandaiTekanan && (tag === 'u' || tag === 'b' || tag === 'strong')) {
       return '\u0001' + isi() + '\u0002';
@@ -218,7 +308,7 @@ export function olahHTML({ soal, pembahasan }) {
         if (mml) {
           const d = new DOMParser().parseFromString(mml.replace(/«/g, '<').replace(/»/g, '>').replace(/¨/g, '"').replace(/§/g, '&'), 'text/html');
           const m = d.querySelector('math');
-          if (m) return mathml(m);
+          if (m) return rumus(m);
         }
         const src = el.getAttribute('src') || '';
         if (!src || src.startsWith('data:')) return el.getAttribute('alt') || '';
@@ -226,17 +316,10 @@ export function olahHTML({ soal, pembahasan }) {
         return `${NL}⟦gambar:${src}⟧${NL}`;
       }
       case 'math':
-        return mathml(el);
-      case 'sup': {
-        const t = isi().trim();
-        // Derajat diketik sebagai huruf o terangkat: -10<sup>o</sup>C, 30<sup>o</sup>.
-        // Dibaca "ᵒ" ia tampak seperti huruf, bukan satuan.
-        if (/^[oOº°]$/.test(t)) return '°';
-        if (t === '0' && /^\s*[CFK]\b/.test(el.nextSibling?.textContent || '')) return '°';
-        return naik(t);
-      }
+        return rumus(el);
+      case 'sup':
       case 'sub':
-        return turun(isi());
+        return angkatHtml(el, tag, '');
       case 'ol':
       case 'ul': {
         const gaya = tag === 'ul' ? '•' : gayaDaftar(el);
@@ -266,31 +349,13 @@ export function olahHTML({ soal, pembahasan }) {
   }
 
   /**
-   * LaTeX sebaris yang diketik penulis soal sebagai teks biasa: "$a^2-b^2$".
-   * Hanya bentuk sederhana yang diubah. Kalau masih tersisa perintah \xxx,
-   * teksnya dibiarkan apa adanya supaya pemeriksa mutu (sisaMentah) menandai
-   * dan menolaknya — lebih baik tidak tampil daripada tampil setengah jadi.
+   * LaTeX yang diketik penulis soal di teks biasa: "$a^2-b^2$". Tidak lagi
+   * diterjemahkan ke Unicode — pembatasnya cukup diganti \( … \) dan KaTeX
+   * yang merendernya. Keabsahannya diperiksa ke-data.mjs dan Cek Data.
+   * Tanpa ^, _, atau \ isinya bukan LaTeX, mis. "$50 dan $60" (mata uang).
    */
-  const LATEX_SIMBOL = {
-    times: '×', cdot: '·', div: '÷', pm: '±', le: '≤', leq: '≤', ge: '≥', geq: '≥',
-    ne: '≠', neq: '≠', approx: '≈', pi: 'π', infty: '∞', alpha: 'α', beta: 'β',
-    theta: 'θ', degree: '°', circ: '°', to: '→', rightarrow: '→',
-  };
-  const latexSederhana = (s) => s.replace(/\$([^$\n]{1,120})\$/g, (utuh, isi) => {
-    // Tanpa ^, _, atau \ ini bukan LaTeX — mis. "$50 dan $60" (mata uang).
-    if (!/[\\^_]/.test(isi)) return utuh;
-    let t = isi;
-    for (let i = 0; i < 3; i++) {
-      t = t.replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, (_, a, b) => pecahan(a.trim(), b.trim()));
-      t = t.replace(/\\sqrt\{([^{}]*)\}/g, (_, a) => `√${kurung(a.trim())}`);
-    }
-    t = t.replace(/\\left|\\right/g, '');
-    t = t.replace(/\\([a-zA-Z]+)/g, (m, nama) => LATEX_SIMBOL[nama] ?? m);
-    t = t.replace(/\^\{([^{}]*)\}|\^(\S)/g, (_, a, b) => naik(a ?? b));
-    t = t.replace(/_\{([^{}]*)\}|_(\S)/g, (_, a, b) => turun(a ?? b));
-    t = t.replace(/\\[,;: ]/g, ' ').replace(/-/g, '−');
-    return /\\[a-zA-Z]|[{}]/.test(t) ? utuh : t;
-  });
+  const latexKetikan = (s) => s.replace(/\$([^$\n]{1,200})\$/g, (utuh, isi) =>
+    (/[\\^_]/.test(isi) ? `\\(${isi.trim()}\\)` : utuh));
 
   /** Label aksesibilitas editor Markaz yang ikut tersimpan di isi soal. */
   const SAMPAH = [/This question is marked in red\.?/gi];
@@ -298,9 +363,9 @@ export function olahHTML({ soal, pembahasan }) {
   const rapikan = (t) => {
     // Karakter lebar-nol dari salinan teks web: tak terlihat, tapi memecah
     // pencarian dan meninggalkan "spasi hantu" di awal baris.
-    let s = t.replace(/[​-‍⁠﻿]/g, '');
+    let s = t.replace(/[\u200B-\u200D\u2060\uFEFF]/g, '');
     for (const p of SAMPAH) s = s.replace(p, '');
-    s = latexSederhana(s);
+    s = latexKetikan(s);
     return s
       .split(NL)
       .map((b) => b.replace(/[ \t]+/g, ' ').trim())
@@ -402,11 +467,15 @@ export function pembahasanBerisi(teks, kunci) {
  */
 export function sisaMentah(teks) {
   const temuan = [];
-  if (/<\/?[a-z][^>]*>/i.test(teks)) temuan.push('tag HTML');
-  if (/\\(\(|\[|frac|sqrt|times|left|right)/.test(teks)) temuan.push('LaTeX');
-  if (/\$[^$\n]*[\\^_][^$\n]*\$/.test(teks)) temuan.push('LaTeX sebaris');
-  if (/&[a-z]+;/i.test(teks)) temuan.push('entitas HTML');
-  if (/marked in red/i.test(teks)) temuan.push('label editor');
+  // Rumus LaTeX yang sah berada di dalam \( … \); yang diperiksa SISANYA.
+  // Di dalam rumus, "<" dan "\frac" memang wajar.
+  const luar = teks.replace(/\\\(([\s\S]+?)\\\)/g, ' ');
+  if ((teks.match(/\\\(/g) || []).length !== (teks.match(/\\\)/g) || []).length) temuan.push('pembatas rumus tak berpasangan');
+  if (/<\/?[a-z][^>]*>/i.test(luar)) temuan.push('tag HTML');
+  if (/\\[A-Za-z]+/.test(luar)) temuan.push('LaTeX di luar pembatas');
+  if (/\$[^$\n]*[\\^_][^$\n]*\$/.test(luar)) temuan.push('LaTeX sebaris');
+  if (/&[a-z]+;/i.test(luar)) temuan.push('entitas HTML');
+  if (/marked in red/i.test(luar)) temuan.push('label editor');
   // "Diketahui nilai ?=4/7 dan ?=5": nama variabel sudah rusak di CMS-nya
   // sendiri (Tes Potensi LPS). Soal seperti itu tidak bisa dijawab apa adanya.
   if (/(^|[\s(,;:])\?\s*=/.test(teks)) temuan.push('karakter hilang di sumber (?=)');

@@ -21,9 +21,14 @@ import {
   tautanAngkatan, tautanPlatform, tautanSubtes,
 } from './data';
 import type { Subtes, Tahapan } from './skema';
+import { teksPolos } from './rumus';
 
-/** Penanda gambar tidak boleh ikut dicocokkan atau tampil di cuplikan. */
-const tanpaPenanda = (s: string) => s.replace(/⟦gambar:[^⟧]+⟧/g, ' ');
+/**
+ * Penanda gambar tidak boleh ikut dicocokkan atau tampil di cuplikan, dan
+ * rumus LaTeX dicocokkan sebagai teks biasa — mencari "frac" tidak boleh
+ * menemukan setiap soal pecahan.
+ */
+const tanpaPenanda = (s: string) => teksPolos(s);
 
 export type JenisHasil =
   | 'platform' | 'tes' | 'angkatan' | 'tahapan' | 'subtes' | 'materi' | 'soal' | 'info';

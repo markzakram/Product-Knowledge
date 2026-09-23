@@ -1227,3 +1227,20 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 /* Gambar inline di dalam teks soal dan pembahasan. Latar putih karena hampir
    semua gambar Markaz berlatar putih dan tampak "melayang" di mode gelap. */
 .gambar-inline { display: block; margin: 10px 0; max-height: 420px; width: auto; }
+
+/* Rumus KaTeX. Ukuran bawaan KaTeX (1.21em) terlalu besar di samping teks
+   soal, jadi disetarakan. Rumus blok rata kiri karena di pembahasan ia adalah
+   langkah-langkah hitungan, bukan persamaan pajangan di tengah halaman.
+   Rumus panjang bergulir di dalam kotaknya sendiri, bukan melebarkan halaman
+   di layar ponsel. Warnanya mengikuti teks, jadi aman di mode gelap. */
+.rumus .katex { font-size: 1.08em; }
+.rumus-blok {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+.rumus-blok .katex-display { margin: 0.3em 0; text-align: left; }
+.rumus-blok .katex-display > .katex { text-align: left; }
+.opsi .rumus .katex { font-size: 1.02em; }

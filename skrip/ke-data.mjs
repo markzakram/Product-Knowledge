@@ -19,6 +19,23 @@
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import katex from 'katex';
+
+/**
+ * Rumus pertama yang gagal diurai KaTeX, atau null. Aturannya sama dengan
+ * saat render di situs (lib/isi-kaya.ts), termasuk koma desimal {,} — soal
+ * yang lolos di sini tidak akan tampil sebagai teks merah di situs.
+ */
+function rumusGagal(teks) {
+  for (const m of teks.matchAll(/\\\(([\s\S]+?)\\\)/g)) {
+    try {
+      katex.renderToString(m[1].replace(/(\d),(?=\d)/g, '$1{,}'), { throwOnError: true, strict: 'ignore', trust: false });
+    } catch (e) {
+      return `${e.message.replace(/^KaTeX parse error: /, '')} — di "${m[1].slice(0, 60)}"`;
+    }
+  }
+  return null;
+}
 
 /**
  * Peta lesson Markaz -> subtes di data/.
@@ -156,6 +173,8 @@ function alasanTolak(q) {
   // memakai kunci sementara dan bisa putus kapan saja.
   const teksSemua = [q.pertanyaan, q.pembahasan, ...q.opsi.map((o) => o.teks)].join('\n');
   if (/⟦gambar:https?:/.test(teksSemua)) return 'ada gambar yang belum tersimpan lokal';
+  const gagal = rumusGagal(teksSemua);
+  if (gagal) return `rumus tidak valid: ${gagal}`;
   if (!q.opsi.length) {
     // Soal figural: pilihan A–E tergambar DI DALAM gambar soal, jadi tidak
     // ada teks opsi untuk dipisah. Situs lalu menampilkan gambar + "Jawaban: A".

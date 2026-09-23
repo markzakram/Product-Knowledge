@@ -1,7 +1,8 @@
 import { PLATFORM, periksaIsi, semuaAngkatan, semuaSubtes, jumlahContoh } from '@/lib/data';
+import { periksaRumus } from '@/lib/isi-kaya';
 
 export default function CekData() {
-  const temuan = periksaIsi();
+  const temuan = [...periksaIsi(), ...periksaRumus()];
   const perJenis = new Map<string, typeof temuan>();
   for (const t of temuan) {
     if (!perJenis.has(t.jenis)) perJenis.set(t.jenis, []);
@@ -26,8 +27,8 @@ export default function CekData() {
       <h1>Cek Data</h1>
       <p className="pengantar">
         Memeriksa hal yang tidak bisa ditangkap compiler: kunci yang tidak
-        menunjuk opsi mana pun, pembahasan kosong, nomor soal ganda, dan angka
-        mapping yang tidak konsisten.
+        menunjuk opsi mana pun, pembahasan kosong, nomor soal ganda, angka
+        mapping yang tidak konsisten, dan rumus LaTeX yang gagal diurai.
       </p>
       <div className="panel">
         <p style={{ margin: 0 }} className="kartu-kecil">
@@ -41,7 +42,8 @@ export default function CekData() {
         <div className="panel">
           <p style={{ margin: 0 }}>
             <span className="lencana lencana-hijau">Bersih</span> Tidak ada kunci
-            tak cocok, pembahasan kosong, nomor ganda, atau mapping janggal.
+            tak cocok, pembahasan kosong, nomor ganda, mapping janggal, atau rumus
+            tidak valid.
           </p>
         </div>
       ) : (
