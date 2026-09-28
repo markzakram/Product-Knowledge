@@ -1,10 +1,25 @@
 import type { Metadata, Viewport } from 'next';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import { cookies } from 'next/headers';
 import './globals.css';
 import { NAMA_COOKIE, cookieSah, gerbangAktif } from '@/lib/sesi';
 import { PemilihTema, SKRIP_TEMA } from './tema';
 import pkg from '../../package.json';
 import { PintasanCari } from './pintasan';
+import { Pwa } from './pwa';
+
+/**
+ * Fon di-host sendiri oleh next/font (diunduh saat build, dilayani dari
+ * /_next/static), bukan <link> ke Google Fonts. Dengan begitu fon ikut
+ * tersimpan service worker dan halaman offline tetap memakai fon yang sama,
+ * dan tidak ada permintaan ke server pihak ketiga dari aplikasi internal ini.
+ */
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-jakarta',
+});
 
 export const metadata: Metadata = {
   title: 'Product Knowledge',
@@ -33,22 +48,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     : false;
 
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html lang="id" className={jakarta.variable} suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/logo/pk-mark.png" />
+        {/* Berlatar solid: iOS mengisi area transparan ikon layar utama dengan
+            hitam. Dibuat oleh skrip/ikon-pwa.mjs dari logo aplikasi. */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/pwa/apple-touch-icon.png" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-title" content="ProductKnowledge" />
+        <meta name="apple-mobile-web-app-title" content="Product Knowledge" />
         {/* "default", bukan "black-translucent": yang terakhir menaruh isi di
             bawah bilah status iOS dan seluruh header harus digeser sendiri. */}
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
+        {/* Tanpa ini iOS mengubah angka seperti "14400" atau nomor soal
+            menjadi tautan telepon. */}
+        <meta name="format-detection" content="telephone=no" />
         {/* Menyetel tema sebelum paint, supaya mode gelap tidak berkedip putih. */}
         <script dangerouslySetInnerHTML={{ __html: SKRIP_TEMA }} />
       </head>
@@ -93,7 +107,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </nav>
           </div>
         </header>
-        <div className="bingkai">{children}</div>
+        <div className="bingkai">
+          <Pwa />
+          {children}
+        </div>
 
         {/* Nav bawah hanya tampil di ponsel. Header jadi ringkas, dan tautan
             utama berada di jangkauan jempol alih-alih di ujung atas layar. */}

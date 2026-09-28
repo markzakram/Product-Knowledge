@@ -27,6 +27,11 @@ export async function middleware(req: NextRequest) {
  * Yang dibebaskan hanya aset visual yang memang tidak rahasia: logo platform,
  * favicon, dan manifest PWA. Isi yang rahasia — halaman soal, /unduh, dan
  * berkas lain di public/ — tetap terkunci.
+ *
+ * sw.js dan ikon di pwa/ juga dibebaskan. Browser mengambil ikon manifest
+ * TANPA cookie, jadi ikon yang terkunci membuat aplikasi tidak bisa dipasang;
+ * dan sw.js hanya berisi logika cache, bukan isi. Halaman yang disimpan
+ * service worker tetap diambil lewat gerbang ini, dengan cookie pengguna.
  */
 export const config = {
   matcher: [
@@ -37,6 +42,6 @@ export const config = {
     // bagian dari konten rahasia. Pengunjung yang sudah masuk tetap bisa
     // memuatnya karena permintaan gambar dari asal yang sama ikut membawa
     // cookie sesi.
-    '/((?!(?:masuk|favicon\\.ico|icon\\.png|apple-icon\\.png|manifest\\.json)(?:$|/)|_next/static/|_next/image|logo/).*)',
+    '/((?!(?:masuk|favicon\\.ico|icon\\.png|apple-icon\\.png|manifest\\.json|sw\\.js)(?:$|/)|_next/static/|_next/image|logo/|pwa/).*)',
   ],
 };

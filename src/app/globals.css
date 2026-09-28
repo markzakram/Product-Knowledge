@@ -84,7 +84,8 @@ html, body {
   padding: 0;
   background: var(--latar);
   color: var(--teks);
-  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  /* --font-jakarta disediakan next/font di layout.tsx (fon di-host sendiri). */
+  font-family: var(--font-jakarta), 'Segoe UI', system-ui, -apple-system, sans-serif;
   font-size: 15px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
@@ -1244,3 +1245,46 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 .rumus-blok .katex-display { margin: 0.3em 0; text-align: left; }
 .rumus-blok .katex-display > .katex { text-align: left; }
 .opsi .rumus .katex { font-size: 1.02em; }
+
+/* Tawaran pasang aplikasi (PWA): bilah tipis di atas konten, bukan jendela
+   yang menghalangi. Hanya muncul bila browser menawarkan pemasangan. */
+.pasang {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 14px;
+  padding: 8px 8px 8px 12px;
+  background: var(--aksen-lembut);
+  border: 1px solid var(--aksen-garis);
+  border-radius: 12px;
+}
+.pasang-ikon { width: 36px; height: 36px; flex: none; }
+.pasang-teks { margin: 0; flex: 1; min-width: 0; font-size: 14px; line-height: 1.45; }
+.pasang-teks span { color: var(--teks-2); }
+.tombol.pasang-tombol {
+  width: auto;
+  margin: 0;
+  padding: 0 18px;
+  min-height: 40px;
+  flex: none;
+}
+.pasang-tutup {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--teks-2);
+  font: inherit;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.pasang-tutup:hover { background: var(--redup); color: var(--teks); }
+@media (max-width: 767.98px) {
+  /* Teks memakai satu baris penuh; tombol turun ke bawahnya. */
+  .pasang { flex-wrap: wrap; row-gap: 6px; }
+  .pasang-teks { flex-basis: calc(100% - 100px); }
+  .tombol.pasang-tombol { margin-left: 48px; }
+}

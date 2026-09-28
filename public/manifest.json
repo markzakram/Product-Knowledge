@@ -1,18 +1,43 @@
 {
+  "id": "/",
   "name": "Product Knowledge — Divisi Produk",
-  "short_name": "ProductKnowledge",
+  "short_name": "Product Knowledge",
   "description": "Informasi seleksi lintas platform: tahapan, subtes, materi, dan contoh soal.",
+  "lang": "id",
+  "dir": "ltr",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#f9f8f5",
-  "theme_color": "#04773c",
-  "lang": "id",
+  "theme_color": "#f9f8f5",
+  "categories": ["education", "productivity"],
   "icons": [
+    { "src": "/pwa/ikon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/pwa/ikon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/pwa/ikon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/pwa/ikon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
     {
-      "src": "/logo/pk-mark.png",
-      "sizes": "256x256",
-      "type": "image/png",
-      "purpose": "any"
+      "name": "Cari",
+      "short_name": "Cari",
+      "description": "Cari ambang batas, subtes, materi, dan soal",
+      "url": "/cari",
+      "icons": [{ "src": "/pwa/ikon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Banding",
+      "short_name": "Banding",
+      "description": "Bandingkan subtes lintas platform",
+      "url": "/banding",
+      "icons": [{ "src": "/pwa/ikon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Kelengkapan",
+      "short_name": "Kelengkapan",
+      "description": "Daftar isi yang masih kosong",
+      "url": "/kelengkapan",
+      "icons": [{ "src": "/pwa/ikon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }
