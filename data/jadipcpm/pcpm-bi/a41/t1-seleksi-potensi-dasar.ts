@@ -1,4 +1,10 @@
 import type { Tahapan } from '@/lib/skema';
+import {
+  contohVerbalBerkarir,
+  contohNumerikBerkarir,
+  contohDigitSimbolBerkarir,
+  contohDiagrammaticalBerkarir,
+} from './contoh-t1';
 
 /** Seleksi Potensi Dasar */
 export const tahapT1: Tahapan = {
@@ -93,6 +99,7 @@ Gani memesan Susu, sedangkan Kopi dipesan Joko. Kesimpulan: pernyataan SALAH.`,
               },
             ],
           },
+          ...contohVerbalBerkarir,
         ],
       },
     {
@@ -144,6 +151,7 @@ Melengkapi sel bertanda tanya: (83 - 2) dibagi 3 sama dengan 27.`,
               },
             ],
           },
+          ...contohNumerikBerkarir,
         ],
       },
     {
@@ -198,6 +206,7 @@ Melengkapi sel bertanda tanya: (83 - 2) dibagi 3 sama dengan 27.`,
             status: 'berjalan',
           },
         ],
+        contoh: contohDigitSimbolBerkarir,
       },
     {
         kode: 'diagrammatical',
@@ -227,6 +236,7 @@ Melengkapi sel bertanda tanya: (83 - 2) dibagi 3 sama dengan 27.`,
             status: 'berjalan',
           },
         ],
+        contoh: contohDiagrammaticalBerkarir,
       },
   ],
 };

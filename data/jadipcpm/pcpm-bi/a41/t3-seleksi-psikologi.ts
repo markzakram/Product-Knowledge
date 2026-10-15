@@ -1,4 +1,5 @@
 import type { Tahapan } from '@/lib/skema';
+import { contohKetelitianBerkarir } from './contoh-t3';
 
 /** Seleksi Psikologi */
 export const tahapT3: Tahapan = {
@@ -24,6 +25,7 @@ export const tahapT3: Tahapan = {
             catatan: `selang-seling`,
           },
         ],
+        contoh: contohKetelitianBerkarir,
       },
     {
         kode: 'lgd',

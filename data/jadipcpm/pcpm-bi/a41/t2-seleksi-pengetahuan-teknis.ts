@@ -1,4 +1,11 @@
 import type { Tahapan } from '@/lib/skema';
+import {
+  contohTpuBerkarir,
+  contohTpkBerkarir,
+  contohTbiStructureBerkarir,
+  contohTbiWrittenBerkarir,
+  contohTbiReadingBerkarir,
+} from './contoh-t2';
 
 /** Seleksi Pengetahuan Teknis */
 export const tahapT2: Tahapan = {
@@ -57,6 +64,7 @@ export const tahapT2: Tahapan = {
             status: 'berjalan',
           },
         ],
+        contoh: contohTpuBerkarir,
       },
     {
         kode: 'tpk',
@@ -95,6 +103,7 @@ export const tahapT2: Tahapan = {
             status: 'berjalan',
           },
         ],
+        contoh: contohTpkBerkarir,
       },
     {
         kode: 'tbistructure',
@@ -146,6 +155,7 @@ Tips: bila setelah rumpang langsung muncul kata benda tanpa artikel, pertimbangk
               },
             ],
           },
+          ...contohTbiStructureBerkarir,
         ],
       },
     {
@@ -171,6 +181,7 @@ Tips: bila setelah rumpang langsung muncul kata benda tanpa artikel, pertimbangk
             status: 'berjalan',
           },
         ],
+        contoh: contohTbiWrittenBerkarir,
       },
     {
         kode: 'tbireading',
@@ -195,6 +206,7 @@ Tips: bila setelah rumpang langsung muncul kata benda tanpa artikel, pertimbangk
             status: 'berjalan',
           },
         ],
+        contoh: contohTbiReadingBerkarir,
       },
   ],
 };
