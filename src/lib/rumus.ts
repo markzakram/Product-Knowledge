@@ -8,8 +8,8 @@
  *
  * Situs merendernya dengan KaTeX di server (lib/isi-kaya.ts). Modul ini
  * sengaja TANPA KaTeX: isinya hanya pengubah LaTeX ke teks biasa, untuk
- * tempat yang tidak bisa merender rumus — cuplikan pencarian dan dokumen
- * .docx. Hasilnya pendekatan, bukan tampilan utama.
+ * tempat yang tidak bisa merender rumus — cuplikan pencarian. Hasilnya
+ * pendekatan, bukan tampilan utama.
  */
 
 export const POLA_RUMUS = /\\\(([\s\S]+?)\\\)/g;

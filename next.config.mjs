@@ -7,7 +7,6 @@ const VERSI_BUILD = (process.env.VERCEL_GIT_COMMIT_SHA || Date.now().toString(36
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ['exceljs'],
   env: { NEXT_PUBLIC_VERSI_BUILD: VERSI_BUILD },
   async headers() {
     return [

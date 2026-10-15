@@ -10,7 +10,6 @@
     "impor": "node skrip/impor-xlsx.mjs"
   },
   "dependencies": {
-    "docx": "^9.7.1",
     "exceljs": "^4.4.0",
     "katex": "^0.16.47",
     "next": "^15.1.0",

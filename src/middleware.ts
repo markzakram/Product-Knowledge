@@ -25,8 +25,8 @@ export async function middleware(req: NextRequest) {
  * merusak situs justru saat ia bekerja dengan benar.
  *
  * Yang dibebaskan hanya aset visual yang memang tidak rahasia: logo platform,
- * favicon, dan manifest PWA. Isi yang rahasia — halaman soal, /unduh, dan
- * berkas lain di public/ — tetap terkunci.
+ * favicon, dan manifest PWA. Isi yang rahasia — halaman soal dan berkas
+ * lain di public/ — tetap terkunci.
  *
  * sw.js dan ikon di pwa/ juga dibebaskan. Browser mengambil ikon manifest
  * TANPA cookie, jadi ikon yang terkunci membuat aplikasi tidak bisa dipasang;

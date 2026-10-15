@@ -928,47 +928,11 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 }
 .tombol-buka:hover { border-style: solid; }
 
-/* ── Unduh dokumen ───────────────────────────────────────────────────── */
-.unduh-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 16px;
-  padding: 12px 15px;
-  border: 1px solid var(--garis);
-  border-radius: var(--r-kecil);
-  background: var(--redup);
-}
-.unduh-tombol {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid var(--garis);
-  background: var(--kartu);
-  border-radius: var(--r-kecil);
-  padding: 8px 14px;
-  font-size: 13.5px;
-  font-weight: 600;
-  box-shadow: var(--bayang);
-}
-.unduh-tombol span {
-  font-family: ui-monospace, monospace;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--aksen);
-  background: var(--aksen-lembut);
-  border-radius: 4px;
-  padding: 1px 5px;
-}
-.unduh-tombol:hover { text-decoration: none; border-color: var(--aksen); }
-.unduh-bar .kartu-kecil { flex: 1 1 240px; min-width: 200px; }
-
 /* ── Cetak: halaman angkatan jadi dokumen yang layak ──────────────────
    Dipakai untuk PDF lewat Ctrl+P, sehingga tidak perlu membundel mesin PDF
    ke dalam serverless. */
 @media print {
-  .kepala, .unduh-bar, .remah, .tetangga, .latihan-bar, .saring { display: none !important; }
+  .kepala, .remah, .tetangga, .latihan-bar, .saring { display: none !important; }
   html, body { background: #fff; color: #000; font-size: 11pt; }
   .bingkai { max-width: none; padding: 0; }
   .tahap, .soal, .panel, .lipat { break-inside: avoid; }
@@ -1043,14 +1007,12 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
   .saring select,
   .saring-hapus,
   .tombol-buka,
-  .unduh-tombol,
   .tema-grup button,
   .lipat summary,
   .chip { min-height: 44px; }
   .saring-centang { min-height: 44px; }
   .saring-centang input[type='checkbox'] { min-height: 0; width: 20px; height: 20px; }
   .chip { display: inline-flex; align-items: center; padding: 0 14px; }
-  .unduh-tombol { flex: 1 1 140px; justify-content: center; }
 
   /* ── Bilah nav bawah ───────────────────────────────────────────────── */
   .nav-bawah {
