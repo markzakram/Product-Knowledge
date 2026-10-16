@@ -136,9 +136,11 @@ Soal `skala`, soal `tanpaKunci`, dan isian singkat yang kuncinya berupa kalimat
 (lebih dari 24 karakter di luar spasi, atau 4 kata atau lebih) tidak dinilai
 otomatis: kuncinya tetap tampil di hasil untuk dibandingkan sendiri, jadi tulis
 kunci isian sependek mungkin bila ingin ikut dinilai. Bila contoh lebih banyak
-dari `jumlahSoal`, soal yang dipakai disebar merata di seluruh daftar (kelompok
-tetap utuh, urutan data tetap), bukan diambil dari depan; bila lebih sedikit,
-semuanya dipakai dan subtesnya berlabel "parsial". Batas waktu = `waktuMenit` ×
+dari `jumlahSoal`, soal yang dipakai disebar merata di seluruh daftar, bukan
+diambil dari depan (urutan data tetap; kelompok yang stimulusnya berisi teks
+atau gambar tetap utuh, jadi jumlahnya bisa lebih dari `jumlahSoal`, sedangkan
+kelompok tanpa stimulus atau yang hanya berjudul dipecah per soal); bila lebih
+sedikit, semuanya dipakai dan subtesnya berlabel "parsial". Batas waktu = `waktuMenit` ×
 (soal yang dipakai ÷ `jumlahSoal`, paling besar 1); tanpa `waktuMenit`
 simulasinya stopwatch tanpa batas. Tahapan `waktuBersama` (SKD) menjadi satu
 sesi dengan satu timer di simulasi angkatan, dan di simulasi satu subtes

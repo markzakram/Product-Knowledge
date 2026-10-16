@@ -129,6 +129,12 @@ const GAMBAR_IKON = {
       <path d="M5 4h11l-2 4 2 4H5" />
     </>
   ),
+  naik: (
+    <>
+      <path d="M12 19V5" />
+      <path d="m5 12 7-7 7 7" />
+    </>
+  ),
 };
 
 export function Ikon({ nama, ukuran = 18 }: { nama: keyof typeof GAMBAR_IKON; ukuran?: number }) {

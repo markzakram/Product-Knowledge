@@ -83,43 +83,45 @@ export const subtesBisaSimulasi = (s: Pick<Subtes, 'bankSoal' | 'contoh'>) =>
 
 /**
  * Aturan sebar murni: `titik` titik berjarak sama dijatuhkan di atas N soal (N = jumlah
- * `ukuran`), dan kelompok yang terkena titik ikut utuh. Kelompok ke-i terkena bila interval
- * [awal × titik/N, akhir × titik/N) memuat bilangan bulat, dengan awal dan akhir = posisi
- * kumulatif soal di batas kelompok itu. Dihitung dengan bilangan bulat saja, supaya batas
- * yang pas tak meleset karena galat pembulatan desimal.
+ * `ukuran`), dan satuan yang terkena titik ikut utuh. Titik ke-k berada di
+ * (k + 1/2) × N/titik, yaitu di TENGAH jatahnya: kalau di awal jatah (k × N/titik), soal
+ * pertama selalu ikut dan yang terbuang selalu menumpuk di ujung belakang daftar. Satuan
+ * ke-i terkena bila ada k bulat dengan awal <= (k + 1/2) × N/titik < akhir (awal dan akhir =
+ * posisi kumulatif soal di batasnya). Dihitung dengan bilangan bulat saja, dengan
+ * mengalikan semuanya 2 × titik, supaya batas yang pas tak meleset karena galat desimal.
  */
 export function terkenaTitik(ukuran: number[], titik: number): boolean[] {
   const total = ukuran.reduce((a, b) => a + b, 0);
   let awal = 0;
   return ukuran.map((u) => {
     const akhir = awal + u;
-    // Bilangan bulat terkecil yang >= awal × titik/N.
-    const x = awal * titik;
-    const bulat = (x - (x % total)) / total + (x % total === 0 ? 0 : 1);
+    // Cari kelipatan GANJIL terkecil (2k + 1) dari N yang >= 2 × awal × titik; terkena bila < 2 × akhir × titik.
+    const x = 2 * awal * titik;
+    let ganjil = (x - (x % total)) / total + (x % total === 0 ? 0 : 1);
+    if (ganjil % 2 === 0) ganjil += 1;
     awal = akhir;
-    return bulat * total < akhir * titik;
+    return ganjil * total < 2 * akhir * titik;
   });
 }
 
 /**
- * Kelompok mana yang ikut bila soalnya (N, jumlah `ukuran`) lebih banyak dari `jumlahSoal`
+ * Satuan mana yang ikut bila soalnya (N, jumlah `ukuran`) lebih banyak dari `jumlahSoal`
  * (T): disebar merata di seluruh daftar, bukan diambil dari depan, supaya semua bagian
- * subtes (verbal, numerik, figural) terwakili. Deterministik, urutan data tetap, kelompok
- * tetap utuh (stimulusnya dipakai bersama). Bila N <= T, semua ikut.
+ * subtes (verbal, numerik, figural) terwakili dan yang terbuang tersebar, bukan menumpuk
+ * di ujung. Deterministik dan urutan data tetap. Bila N <= T, semua ikut.
  *
  * Dasarnya `terkenaTitik` dengan T titik. Soal tunggal tepat satu per titik, jadi jumlahnya
- * T. Tapi kelompok besar terkena titik dan ikut SELURUHNYA: kalau semua kelompok sebesar
- * N/T atau lebih, semuanya terkena dan tak ada yang terpotong (TWK 5 kelompok × 8 soal
- * untuk T=30 tetap 40). Maka jumlah titik diturunkan (t <= T) sampai jumlah soalnya paling
- * sedikit T dan paling kecil: tak pernah kurang dari T, dan selisihnya hanya karena
- * kelompok utuh. Untuk soal tunggal t = T, yaitu aturan murni.
+ * T. Tapi satuan besar terkena titik dan ikut SELURUHNYA: kalau semua satuan sebesar N/T
+ * atau lebih, semuanya terkena dan tak ada yang terpotong. Maka jumlah titik diturunkan
+ * (t <= T) sampai jumlah soalnya paling sedikit T dan paling kecil: tak pernah kurang dari
+ * T, dan kelebihannya hanya karena satuan utuh. Untuk soal tunggal t = T.
  */
 export function kelompokTersebar(ukuran: number[], jumlahSoal: number): boolean[] {
   const total = ukuran.reduce((a, b) => a + b, 0);
   if (total <= jumlahSoal) return ukuran.map(() => true);
   let terbaik: boolean[] | null = null;
   let terkecil = Infinity;
-  // t = T selalu cukup: tiap titik jatuh di satu kelompok, dan kelompok itu tak lebih kecil dari titiknya.
+  // t = T selalu cukup: tiap titik jatuh di satu satuan, dan satuan itu tak lebih kecil dari titiknya.
   for (let titik = 1; titik <= Math.ceil(jumlahSoal); titik++) {
     const ikut = terkenaTitik(ukuran, titik);
     const n = ukuran.reduce((a, u, i) => a + (ikut[i] ? u : 0), 0);
@@ -132,11 +134,24 @@ export function kelompokTersebar(ukuran: number[], jumlahSoal: number): boolean[
 }
 
 /**
- * Soal yang dipakai satu subtes (tanpa uraian). Contoh yang lebih banyak dari `jumlahSoal`
- * dipilih tersebar merata (`kelompokTersebar`). Yang lebih sedikit dipakai semuanya dan
- * hasilnya `parsial`. Tanpa `jumlahSoal`, semua soal ikut dan tidak parsial.
+ * Stimulus yang benar-benar dibaca bersama soal-soalnya: punya isi atau gambar. Stimulus
+ * yang hanya berjudul (mis. "Pancasila" di TWK) cuma label topik, bukan bahan bersama.
  */
-export function pilihKelompok<K extends { soal: { tipe: TipeSoal }[] }>(
+export const stimulusNyata = (st?: { isi?: unknown; gambar?: unknown }) =>
+  !!st &&
+  (!!st.gambar ||
+    (typeof st.isi === 'string' ? st.isi.trim().length > 0 : Array.isArray(st.isi) && st.isi.length > 0));
+
+/**
+ * Soal yang dipakai satu subtes (tanpa uraian). Contoh yang lebih sedikit dari atau sama
+ * dengan `jumlahSoal` dipakai semuanya (lebih sedikit = `parsial`). Contoh yang lebih
+ * banyak dipilih tersebar merata (`kelompokTersebar`) dengan satuan pilihan: kelompok yang
+ * punya stimulus nyata (isi atau gambar) WAJIB utuh, jadi jumlahnya bisa lebih dari
+ * `jumlahSoal`; kelompok tanpa stimulus atau hanya berjudul dipecah per soal, dan soal
+ * yang terpilih tetap berada di bawah judul kelompoknya. Tanpa `jumlahSoal`, semua soal
+ * ikut dan tidak parsial.
+ */
+export function pilihKelompok<K extends { stimulus?: { isi?: unknown; gambar?: unknown }; soal: { tipe: TipeSoal }[] }>(
   contoh: K[] | undefined,
   jumlahSoal?: number,
 ): { kelompok: K[]; jumlah: number; parsial: boolean } {
@@ -147,11 +162,32 @@ export function pilihKelompok<K extends { soal: { tipe: TipeSoal }[] }>(
   }
   const total = ikut.reduce((n, k) => n + k.soal.length, 0);
   const batas = jumlahSoal !== undefined && jumlahSoal > 0 ? jumlahSoal : undefined;
-  if (batas === undefined) return { kelompok: ikut, jumlah: total, parsial: false };
+  if (batas === undefined || total <= batas) {
+    return { kelompok: ikut, jumlah: total, parsial: batas !== undefined && total < batas };
+  }
 
-  const dipilih = kelompokTersebar(ikut.map((k) => k.soal.length), batas);
-  const kelompok = ikut.filter((_, i) => dipilih[i]);
-  return { kelompok, jumlah: kelompok.reduce((n, k) => n + k.soal.length, 0), parsial: total < batas };
+  // Satuan pilihan: satu kelompok utuh, atau satu soal dari kelompok yang boleh dipecah.
+  const satuan: { kelompok: number; soal: number | null; ukuran: number }[] = [];
+  ikut.forEach((k, g) => {
+    if (stimulusNyata(k.stimulus)) satuan.push({ kelompok: g, soal: null, ukuran: k.soal.length });
+    else k.soal.forEach((_, j) => satuan.push({ kelompok: g, soal: j, ukuran: 1 }));
+  });
+  const dipilih = kelompokTersebar(satuan.map((x) => x.ukuran), batas);
+
+  const terpilih = new Map<number, Set<number>>();
+  satuan.forEach((x, i) => {
+    if (!dipilih[i]) return;
+    const himpunan = terpilih.get(x.kelompok) ?? new Set<number>();
+    if (x.soal === null) ikut[x.kelompok].soal.forEach((_, j) => himpunan.add(j));
+    else himpunan.add(x.soal);
+    terpilih.set(x.kelompok, himpunan);
+  });
+  const kelompok: K[] = [];
+  ikut.forEach((k, g) => {
+    const himpunan = terpilih.get(g);
+    if (himpunan && himpunan.size > 0) kelompok.push({ ...k, soal: k.soal.filter((_, j) => himpunan.has(j)) });
+  });
+  return { kelompok, jumlah: kelompok.reduce((n, k) => n + k.soal.length, 0), parsial: false };
 }
 
 /**

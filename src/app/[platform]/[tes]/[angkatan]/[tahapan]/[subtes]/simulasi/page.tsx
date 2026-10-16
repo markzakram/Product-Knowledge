@@ -7,10 +7,10 @@ import 'katex/dist/katex.min.css';
 
 /**
  * Simulasi satu subtes. Hanya subtes yang punya soal untuk dikerjakan (bukan
- * `bankSoal: false`, dan bukan hanya soal uraian) yang dibuatkan rutenya; selainnya 404.
+ * `bankSoal: false`, dan bukan hanya soal uraian) yang dibuatkan rutenya; selainnya 404 lewat
+ * notFound() di bawah, seperti halaman lain. `dynamicParams = false` sengaja tidak dipakai:
+ * di `next start` ia membuat tiap 404 tercatat sebagai "Internal: NoFallbackError".
  */
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return semuaSubtes()
     .filter((j) => subtesBisaSimulasi(j.subtes))

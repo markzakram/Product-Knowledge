@@ -7,10 +7,10 @@ import 'katex/dist/katex.min.css';
 
 /**
  * Simulasi seluruh angkatan: subtes berurutan, tiap bagian dengan waktunya sendiri.
- * Hanya angkatan yang punya subtes dengan soal yang dibuatkan rutenya; selainnya 404.
+ * Hanya angkatan yang punya subtes dengan soal yang dibuatkan rutenya; selainnya 404 lewat
+ * notFound() di bawah, seperti halaman lain. `dynamicParams = false` sengaja tidak dipakai:
+ * di `next start` ia membuat tiap 404 tercatat sebagai "Internal: NoFallbackError".
  */
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return semuaAngkatan()
     .filter((j) => angkatanBisaSimulasi(j.angkatan))

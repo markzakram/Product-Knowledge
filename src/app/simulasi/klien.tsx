@@ -218,9 +218,10 @@ export function Simulasi(props: PropsSimulasi) {
   const kunciSimpan = `${AWALAN_SIMPAN}:${jalur}`;
 
   const [sesi, kirim] = useReducer((s: Sesi, a: Aksi) => reduce(s, a, idBagian), bagian.length, sesiAwal);
-  // Server tak bisa membaca sessionStorage, jadi layar pertama selalu layar awal; baru
-  // setelah terpasang sesi tersimpan dipulihkan. Selama itu tombol Mulai dimatikan,
-  // supaya ketukan yang masuk sebelum hidrasi tak menimpa sesi yang akan dipulihkan.
+  // Server tak bisa membaca sessionStorage. Sampai sesi tersimpan dibaca (`siap`), yang
+  // tampil hanya kerangka, BUKAN layar awal: muat ulang di tengah ujian tak boleh
+  // menampilkan layar awal sekejap lalu melompat. Ketukan sebelum hidrasi pun tak
+  // mengenai apa pun, jadi tak bisa menimpa sesi yang akan dipulihkan.
   const [siap, setSiap] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
 
@@ -247,10 +248,10 @@ export function Simulasi(props: PropsSimulasi) {
     if (siap) simpan(kunciSimpan, ttd, sesi);
   }, [siap, kunciSimpan, ttd, sesi]);
 
-  // Layar berganti isi (soal, bagian, hasil) tanpa pindah halaman: kembali ke atas. Tidak
-  // dijalankan saat pertama terpasang, supaya muat ulang tak membuang posisi gulir yang
-  // dipulihkan peramban. Pindah fase atau bagian juga memindahkan fokus ke isi barunya
-  // (#sim-fokus); tombol yang tadi difokuskan sudah hilang dan fokus jatuh ke <body>.
+  // Layar berganti isi (soal, bagian, hasil) tanpa pindah halaman: kembali ke atas. Pindah
+  // fase atau bagian, termasuk sesi yang baru dipulihkan, juga memindahkan fokus ke isi
+  // barunya (#sim-fokus: soal yang aktif atau judul hasil); tombol yang tadi difokuskan
+  // sudah hilang dan fokus akan jatuh ke <body>. Render pertama (kerangka) dilewati.
   const dulu = useRef<string | null>(null);
   useEffect(() => {
     const kini = `${sesi.fase}.${sesi.aktif}.${sesi.pos}`;
@@ -266,6 +267,7 @@ export function Simulasi(props: PropsSimulasi) {
   if (bagian.length === 0) {
     return <Kosong teks="Belum ada soal untuk disimulasikan" sebab="Subtes ini belum punya contoh soal yang bisa dikerjakan." />;
   }
+  if (!siap) return <Memuat nama={props.nama} />;
   const ulangi = () => {
     setInfo(null);
     kirim({ jenis: 'ulang' });
@@ -276,12 +278,21 @@ export function Simulasi(props: PropsSimulasi) {
   if (sesi.fase === 'hasil') {
     return <Hasil props={props} sesi={sesi} butir={butirBagian} info={info} setInfo={setInfo} onUlang={ulangi} />;
   }
-  return <Awal props={props} siap={siap} onMulai={() => kirim({ jenis: 'mulai', sekarang: Date.now() })} />;
+  return <Awal props={props} onMulai={() => kirim({ jenis: 'mulai', sekarang: Date.now() })} />;
+}
+
+/** Kerangka selama sesi tersimpan dibaca; sebentar saja, lalu layar awal, ujian, atau hasil. */
+function Memuat({ nama }: { nama: string }) {
+  return (
+    <div className="sim sim-memuat" role="status" aria-live="polite">
+      <p className="kartu-kecil">Memuat simulasi {nama}…</p>
+    </div>
+  );
 }
 
 // ─── Layar awal ──────────────────────────────────────────────────────────
 
-function Awal({ props, siap, onMulai }: { props: PropsSimulasi; siap: boolean; onMulai: () => void }) {
+function Awal({ props, onMulai }: { props: PropsSimulasi; onMulai: () => void }) {
   const { bagian, dilewati, status, judul, nama } = props;
   const label = LABEL_STATUS[status];
   const totalSoal = bagian.reduce((n, b) => n + jumlahSoalBagian(b), 0);
@@ -392,7 +403,7 @@ function Awal({ props, siap, onMulai }: { props: PropsSimulasi; siap: boolean; o
             {dikunci ? (
               <p className="kartu-kecil">Belum ada data untuk disimulasikan.</p>
             ) : (
-              <button type="button" className="aksi aksi-utama" onClick={onMulai} disabled={!siap}>
+              <button type="button" className="aksi aksi-utama" onClick={onMulai}>
                 <Ikon nama="putar" ukuran={16} />
                 Mulai simulasi
               </button>
@@ -472,11 +483,21 @@ function Penghitung({ mulai, batas, onHabis }: { mulai: number; batas?: number; 
   return (
     <>
       <span
-        className={`sim-timer${mendesak ? ' sim-timer-desak' : ''}`}
+        className={`sim-timer${mendesak ? ' sim-timer-desak' : ''}${terbatas ? '' : ' sim-timer-stopwatch'}`}
         role="timer"
-        aria-label={terbatas ? 'Sisa waktu' : 'Waktu berjalan'}
+        aria-label={terbatas ? 'Sisa waktu, menghitung mundur' : 'Waktu berjalan, menghitung naik dari nol'}
       >
-        <Ikon nama="jam" ukuran={18} />
+        <span className="sim-timer-jam">
+          <Ikon nama="jam" ukuran={18} />
+        </span>
+        {/* Stopwatch di ponsel: teks "berjalan" disembunyikan karena sempit, jadi angkanya
+            diberi panah naik (menggantikan ikon jam). Tanpa penanda, "00:05" terbaca seperti
+            hitung mundur yang macet. */}
+        {!terbatas && (
+          <span className="sim-timer-naik" aria-hidden>
+            <Ikon nama="naik" ukuran={13} />
+          </span>
+        )}
         <span className="sim-timer-angka">{formatJam(detik)}</span>
         <span className="sim-timer-ket">{terbatas ? 'tersisa' : 'berjalan'}</span>
       </span>
@@ -685,7 +706,8 @@ function Ujian({
               aria-haspopup="dialog"
               aria-label={`Soal ${ini.nomor} dari ${jumlahDiSubtes}. Buka daftar nomor soal`}
             >
-              Soal {ini.nomor} dari {jumlahDiSubtes}
+              <span className="sim-nomor-penuh">Soal {ini.nomor} dari {jumlahDiSubtes}</span>
+              <span className="sim-nomor-ringkas" aria-hidden>Soal {ini.nomor}/{jumlahDiSubtes}</span>
               <Ikon nama="bawah" ukuran={16} />
             </button>
           </div>
@@ -717,7 +739,7 @@ function Ujian({
 
       {info && <Pemberitahuan teks={info} onTutup={() => setInfo(null)} />}
 
-      <main className="sim-utama" id="sim-fokus" tabIndex={-1}>
+      <main className="sim-utama">
         <div className="sim-kolom">
           <SoalLayar
             key={ini.id}
@@ -919,7 +941,7 @@ function SoalLayar({
   const adaStimulus = !!stimulus && !!(stimulus.isi?.length || stimulus.gambar || stimulus.judul);
 
   return (
-    <article className="sim-kartu" aria-labelledby={idSoal}>
+    <article className="sim-kartu" id="sim-fokus" tabIndex={-1} aria-labelledby={idSoal}>
       <div className="sim-kartu-kepala">
         <span className="sim-kartu-no" id={idSoal}>Soal {butir.nomor}</span>
         {subtes && <span className="chip-kode" title={subtes.nama}>{subtes.chip}</span>}
@@ -1281,12 +1303,18 @@ function Hasil({
   );
 }
 
-/** Batang proporsi hasil: benar, salah, tidak dijawab (soal dinilai), dan tidak dinilai. */
+/**
+ * Batang proporsi hasil, dibagi menurut PENILAIAN: benar, salah, kosong di antara soal yang
+ * dinilai, dan tidak dinilai (cakupan sama dengan saringan "Tidak dinilai"). Kata "tidak
+ * dijawab" sengaja tidak dipakai di sini: di ringkasan, saringan, dan kartu soal ia berarti
+ * SEMUA soal tanpa jawaban, termasuk yang tak dinilai, sedangkan batang ini hanya
+ * menghitung yang dinilai.
+ */
 function Proporsi({ r }: { r: Ringkasan }) {
   const bagian = [
     { kelas: 'sim-seg-benar', n: r.benar, teks: 'Benar' },
     { kelas: 'sim-seg-salah', n: r.salah, teks: 'Salah' },
-    { kelas: 'sim-seg-kosong', n: r.kosong, teks: 'Tidak dijawab' },
+    { kelas: 'sim-seg-kosong', n: r.kosong, teks: 'Kosong (soal dinilai)' },
     { kelas: 'sim-seg-tdk', n: r.tidakDinilai, teks: 'Tidak dinilai' },
   ];
   const ringkasan = bagian.map((x) => `${x.teks} ${x.n}`).join(', ');
@@ -1354,10 +1382,19 @@ function KartuHasil({ h, subtes }: { h: ButirHasil; subtes?: { chip: string; nam
           <div className="sim-hasil-soal-baris">
             <span className="sr-saja">Soal {butir.nomor}</span>
             <span className={label.kelas}>{label.teks}</span>
+            {/* "Tidak dijawab" berarti sama di seluruh layar ini (ringkasan, saringan, kartu):
+                soal tanpa jawaban, dinilai atau tidak. Soal tak dinilai yang kosong
+                mendapat kedua lencana, supaya kartunya cocok dengan saringannya. */}
+            {penilaian.status === 'tidak-dinilai' && !penilaian.dijawab && (
+              <span className="lencana lencana-abu">Tidak dijawab</span>
+            )}
             {ragu && <span className="lencana lencana-kuning">Ragu-ragu</span>}
             {draf && <span className="lencana lencana-abu" title="Soal ini masih draf: belum direview tim akademik.">Draf</span>}
             {subtes && <span className="chip-kode" title={subtes.nama}>{subtes.chip}</span>}
             <span className="kartu-kecil">{LABEL_TIPE[soal.tipe] ?? soal.tipe}</span>
+            {/* Nomor di layar mengikuti urutan soal terpilih; nomor data dipakai untuk melacak
+                soalnya di berkas data saat melaporkan salah ketik. */}
+            <span className="kartu-kecil" title="Nomor soal ini di berkas data">No. {soal.nomor} di data</span>
           </div>
           <div className="pra sim-hasil-tanya">
             <IsiKaya bagian={soal.pertanyaan} />
