@@ -6,6 +6,7 @@
  */
 import { PLATFORM } from '../../data';
 import { daftarKunci, type Angkatan, type Platform, type Subtes, type Tahapan, type Tes } from './skema';
+import { subtesBisaSimulasi } from './simulasi';
 
 export { PLATFORM };
 
@@ -127,6 +128,27 @@ export function tetanggaSubtes(j: JalurSubtes) {
     ke: i + 1,
     dari: runtun.length,
   };
+}
+
+// ─── Simulasi ────────────────────────────────────────────────────────────
+
+export { subtesBisaSimulasi };
+
+/** Halaman simulasi satu subtes. Hanya ada untuk subtes yang `subtesBisaSimulasi`. */
+export const tautanSimulasiSubtes = (j: JalurSubtes) => `${tautanSubtes(j)}/simulasi`;
+
+/** Halaman simulasi seluruh angkatan. Hanya ada bila sedikitnya satu subtesnya bisa disimulasikan. */
+export const tautanSimulasiAngkatan = (j: JalurAngkatan) => `${tautanAngkatan(j)}/simulasi`;
+
+export const angkatanBisaSimulasi = (a: Angkatan) =>
+  a.tahapan.some((t) => t.subtes.some(subtesBisaSimulasi));
+
+/** Subtes sesudah yang ini (urutan tahapan lalu subtes) yang punya halaman simulasi. */
+export function subtesSimulasiBerikutnya(j: JalurSubtes): JalurSubtes | null {
+  for (let x = tetanggaSubtes(j).sesudah; x; x = tetanggaSubtes(x).sesudah) {
+    if (subtesBisaSimulasi(x.subtes)) return x;
+  }
+  return null;
 }
 
 // ─── Penjelajahan menyeluruh ─────────────────────────────────────────────

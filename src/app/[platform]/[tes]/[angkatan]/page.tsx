@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import {
   cariAngkatan, semuaAngkatan, jumlahContoh, tautanPlatform, tautanSubtes,
-  angkaId, angkaAngkatan, angkaTahapan, idTahapan, judulAngkatan, kodeChipTahapan, ringkasAngka,
+  angkaId, angkaAngkatan, angkaTahapan, angkatanBisaSimulasi, idTahapan, judulAngkatan, kodeChipTahapan,
+  ringkasAngka, subtesBisaSimulasi, tautanSimulasiAngkatan, tautanSimulasiSubtes,
 } from '@/lib/data';
 import { LABEL_STATUS } from '@/lib/skema';
 import { Remah, Status, Kosong, LegendaStatus, Ikon, TabelGulir } from '../../../komponen';
@@ -97,6 +98,13 @@ export default async function HalamanAngkatan({
         </div>
         <div className="ang-aksi">
           <Cetak />
+          {/* Hanya bila ada subtes yang punya soal untuk dikerjakan; selainnya rutenya tak ada. */}
+          {angkatanBisaSimulasi(angkatan) && (
+            <a className="aksi aksi-utama tanpa-cetak" href={tautanSimulasiAngkatan(jalur)}>
+              <Ikon nama="putar" ukuran={16} />
+              Mulai simulasi
+            </a>
+          )}
         </div>
       </section>
 
@@ -144,6 +152,7 @@ export default async function HalamanAngkatan({
             <ol className="lini">
               {angkatan.tahapan.map((tahapan, i) => {
                 const adaSubtes = tahapan.subtes.length > 0;
+                const adaSimulasi = tahapan.subtes.some(subtesBisaSimulasi);
                 const chip = kodeChipTahapan(tahapan.subtes.map((s) => s.nama));
                 return (
                   <li key={tahapan.kode} className={`lini-butir${adaSubtes ? '' : ' lini-kosong'}`}>
@@ -177,6 +186,11 @@ export default async function HalamanAngkatan({
                                 <th>Soal</th>
                                 <th>Waktu</th>
                                 <th>Contoh soal</th>
+                                {adaSimulasi && (
+                                  <th className="tanpa-cetak">
+                                    <span className="sr-saja">Simulasi</span>
+                                  </th>
+                                )}
                                 <th>
                                   <span className="sr-saja">Buka</span>
                                 </th>
@@ -209,6 +223,18 @@ export default async function HalamanAngkatan({
                                     <td className={n ? 'contoh-ada' : 'contoh-belum'}>
                                       {n ? `${n} soal` : 'Belum ada'}
                                     </td>
+                                    {adaSimulasi && (
+                                      <td className="sub-sim tanpa-cetak">
+                                        {subtesBisaSimulasi(subtes) && (
+                                          <a
+                                            href={tautanSimulasiSubtes({ ...jalur, tahapan, subtes })}
+                                            aria-label={`Simulasi ${subtes.nama}`}
+                                          >
+                                            Simulasi
+                                          </a>
+                                        )}
+                                      </td>
+                                    )}
                                     <td className="sub-panah">
                                       {/* Panah ikut bisa diketuk, tapi tak jadi
                                           perhentian fokus kedua untuk subtes yang sama. */}

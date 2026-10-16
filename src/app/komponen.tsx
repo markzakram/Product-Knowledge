@@ -102,6 +102,33 @@ const GAMBAR_IKON = {
       <path d="M11 12h1v5h1" />
     </>
   ),
+  putar: <path d="M7 5v14l11-7z" />,
+  kiri: (
+    <>
+      <path d="M19 12H5" />
+      <path d="m11 6-6 6 6 6" />
+    </>
+  ),
+  bawah: <path d="m6 9 6 6 6-6" />,
+  tutup: (
+    <>
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </>
+  ),
+  jam: (
+    <>
+      <circle cx="12" cy="13" r="8" />
+      <path d="M12 9v4l2.5 2" />
+      <path d="M9 2h6" />
+    </>
+  ),
+  bendera: (
+    <>
+      <path d="M5 21V4" />
+      <path d="M5 4h11l-2 4 2 4H5" />
+    </>
+  ),
 };
 
 export function Ikon({ nama, ukuran = 18 }: { nama: keyof typeof GAMBAR_IKON; ukuran?: number }) {

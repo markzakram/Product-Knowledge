@@ -52,6 +52,8 @@ export interface PetaAngkatan {
   judul: string;
   /** "160 soal · 195 menit · 141 contoh soal"; kosong bila angkatan tak punya subtes. */
   total: string;
+  /** Halaman simulasi angkatan; kosong bila tak ada subtesnya yang punya soal untuk dikerjakan. */
+  simulasi?: string;
   tahapan: PetaTahapan[];
 }
 
@@ -168,6 +170,13 @@ export function PetaTes({ nama, kategori, instansi, deskripsi, angkatan, awal }:
               Buka {aktif.judul}
               <Ikon nama="panah" />
             </a>
+            {aktif.simulasi && (
+              <a className="aksi aksi-garis" href={aktif.simulasi}>
+                <Ikon nama="putar" ukuran={16} />
+                Coba simulasi
+                <span className="sr-saja"> {aktif.judul}</span>
+              </a>
+            )}
           </div>
         </>
       )}

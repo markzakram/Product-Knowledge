@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
 import {
-  cariSubtes, semuaSubtes, jumlahContoh, judulAngkatan, labelTahapan, tetanggaSubtes,
-  tautanAngkatan, tautanPlatform, tautanSubtes,
+  cariSubtes, semuaSubtes, jumlahContoh, judulAngkatan, labelTahapan, subtesBisaSimulasi, tetanggaSubtes,
+  tautanAngkatan, tautanPlatform, tautanSimulasiSubtes, tautanSubtes,
 } from '@/lib/data';
-import { Remah, Status, Kosong, Waktu } from '../../../../../komponen';
+import { Remah, Status, Kosong, Waktu, Ikon } from '../../../../../komponen';
 import { siapkanKelompok, uraikan } from '@/lib/isi-kaya';
 import { IsiKaya } from '../../../../../isi-kaya';
 import { DaftarSoal } from '../../../../../soal';
@@ -110,7 +110,16 @@ export default async function HalamanSubtes({
         </ul>
       )}
 
-      <h2>Contoh Soal</h2>
+      <div className="kepala-contoh">
+        <h2>Contoh Soal</h2>
+        {/* Hanya bila ada soal untuk dikerjakan; selainnya rutenya tak ada. */}
+        {subtesBisaSimulasi(subtes) && (
+          <a className="aksi aksi-garis tanpa-cetak" href={tautanSimulasiSubtes(jalur)}>
+            <Ikon nama="putar" ukuran={16} />
+            Simulasi subtes ini
+          </a>
+        )}
+      </div>
       {(subtes.contoh ?? []).length === 0 ? (
         <Kosong teks="Belum ada contoh soal"
           sebab={subtes.catatan ?? "Contoh soal untuk subtes ini belum dimasukkan."}

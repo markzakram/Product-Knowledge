@@ -122,9 +122,27 @@ masuk lewat jalur yang mereka bisa; yang tayang tetap lewat review.
 | `/<platform>` | Tes dan angkatan, mis. `/jadipcpm` |
 | `/<platform>/<tes>/<angkatan>` | Tahapan, subtes, info seleksi, sumber |
 | `/<platform>/<tes>/<angkatan>/<tahapan>/<subtes>` | Spesifikasi, materi, mapping, contoh soal |
+| `/<platform>/<tes>/<angkatan>/simulasi` | Simulasi seluruh angkatan dari contoh soalnya: subtes berurutan, tiap bagian dengan waktunya sendiri. Hasil dan pembahasan tampil di rute yang sama. Hanya angkatan yang punya subtes dengan soal |
+| `/<platform>/<tes>/<angkatan>/<tahapan>/<subtes>/simulasi` | Simulasi satu subtes. Hanya subtes yang punya soal untuk dikerjakan (bukan `bankSoal: false`, bukan hanya uraian) |
 | `/cari?q=` | Pencarian lintas semua isi termasuk opsi dan pembahasan soal |
 | `/dashboard` | Rekap kekurangan soal dan angkatan yang datanya belum lengkap |
 | `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, mapping janggal |
+
+### Mode simulasi
+
+Contoh soal tiap subtes otomatis bisa dikerjakan sebagai simulasi di rute
+`…/simulasi`, tanpa menulis apa pun khusus di data; soal `uraian` tidak ikut.
+Soal `skala`, soal `tanpaKunci`, dan isian singkat yang kuncinya berupa kalimat
+(lebih dari 24 karakter di luar spasi, atau 4 kata atau lebih) tidak dinilai
+otomatis: kuncinya tetap tampil di hasil untuk dibandingkan sendiri, jadi tulis
+kunci isian sependek mungkin bila ingin ikut dinilai. Bila contoh lebih banyak
+dari `jumlahSoal`, soal yang dipakai disebar merata di seluruh daftar (kelompok
+tetap utuh, urutan data tetap), bukan diambil dari depan; bila lebih sedikit,
+semuanya dipakai dan subtesnya berlabel "parsial". Batas waktu = `waktuMenit` ×
+(soal yang dipakai ÷ `jumlahSoal`, paling besar 1); tanpa `waktuMenit`
+simulasinya stopwatch tanpa batas. Tahapan `waktuBersama` (SKD) menjadi satu
+sesi dengan satu timer di simulasi angkatan, dan di simulasi satu subtes
+jatahnya porsi dari waktu sesi menurut jumlah soal tahapan itu.
 
 ## Akses
 
