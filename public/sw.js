@@ -135,7 +135,7 @@ function ambilDanSimpan(event, req, kunci) {
   const jaringan = fetch(req).then((res) => {
     if (bolehDisimpan(res)) {
       const salinan = res.clone();
-      simpan = caches.open(CACHE).then((c) => c.put(kunci, salinan));
+      simpan = caches.open(CACHE).then((c) => c.put(kunci, salinan)).catch(() => {});
     }
     return res;
   });
@@ -168,6 +168,8 @@ async function cacheDulu(req) {
   const ada = await cache.match(req, { ignoreVary: true });
   if (ada) return ada;
   const res = await fetch(req);
-  if (bolehDisimpan(res)) await cache.put(req, res.clone());
+  // Gagal menyimpan (kuota penuh, atau Cache Storage menolak dengan
+  // "Entry already exists") tidak boleh menggagalkan respons.
+  if (bolehDisimpan(res)) await cache.put(req, res.clone()).catch(() => {});
   return res;
 }
