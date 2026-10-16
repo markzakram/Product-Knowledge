@@ -4,7 +4,8 @@ import {
   tautanAngkatan, tautanPlatform, tautanSubtes,
 } from '@/lib/data';
 import { Remah, Status, Kosong, Waktu } from '../../../../../komponen';
-import { siapkanKelompok } from '@/lib/isi-kaya';
+import { siapkanKelompok, uraikan } from '@/lib/isi-kaya';
+import { IsiKaya } from '../../../../../isi-kaya';
 import { DaftarSoal } from '../../../../../soal';
 // Gaya dan fon rumus KaTeX. Rumusnya sendiri dirender di server.
 import 'katex/dist/katex.min.css';
@@ -73,8 +74,9 @@ export default async function HalamanSubtes({
       {subtes.formatKetentuan && (
         <div className="panel">
           <div className="stimulus-label">Format dan ketentuan</div>
+          {/* Lewat uraikan(): boleh memuat gambar (mis. tangkapan layar bentuk tes). */}
           <p className="pra" style={{ marginTop: 4 }}>
-            {subtes.formatKetentuan}
+            <IsiKaya bagian={uraikan(subtes.formatKetentuan)} />
           </p>
         </div>
       )}
@@ -82,7 +84,7 @@ export default async function HalamanSubtes({
         <div className="panel">
           <div className="stimulus-label">Penilaian</div>
           <p className="pra" style={{ marginTop: 4 }}>
-            {subtes.penilaian}
+            <IsiKaya bagian={uraikan(subtes.penilaian)} />
           </p>
         </div>
       )}

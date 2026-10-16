@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { KelompokSiap, SoalSiap } from '@/lib/bagian';
+import { daftarKunci } from '@/lib/skema';
 import { IsiKaya } from './isi-kaya';
 
 const WARNA_REVIEW: Record<string, string> = {
@@ -19,9 +20,11 @@ const WARNA_TINGKAT: Record<string, string> = {
 const LABEL_TIPE: Record<string, string> = {
   pg: 'Pilihan ganda',
   pg_kompleks: 'PG kompleks',
+  pg_kategori: 'PG kategori',
   isian_singkat: 'Isian singkat',
   benar_salah: 'Benar / Salah',
   skala: 'Berskala',
+  uraian: 'Uraian / tugas bebas',
 };
 
 const KUNCI_SIMPAN = 'pk-latihan';
@@ -37,11 +40,18 @@ function KartuSoal({
   terbuka: boolean;
   onBuka: () => void;
 }) {
-  const kunci = soal.kunci.trim().toUpperCase();
   const opsi = soal.opsi ?? [];
+  // PG biasa punya satu huruf kunci, PG kompleks beberapa huruf. PG kategori
+  // punya satu kategori per pernyataan, jadi semua barisnya ditandai.
+  const kunciDaftar = daftarKunci(soal);
+  const kunciHuruf = kunciDaftar.map((k) => k.toUpperCase());
+  const berkategori = soal.tipe === 'pg_kategori' && kunciDaftar.length === opsi.length;
   // Soal berskala tidak punya "jawaban benar" tunggal; kuncinya adalah opsi
   // berskor tertinggi. Labelnya dibedakan supaya tidak salah dibaca.
   const berskala = soal.tipe === 'skala';
+  // Tes kepribadian, uraian, dan tugas menggambar tidak punya jawaban benar:
+  // tidak ada opsi yang ditandai dan tidak ada baris "Jawaban:".
+  const tanpaKunci = soal.tanpaKunci === true;
   // Jawaban disembunyikan hanya kalau mode latihan menyala DAN soal ini
   // belum dibuka. Tiap soal dibuka sendiri-sendiri, bukan sekaligus.
   const tutup = latihan && !terbuka;
@@ -52,6 +62,7 @@ function KartuSoal({
       <div className="soal-kepala">
         <span className="soal-nomor">SOAL {soal.nomor}</span>
         <span className="lencana lencana-aksen">{LABEL_TIPE[soal.tipe] ?? soal.tipe}</span>
+        {tanpaKunci && <span className="lencana lencana-abu">Tanpa jawaban benar</span>}
         {soal.tingkat && (
           <span className={WARNA_TINGKAT[soal.tingkat] ?? 'lencana lencana-abu'}>
             {soal.tingkat}
@@ -77,10 +88,17 @@ function KartuSoal({
           <img className="gambar-soal" src={`/${soal.gambar}`} alt={`Gambar soal ${soal.nomor}`} />
         )}
 
+        {soal.tipe === 'pg_kategori' && soal.kategori && (
+          <p className="kartu-kecil" style={{ margin: '12px 0 0' }}>
+            Tentukan kategori tiap pernyataan: {soal.kategori[0]} atau {soal.kategori[1]}.
+          </p>
+        )}
+
         {opsi.length > 0 ? (
           <ul className="opsi">
-            {opsi.map((o) => {
-              const ini = o.label === kunci && !tutup;
+            {opsi.map((o, i) => {
+              const ini =
+                !tanpaKunci && !tutup && (berkategori || kunciHuruf.includes(o.label));
               return (
                 <li key={o.label} className={ini ? 'benar' : undefined}>
                   <span className="opsi-label">{o.label}</span>
@@ -88,13 +106,19 @@ function KartuSoal({
                     <IsiKaya bagian={o.teks} />
                   </span>
                   {ini && (
-                    <span className="tanda-kunci">{berskala ? 'SKOR TERTINGGI' : 'KUNCI'}</span>
+                    <span className="tanda-kunci">
+                      {berkategori
+                        ? `KUNCI: ${kunciDaftar[i].toUpperCase()}`
+                        : berskala
+                          ? 'SKOR TERTINGGI'
+                          : 'KUNCI'}
+                    </span>
                   )}
                 </li>
               );
             })}
           </ul>
-        ) : (
+        ) : tanpaKunci ? null : (
           <p className="kunci-isian">
             Jawaban: <b>{tutup ? '•••' : soal.kunci || '—'}</b>
           </p>
@@ -103,14 +127,14 @@ function KartuSoal({
         {tutup ? (
           <div className="pembahasan">
             <button type="button" className="tombol-buka" onClick={onBuka}>
-              Lihat jawaban dan pembahasan
+              {tanpaKunci ? 'Lihat cara penilaian' : 'Lihat jawaban dan pembahasan'}
             </button>
           </div>
         ) : (
           <div className="pembahasan">
             {soal.pembahasan.length > 0 ? (
               <>
-                <div className="pembahasan-label">Pembahasan</div>
+                <div className="pembahasan-label">{tanpaKunci ? 'Cara penilaian' : 'Pembahasan'}</div>
                 <p className="pra">
                   <IsiKaya bagian={soal.pembahasan} />
                 </p>

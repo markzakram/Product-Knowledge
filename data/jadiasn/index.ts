@@ -1,5 +1,6 @@
 import type { Platform } from '@/lib/skema';
 import { cpns2026 } from './cpns/a2026';
+import { cpns2027 } from './cpns/a2027';
 
 export const jadiasn: Platform = {
   kode: 'JADIASN',
@@ -16,7 +17,7 @@ export const jadiasn: Platform = {
       deskripsi:
         'Pengadaan Calon Pegawai Negeri Sipil. SKD memakai CAT BKN, ' +
         'SKB menyesuaikan jabatan dan instansi.',
-      angkatan: [cpns2026],
+      angkatan: [cpns2026, cpns2027],
     },
   ],
 };

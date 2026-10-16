@@ -16,7 +16,14 @@
 export type StatusData = 'terkonfirmasi' | 'indikasi' | 'coming_soon';
 export type Mode = 'online' | 'offline' | 'hybrid';
 export type TipeKonten = 'tryout' | 'latsol';
-export type TipeSoal = 'pg' | 'pg_kompleks' | 'isian_singkat' | 'benar_salah' | 'skala';
+export type TipeSoal =
+  | 'pg'
+  | 'pg_kompleks'
+  | 'pg_kategori'
+  | 'isian_singkat'
+  | 'benar_salah'
+  | 'skala'
+  | 'uraian';
 export type Tingkat = 'mudah' | 'sedang' | 'sulit';
 export type StatusReview = 'draft' | 'direview' | 'final';
 export type StatusProduksi = 'belum_mulai' | 'berjalan' | 'selesai';
@@ -42,8 +49,34 @@ export interface Soal {
   pertanyaan: string;
   /** Kosongkan untuk isian singkat. */
   opsi?: Opsi[];
-  /** Huruf opsi untuk pilihan ganda, atau nilai jawabannya untuk isian. */
+  /**
+   * Huruf opsi untuk pilihan ganda, atau nilai jawabannya untuk isian.
+   * Kosongkan ('') kalau `tanpaKunci`.
+   *
+   * Dua tipe punya lebih dari satu nilai, ditulis dipisah koma:
+   *   - `pg_kompleks` (PGK MCMA, beberapa jawaban benar): huruf semua opsi yang
+   *     benar, mis. 'A, D';
+   *   - `pg_kategori` (PGK Kategori): kategori jawaban tiap pernyataan menurut
+   *     urutan `opsi`, mis. 'Salah, Salah, Benar'. Tiap nilai harus salah satu
+   *     isi `kategori`.
+   */
   kunci: string;
+  /**
+   * Hanya untuk `pg_kategori`: dua kategori yang tersedia untuk tiap pernyataan
+   * (opsi), mis. ['Benar', 'Salah'], ['Setuju', 'Tidak Setuju'], atau
+   * ['Tepat', 'Tidak Tepat']. Urutannya mengikuti urutan kolom di soal. Nama
+   * kategori tidak boleh memuat koma, karena `kunci` dipisah dengan koma.
+   */
+  kategori?: [string, string];
+  /**
+   * `true` untuk butir yang memang TIDAK punya jawaban benar: tes kepribadian
+   * dan minat (Big Five, EPPS, PAPI), uraian bebas, dan tugas menggambar.
+   * Tampilan tidak menandai opsi mana pun sebagai kunci (bukan "KUNCI" dan
+   * bukan "SKOR TERTINGGI"), dan Cek Data tidak menuntut kunci. Cara
+   * penilaiannya ditulis di `pembahasan`: dimensi yang diukur, skor per opsi,
+   * atau aspek yang dinilai.
+   */
+  tanpaKunci?: true;
   pembahasan: string;
   /** Jalur di bawah `public/`, mis. "gambar/jadipcpm/digit-01.png". */
   gambar?: string;
@@ -91,7 +124,12 @@ export interface Subtes {
   jumlahSoal?: number;
   /** Desimal berarti pecahan menit: 7.5 = 7 menit 30 detik. */
   waktuMenit?: number;
+  /**
+   * Boleh memuat gambar ⟦gambar:gambar/<platform>/<berkas>⟧ dan rumus, seperti
+   * teks soal. Dipakai, mis., untuk tangkapan layar yang menjelaskan bentuk tes.
+   */
   formatKetentuan?: string;
+  /** Aturan yang sama dengan `formatKetentuan`. */
   penilaian?: string;
   catatan?: string;
   materi?: Materi[];
@@ -196,3 +234,22 @@ export const LABEL_STATUS: Record<
     boleh: 'Jangan menebak isinya.',
   },
 };
+
+/** Tipe soal yang `kunci`-nya memuat beberapa nilai dipisah koma. */
+const KUNCI_JAMAK: TipeSoal[] = ['pg_kompleks', 'pg_kategori'];
+
+/**
+ * Isi `kunci` sebagai daftar nilai, tanpa spasi di tepinya.
+ *
+ * `pg_kompleks` dan `pg_kategori` dipecah di koma ('A, D' menjadi ['A', 'D']);
+ * tipe lain tetap satu nilai utuh, karena isian singkat boleh memuat koma
+ * ("0,6"). Kunci kosong menghasilkan daftar kosong. Murni dan tanpa dependensi,
+ * jadi aman dipakai komponen klien maupun pemeriksa isi.
+ */
+export function daftarKunci(soal: Pick<Soal, 'tipe' | 'kunci'>): string[] {
+  const mentah = soal.kunci.trim();
+  if (!mentah) return [];
+  return KUNCI_JAMAK.includes(soal.tipe)
+    ? mentah.split(',').map((k) => k.trim()).filter(Boolean)
+    : [mentah];
+}

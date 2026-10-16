@@ -1,4 +1,5 @@
 import type { Platform } from '@/lib/skema';
+import { cerebrum } from './cerebrum';
 import { jadiasn } from './jadiasn';
 import { jadibumn } from './jadibumn';
 import { jadiojk } from './jadiojk';
@@ -7,6 +8,7 @@ import { jadippg } from './jadippg';
 import { jadipppk } from './jadipppk';
 import { jadisekdin } from './jadisekdin';
 import { jagotpa } from './jagotpa';
+import { psikoteskerja } from './psikoteskerja';
 
 /**
  * Seluruh isi Product Knowledge.
@@ -21,7 +23,7 @@ import { jagotpa } from './jagotpa';
  * Urutan di daftar ini adalah urutan tampilnya di beranda.
  */
 export const PLATFORM: Platform[] = [
-  { kode: 'CEREBRUM', nama: 'Cerebrum', slug: 'cerebrum', logo: 'logo/icon-cerebrum.png', tes: [] },
+  cerebrum,
   jadiasn,
   jadipppk,
   jadibumn,
@@ -33,4 +35,5 @@ export const PLATFORM: Platform[] = [
   { kode: 'JADIPOLISI', nama: 'JadiPolisi', slug: 'jadipolisi', logo: 'logo/icon-jadipolisi.png', tes: [] },
   jagotpa,
   jadippg,
+  psikoteskerja,
 ];

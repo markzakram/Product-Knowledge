@@ -5,7 +5,7 @@
  * tidak ada yang perlu ditarik, ditunggu, atau di-refresh saat aplikasi jalan.
  */
 import { PLATFORM } from '../../data';
-import type { Angkatan, Platform, Subtes, Tahapan, Tes } from './skema';
+import { daftarKunci, type Angkatan, type Platform, type Subtes, type Tahapan, type Tes } from './skema';
 
 export { PLATFORM };
 
@@ -208,15 +208,38 @@ export function periksaIsi(): Temuan[] {
       for (const soal of kelompok.soal) {
         nomor.set(soal.nomor, (nomor.get(soal.nomor) ?? 0) + 1);
 
-        if (soal.opsi?.length) {
+        // Butir `tanpaKunci` (tes kepribadian, uraian, tugas gambar) memang tidak
+        // punya kunci, jadi kunci tidak diperiksa.
+        if (!soal.tanpaKunci && soal.opsi?.length && soal.tipe === 'pg_kategori') {
+          // PGK Kategori: satu nilai kunci per pernyataan, dan tiap nilai harus
+          // salah satu dari dua kategori soal.
+          const kategori = (soal.kategori ?? []).map((k) => k.trim().toLowerCase());
+          const kunci = daftarKunci(soal);
+          if (kategori.length !== 2 || kategori.some((k) => !k)) {
+            temuan.push({
+              jenis: 'Kategori tidak lengkap', lokasi, ke,
+              pesan: `Soal ${soal.nomor}: PG kategori harus punya tepat dua nama kategori.`,
+            });
+          } else if (
+            kunci.length !== soal.opsi.length ||
+            kunci.some((k) => !kategori.includes(k.toLowerCase()))
+          ) {
+            temuan.push({
+              jenis: 'Kunci tidak cocok', lokasi, ke,
+              pesan: `Soal ${soal.nomor}: kunci "${soal.kunci}" harus ${soal.opsi.length} nilai, masing-masing salah satu dari ${soal.kategori!.join(' / ')}.`,
+            });
+          }
+        } else if (!soal.tanpaKunci && soal.opsi?.length) {
           const label = soal.opsi.map((o) => o.label);
-          if (!label.includes(soal.kunci.trim().toUpperCase())) {
+          // PG biasa: satu huruf. PG kompleks: beberapa huruf dipisah koma.
+          const kunci = daftarKunci(soal).map((k) => k.toUpperCase());
+          if (!kunci.length || kunci.some((k) => !label.includes(k))) {
             temuan.push({
               jenis: 'Kunci tidak cocok', lokasi, ke,
               pesan: `Soal ${soal.nomor}: kunci "${soal.kunci}" tidak ada di opsi (${label.join(', ')}).`,
             });
           }
-        } else if (!soal.kunci.trim()) {
+        } else if (!soal.tanpaKunci && !soal.kunci.trim()) {
           temuan.push({
             jenis: 'Kunci kosong', lokasi, ke,
             pesan: `Soal ${soal.nomor}: isian singkat tanpa jawaban.`,

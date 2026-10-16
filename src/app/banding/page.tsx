@@ -1,4 +1,5 @@
 import { semuaSubtes, jumlahContoh, labelTahapan, tautanSubtes } from '@/lib/data';
+import { teksPolos } from '@/lib/rumus';
 import { TabelBanding, type BarisSubtes, type SaringanAwal } from './tabel';
 import { LegendaStatus } from '../komponen';
 
@@ -48,7 +49,8 @@ export default async function HalamanBanding({
     waktuMenit: j.subtes.waktuMenit ?? null,
     contoh: jumlahContoh(j.subtes),
     status: j.tahapan.status,
-    penilaian: j.subtes.penilaian ?? '',
+    // Teks polos: penanda gambar dan rumus LaTeX tidak bisa dirender di sel tabel.
+    penilaian: teksPolos(j.subtes.penilaian ?? '', ' [gambar] ').replace(/[ \t]+/g, ' '),
     materi: (j.subtes.materi ?? []).map((m) => m.nama).join(' · '),
     ke: tautanSubtes(j),
   }));
