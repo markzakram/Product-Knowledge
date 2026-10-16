@@ -75,6 +75,36 @@ export const tautanAngkatan = (j: JalurAngkatan) =>
 export const tautanSubtes = (j: JalurSubtes) =>
   `/${j.platform.slug}/${j.tes.kode}/${j.angkatan.kode}/${j.tahapan.kode}/${j.subtes.kode}`;
 
+/** Id jangkar kartu tahapan di halaman angkatan. */
+export const idTahapan = (t: Pick<Tahapan, 'kode'>) => `tahap-${t.kode}`;
+
+export const tautanTahapan = (j: JalurAngkatan, t: Tahapan) =>
+  `${tautanAngkatan(j)}#${idTahapan(t)}`;
+
+/**
+ * Judul sebuah angkatan, mis. "UTBK-SNBT Tahun 2027". Dipakai sebagai h1
+ * halaman angkatan, remah, dan tombol "Buka …" di halaman platform, supaya yang
+ * diklik dan yang dibuka bernama sama.
+ *
+ * Kata pertama nama angkatan tidak diulang bila sudah ada di nama tes (termasuk
+ * di dalam kurung), karena nama angkatan sering memuat nama tesnya sendiri:
+ * "PCAM OJK" + "PCAM 10" jadi "PCAM OJK 10", "Pertadate Pertamina" + "Pertadate
+ * 2026" jadi "Pertadate Pertamina 2026", "Tes Kemampuan Akademik (TKA)" + "TKA
+ * SMA 2026" jadi "Tes Kemampuan Akademik (TKA) SMA 2026". Nama angkatan yang
+ * hanya satu kata dibiarkan utuh.
+ */
+export function judulAngkatan(tes: Tes, angkatan: Angkatan): string {
+  const kata = (s: string) => s.toLowerCase().replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+  const m = angkatan.nama.trim().match(/^(\S+)\s+(.+)$/);
+  if (m) {
+    const kataTes = new Set(
+      tes.nama.split(/[^\p{L}\p{N}]+/u).filter(Boolean).map((k) => k.toLowerCase()),
+    );
+    if (kataTes.has(kata(m[1]))) return `${tes.nama} ${m[2]}`;
+  }
+  return `${tes.nama} ${angkatan.nama}`;
+}
+
 /**
  * Subtes sebelum dan sesudah, dalam urutan tahapan lalu subtes.
  *
@@ -127,17 +157,217 @@ export function semuaSubtes(): JalurSubtes[] {
 export const jumlahContoh = (s: Subtes) =>
   (s.contoh ?? []).reduce((n, k) => n + k.soal.length, 0);
 
-export function ringkasPlatform(p: Platform) {
-  const angkatan = p.tes.flatMap((t) => t.angkatan);
-  const tahapan = angkatan.flatMap((a) => a.tahapan);
-  const subtes = tahapan.flatMap((t) => t.subtes);
+// ─── Ringkasan untuk tampilan ────────────────────────────────────────────
+
+/**
+ * Durasi satu tahapan dalam menit. Tahapan `waktuBersama` (SKD: tiga subtes
+ * dalam satu sesi 100 menit) dihitung SEKALI, yaitu waktu sesinya; selainnya
+ * dijumlahkan per subtes.
+ *
+ * Inilah SATU-SATUNYA tempat waktu subtes dijumlahkan. Ubin Durasi, ringkasan
+ * tahapan, dan total angkatan semuanya lewat sini (`angkaTahapan`,
+ * `angkaAngkatan`), supaya SKD tak terbaca 300 menit di salah satunya.
+ *
+ * `tanpaMenit` = berapa subtes yang waktunya belum diketahui. Di tahapan satu
+ * sesi, waktunya sudah diketahui selama ada satu subtes yang menyebutnya; bila
+ * angkanya berbeda, yang terbesar dipakai karena sesi harus memuat semuanya.
+ */
+export function durasiTahapan(
+  t: Pick<Tahapan, 'subtes' | 'waktuBersama'>,
+): { menit: number; tanpaMenit: number } {
+  const ada = t.subtes.flatMap((s) => (s.waktuMenit === undefined ? [] : [s.waktuMenit]));
+  if (t.waktuBersama) {
+    return ada.length
+      ? { menit: Math.max(...ada), tanpaMenit: 0 }
+      : { menit: 0, tanpaMenit: t.subtes.length };
+  }
+  return {
+    // Menit boleh pecahan (7.5). Dibulatkan supaya jumlah pecahan tak berekor 0.30000000000000004.
+    menit: Math.round(ada.reduce((n, m) => n + m, 0) * 100) / 100,
+    tanpaMenit: t.subtes.length - ada.length,
+  };
+}
+
+/**
+ * Angka rangkuman satu tahapan atau satu angkatan.
+ *
+ * `soal` dan `menit` hanya menjumlahkan yang angkanya ADA. Yang kosong dihitung
+ * terpisah (`tanpaSoal`, `tanpaMenit`) dan tidak dianggap 0: "belum diketahui"
+ * dan "nol" itu beda, jadi jumlahnya baru boleh dibaca sebagai total utuh kalau
+ * kedua hitungan itu 0.
+ */
+export interface AngkaSubtes {
+  subtes: number;
+  soal: number;
+  menit: number;
+  contoh: number;
+  tanpaSoal: number;
+  tanpaMenit: number;
+  /** Seluruh subtes dikerjakan dalam satu sesi, jadi `menit` adalah waktu sesi itu. Hanya untuk satu tahapan. */
+  satuSesi?: true;
+}
+
+export function angkaTahapan(t: Tahapan): AngkaSubtes {
+  const a: AngkaSubtes = {
+    subtes: t.subtes.length, soal: 0, menit: 0, contoh: 0, tanpaSoal: 0, tanpaMenit: 0,
+  };
+  for (const s of t.subtes) {
+    if (s.jumlahSoal === undefined) a.tanpaSoal++;
+    else a.soal += s.jumlahSoal;
+    a.contoh += jumlahContoh(s);
+  }
+  const durasi = durasiTahapan(t);
+  a.menit = durasi.menit;
+  a.tanpaMenit = durasi.tanpaMenit;
+  if (t.waktuBersama) a.satuSesi = true;
+  return a;
+}
+
+/** Angka satu angkatan: jumlah angka semua tahapannya. */
+export function angkaAngkatan(angkatan: Angkatan): AngkaSubtes {
+  const total: AngkaSubtes = {
+    subtes: 0, soal: 0, menit: 0, contoh: 0, tanpaSoal: 0, tanpaMenit: 0,
+  };
+  for (const t of angkatan.tahapan) {
+    const a = angkaTahapan(t);
+    total.subtes += a.subtes;
+    total.soal += a.soal;
+    total.menit += a.menit;
+    total.contoh += a.contoh;
+    total.tanpaSoal += a.tanpaSoal;
+    total.tanpaMenit += a.tanpaMenit;
+  }
+  total.menit = Math.round(total.menit * 100) / 100;
+  return total;
+}
+
+/** Angka berkoma desimal gaya Indonesia ("42,5"), paling banyak dua desimal. */
+export const angkaId = (n: number) => String(Math.round(n * 100) / 100).replace('.', ',');
+
+/**
+ * "30 soal · 30 mnt". Bagian yang tak ada dilewati; kosong bila keduanya tak ada.
+ * `satuSesi`: subtes ini bagian dari tahapan `waktuBersama`, jadi waktunya milik
+ * sesi, bukan miliknya sendiri, dan hanya jumlah soalnya yang ditampilkan.
+ */
+export function metaSubtes(
+  s: Pick<Subtes, 'jumlahSoal' | 'waktuMenit'>,
+  satuSesi = false,
+): string {
+  return [
+    s.jumlahSoal === undefined ? '' : `${s.jumlahSoal} soal`,
+    satuSesi || s.waktuMenit === undefined ? '' : `${angkaId(s.waktuMenit)} mnt`,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+}
+
+/**
+ * ["90 soal", "105 menit"]; bagian yang tak satu pun subtesnya punya angka
+ * dilewati. Tanda + berarti sebagian subtes belum punya angka, jadi jumlahnya
+ * paling sedikit segitu. Tahapan satu sesi menulis "100 menit, satu sesi".
+ */
+function bagianSoalMenit(a: AngkaSubtes): string[] {
+  const hasil: string[] = [];
+  if (a.subtes > a.tanpaSoal) hasil.push(`${a.soal}${a.tanpaSoal ? '+' : ''} soal`);
+  if (a.subtes > a.tanpaMenit) {
+    hasil.push(
+      `${angkaId(a.menit)}${a.tanpaMenit ? '+' : ''} menit${a.satuSesi ? ', satu sesi' : ''}`,
+    );
+  }
+  return hasil;
+}
+
+/** Ringkasan satu tahapan: "4 subtes · 90 soal · 90 menit". */
+export const ringkasAngka = (a: AngkaSubtes) =>
+  [`${a.subtes} subtes`, ...bagianSoalMenit(a)].join(' · ');
+
+/** Total satu angkatan: "160 soal · 195 menit · 141 contoh soal". Kosong bila tak ada subtes. */
+export function totalAngka(a: AngkaSubtes): string {
+  if (a.subtes === 0) return '';
+  return [...bagianSoalMenit(a), a.contoh ? `${a.contoh} contoh soal` : 'belum ada contoh soal'].join(
+    ' · ',
+  );
+}
+
+/**
+ * Angka per platform, dipakai kepala halaman platform dan kartu platform di
+ * beranda supaya keduanya selalu sama. Dihitung per OBJEK subtes (seperti
+ * `kelengkapan`): SKD yang dirujuk IPDN dan PKN STAN adalah satu objek, dan
+ * kalau dihitung per jalur ia terhitung dua kali.
+ */
+export function angkaPlatform(p: Platform) {
+  const unik = new Set<Subtes>();
+  for (const t of p.tes) {
+    for (const a of t.angkatan) {
+      for (const h of a.tahapan) {
+        for (const s of h.subtes) unik.add(s);
+      }
+    }
+  }
   return {
     tes: p.tes.length,
-    angkatan: angkatan.length,
-    tahapan: tahapan.length,
-    subtes: subtes.length,
-    soal: subtes.reduce((n, s) => n + jumlahContoh(s), 0),
+    subtes: unik.size,
+    contoh: [...unik].reduce((n, s) => n + jumlahContoh(s), 0),
   };
+}
+
+/**
+ * Angkatan yang dibuka lebih dulu di halaman platform: tahun terbaru yang
+ * bukan `coming_soon` dan sudah punya tahapan. Bila tak ada yang memenuhi,
+ * yang terbaru dan punya tahapan; bila itu pun tak ada, yang terbaru.
+ */
+export function angkatanAwal(tes: Tes): Angkatan | undefined {
+  const urut = [...tes.angkatan].sort((a, b) => b.tahun - a.tahun);
+  return (
+    urut.find((a) => a.status !== 'coming_soon' && a.tahapan.length > 0) ??
+    urut.find((a) => a.tahapan.length > 0) ??
+    urut[0]
+  );
+}
+
+// ─── Kode chip subtes ────────────────────────────────────────────────────
+
+/** Kata yang tak ikut jadi inisial: "Tes" di depan nama dan kata penghubung. */
+const KATA_BUANG = new Set([
+  'tes', 'dan', 'dalam', 'di', 'dari', 'untuk', 'yang', 'serta', 'atau', 'dengan', 'and',
+]);
+
+/**
+ * Singkatan SATU subtes untuk chip, diturunkan dari namanya (`kode` di data
+ * itu slug URL huruf kecil, bukan untuk dibaca). Aturannya berurutan:
+ *   (a) singkatan 2-6 huruf kapital dalam kurung di akhir nama: "… (PU)" jadi PU;
+ *   (b) dua kata bermakna atau lebih: inisialnya, "Hitung Cepat" jadi HC;
+ *   (c) satu kata bermakna: tiga huruf awalnya, "Verbal" jadi VER.
+ * Kata bermakna = kata selain `KATA_BUANG`. Keterangan dalam kurung yang bukan
+ * singkatan ("(Tes Koran)") bukan bagian nama, jadi tak ikut dihitung. Bentrok
+ * antar-subtes dan chip yang kepanjangan diurus `kodeChipTahapan`.
+ */
+export function kodeChip(nama: string): string {
+  const bersih = nama.trim();
+  const singkatan = bersih.match(/\(([A-Z]{2,6})\)\s*$/);
+  if (singkatan) return singkatan[1];
+
+  const kata = bersih
+    .replace(/\([^)]*\)/g, ' ')
+    .split(/\s+/)
+    .map((k) => k.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, ''))
+    .filter((k) => k && !KATA_BUANG.has(k.toLowerCase()));
+  if (kata.length >= 2) return kata.map((k) => k[0]).join('').toUpperCase();
+  if (kata.length === 1) return kata[0].slice(0, 3).toUpperCase();
+  return '';
+}
+
+/**
+ * Kode chip semua subtes dalam SATU tahapan, dengan aturan (d): bila ada dua
+ * chip yang sama, atau ada chip lebih dari 4 huruf, SELURUH tahapan itu memakai
+ * nomor urut 1, 2, 3. Sengaja semua, bukan hanya yang bentrok: campuran huruf
+ * dan nomor dalam satu daftar lebih membingungkan daripada nomor saja.
+ */
+export function kodeChipTahapan(nama: string[]): string[] {
+  const huruf = nama.map(kodeChip);
+  const bentrok = new Set(huruf).size < huruf.length;
+  const tidakMuat = huruf.some((k) => !k || k.length > 4);
+  return bentrok || tidakMuat ? nama.map((_, i) => String(i + 1)) : huruf;
 }
 
 // ─── Rekap produksi ──────────────────────────────────────────────────────

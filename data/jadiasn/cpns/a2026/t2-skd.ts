@@ -12,6 +12,7 @@ export const tahapSkd: Tahapan = {
   kode: 'skd',
   nama: 'Seleksi Kompetensi Dasar (SKD)',
   mode: 'online',
+  waktuBersama: true,
   deskripsi: `110 soal dengan sistem CAT BKN. 100 menit untuk peserta umum dan 130 menit untuk penyandang disabilitas. Ketiga subtes dikerjakan serentak dalam satu sesi.
 
 Nilai ambang batas:

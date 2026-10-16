@@ -73,6 +73,76 @@ export function Kosong({ teks, sebab }: { teks: string; sebab?: string }) {
   );
 }
 
+/**
+ * Ikon garis kecil yang mewarisi warna teks.
+ *
+ * Dekoratif: selalu disembunyikan dari pembaca layar, jadi tombol atau tautan
+ * yang memakainya tetap harus punya teks sendiri. Digambar sebagai SVG
+ * sebaris, bukan font ikon atau pustaka, karena jumlahnya hanya segelintir.
+ */
+const GAMBAR_IKON = {
+  panah: (
+    <>
+      <path d="M5 12h14" />
+      <path d="m13 6 6 6-6 6" />
+    </>
+  ),
+  kanan: <path d="m9 6 6 6-6 6" />,
+  cetak: (
+    <>
+      <path d="M7 9V3h10v6" />
+      <rect x="4" y="9" width="16" height="8" rx="2" />
+      <path d="M7 14h10v7H7z" />
+    </>
+  ),
+  info: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 8h.01" />
+      <path d="M11 12h1v5h1" />
+    </>
+  ),
+};
+
+export function Ikon({ nama, ukuran = 18 }: { nama: keyof typeof GAMBAR_IKON; ukuran?: number }) {
+  return (
+    <svg
+      className="ikon"
+      width={ukuran}
+      height={ukuran}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {GAMBAR_IKON[nama]}
+    </svg>
+  );
+}
+
+/**
+ * Pembungkus tabel yang bisa digulir mendatar.
+ *
+ * Di layar sempit tabel digulir di dalam wadahnya, dan kolom yang terpotong
+ * tak kelihatan sampai orang mencoba menggeser. Petunjuk di atasnya tampil
+ * hanya bila wadah memang lebih sempit dari tabel; itu diputuskan CSS lewat
+ * container query (lihat .tabel-kotak), tanpa JS dan tanpa mengukur apa pun.
+ */
+export function TabelGulir({ kelas, children }: { kelas?: string; children: React.ReactNode }) {
+  return (
+    <div className="tabel-kotak">
+      <p className="tabel-petunjuk" aria-hidden>
+        Geser tabel untuk kolom lain
+      </p>
+      <div className={kelas ? `tabel-bungkus ${kelas}` : 'tabel-bungkus'}>{children}</div>
+    </div>
+  );
+}
+
 export function Waktu({ menit }: { menit?: number }) {
   if (menit === undefined) return <>—</>;
   const utuh = Math.floor(menit);

@@ -23,6 +23,7 @@ export const tahapSkd: Tahapan = {
   kode: 'skd',
   nama: 'Seleksi Kompetensi Dasar (SKD)',
   mode: 'online',
+  waktuBersama: true,
   deskripsi: `110 soal dengan sistem CAT BKN: TWK 30 soal, TIU 35 soal, dan TKP 45 soal. 100 menit untuk peserta umum dan 130 menit untuk penyandang disabilitas sensorik netra. Ketiga subtes dikerjakan serentak, sehingga 110 soal harus diselesaikan dalam rentang waktu tersebut. Hasil SKD menjadi dasar menentukan peserta yang berhak mengikuti SKB.
 
 Nilai ambang batas (KEPMENPANRB No. 321 Tahun 2024):

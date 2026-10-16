@@ -1,4 +1,4 @@
-import { semuaSubtes, jumlahContoh, labelTahapan, tautanSubtes } from '@/lib/data';
+import { semuaSubtes, jumlahContoh, judulAngkatan, labelTahapan, tautanSubtes } from '@/lib/data';
 import { teksPolos } from '@/lib/rumus';
 import { TabelBanding, type BarisSubtes, type SaringanAwal } from './tabel';
 import { LegendaStatus } from '../komponen';
@@ -40,8 +40,7 @@ export default async function HalamanBanding({
     platform: j.platform.nama,
     slugPlatform: j.platform.slug,
     logo: j.platform.logo ?? '',
-    tes: j.tes.nama,
-    angkatan: j.angkatan.nama,
+    judul: judulAngkatan(j.tes, j.angkatan),
     tahapan: labelTahapan(j.angkatan, j.tahapan),
     namaTahapan: j.tahapan.nama,
     subtes: j.subtes.nama,

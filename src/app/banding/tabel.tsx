@@ -8,8 +8,8 @@ export interface BarisSubtes {
   platform: string;
   slugPlatform: string;
   logo: string;
-  tes: string;
-  angkatan: string;
+  /** Nama tes dan angkatan tanpa kata ganda, dari `judulAngkatan`. */
+  judul: string;
   tahapan: string;
   namaTahapan: string;
   subtes: string;
@@ -104,7 +104,7 @@ export function TabelBanding({ baris, awal }: { baris: BarisSubtes[]; awal: Sari
       // "inggris" menemukan subtes bernama lain yang materinya bahasa Inggris,
       // dan "166" menemukan subtes berdasarkan ambang batasnya.
       const semua = rapikan(
-        `${b.platform} ${b.tes} ${b.angkatan} ${b.namaTahapan} ${b.subtes} ${b.materi} ${b.penilaian}`,
+        `${b.platform} ${b.judul} ${b.namaTahapan} ${b.subtes} ${b.materi} ${b.penilaian}`,
       );
       return kata.every((k) => semua.includes(k));
     });
@@ -243,7 +243,7 @@ export function TabelBanding({ baris, awal }: { baris: BarisSubtes[]; awal: Sari
                         {b.platform}
                       </span>
                       <div className="kartu-kecil">
-                        {b.tes} {b.angkatan}
+                        {b.judul}
                       </div>
                     </td>
                     <td>

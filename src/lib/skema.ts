@@ -153,6 +153,18 @@ export interface Tahapan {
   mode?: Mode;
   deskripsi?: string;
   status: StatusData;
+  /**
+   * `true` bila SEMUA subtes di tahapan ini dikerjakan serentak dalam satu sesi
+   * (SKD: TWK, TIU, dan TKP dalam satu sesi 100 menit). `waktuMenit` tiap subtes
+   * lalu berisi waktu sesi itu, bukan jatah waktunya sendiri, jadi durasi
+   * tahapan dihitung SEKALI, bukan dijumlahkan.
+   *
+   * Sengaja field eksplisit, bukan dideteksi dari angka yang kebetulan sama atau
+   * dari kalimat di deskripsi. Dua subtes berurutan yang sama-sama 7 menit bukan
+   * satu sesi, dan satu penulisan ulang deskripsi akan diam-diam menggandakan
+   * lagi durasinya di semua halaman.
+   */
+  waktuBersama?: true;
   subtes: Subtes[];
 }
 

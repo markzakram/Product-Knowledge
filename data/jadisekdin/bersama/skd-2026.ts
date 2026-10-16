@@ -16,6 +16,7 @@ export const skd2026: Tahapan = {
   kode: 'skd',
   nama: 'Seleksi Kompetensi Dasar (SKD)',
   mode: 'online',
+  waktuBersama: true,
   deskripsi: `110 soal dikerjakan dalam 100 menit dengan sistem CAT. Ketiga subtes dikerjakan serentak dalam satu sesi, bukan per subtes.
 
 Nilai ambang batas ketentuan umum: TWK 65, TIU 80, TKP 156.

@@ -17,7 +17,7 @@
  * ter-bundle saat build.
  */
 import {
-  PLATFORM, semuaAngkatan, semuaSubtes,
+  PLATFORM, semuaAngkatan, semuaSubtes, judulAngkatan,
   tautanAngkatan, tautanPlatform, tautanSubtes,
 } from './data';
 import type { Subtes, Tahapan } from './skema';
@@ -163,8 +163,10 @@ export function cari(kueri: string, batas = 50): Hasil[] {
 
   for (const j of semuaAngkatan()) {
     const ke = tautanAngkatan(j);
-    tambah('angkatan', `${j.tes.nama} ${j.angkatan.nama}`, j.platform.nama, ke, [
-      { asal: 'nama', teks: `${j.tes.nama} ${j.angkatan.nama}`, bobot: 6 },
+    // Judul yang sama dengan halaman angkatannya, tanpa kata yang berulang.
+    const judul = judulAngkatan(j.tes, j.angkatan);
+    tambah('angkatan', judul, j.platform.nama, ke, [
+      { asal: 'nama', teks: judul, bobot: 6 },
       { asal: 'tahun', teks: String(j.angkatan.tahun), bobot: 4 },
       { asal: 'ringkasan', teks: j.angkatan.ringkasan ?? '', bobot: 3 },
     ]);
@@ -195,7 +197,7 @@ export function cari(kueri: string, batas = 50): Hasil[] {
 
   for (const j of semuaSubtes()) {
     const ke = tautanSubtes(j);
-    const konteks = `${j.platform.nama} · ${j.tes.nama} ${j.angkatan.nama} · ${j.tahapan.nama}`;
+    const konteks = `${j.platform.nama} · ${judulAngkatan(j.tes, j.angkatan)} · ${j.tahapan.nama}`;
     const ada = pakaiSubtes.get(j.subtes);
     if (ada) ada.konteks.push(konteks);
     else pakaiSubtes.set(j.subtes, { ke, konteks: [konteks] });

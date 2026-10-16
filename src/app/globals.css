@@ -52,29 +52,34 @@
   --lebar: 1440px;
 }
 
-[data-tema='gelap'] {
-  --merek-hijau: #005028;
-  --merek-hijau-terang: #00b450;
+/* Hanya di layar. Di kertas token terang selalu dipakai, apa pun tema yang
+   dipilih: teks terang di atas kertas putih tak terbaca, dan latar lencana
+   tak ikut tercetak sehingga tinggal teks pucatnya. */
+@media screen {
+  [data-tema='gelap'] {
+    --merek-hijau: #005028;
+    --merek-hijau-terang: #00b450;
 
-  --aksen: #3ed07c;
-  --aksen-2: #8ae8ad;
-  --aksen-lembut: #0d2417;
-  --aksen-garis: #1d5837;
+    --aksen: #3ed07c;
+    --aksen-2: #8ae8ad;
+    --aksen-lembut: #0d2417;
+    --aksen-garis: #1d5837;
 
-  --latar: #101613;
-  --kartu: #18201b;
-  --redup: #1b2420;
-  --garis: #2a372f;
-  --teks: #e8ece9;
-  --teks-2: #93a198;
+    --latar: #101613;
+    --kartu: #18201b;
+    --redup: #1b2420;
+    --garis: #2a372f;
+    --teks: #e8ece9;
+    --teks-2: #93a198;
 
-  --ok: #5fd08a;      --ok-bg: #12291c;
-  --warn: #e0b25f;    --warn-bg: #2a2113;
-  --bad: #f08a80;     --bad-bg: #2b1715;
-  --netral: #98a2b1;  --netral-bg: #1e232b;
+    --ok: #5fd08a;      --ok-bg: #12291c;
+    --warn: #e0b25f;    --warn-bg: #2a2113;
+    --bad: #f08a80;     --bad-bg: #2b1715;
+    --netral: #98a2b1;  --netral-bg: #1e232b;
 
-  --bayang: 0 1px 2px rgba(0, 0, 0, .3);
-  --bayang-naik: 0 10px 28px rgba(0, 0, 0, .45);
+    --bayang: 0 1px 2px rgba(0, 0, 0, .3);
+    --bayang-naik: 0 10px 28px rgba(0, 0, 0, .45);
+  }
 }
 
 * { box-sizing: border-box; }
@@ -331,7 +336,10 @@ a.chip:hover { color: var(--aksen); border-color: var(--aksen-garis); text-decor
 .lencana-aksen { background: var(--aksen-lembut); color: var(--aksen); }
 
 /* ── Tabel: dilepas dari kotaknya ────────────────────────────────── */
-.tabel-bungkus { overflow-x: auto; margin-top: 14px; }
+/* position: relative supaya anak ber-position absolute (mis. .sr-saja) ikut
+   terpotong dan tergulir bersama tabelnya. Tanpa itu ia lolos dari pemotongan
+   dan melebarkan seluruh halaman, bukan hanya tabelnya. */
+.tabel-bungkus { position: relative; overflow-x: auto; margin-top: 14px; }
 table { border-collapse: collapse; width: 100%; font-size: 14px; }
 th {
   text-align: left;
@@ -598,136 +606,560 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
   flex: 0 0 auto;
 }
 .logo-mini { width: 17px; height: 17px; padding: 1px; border-radius: 5px; margin-right: 2px; }
-.logo-besar { width: 46px; height: 46px; border-radius: var(--r-kecil); padding: 4px; }
+/* Logo di kepala halaman platform: dibingkai tipis supaya tepi putihnya terbaca
+   sebagai kartu, bukan latar yang bocor, terutama di mode gelap. */
+.logo-besar { width: 72px; height: 72px; border: 1px solid var(--garis); border-radius: 18px; padding: 10px; }
 
 .kartu-kepala { display: flex; align-items: center; gap: 10px; margin-bottom: 3px; }
 .kartu-kepala .kartu-judul { margin-bottom: 0; }
 
-.judul-logo { display: flex; align-items: center; gap: 14px; margin: 6px 0 8px; }
-.judul-logo h1 { margin: 0; }
-
 .chip { display: inline-flex; align-items: center; gap: 6px; }
 
-/* ── Halaman tes: tiap tes satu blok ─────────────────────────────────── */
-.tes-daftar { display: flex; flex-direction: column; gap: 16px; margin-top: 14px; }
-.tes-blok {
-  border: 1px solid var(--garis);
-  border-radius: var(--r);
-  background: var(--kartu);
-  box-shadow: var(--bayang);
-  padding: 20px 22px 22px;
-}
-.tes-kepala { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.tes-kepala h2 { margin: 0; font-size: 20px; }
-.tes-instansi { font-size: 13px; color: var(--teks-2); margin-top: 3px; }
-.tes-deskripsi { margin-top: 8px; }
-.tes-blok .petak {
-  /* Dibatasi 320px: satu angkatan sendirian tidak pantas melar selebar
-     bingkai, beda dengan kartu platform di beranda yang memang mengisi baris. */
-  grid-template-columns: repeat(auto-fill, minmax(212px, 320px));
-}
-.tes-blok .kartu { background: var(--latar); }
+/* ══════════════════════════════════════════════════════════════════════
+   Halaman platform ("peta tes") dan halaman angkatan.
 
-.kartu-angka { display: flex; gap: 18px; }
-.kartu-angka .angka-besar { font-size: 23px; }
+   Keduanya memakai kosakata yang sama — ubin angka, judul bagian, chip kode,
+   tombol aksi — supaya terbaca sebagai satu keluarga. Semua warna lewat
+   token, jadi mode gelap ikut otomatis.
+   ══════════════════════════════════════════════════════════════════════ */
 
-/* ── Runut tahapan ───────────────────────────────────────────────────
-   Seleksi adalah urutan, jadi digambar sebagai urutan: nomor bulat di kiri
-   dengan garis penghubung vertikal. Tahapan yang tidak punya subtes tampil
-   ringkas — dulu ia memakan ruang sebesar tahapan berisi materi, sehingga
-   yang penting justru tenggelam di antara panel kosong. */
-.tahap-runut { list-style: none; margin: 14px 0 0; padding: 0; position: relative; }
-.tahap {
-  position: relative;
+/* ── Kepala halaman platform ─────────────────────────────────────────── */
+.plat-kepala {
   display: flex;
-  gap: 16px;
-  padding-bottom: 18px;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 20px 0 32px;
 }
-/* Garis penghubung antar tahap; tidak digambar setelah tahap terakhir. */
-.tahap::before {
-  content: '';
-  position: absolute;
-  left: 15px;
-  top: 34px;
-  bottom: 0;
-  width: 2px;
-  background: var(--garis);
+.plat-teks { flex: 1 1 360px; min-width: 0; }
+/* Lebih tegas daripada h1 bawaan; hanya untuk dua halaman ini. */
+.plat-teks h1, .ang-judul h1 {
+  margin: 0;
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
-.tahap:last-child::before { display: none; }
+.plat-deskripsi { margin: 6px 0 0; font-size: 15.5px; color: var(--teks-2); max-width: 74ch; }
 
-.tahap-nomor {
-  flex: 0 0 32px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 2px solid var(--garis);
+/* ── Ubin angka ──────────────────────────────────────────────────────── */
+.ubin-baris { display: grid; gap: 12px; }
+.ubin {
+  min-width: 0;
   background: var(--kartu);
-  color: var(--teks-2);
+  border: 1px solid var(--garis);
+  border-radius: 14px;
+  padding: 12px 18px;
+}
+.ubin-label { font-size: 12.5px; color: var(--teks-2); }
+.ubin-nilai {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.ubin-catatan { margin-top: 2px; font-size: 12px; line-height: 1.35; color: var(--teks-2); }
+.plat-ubin { grid-template-columns: repeat(3, minmax(96px, auto)); }
+
+/* ── Judul bagian ────────────────────────────────────────────────────── */
+.bagian-kepala {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 0 0 14px;
+}
+.bagian-kepala h2 { margin: 0; font-size: 21px; font-weight: 800; letter-spacing: -.01em; }
+.bagian-ket { font-size: 13.5px; color: var(--teks-2); }
+
+.lencana-besar { font-size: 12px; padding: 4px 12px; }
+.lencana-mode { text-transform: capitalize; }
+
+/* Hanya untuk pembaca layar: teks yang tak perlu terlihat, mis. kepala kolom panah. */
+.sr-saja {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Tombol aksi ─────────────────────────────────────────────────────────
+   Teks tombol utama memakai --kartu: putih di atas hijau tua pada mode
+   terang, gelap di atas hijau terang pada mode gelap. Tanpa warna tetap. */
+.aksi {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: var(--r-kecil);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  cursor: pointer;
+}
+.aksi:hover { text-decoration: none; }
+.aksi-utama { background: var(--aksen); color: var(--kartu); }
+.aksi-utama:hover { opacity: .92; }
+.aksi-garis { background: var(--kartu); border-color: var(--garis); color: var(--teks); font-weight: 600; }
+.aksi-garis:hover { border-color: var(--aksen-garis); }
+.ikon { flex: none; }
+
+/* ── Chip kode subtes ────────────────────────────────────────────────────
+   Selebar empat huruf supaya deretnya sejajar; aturan pembuatan kodenya ada
+   di kodeChipTahapan (src/lib/data.ts), bukan di sini. */
+.chip-kode {
+  flex: none;
+  min-width: 48px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--aksen);
+  background: var(--aksen-lembut);
+  border: 1px solid var(--aksen-garis);
+  border-radius: 7px;
+  padding: 2px 6px;
+}
+
+/* ── Peta tes: satu kartu per tes ────────────────────────────────────────
+   Kiri: siapa tes ini, angkatan mana, dan tombol buka. Kanan: isinya, yaitu
+   susunan tahapan dan subtes, di atas latar yang sedikit lebih dalam supaya
+   terbaca sebagai isi dari kartu di sebelahnya.
+
+   Sisi kiri dipecah jadi tiga area (info, tahun, aksi), bukan satu kolom,
+   supaya di layar sempit panel bisa diselipkan di antara pemilih angkatan dan
+   tombol tanpa mengubah urutan di DOM. */
+.peta-daftar { display: flex; flex-direction: column; gap: 20px; }
+.peta {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    'info panel'
+    'tahun panel'
+    'aksi panel';
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 20px;
+  box-shadow: var(--bayang);
+  overflow: hidden;
+}
+
+.peta-info {
+  grid-area: info;
+  min-width: 0;
+  padding: 28px 28px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+.peta-info h3 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  overflow-wrap: anywhere;
+}
+.peta-instansi { margin-top: 2px; font-size: 13.5px; color: var(--teks-2); }
+.peta-deskripsi { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--teks-2); }
+
+.peta-tahun { grid-area: tahun; min-width: 0; padding: 14px 28px 0; }
+.peta-tahun .label-mini { margin-bottom: 8px; }
+.peta-tab-baris { display: flex; flex-wrap: wrap; gap: 8px; }
+.peta-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 2px solid var(--garis);
+  border-radius: var(--r-kecil);
+  background: var(--kartu);
+  color: var(--teks);
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.3;
+  cursor: pointer;
+}
+.peta-tab:hover { border-color: var(--aksen-garis); }
+.peta-tab[aria-pressed='true'],
+.peta-tab-tunggal { border-color: var(--aksen); background: var(--aksen-lembut); color: var(--aksen); }
+/* Satu-satunya angkatan bukan tombol: tak ada yang bisa dipilih. */
+.peta-tab-tunggal { cursor: default; }
+.peta-tab .lencana { font-size: 11.5px; padding: 2px 8px; }
+.peta-tab .lencana[title] { cursor: inherit; }
+
+.peta-aksi {
+  grid-area: aksi;
+  align-self: end;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px 28px 26px;
+}
+
+.peta-panel {
+  grid-area: panel;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 26px 28px;
+  background: var(--latar);
+  border-left: 1px solid var(--garis);
+}
+.peta-panel-kepala { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; }
+.peta-panel-kepala .label-mini { margin: 0; }
+.peta-total { margin-left: auto; font-size: 13px; color: var(--teks-2); }
+
+/* Dua kolom hanya bila tiap kartu cukup lebar untuk baris satu garis (chip, nama,
+   lalu jumlah soal dan waktu di kanan): isi kartu 330px (364px bersama padding
+   dan garisnya) menyisakan lebih dari 140px untuk nama. Panel yang lebih sempit
+   menumpuk kartu jadi satu kolom. Dulu dua kolom dipaksa di lebar berapa pun, dan
+   di 1024px nama subtes terperas jadi 50px sampai kata terpotong di tengah. */
+.peta-tahap-petak {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(364px, 100%), 1fr));
+  gap: 14px;
+}
+.peta-tahap {
+  min-width: 0;
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 14px;
+  padding: 16px 16px 8px;
+}
+.peta-tahap-penuh { grid-column: 1 / -1; }
+/* min-height menyamakan tinggi kepala kartu dengan dan tanpa lencana, supaya nama
+   tahapan pada dua kartu sebaris tak bergeser. */
+.peta-tahap-kepala { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px; }
+.peta-tahap-no { font-size: 12px; font-weight: 700; color: var(--aksen); }
+.peta-tahap-nama { margin: 2px 0 0; font-size: 15.5px; font-weight: 800; line-height: 1.3; letter-spacing: 0; }
+.peta-tahap-ringkas { margin-bottom: 8px; font-size: 12.5px; color: var(--teks-2); }
+
+.peta-sub-daftar { list-style: none; margin: 0; padding: 0; }
+.peta-sub {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--garis);
+}
+.peta-sub-nama { min-width: 0; font-size: 13.5px; line-height: 1.35; overflow-wrap: anywhere; }
+.peta-sub-meta { font-size: 12px; color: var(--teks-2); white-space: nowrap; }
+.peta-sisa {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  border-top: 1px solid var(--garis);
   font-size: 13px;
+  font-weight: 700;
+  color: var(--aksen);
+}
+
+/* Tahapan tanpa subtes: satu baris ringkas, bukan kartu penuh. Garis putus-putus
+   dan tanpa latar supaya terbaca sebagai "belum terisi". */
+.peta-tahap-kosong {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 11px 16px;
+  background: transparent;
+  border-style: dashed;
+}
+.peta-tahap-kosong .peta-tahap-nama { margin: 0; font-size: 14px; font-weight: 600; color: var(--teks-2); }
+.peta-belum { font-size: 12.5px; color: var(--teks-2); }
+
+/* Layar menengah: kolom kanan terlalu sempit untuk dua kartu berdampingan,
+   jadi dua kolom ditumpuk dan panel memakai seluruh lebar kartu. */
+@media (max-width: 1023.98px) {
+  .peta {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'info'
+      'tahun'
+      'panel'
+      'aksi';
+  }
+  .peta-panel {
+    margin-top: 20px;
+    border-left: 0;
+    border-top: 1px solid var(--garis);
+    border-bottom: 1px solid var(--garis);
+  }
+  .peta-aksi { align-self: auto; }
+}
+
+/* ── Halaman angkatan: kepala, ubin, peringatan ──────────────────────── */
+.ang-kepala {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin: 20px 0 24px;
+}
+.ang-kepala-teks { flex: 1 1 520px; min-width: 0; }
+.ang-judul { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; margin-top: 10px; }
+.ang-judul .lencana { font-size: 12.5px; padding: 4px 12px; }
+.ang-meta { margin: 6px 0 0; font-size: 13px; color: var(--teks-2); }
+.ang-ringkasan { margin: 8px 0 0; max-width: 760px; font-size: 15.5px; color: var(--teks-2); }
+.ang-aksi { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.ang-ubin { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-bottom: 16px; }
+.ang-ubin .ubin { padding: 14px 18px; }
+
+/* Peringatan status. Kuning untuk indikasi (jangan dianggap pasti), abu untuk
+   belum ada data; warnanya sama dengan lencana statusnya. */
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-size: 14px;
+}
+.banner .ikon { margin-top: 2px; }
+.banner-kuning {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border-color: color-mix(in srgb, var(--warn) 30%, var(--warn-bg));
+}
+.banner-abu {
+  background: var(--netral-bg);
+  color: var(--netral);
+  border-color: color-mix(in srgb, var(--netral) 30%, var(--netral-bg));
+}
+
+/* ── Halaman angkatan: lini masa tahapan ─────────────────────────────────
+   Seleksi adalah urutan, jadi digambar sebagai urutan: lingkaran bernomor
+   dengan garis penghubung, satu kartu per tahapan. Tahapan tanpa subtes tetap
+   punya kartu, tapi lingkarannya diredupkan dan isinya ringkas; yang berisi
+   materi menyala. */
+.ang-tata {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 28px;
+  align-items: start;
+}
+.ang-tata-tunggal { grid-template-columns: minmax(0, 1fr); }
+.ang-utama { min-width: 0; }
+
+.lini { list-style: none; margin: 0; padding: 0; }
+.lini-butir { display: flex; gap: 16px; }
+.lini-jalur { flex: none; width: 40px; display: flex; flex-direction: column; align-items: center; }
+.lini-nomor {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--aksen);
+  color: var(--kartu);
+  font-size: 16px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 1;
 }
-/* Tahap yang punya materi diberi lingkaran beraksen — itu yang dicari orang. */
-.tahap:not(.tahap-ringkas) .tahap-nomor {
-  border-color: var(--aksen);
-  color: var(--aksen);
-  background: var(--aksen-lembut);
-}
+.lini-garis { flex: 1; width: 2px; margin: 6px 0; background: var(--garis); }
+.lini-butir:last-child .lini-garis { display: none; }
+.lini-kosong .lini-nomor { background: var(--kartu); color: var(--teks-2); border: 2px solid var(--garis); }
 
-.tahap-isi { flex: 1; min-width: 0; padding-top: 3px; }
-.tahap-kepala { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.tahap-kepala h3 { margin: 0; font-size: 16.5px; }
-.tahap-hitung { font-size: 12.5px; color: var(--teks-2); margin-left: auto; }
-.tahap-deskripsi { font-size: 13.5px; color: var(--teks-2); margin: 7px 0 0; }
-
-.tahap:not(.tahap-ringkas) .tabel-bungkus {
-  margin-top: 12px;
-  border: 1px solid var(--garis);
-  border-radius: var(--r-kecil);
+.lini-kartu {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 20px;
+  padding: 20px 22px 8px;
   background: var(--kartu);
-  padding: 12px 4px 4px;
-}
-.tahap-ringkas { padding-bottom: 14px; }
-.tahap-ringkas .tahap-kepala h3 { font-size: 15px; font-weight: 600; color: var(--teks-2); }
-
-/* ── Bagian yang dilipat ─────────────────────────────────────────────── */
-.lipat {
   border: 1px solid var(--garis);
-  border-radius: var(--r-kecil);
-  background: var(--kartu);
-  margin-top: 10px;
-  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: var(--bayang);
+  /* Header menempel di atas layar; tanpa ini jangkar #tahap-… tertutup olehnya. */
+  scroll-margin-top: 88px;
 }
-.lipat summary {
-  cursor: pointer;
-  padding: 13px 16px;
-  font-weight: 600;
-  font-size: 15px;
+.lini-kosong .lini-kartu { padding-bottom: 18px; }
+/* Tujuan tautan "+N subtes lainnya" dari halaman platform diberi sorotan. */
+.lini-kartu:target { border-color: var(--aksen); box-shadow: 0 0 0 3px var(--aksen-lembut); }
+.lini-kepala { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; }
+.lini-kepala h3 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: -.01em; }
+.lini-ringkas { margin-left: auto; font-size: 13px; color: var(--teks-2); }
+.lini-deskripsi { margin: 8px 0 0; font-size: 13.5px; color: var(--teks-2); }
+.lini-belum { margin: 10px 0 0; font-size: 13.5px; color: var(--teks-2); }
+
+/* Tabel yang bisa digulir mendatar (komponen TabelGulir). Lebar minimum tabel
+   (500px, di .tabel-subtes dan .sumber-kartu di bawah) membuat tabel digulir di
+   dalam wadahnya di layar sempit, daripada kolomnya diperas sampai teks terpotong.
+   Petunjuk "Geser tabel…" tampil tepat saat itu terjadi: .tabel-kotak adalah
+   container query, dan ambang 499.98px di bawah harus sama dengan lebar minimum
+   tabel. Berlaku di lebar berapa pun, jadi di ponsel dan di jendela sempit lainnya. */
+.tabel-kotak { container-type: inline-size; margin-top: 14px; }
+.tabel-kotak > .tabel-bungkus { margin-top: 0; }
+.tabel-petunjuk { display: none; margin: 0 0 6px; font-size: 12px; color: var(--teks-2); }
+@container (max-width: 499.98px) {
+  .tabel-petunjuk { display: block; }
+}
+
+/* Tabel subtes. */
+.lini-kartu .tabel-kotak { margin-top: 12px; }
+.tabel-subtes table { min-width: 500px; }
+.tabel-subtes th { padding: 0 12px 8px; }
+.tabel-subtes td { padding: 12px; font-variant-numeric: tabular-nums; }
+.tabel-subtes td.sub-sel, .tabel-subtes td.sub-panah { padding: 0; }
+.sub-tautan {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 48px;
+  padding: 8px 12px;
+}
+.sub-tautan b { font-weight: 600; }
+.sub-tautan:hover { text-decoration: none; }
+.sub-tautan:hover b { color: var(--aksen); }
+.sub-panah { width: 44px; }
+.sub-panah a { display: flex; align-items: center; justify-content: center; min-height: 48px; color: var(--teks-2); }
+.sub-panah a:hover { color: var(--aksen); text-decoration: none; }
+.contoh-ada { font-weight: 700; color: var(--ok); }
+.contoh-belum { color: var(--teks-2); }
+/* "Satu sesi" menggantikan waktu per subtes di tahapan yang dikerjakan serentak. */
+.waktu-bersama { color: var(--teks-2); }
+
+/* ── Halaman angkatan: kolom samping ─────────────────────────────────── */
+.samping { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.samping-kartu {
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 18px;
+  padding: 8px 20px;
+}
+.samping-judul { margin: 12px 0 4px; font-size: 17px; font-weight: 800; letter-spacing: -.01em; }
+/* Informasi seleksi dilipat per judul: isinya panjang dan jarang dibaca utuh. */
+.info-butir { border-top: 1px solid var(--garis); }
+.info-butir summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
   list-style: none;
 }
-.lipat summary::-webkit-details-marker { display: none; }
-.lipat summary::after {
-  content: '▾';
-  margin-left: auto;
+.info-butir summary::-webkit-details-marker { display: none; }
+.info-butir summary > span:first-child { flex: 1; min-width: 0; }
+.info-butir summary::after {
+  content: '›';
+  flex: none;
+  font-size: 20px;
+  line-height: 1;
   color: var(--teks-2);
-  font-size: 13px;
   transition: transform .15s ease;
 }
-.lipat[open] summary::after { transform: rotate(180deg); }
-.lipat summary:hover { background: var(--redup); }
-.lipat > p { margin: 0; padding: 0 16px 16px; border-top: 1px solid var(--garis); padding-top: 14px; }
+.info-butir[open] summary::after { transform: rotate(90deg); }
+.info-butir > p { margin: 0 0 12px; font-size: 13.5px; color: var(--teks-2); }
 
-@media (max-width: 640px) {
-  .tes-blok { padding: 16px; }
-  .kartu-angka { gap: 14px; }
-  .tahap { gap: 12px; }
+/* LegendaStatus dipakai juga di halaman lain dengan lebar penuh; di sini ia
+   tinggal di kolom sempit, jadi tata letaknya dirapatkan dan disamakan dengan
+   kartu sekitarnya. */
+.samping .legenda {
+  margin-top: 0;
+  padding: 18px 20px;
+  border-left-width: 1px;
+  border-left-color: var(--garis);
+  border-radius: 18px;
+}
+.samping .legenda dl > div { grid-template-columns: 1fr; gap: 3px; }
+
+/* ── Halaman angkatan: sumber ────────────────────────────────────────── */
+.sumber { margin-top: 36px; }
+.sumber-kartu {
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 18px;
+  padding: 8px 20px 16px;
+}
+.sumber-kartu .tabel-kotak { margin-top: 8px; }
+/* Di layar sempit kolom judul terperas jadi satu kata per baris; lebih baik
+   tabelnya digulir di dalam kartu, seperti tabel subtes. */
+.sumber-kartu table { min-width: 500px; }
+/* Tanggal akses ("2026-10-15") jangan terpatah di tanda hubungnya. */
+.sumber-kartu td:last-child { white-space: nowrap; }
+
+/* ── Dua halaman ini di layar menengah dan ponsel ────────────────────── */
+@media (max-width: 1023.98px) {
+  .ang-tata { grid-template-columns: minmax(0, 1fr); }
+  /* Lima ubin dalam satu baris menyempit; angkanya diperkecil supaya "195 mnt"
+     tidak terpatah jadi dua baris. Berlaku juga untuk kertas. */
+  .ubin-nilai { font-size: 22px; }
+  .ang-ubin .ubin { padding: 12px 14px; }
+}
+
+/* `screen` supaya kertas (lebarnya ~720px) tidak ikut memakai tata letak ponsel. */
+@media screen and (max-width: 767.98px) {
+  .plat-kepala { gap: 14px; margin: 14px 0 20px; }
+  /* Basis 0 supaya logo dan nama tetap sebaris; ubin angka turun ke bawahnya. */
+  .plat-teks { flex: 1 1 0; }
+  .plat-teks h1, .ang-judul h1 { font-size: 26px; }
+  .logo-besar { width: 56px; height: 56px; border-radius: 16px; padding: 8px; }
+  .plat-deskripsi { font-size: 14px; }
+  .plat-ubin { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .plat-ubin .ubin { padding: 10px 12px; }
+  .ubin-nilai { font-size: 21px; }
+  .ubin-label { font-size: 12px; }
+  .bagian-kepala h2 { font-size: 17px; }
+
+  .peta { border-radius: 18px; }
+  .peta-info { padding: 18px 16px 0; gap: 10px; }
+  .peta-info h3 { font-size: 21px; }
+  .peta-tahun { padding: 14px 16px 0; }
+  .peta-aksi { padding: 16px; }
+  .peta-aksi .aksi { flex: 1 1 100%; }
+  .peta-panel { margin-top: 16px; padding: 14px 12px 16px; gap: 12px; }
+  .peta-total { margin-left: 0; }
+  .peta-tahap-petak { gap: 10px; }
+  .peta-tahap { padding: 14px 14px 6px; }
+  /* Waktu dan jumlah soal turun ke bawah nama, bukan memeras nama ke 130px. */
+  .peta-sub { grid-template-columns: 48px minmax(0, 1fr); align-items: start; row-gap: 2px; }
+  .peta-sub-meta { grid-column: 2; }
+
+  .ang-kepala { gap: 14px; margin: 14px 0 18px; }
+  .ang-kepala-teks { flex-basis: 100%; }
+  .ang-ringkasan { font-size: 14.5px; }
+  .ang-ubin { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .ang-ubin .ubin { padding: 10px 12px; }
+  .ang-ubin .ubin:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .banner { margin-bottom: 20px; }
+  .lini-butir { gap: 10px; }
+  .lini-jalur { width: 30px; }
+  .lini-nomor { width: 30px; height: 30px; font-size: 13px; }
+  .lini-kartu { margin-bottom: 14px; padding: 14px 14px 4px; border-radius: 16px; }
+  .lini-kosong .lini-kartu { padding-bottom: 14px; }
+  .lini-kepala h3 { font-size: 16.5px; }
+  .lini-ringkas { margin-left: 0; flex-basis: 100%; }
+  .samping-kartu { padding: 4px 16px; }
+  .sumber { margin-top: 28px; }
+  .sumber-kartu { padding: 4px 12px 12px; }
 }
 
 /* ── Pintasan papan ketik di kotak cari ──────────────────────────────── */
@@ -930,16 +1362,43 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 
 /* ── Cetak: halaman angkatan jadi dokumen yang layak ──────────────────
    Dipakai untuk PDF lewat Ctrl+P, sehingga tidak perlu membundel mesin PDF
-   ke dalam serverless. */
+   ke dalam serverless.
+
+   Bagian yang dilipat (<details>) dibuka oleh <Cetak /> (cetak.tsx) lewat
+   beforeprint; CSS tak bisa membuka <details> yang tertutup. Kelas
+   `tanpa-cetak` menandai tombol dan aksi yang tak berguna di kertas. */
 @media print {
-  .kepala, .remah, .tetangga, .latihan-bar, .saring { display: none !important; }
+  .kepala, .remah, .tetangga, .latihan-bar, .saring, .nav-bawah, .pasang, .tanpa-cetak {
+    display: none !important;
+  }
   html, body { background: #fff; color: #000; font-size: 11pt; }
   .bingkai { max-width: none; padding: 0; }
-  .tahap, .soal, .panel, .lipat { break-inside: avoid; }
-  .lipat > p { display: block !important; }
-  .tahap::before { background: #ccc; }
+  .lini-butir, .soal, .panel, .banner, .legenda, tr { break-inside: avoid; }
+  /* Judul tak boleh tertinggal sendirian di dasar halaman. Isi informasi yang
+     panjang dibiarkan terbelah antarhalaman, tapi barisnya ikut isinya. */
+  h2, h3, .bagian-kepala, .info-butir summary { break-after: avoid; }
   a { color: #000; text-decoration: none; }
-  .kartu, .panel, .soal, .tes-blok { box-shadow: none; border-color: #ddd; }
+  .kartu, .panel, .soal { box-shadow: none; border-color: #ddd; }
+  .lini-kartu, .ubin { box-shadow: none; }
+  /* Informasi dan sumber mengalir seperti teks biasa, tanpa bingkai kartu yang
+     akan terpotong di tiap batas halaman. */
+  .samping-kartu, .sumber-kartu { border: 0; padding: 0; }
+
+  /* Satu kolom: kolom samping jatuh di bawah lini masa, selebar halaman. */
+  .ang-tata { display: block; }
+  .samping { margin-top: 16px; }
+  .tabel-bungkus { overflow: visible; }
+  .tabel-petunjuk { display: none !important; }
+  .tabel-subtes table, .sumber-kartu table { min-width: 0; }
+  /* Panah hanya penunjuk ketuk. */
+  .tabel-subtes th:last-child, .sub-panah { display: none; }
+  .info-butir summary::after { display: none; }
+
+  /* Latar tak ikut tercetak (bawaan peramban), jadi tanda yang bersandar pada
+     latar diberi garis: lingkaran nomor, penghubung, dan lencana. */
+  .lini-nomor { background: none; color: inherit; border: 2px solid currentColor; }
+  .lini-garis { width: 0; background: none; border-left: 2px solid var(--garis); }
+  .lencana { border: 1px solid currentColor; }
 }
 
 /* ── Kaki beranda ────────────────────────────────────────────────────── */
@@ -1008,7 +1467,6 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
   .saring-hapus,
   .tombol-buka,
   .tema-grup button,
-  .lipat summary,
   .chip { min-height: 44px; }
   .saring-centang { min-height: 44px; }
   .saring-centang input[type='checkbox'] { min-height: 0; width: 20px; height: 20px; }
@@ -1046,9 +1504,6 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
   /* ── Tata letak lain ───────────────────────────────────────────────── */
   .spek { gap: 18px; }
   .spek dd { font-size: 21px; }
-  .tahap { gap: 11px; }
-  .tahap-nomor { flex-basis: 28px; width: 28px; height: 28px; font-size: 12px; }
-  .tahap::before { left: 13px; top: 30px; }
   .kaki-ringkas { gap: 20px; }
   .latihan-bar { gap: 10px; }
   .latihan-bar .kartu-kecil { margin-left: 0; }

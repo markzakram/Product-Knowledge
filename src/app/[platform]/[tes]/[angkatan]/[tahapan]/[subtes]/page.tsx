@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import {
-  cariSubtes, semuaSubtes, jumlahContoh, labelTahapan, tetanggaSubtes,
+  cariSubtes, semuaSubtes, jumlahContoh, judulAngkatan, labelTahapan, tetanggaSubtes,
   tautanAngkatan, tautanPlatform, tautanSubtes,
 } from '@/lib/data';
 import { Remah, Status, Kosong, Waktu } from '../../../../../komponen';
@@ -43,7 +43,7 @@ export default async function HalamanSubtes({
         jejak={[
           { teks: 'Platform', ke: '/' },
           { teks: platform.nama, ke: tautanPlatform(platform) },
-          { teks: `${tes.nama} ${angkatan.nama}`, ke: tautanAngkatan(jalur) },
+          { teks: judulAngkatan(tes, angkatan), ke: tautanAngkatan(jalur) },
           { teks: labelTahapan(angkatan, tahapan) },
           { teks: subtes.nama },
         ]}

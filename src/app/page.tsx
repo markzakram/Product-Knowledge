@@ -1,12 +1,18 @@
 import {
-  PLATFORM, ringkasPlatform, semuaAngkatan, semuaSubtes, jumlahContoh, tautanPlatform,
+  PLATFORM, angkaPlatform, semuaAngkatan, semuaSubtes, jumlahContoh, tautanPlatform,
 } from '@/lib/data';
 
 export default function Beranda() {
-  const ringkas = PLATFORM.map((p) => ({ platform: p, r: ringkasPlatform(p) }));
+  // Angka kartu memakai helper yang sama dengan kepala halaman platform (per
+  // objek unik), supaya kartu ini dan halaman yang dibukanya tak pernah beda.
+  // SKD yang dirujuk IPDN dan PKN STAN hanya terhitung sekali.
+  const ringkas = PLATFORM.map((p) => ({ platform: p, r: angkaPlatform(p) }));
   const terisi = ringkas.filter((x) => x.r.subtes > 0);
   const kosong = ringkas.filter((x) => x.r.subtes === 0);
 
+  // Total lintas platform. Masih per jalur, jadi SKD IPDN dan PKN STAN terhitung
+  // dua kali dan jumlahnya bisa lebih besar dari penjumlahan kartu di atas.
+  // Dibereskan bersama item ROADMAP "SKD jangan terhitung dua kali di rekap".
   const subtes = semuaSubtes();
   const total = {
     angkatan: semuaAngkatan().length,
@@ -50,7 +56,7 @@ export default function Beranda() {
                 <div className="kartu-kecil">subtes</div>
               </div>
               <div>
-                <div className="angka-besar">{r.soal || '—'}</div>
+                <div className="angka-besar">{r.contoh || '—'}</div>
                 <div className="kartu-kecil">contoh soal</div>
               </div>
             </div>

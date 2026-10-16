@@ -1,5 +1,5 @@
 import {
-  gapProduksi, mappingBelumDiisi, semuaAngkatan, semuaSubtes, labelTahapan,
+  gapProduksi, mappingBelumDiisi, semuaAngkatan, semuaSubtes, labelTahapan, judulAngkatan,
   tautanAngkatan, tautanSubtes,
 } from '@/lib/data';
 import { Status, Kosong, LegendaStatus } from '../komponen';
@@ -161,9 +161,7 @@ export default function Dashboard() {
                 <tr key={tautanAngkatan(x)}>
                   <td>
                     <a href={tautanAngkatan(x)}>
-                      <b>
-                        {x.tes.nama} {x.angkatan.nama}
-                      </b>
+                      <b>{judulAngkatan(x.tes, x.angkatan)}</b>
                     </a>
                     <div className="kartu-kecil">
                       {x.belum.length} dari {x.angkatan.tahapan.length} tahapan

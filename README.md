@@ -74,6 +74,10 @@ data/
 public/gambar/…                        gambar soal dan stimulus
 ```
 
+Chip kode subtes di halaman platform dan angkatan diturunkan dari `nama` (singkatan dalam kurung di akhir nama seperti `Penalaran Umum (PU)`, kalau tidak ada inisial katanya, dan nomor urut 1, 2, 3 untuk seluruh tahapan bila ada chip yang bentrok, lebih dari 4 huruf, atau kosong), bukan dari field `kode` yang hanya dipakai di URL.
+
+Tahapan yang subtesnya dikerjakan serentak dalam satu sesi (seperti SKD: TWK, TIU, dan TKP dalam 100 menit) diberi `waktuBersama: true`. Dengan begitu `waktuMenit` tiap subtes dibaca sebagai waktu sesi dan dihitung sekali, tidak dijumlah. Tanpa penanda itu, durasi SKD terbaca 300 menit.
+
 ### Tahapan yang dipakai bersama
 
 SKD identik di seluruh sekolah kedinasan, jadi ia ditulis **sekali** di
