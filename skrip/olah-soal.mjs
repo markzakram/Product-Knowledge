@@ -433,7 +433,7 @@ export function pisahOpsi(isi) {
   for (const b of isi.split('\n')) {
     // Pemisah setelah huruf bervariasi: '.', ')', dan di paket POF JadiPCPM
     // tertulis 'A>' — kekhasan pengetikan di sumbernya, bukan format lain.
-    // Koma juga muncul ("A, 401.900" di TPD PCAM 9) sebagai salah ketik, dan
+    // Koma juga muncul ("A, 401.900" di TPD JadiOJK) sebagai salah ketik, dan
     // sebagian soal menulis "(A) Amar memilih Fotografi" dengan kurung di depan.
     const m = b.match(/^\(?([A-Ea-e])\s*[.,)>\]]\s*(.+)$/);
     if (m) {

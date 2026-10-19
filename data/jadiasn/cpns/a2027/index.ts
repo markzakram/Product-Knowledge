@@ -12,14 +12,15 @@ import { tahapSkb } from './t3-skb';
  * dikutip riset berasal dari aturan 2024 (PERMENPANRB No. 6, KEPMENPANRB No. 320,
  * 321, dan 350 Tahun 2024) dan bisa berubah saat pengumuman resmi terbit.
  *
- * Contoh soal SKD: TWK dari riset itu sendiri (40 soal); TIU (59 soal) dan TKP (26 soal
- * beserta kisi-kisi enam aspek) dari dua dokumen terpisah yang dirujuk riset BAB V:
- * "Contoh Soal TIU SKD 2027" dan "Panduan Produksi TKP SKD CPNS".
+ * Contoh soal SKD: satu paket 110 soal dari SKD Generator (TWK 30, TIU 35, TKP 45; berkas
+ * contoh-skd.ts, dipakai juga oleh SKD Sekolah Kedinasan 2026). Kisi-kisi enam aspek TKP dan
+ * ringkasan perubahan TIU tetap dari dua dokumen terpisah yang dirujuk riset BAB V:
+ * "Panduan Produksi TKP SKD CPNS" dan "Contoh Soal TIU SKD 2027".
  *
  * Polanya mengikuti a2026 (yang tidak diubah). Bagian yang TIDAK dibahas riset
  * disalin dari a2026 dan diberi catatan sumber di tempatnya: tahapan SKB, bobot
- * nilai akhir SKD 40 persen dan SKB 60 persen, serta mode tahapan. Mapping
- * produksi tidak disalin karena riset tidak membahasnya.
+ * nilai akhir SKD 40 persen dan SKB 60 persen, serta mode tahapan. Mapping SKD
+ * memakai Mapping SKD 2027 dari SKD Generator (3 paket), bukan a2026.
  */
 export const cpns2027: Angkatan = {
   kode: '2027',
@@ -30,8 +31,8 @@ export const cpns2027: Angkatan = {
     'Tiga tahap: seleksi administrasi, SKD (TWK 30, TIU 35, TKP 45 soal), lalu SKB. ' +
     'Isinya mengikuti riset Product Management Oktober 2026; belum ada pengumuman resmi ' +
     'seleksi CPNS 2027. Perubahan materi TIU adalah proyeksi dari SKD Sekdin 2026. ' +
-    'Contoh soal SKD: 40 TWK, 59 TIU, dan 26 TKP.',
-  diperbarui: '2026-10-15',
+    'Contoh soal SKD: satu paket 110 soal dari SKD Generator (draf).',
+  diperbarui: '2026-10-19',
   info: [
     {
       tipe: 'pendahuluan',
@@ -41,9 +42,9 @@ export const cpns2027: Angkatan = {
 - Ketentuan seleksi (persyaratan umum, batas usia, jumlah soal, bobot, nilai ambang batas) dikutip riset dari PERMENPANRB No. 6 Tahun 2024 serta KEPMENPANRB No. 320, 321, dan 350 Tahun 2024. Riset memakainya sebagai acuan; ketentuan siklus 2027 bisa berbeda saat pengumuman resmi terbit.
 - Perubahan materi TIU 2027 adalah proyeksi tim riset berdasarkan SKD Sekdin 2026.
 - Yang tidak dibahas riset (SKB, bobot nilai akhir SKD 40 persen dan SKB 60 persen, mode tahapan) disalin dari data CPNS 2026 (a2026) dan diberi catatan sumber di tempatnya.
-- Contoh soal TIU (59 soal) berasal dari dokumen "Contoh Soal TIU SKD 2027"; contoh soal TKP (26 soal) dan ringkasan aturan produksi enam aspek TKP berasal dari "Panduan Produksi TKP SKD CPNS" (PT Cerebrum Edukanesia Nusantara, 2026). Keduanya dokumen terpisah yang dirujuk riset.
-- Tiga soal TWK berstatus draft dan menunggu tim riset: Nasionalisme 4 dan Bahasa Negara 5 tidak punya pembahasan di riset (diisi draf tim yang diberi tanda), sedangkan teks soal Bela Negara 5 sama dengan Bela Negara 1.
-- Tiga soal TIU diperbaiki tim karena isi dokumennya bermasalah: kunci soal Jadwal, pembahasan soal Distribusi & Kategori, dan pola soal Matriks Deret. Rinciannya ada di komentar berkas contoh-tiu.ts.`,
+- Ringkasan perubahan TIU berasal dari dokumen "Contoh Soal TIU SKD 2027"; kisi-kisi dan ringkasan aturan produksi enam aspek TKP berasal dari "Panduan Produksi TKP SKD CPNS" (PT Cerebrum Edukanesia Nusantara, 2026). Keduanya dokumen terpisah yang dirujuk riset.
+- Contoh soal SKD (TWK 30, TIU 35, TKP 45) adalah satu paket dari SKD Generator, memakai kuota Mapping SKD 2027. Sebanyak 100 soal berasal dari contoh tryout internal 2027 dan berstatus draft sampai ditelaah tim; 10 soal TIU (1 analogi kata, 1 deret angka, dan 8 figural bergambar) berasal dari dokumen "Contoh Soal TIU SKD 2027" dan berstatus direview, karena belum ada di tryout generator. Paket yang sama dipakai di SKD Sekolah Kedinasan 2026.
+- Contoh soal riset sebelumnya (40 TWK, 59 TIU, 26 TKP) sudah diganti paket itu dan masih ada di riwayat git (commit 24ad183).`,
     },
     {
       tipe: 'pendahuluan',
@@ -178,7 +179,7 @@ Figural
     {
       tipe: 'lainnya',
       judul: 'TKP: Taksonomi Bloom untuk Penyusun Soal',
-      isi: `Panduan produksi TKP memakai Taksonomi Bloom untuk menentukan jenjang berpikir tiap soal. Tiap contoh soal mencantumkan Level Bloom dan Tingkat Kesulitan.
+      isi: `Panduan produksi TKP memakai Taksonomi Bloom untuk menentukan jenjang berpikir tiap soal. Tiap contoh soal di panduan itu mencantumkan Level Bloom dan Tingkat Kesulitan.
 
 - C1 Mengingat (Mudah): mengenali atau menyebutkan kembali informasi dasar yang eksplisit. Hindari kosakata terlalu asing agar soal tidak terasa sulit secara tidak proporsional.
 - C2 Memahami (Sedang): memahami makna, konsep, atau hubungan, bukan sekadar hafalan. Pengecoh boleh mulai mirip, tetapi tidak terlalu menjebak.
@@ -330,8 +331,9 @@ Evaluasi, tiga sasaran:
       tanggalAkses: '2026-10-15',
       keandalan: 'resmi',
       catatan:
-        'Dokumen PDF 74 halaman (dibuat 7 Oktober 2026) yang dirujuk riset BAB V butir 5.2. Sumber 59 contoh soal TIU. ' +
-        'Tiga soal diperbaiki tim karena isi dokumennya bermasalah (kunci Jadwal, pembahasan Distribusi & Kategori, pola Matriks Deret); lihat komentar contoh-tiu.ts.',
+        'Dokumen PDF 74 halaman (dibuat 7 Oktober 2026) yang dirujuk riset BAB V butir 5.2. Sumber 10 soal TIU di paket contoh SKD ' +
+        '(1 analogi kata, 1 deret angka, dan 8 figural bergambar). Contoh TIU lainnya dari dokumen ini sudah diganti paket SKD Generator ' +
+        'dan masih ada di riwayat git (commit 24ad183).',
     },
     {
       jenis: 'internal',
@@ -340,7 +342,26 @@ Evaluasi, tiga sasaran:
       keandalan: 'resmi',
       catatan:
         'PT Cerebrum Edukanesia Nusantara, 2026 (riset BAB V butir 5.3 menyebutnya "Panduan Produksi Soal TKP JadiASN"). ' +
-        'Sumber 26 contoh soal TKP dengan skor tiap opsi dan ringkasan aturan produksi enam aspek.',
+        'Sumber kisi-kisi dan ringkasan aturan produksi enam aspek. Contoh soal TKP dari panduan ini (26 soal) sudah diganti paket ' +
+        'SKD Generator dan masih ada di riwayat git (commit 24ad183).',
+    },
+    {
+      jenis: 'internal',
+      judul: 'SKD Generator - mapping SKD 2027 (skd-mapping.json)',
+      tanggalAkses: '2026-10-19',
+      keandalan: 'resmi',
+      catatan:
+        'Mapping SKD 2027.xlsx (sheet "1 TO 0 Latsol" dan rotasi tiga paket) yang dibaca SKD Generator: 57 chapter, 37 di antaranya ' +
+        'berkuota (TWK 30, TIU 35, TKP 45 soal per paket). Dasar materi, mapping, dan susunan paket contoh soal SKD.',
+    },
+    {
+      jenis: 'internal',
+      judul: 'SKD Generator - 12 dokumen tryout 2027',
+      tanggalAkses: '2026-10-19',
+      keandalan: 'asumsi',
+      catatan:
+        'Contoh tryout internal: 12 dokumen tim yang diterima SKD Generator (312 soal: TWK 90, TIU 87, TKP 135; satu dokumen versi awal ' +
+        'tidak dihitung). Berstatus draf sampai ditelaah tim. Sumber 100 dari 110 soal paket contoh SKD. Angka ketersediaan SIADU tidak dihitung.',
     },
     {
       jenis: 'resmi',

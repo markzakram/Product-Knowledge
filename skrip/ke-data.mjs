@@ -59,33 +59,9 @@ const PETA = {
       { sumber: 'out/soal-jadiasn.json', lesson: 'TKP (Tes Karakteristik Pribadi)', varian: 'contohTkp', mulaiNomor: 1, tipe: 'skala' },
     ],
   },
-  jadisekdin: {
-    keluar: 'data/jadisekdin/skd/a2026/contoh-skd.ts',
-    judul: 'Contoh soal SKD sekolah kedinasan, dari Markaz paket "01 TO SEKOLAH KEDINASAN 2023".',
-    ambil: [
-      { sumber: 'out/soal-jadisekdin.json', lesson: 'TWK (Tes Wawasan Kebangsaan)', varian: 'contohTwk', mulaiNomor: 3, tipe: 'pg' },
-      { sumber: 'out/soal-jadisekdin.json', lesson: 'TIU (Tes Intelegensi Umum)', varian: 'contohTiu', mulaiNomor: 3, tipe: 'pg' },
-      { sumber: 'out/soal-jadisekdin.json', lesson: 'TKP (Tes Karakteristik Pribadi)', varian: 'contohTkp', mulaiNomor: 3, tipe: 'skala' },
-    ],
-  },
-  'jadiojk-pcam9': {
-    keluar: 'data/jadiojk/pcam/a9/contoh.ts',
-    judul: 'Contoh soal PCAM 9 OJK, dari paket tryout Markaz Tahap 1 sampai 3.',
-    ambil: [
-      // Dua figural (opsi di dalam gambar), dua hitungan cerita, satu logika.
-      { sumber: 'out/soal-jadiojk-pcam9-t1.json', lesson: 'Kemampuan Umum', varian: 'contohKemampuanUmum', tipe: 'pg',
-        pilih: ['134404', '134405', '134408', '134409', '134410'] },
-      { sumber: 'out/soal-jadiojk-pcam9-t1.json', lesson: 'Penalaran Numerik', varian: 'contohPenalaranNumerik', tipe: 'pg' },
-      { sumber: 'out/soal-jadiojk-pcam9-t2a.json', lesson: 'Tes Kemampuan Bahasa Inggris', varian: 'contohBahasaInggris', tipe: 'pg' },
-      { sumber: 'out/soal-jadiojk-pcam9-t2a.json', lesson: 'Tes Pengetahuan Sektor Jasa Keuangan', varian: 'contohSektorJasaKeuangan', tipe: 'pg' },
-      // Paket TKU INTERAKTIF (ID 5053) sengaja tidak dipakai: soalnya berupa
-      // interaksi (ketuk gambar, susun jadwal, urutkan lencana) tanpa kunci
-      // maupun tipe di Markaz, jadi tidak bisa ditampilkan ulang sebagai soal
-      // teks. Penalaran induktif diambil dari versi non-interaktifnya.
-      { sumber: 'out/soal-jadiojk-pcam9-t2c.json', lesson: 'Tes Penalaran Induktif Non-Interaktif', varian: 'contohPenalaranInduktif', tipe: 'pg' },
-      { sumber: 'out/soal-jadiojk-pcam9-t3.json', lesson: 'Tes Kepribadian', varian: 'contohKepribadian', tipe: 'skala' },
-    ],
-  },
+  // SKD CPNS 2027 (data/jadiasn/cpns/a2027/contoh-skd.ts) dan SKD Sekolah Kedinasan 2026
+  // sengaja TIDAK ada di peta ini: isinya satu paket 110 soal dari SKD Generator yang dipakai
+  // bersama kedua angkatan. Target yang menulis ke berkas itu akan menimpanya dengan data Markaz.
   'jadipppk-2026': {
     keluar: 'data/jadipppk/pppk/a2026/contoh.ts',
     judul: 'Contoh soal seleksi kompetensi PPPK, dari paket tryout Markaz.',

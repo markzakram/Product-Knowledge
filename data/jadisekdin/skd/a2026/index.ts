@@ -45,16 +45,28 @@ export const skdKedinasan2026: Angkatan = {
       judul: 'Mapping ASN',
       tanggalAkses: '2026-09-22',
       keandalan: 'resmi',
-      catatan: 'Sumber angka mapping tryout SKD (kolom tersedia).',
+      catatan:
+        'Sumber angka mapping tryout SKD sebelumnya (30 paket implisit). Sudah diganti Mapping SKD 2027 ' +
+        'dari SKD Generator di tiap subtes; disimpan sebagai riwayat sumber.',
     },
     {
       jenis: 'internal',
-      judul: 'Markaz - paket tryout "01 TO SEKOLAH KEDINASAN 2023"',
-      tanggalAkses: '2026-09-22',
+      judul: 'SKD Generator - mapping SKD 2027 (skd-mapping.json)',
+      tanggalAkses: '2026-10-19',
+      keandalan: 'resmi',
+      catatan:
+        'Mapping SKD 2027.xlsx (sheet "1 TO 0 Latsol" dan rotasi tiga paket) yang dibaca SKD Generator: 57 chapter, 37 di antaranya ' +
+        'berkuota (TWK 30, TIU 35, TKP 45 soal per paket). Dasar materi, mapping, dan susunan paket contoh soal SKD.',
+    },
+    {
+      jenis: 'internal',
+      judul: 'SKD Generator - 12 dokumen tryout 2027',
+      tanggalAkses: '2026-10-19',
       keandalan: 'asumsi',
       catatan:
-        'Sumber contoh soal nomor 3 dan seterusnya, berstatus direview (belum diperiksa ulang ' +
-        'untuk etalase). Bukan sumber ketentuan SKD.',
+        'Contoh tryout internal: 12 dokumen tim yang diterima SKD Generator (312 soal: TWK 90, TIU 87, TKP 135; satu dokumen versi awal ' +
+        'tidak dihitung). Berstatus draf sampai ditelaah tim. Sumber 100 dari 110 soal paket contoh SKD (10 soal TIU lainnya dari ' +
+        'dokumen riset CPNS 2027 "Contoh Soal TIU SKD 2027"). Angka ketersediaan SIADU tidak dihitung.',
     },
   ],
 };

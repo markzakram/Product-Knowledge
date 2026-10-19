@@ -1,5 +1,5 @@
 import type { Tahapan } from '@/lib/skema';
-import { contohKemampuanUmum, contohPenalaranNumerik } from './contoh';
+import { contohKemampuanUmum, contohPenalaranNumerik } from './contoh-generator';
 
 /**
  * Tes Potensi Dasar PCAM 10 (Tahap 1).
@@ -7,8 +7,10 @@ import { contohKemampuanUmum, contohPenalaranNumerik } from './contoh';
  * Disusun dari dokumen riset "JadiOJK - Riset PCAM dan MLE OJK 2026":
  *   - nama subtes, jumlah soal, dan waktu dari tabel Materi Pembelajaran
  *     (bagian 3.1);
- *   - jenis soal dan contoh dari BAB V (5.1.1 Kemampuan Umum dan 5.1.2
- *     Penalaran Numerik).
+ *   - jenis soal dari BAB V (5.1.1 Kemampuan Umum dan 5.1.2 Penalaran
+ *     Numerik);
+ *   - contoh soal dari satu paket Tes OJK Generator (contoh-generator.ts),
+ *     bukan dari dokumen riset.
  *
  * Kolom "Penilaian Soal" di tabel itu hanya berisi placeholder "Sistem
  * Skoring …", jadi sistem skoring sengaja tidak diisi. MLE memakai tabel yang
@@ -37,10 +39,10 @@ export const tahapTpd: Tahapan = {
         'Belum diketahui. Kolom Penilaian Soal di dokumen riset hanya berisi placeholder ' +
         '"Sistem Skoring …".',
       catatan:
-        'Contoh soal diambil dari BAB V dokumen riset (24 soal; tes sesungguhnya 12 soal). ' +
-        'Dokumen riset hanya memuat soal dan pilihan jawaban. Kunci dan pembahasan di halaman ' +
-        'ini disusun ulang dari soalnya (dihitung, atau dianalisis polanya untuk soal figural), ' +
-        'bukan salinan dari dokumen riset, dan berstatus draft sampai diperiksa tim akademik.',
+        'Contoh soal: 12 soal bentukan Tes OJK Generator (satu paket, bank v2), sebanyak tes ' +
+        'sesungguhnya. Bukan soal ujian sungguhan dan bukan salinan dokumen riset. Validator ' +
+        'generator menghitung ulang tiap butir dan semuanya lulus, tetapi kunci dan pembahasan ' +
+        'berstatus draft sampai diperiksa tim akademik.',
       materi: [
         {
           nama: 'Verbal (Verbal Reasoning)',
@@ -85,11 +87,12 @@ export const tahapTpd: Tahapan = {
         'Belum diketahui. Kolom Penilaian Soal di dokumen riset hanya berisi placeholder ' +
         '"Sistem Skoring …".',
       catatan:
-        'Contoh soal diambil dari BAB V dokumen riset: 8 soal (Bar Chart 2, Table 2, Line ' +
-        'Graph 2, Pie Chart 2). Dokumen riset hanya memuat soal dan tangkapan layarnya. Kunci ' +
-        'dan pembahasan di halaman ini disusun ulang dari soalnya (dihitung), bukan salinan ' +
-        'dari dokumen riset, dan berstatus draft sampai diperiksa tim akademik. Jawabannya ' +
-        'berupa kondisi akhir grafik atau pilihan per tab, bukan satu huruf.',
+        'Contoh soal: 10 soal bentukan Tes OJK Generator (satu paket, bank v2), sebanyak tes ' +
+        'sesungguhnya: Bar Chart 3, Table 3, Line Graph 2, Pie Chart 2. Bukan soal ujian ' +
+        'sungguhan dan bukan salinan dokumen riset. Validator generator menghitung ulang tiap ' +
+        'butir dan semuanya lulus, tetapi kunci dan pembahasan berstatus draft sampai diperiksa ' +
+        'tim akademik. Jawabannya berupa kondisi akhir grafik atau pilihan per tab, bukan satu ' +
+        'huruf.',
       materi: [
         {
           nama: 'Table',

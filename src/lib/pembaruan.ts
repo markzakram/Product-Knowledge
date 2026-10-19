@@ -27,6 +27,15 @@ export interface Rilis {
 
 export const PEMBARUAN: readonly Rilis[] = [
   {
+    versi: '1.6.0',
+    tanggal: '2026-10-19',
+    poin: [
+      'SKD CPNS 2027 dan SKD Sekolah Kedinasan kini berisi satu paket penuh 110 soal (TWK 30, TIU 35, TKP 45) yang disusun dari SKD Generator berdasarkan mapping dan tryout terbaru, jadi simulasi SKD berjalan penuh 100 menit. Soal TIU figural, analogi, dan deret bergambar diambil dari contoh yang sudah ada karena belum tersedia di generator. Materi dan mapping tiap subtes ikut diperbarui.',
+      'JadiOJK: PCAM 9 dihapus. Contoh soal PCAM 10 Tahap 1 diganti 22 soal dari Tes OJK Generator (Kemampuan Umum 12, Penalaran Numerik 10), dengan tabel, grafik, dan gambar figural yang sama seperti versi interaktifnya.',
+      'Soal-soal baru ini berstatus draf sampai ditelaah tim akademik.',
+    ],
+  },
+  {
     versi: '1.5.0',
     tanggal: '2026-10-19',
     poin: [

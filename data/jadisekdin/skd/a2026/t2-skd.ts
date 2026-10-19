@@ -1,5 +1,9 @@
 import type { Tahapan } from '@/lib/skema';
-import { contohTwk, contohTiu, contohTkp } from './contoh-skd';
+import {
+  contohGeneratorTwk,
+  contohGeneratorTiu,
+  contohGeneratorTkp,
+} from '../../../jadiasn/cpns/a2027/contoh-skd';
 
 /**
  * Seleksi Kompetensi Dasar (SKD) 2026, tahap 2 dari alur seleksi sekolah
@@ -9,14 +13,17 @@ import { contohTwk, contohTiu, contohTkp } from './contoh-skd';
  * Sekolah Kedinasan). Seleksi lanjutan tiap sekolah ada di tesnya masing-masing,
  * mis. IPDN dan PKN STAN.
  *
- * Contoh soal nomor 1 dan 2 ditulis tangan di sini; nomor 3 dan seterusnya dari
- * contoh-skd.ts, yang ditulis ulang oleh skrip/ke-data.mjs. Soal tulisan tangan
- * sengaja tidak dipindah ke sana supaya tidak hilang saat skrip dijalankan lagi.
- * Susunan `contoh` tiap subtes menaruh kelompok tulisan tangan lebih dulu, supaya
- * soal tampil berurutan dari nomor 1.
+ * Materi dan mapping tiap subtes mengikuti Mapping SKD 2027 dari SKD Generator
+ * (chapter berkuota, 3 paket x 30, 35, dan 45 soal). Contoh soal: satu paket 110
+ * soal dari SKD Generator (TWK 30, TIU 35, TKP 45), SAMA dengan paket SKD CPNS 2027
+ * dan ditulis sekali di data/jadiasn/cpns/a2027/contoh-skd.ts, jadi perubahan di
+ * sana berlaku di kedua angkatan. Ambang batas dan ketentuan di berkas ini tetap
+ * milik SKD Sekolah Kedinasan. Contoh lama (soal tulisan tangan dan hasil Markaz)
+ * sudah diganti; masih ada di riwayat git (commit 24ad183).
  *
- * Sumber: JadiSekdin - Riset dan Kurikulum Sekolah Kedinasan SKD.docx
- *         dan Mapping ASN.xlsx (Product Management, April 2026).
+ * Sumber: JadiSekdin - Riset dan Kurikulum Sekolah Kedinasan SKD.docx (Product
+ * Management, April 2026) untuk ketentuan; SKD Generator (Mapping SKD 2027 dan
+ * contoh tryout 2027) untuk materi, mapping, dan contoh soal.
  */
 export const tahapSkd: Tahapan = {
   kode: 'skd',
@@ -37,83 +44,29 @@ Jalur Afirmasi Kewilayahan: nilai kumulatif SKD 281 dengan TIU minimal 55.`,
       formatKetentuan: `Pilihan ganda, satu jawaban benar. Waktu 100 menit berlaku untuk ketiga subtes sekaligus, tidak dipisah per subtes.`,
       penilaian: `Benar 5 poin. Salah atau tidak menjawab 0 poin. Skor maksimal 150. Nilai ambang batas 65.`,
       materi: [
-      { nama: `Nasionalisme`, catatan: `Peran warga negara, sikap, dan penerapannya untuk mewujudkan kepentingan nasional dengan tetap mempertahankan identitas nasional.` },
-      { nama: `Integritas`, catatan: `Menjunjung tinggi kejujuran, ketangguhan, komitmen, dan konsistensi sebagai satu kesatuan sikap.` },
-      { nama: `Bela Negara`, catatan: `Kesadaran berbangsa dan bernegara, penghayatan nilai Pancasila, komitmen terhadap NKRI, dan peran aktif menjaga kedaulatan.` },
-      { nama: `Pilar Negara`, catatan: `Pemahaman isi dan semangat UUD 1945, Bhinneka Tunggal Ika, dan penerapan sila Pancasila pada peristiwa relevan.` },
-      { nama: `Bahasa Negara`, catatan: `Ide pokok, simpulan, makna kata, perbaikan kalimat, dan tata tulis bahasa Indonesia.` },
+        { nama: `Nasionalisme`, catatan: `6 soal per paket. Peran warga negara, sikap, dan penerapannya untuk mewujudkan kepentingan nasional dengan tetap mempertahankan identitas nasional.` },
+        { nama: `Integritas`, catatan: `6 soal per paket. Menjunjung tinggi kejujuran, ketangguhan, komitmen, dan konsistensi sebagai satu kesatuan sikap.` },
+        { nama: `Bela Negara`, catatan: `6 soal per paket. Kesadaran berbangsa dan bernegara, penghayatan nilai Pancasila, komitmen terhadap NKRI, dan peran aktif menjaga kedaulatan.` },
+        { nama: `Pilar Negara`, catatan: `6 soal per paket. Pemahaman isi dan semangat UUD 1945, Bhinneka Tunggal Ika, dan penerapan sila Pancasila pada peristiwa relevan.` },
+        { nama: `Bahasa Negara > Ide pokok atau gagasan utama`, catatan: `1 soal per paket.` },
+        { nama: `Bahasa Negara > Simpulan paragraf`, catatan: `1 soal per paket.` },
+        { nama: `Bahasa Negara > Kalimat efektif dan tidak efektif`, catatan: `1 soal per paket.` },
+        { nama: `Bahasa Negara > Kata baku dan tidak baku`, catatan: `1 soal per paket.` },
+        { nama: `Bahasa Negara > Penulisan tanda baca`, catatan: `1 soal per paket.` },
+        { nama: `Bahasa Negara > Penulisan Ejaan Bahasa Indonesia yang Disempurnakan (EYD)`, catatan: `1 soal per paket.` },
       ],
       mapping: [
         {
           tipe: 'tryout',
+          paket: 3,
           soalPerPaket: 30,
-          dibutuhkan: 900,
-          tersedia: 2016,
-          status: 'selesai',
-          catatan: `Angka dari Mapping ASN.xlsx. Sheet-nya berlabel "15 Paket", tetapi totalnya sama dengan 30 paket (30 soal x 30 = 900). Jumlah paket sengaja dikosongkan sampai maksud sheet itu dipastikan.`,
+          dibutuhkan: 90,
+          tersedia: 90,
+          status: 'berjalan',
+          catatan: `Mapping SKD 2027 (SKD Generator): 3 paket x 30 soal. Tersedia = 90 contoh tryout generator (18 soal tiap materi: Nasionalisme, Integritas, Bela Negara, Pilar Negara, dan Bahasa Negara). Angka ketersediaan SIADU di workbook tidak dihitung.`,
         },
       ],
-      contoh: [
-        {
-        soal: [
-        {          nomor: 1,
-          tipe: 'pg',
-          pertanyaan: `Pada awal abad ke-20, muncul berbagai organisasi pergerakan di Indonesia seperti Budi Utomo, Sarekat Islam, dan Perhimpunan Indonesia. Puncak dari kesadaran untuk bersatu sebagai satu bangsa, satu tanah air, dan satu bahasa diwujudkan melalui sebuah peristiwa penting yang menjadi simbol kebangkitan nasionalisme Indonesia. Berdasarkan uraian tersebut, peristiwa yang menjadi tonggak lahirnya nasionalisme Indonesia adalah…`,
-          opsi: [
-            { label: 'A', teks: `Proklamasi Kemerdekaan` },
-            { label: 'B', teks: `Kongres Pemuda II dan Sumpah Pemuda 1928` },
-            { label: 'C', teks: `Reformasi 1998` },
-            { label: 'D', teks: `Pembentukan BPUPKI` },
-            { label: 'E', teks: `Gerakan Non-Blok` },
-          ],
-          kunci: 'B',
-          pembahasan: `Konsep: Kebangkitan nasional dan Sumpah Pemuda 1928
-Kata Kunci: Kongres Pemuda II, Sumpah Pemuda, persatuan bangsa, nasionalisme, kebangkitan nasional
-
-Pada awal abad ke-20, muncul berbagai organisasi pergerakan nasional seperti Budi Utomo, Sarekat Islam, dan Perhimpunan Indonesia yang menandai kebangkitan kesadaran nasional. Puncak dari kesadaran untuk bersatu sebagai satu bangsa, satu tanah air, dan satu bahasa diwujudkan dalam Kongres Pemuda II pada tahun 1928, yang melahirkan Sumpah Pemuda. Peristiwa ini menjadi tonggak penting lahirnya nasionalisme Indonesia, karena mempersatukan berbagai suku, agama, dan daerah dalam semangat kebangsaan yang sama. 
-
-Pembahasan Opsi Salah:
-Opsi A salah, karena Proklamasi Kemerdekaan merupakan puncak perjuangan nasionalisme, bukan awal kebangkitannya.
-Opsi C salah, karena Reformasi 1998 berhubungan dengan pembaruan sistem pemerintahan, bukan lahirnya nasionalisme.
-Opsi D salah, karena BPUPKI dibentuk menjelang kemerdekaan untuk menyusun dasar negara, bukan simbol awal nasionalisme.
-Opsi E salah, karena Gerakan Non-Blok adalah kerja sama internasional, bukan peristiwa kebangkitan nasional Indonesia.
-
-Carcep:
-Kongres Pemuda II tahun 1928 yang menghasilkan Sumpah Pemuda menjadi tonggak lahirnya nasionalisme Indonesia, karena menegaskan tekad persatuan dalam satu bangsa, satu tanah air, dan satu bahasa Indonesia.`,
-          tingkat: 'sedang',
-          status: 'final',
-        },
-        {          nomor: 2,
-          tipe: 'pg',
-          pertanyaan: `Penghargaan terhadap jasa pahlawan mencerminkan sikap nasionalisme yang menempatkan sejarah dan pengorbanan para pendahulu sebagai teladan dalam membangun bangsa. Sikap ini tidak hanya mengenang masa lalu, tetapi juga membentuk identitas dan karakter bangsa. Pernyataan “Bangsa yang besar adalah bangsa yang menghargai jasa Pahlawannya” memiliki makna bahwa…`,
-          opsi: [
-            { label: 'A', teks: `Pahlawan harus dijadikan panutan semata` },
-            { label: 'B', teks: `Penghargaan terhadap sejarah memperkuat nasionalisme` },
-            { label: 'C', teks: `Penghargaan pahlawan hanya tugas pemerintah` },
-            { label: 'D', teks: `Setiap generasi wajib mengulang perjuangan fisik` },
-            { label: 'E', teks: `Peringatan hari pahlawan bersifat simbolis` },
-          ],
-          kunci: 'B',
-          pembahasan: `Konsep: Nasionalisme
-Kata Kunci: penghargaan, jasa pahlawan, identitas bangsa, nasionalisme
-
-Pembahasan:
-Penghargaan terhadap jasa pahlawan memperkuat rasa nasionalisme karena menempatkan sejarah dan pengorbanan para pendahulu sebagai teladan dalam membangun bangsa. Dengan menghargai pahlawan, masyarakat belajar menghormati nilai perjuangan dan menumbuhkan identitas serta karakter kebangsaan.
-
-Pembahasan Opsi Salah:
-Opsi A salah karena pahlawan bukan sekadar panutan, tetapi juga penguat nilai nasionalisme.
-Opsi C salah karena penghargaan terhadap pahlawan bukan hanya tugas pemerintah, tetapi tanggung jawab seluruh warga.
-Opsi D salah karena bukan berarti generasi sekarang harus mengulang perjuangan fisik, melainkan meneladani semangatnya.
-Opsi E salah karena peringatan hari pahlawan lebih dari simbol, memiliki fungsi edukatif dan pembentukan karakter.
-
-Cara cepat: Menghargai jasa pahlawan berarti menjaga ingatan kolektif bangsa dan memperkuat jati diri nasional, sehingga generasi berikutnya memiliki arah dan nilai dalam membangun Indonesia.`,
-          tingkat: 'sedang',
-          status: 'final',
-        },
-        ],
-      },
-        ...contohTwk,
-      ],
+      contoh: contohGeneratorTwk,
     },
     {
       kode: 'tiu',
@@ -122,74 +75,42 @@ Cara cepat: Menghargai jasa pahlawan berarti menjaga ingatan kolektif bangsa dan
       waktuMenit: 100,
       formatKetentuan: `Pilihan ganda, satu jawaban benar. Waktu 100 menit berlaku untuk ketiga subtes sekaligus.`,
       penilaian: `Benar 5 poin. Salah atau tidak menjawab 0 poin. Skor maksimal 175. Nilai ambang batas 80.`,
+      catatan: `Daftar materi memakai chapter berkuota pada Mapping SKD 2027 dari SKD Generator (21 chapter, 35 soal per paket). Contoh soalnya adalah paket 1 dari SKD Generator, sama dengan SKD CPNS 2027; 10 soal di antaranya (1 analogi kata, 1 deret angka, dan 8 figural bergambar) berasal dari dokumen "Contoh Soal TIU SKD 2027" karena belum ada di tryout generator. Dua puluh chapter lain di mapping tidak punya baris kuota sendiri (sebagian bergilir lewat rotasi antarpaket, sisanya untuk latihan): Verbal - urutan dan peringkat, jadwal, logika pernyataan, distribusi dan kategori, rute dan jalur; Numerik - aljabar (persamaan, sistem persamaan), bilangan (keterbagian, faktor dan kelipatan), soal cerita (aritmatika sosial, geometri, JKW, perbandingan senilai dan berbalik, VDW), dan deret angka (2 Towew, 3 Towew, Hijab, Template, Campuran, Fibonacci).`,
       materi: [
-      { nama: `Verbal`, catatan: `Analogi; silogisme (kesimpulan dari 2-3 premis); analitis (susunan dan posisi, urutan dan peringkat, jadwal, rute dan jalur, logika pernyataan, distribusi dan kategori).` },
-      { nama: `Numerik`, catatan: `Berhitung dan persamaan; deret angka; soal cerita (perbandingan senilai dan berbalik, tabel, rata-rata, usia, jarak-kecepatan-waktu, aritmatika sosial); perbandingan kuantitatif.` },
-      { nama: `Figural`, catatan: `Analogi; ketidaksamaan; serial (the next box dan kotak 3x3).` },
+        { nama: `Verbal > Silogisme > 3 Premis`, catatan: `1 soal per paket.` },
+        { nama: `Verbal > Silogisme > 2 Premis - Narasi`, catatan: `2 soal per paket.` },
+        { nama: `Verbal > Silogisme > 3 Premis - Narasi`, catatan: `2 soal per paket.` },
+        { nama: `Verbal > Analogi > 2 Kata`, catatan: `1 soal per paket. Contoh di paket ini dari dokumen "Contoh Soal TIU SKD 2027" karena belum ada di tryout generator.` },
+        { nama: `Verbal > Analitis > Memperkuat/Memperlemah Argumen`, catatan: `3 soal per paket.` },
+        { nama: `Verbal > Analitis > Susunan & Posisi`, catatan: `2 soal per paket.` },
+        { nama: `Numerik > Berhitung > Operasi Hitung - Dasar`, catatan: `1 soal per paket.` },
+        { nama: `Numerik > Berhitung > Perkalian Setara`, catatan: `1 soal per paket.` },
+        { nama: `Numerik > Berhitung > Pembagian Setara`, catatan: `1 soal per paket.` },
+        { nama: `Numerik > Kecukupan Data > Aljabar - Operasi Aljabar`, catatan: `2 soal per paket. Berotasi antarpaket bersama Aljabar - Persamaan dan Aljabar - Sistem Persamaan; paket 1 memakai Operasi Aljabar dan Persamaan.` },
+        { nama: `Numerik > Kecukupan Data > Bilangan - Jenis dan Sifat Bilangan`, catatan: `1 soal per paket. Berotasi antarpaket: Jenis dan Sifat Bilangan (paket 1), Keterbagian Bilangan (paket 2), Faktor dan Kelipatan (paket 3).` },
+        { nama: `Numerik > Kecukupan Data > Soal Cerita - Aljabar`, catatan: `3 soal per paket. Berotasi antarpaket: paket 1 Geometri, Perbandingan Senilai dan Berbalik, dan Aljabar; paket 2 JKW, Geometri, dan Perbandingan Senilai dan Berbalik; paket 3 VDW, JKW, dan Aritmatika Sosial.` },
+        { nama: `Numerik > Deret Bilangan > Deret Angka - 1 Towew`, catatan: `1 soal per paket. Contoh di paket ini dari dokumen "Contoh Soal TIU SKD 2027": contoh deret di tryout generator bergambar dan gambarnya tidak ikut ke data.` },
+        { nama: `Numerik > Deret Bilangan > Matriks Deret`, catatan: `2 soal per paket.` },
+        { nama: `Numerik > Deret Bilangan > Pola Bilangan Tabel`, catatan: `2 soal per paket.` },
+        { nama: `Numerik > Soal Cerita > Tabel Pernyataan - Kombinasi Pernyataan`, catatan: `1 soal per paket.` },
+        { nama: `Numerik > Soal Cerita > Tabel Pernyataan - Kombinasi Optimal`, catatan: `1 soal per paket.` },
+        { nama: `Figural > Figural Analogi`, catatan: `2 soal per paket. Contoh di paket ini hanya 1 soal, karena baru ada 1 contoh figural analogi bergambar.` },
+        { nama: `Figural > Figural Ketidaksamaan`, catatan: `2 soal per paket.` },
+        { nama: `Figural > Figural Serial`, catatan: `2 soal per paket.` },
+        { nama: `Figural > Figural Matriks (Kotak 3x3)`, catatan: `2 soal per paket. Contoh di paket ini 3 soal, menutup kekurangan figural analogi.` },
       ],
       mapping: [
         {
           tipe: 'tryout',
+          paket: 3,
           soalPerPaket: 35,
-          dibutuhkan: 1050,
-          tersedia: 2088,
-          status: 'selesai',
-          catatan: `Angka dari Mapping ASN.xlsx sheet "TIU 15 Paket". Totalnya sama dengan 30 paket, bukan 15.`,
+          dibutuhkan: 105,
+          tersedia: 87,
+          status: 'berjalan',
+          catatan: `Mapping SKD 2027 (SKD Generator): 3 paket x 35 soal. Tersedia = 87 contoh tryout generator (39 verbal dan 48 numerik); kurang 18 karena contoh figural dan analogi kata belum ada di dokumen tryout. Angka ketersediaan SIADU di workbook tidak dihitung.`,
         },
       ],
-      contoh: [
-        {
-        soal: [
-        {          nomor: 1,
-          tipe: 'pg',
-          pertanyaan: `Bisnis : strategi : gulung tikar = ... : ... : ...`,
-          opsi: [
-            { label: 'A', teks: `Sekolah : prestasi : lulus` },
-            { label: 'B', teks: `Memasak : resep : gagal` },
-            { label: 'C', teks: `Usaha : modal : laba` },
-            { label: 'D', teks: `Praktisi : orasi : rapat` },
-            { label: 'E', teks: `Pengusaha : pailit : aset` },
-          ],
-          kunci: 'B',
-          pembahasan: `Bisnis : strategi : gulung tikar = ... : ... : ...
-Dapat dibaca bersambung dengan cara "kegiatan bisnis yang menggunakan strategi salah dapat menyebabkan gulung tikar (bangkrut)"
-Maka memiliki hubungan yang tepat dengan:
-Memasak : resep : gagal, dibaca dengan cara "kegiatan memasak yang menggunakan resep salah dapat menyebabkan kegagalan".`,
-          tingkat: 'sedang',
-          status: 'final',
-        },
-        {          nomor: 2,
-          tipe: 'pg',
-          pertanyaan: `Tujuh : Delapan : Lima Belas 
-Hubungan kata di atas setara dengan....`,
-          opsi: [
-            { label: 'A', teks: `Malas : Rajin : Manusia` },
-            { label: 'B', teks: `Palu : Obeng : Gergaji` },
-            { label: 'C', teks: `Kesuksesan : Konsistensi : Usaha` },
-            { label: 'D', teks: `Modal : Keuntungan : Harga Jual` },
-            { label: 'E', teks: `Arwana : Koi : Hiu` },
-          ],
-          kunci: 'D',
-          pembahasan: `Konsep yang digunakan: analisis hubungan antar kata
-Kata kunci: verbal analogi, penggabungan dan hasil
-
-Pada kata tujuh, delapan dan lima belas berlaku hubungan sebagai berikut:
-Penggabungan/ penjumlahan dari bilangan tujuh dan delapan menghasilkan bilangan limabelas. 
-Aplikasi dari hubungan yang sama terdapat pada kata modal, keuntungan dan harga jual sebagai berikut:
-Penggabungan dari modal dan keuntungan menghasilkan harga jual
-
-Alasan opsi lain salah: 
-A. Penggabungan dari malas dan rajin TIDAK menghasilkan manusia
-B. Penggabungan dari palu dan obeng TIDAK menghasilkan gergaji
-C. Penggabungan dari kesuksesan dan konsistensi TIDAK menghasilkan usaha
-E. Penggabungan dari arwana dan koi TIDAK menghasilkan hiu`,
-          tingkat: 'sedang',
-          status: 'final',
-        },
-        ],
-      },
-        ...contohTiu,
-      ],
+      contoh: contohGeneratorTiu,
     },
     {
       kode: 'tkp',
@@ -198,86 +119,27 @@ E. Penggabungan dari arwana dan koi TIDAK menghasilkan hiu`,
       waktuMenit: 100,
       formatKetentuan: `Soal berskala: setiap opsi punya skor, tidak ada opsi yang sepenuhnya salah. Waktu 100 menit berlaku untuk ketiga subtes sekaligus.`,
       penilaian: `Skor per opsi paling rendah 1 dan paling tinggi 5. Tidak menjawab 0. Skor maksimal 225. Nilai ambang batas 156.`,
-      catatan: `Seluruh materi mengacu pada nilai dasar ASN, yaitu BerAKHLAK: Berorientasi Pelayanan, Akuntabel, Kompeten, Harmonis, Loyal, Adaptif, dan Kolaboratif.`,
+      catatan: `Seluruh materi mengacu pada nilai dasar ASN, yaitu BerAKHLAK: Berorientasi Pelayanan, Akuntabel, Kompeten, Harmonis, Loyal, Adaptif, dan Kolaboratif. Contoh soalnya adalah paket 1 dari SKD Generator (45 soal), sama dengan SKD CPNS 2027; kunci tiap contoh adalah opsi berskor 5, dan skor semua opsi ditulis di pembahasan.`,
       materi: [
-      { nama: `Pelayanan Publik`, catatan: `Konsep dan ruang lingkup, prinsip dan standar, sikap pelayanan prima, pelayanan yang adil dan inklusif, pengambilan keputusan dalam skenario pelayanan.` },
-      { nama: `Jejaring Kerja`, catatan: `Konsep dan prinsip jejaring kerja, komunikasi dan koordinasi, kolaborasi dan penyelesaian masalah, pengembangan kemitraan.` },
-      { nama: `Sosial Budaya`, catatan: `Konsep dan struktur sosial, adaptasi dalam masyarakat majemuk.` },
-      { nama: `Teknologi Informasi dan Komunikasi` },
-      { nama: `Profesionalisme` },
-      { nama: `Anti Radikalisme` },
+        { nama: `Pelayanan Publik`, catatan: `8 soal per paket. Konsep dan ruang lingkup, prinsip dan standar, sikap pelayanan prima, pelayanan yang adil dan inklusif, pengambilan keputusan dalam skenario pelayanan.` },
+        { nama: `Jejaring Kerja`, catatan: `8 soal per paket. Konsep dan prinsip jejaring kerja, komunikasi dan koordinasi, kolaborasi dan penyelesaian masalah, pengembangan kemitraan.` },
+        { nama: `Sosial Budaya`, catatan: `8 soal per paket. Konsep dan struktur sosial, adaptasi dalam masyarakat majemuk.` },
+        { nama: `Teknologi Informasi dan Komunikasi`, catatan: `7 soal per paket.` },
+        { nama: `Profesionalisme`, catatan: `7 soal per paket.` },
+        { nama: `Anti Radikalisme`, catatan: `7 soal per paket.` },
       ],
       mapping: [
         {
           tipe: 'tryout',
+          paket: 3,
           soalPerPaket: 45,
-          dibutuhkan: 1350,
-          tersedia: 1536,
-          status: 'selesai',
-          catatan: `Angka dari Mapping ASN.xlsx sheet "TKP". Totalnya sama dengan 30 paket, bukan 15.`,
+          dibutuhkan: 135,
+          tersedia: 135,
+          status: 'berjalan',
+          catatan: `Mapping SKD 2027 (SKD Generator): 3 paket x 45 soal. Tersedia = 135 contoh tryout generator (21 atau 24 soal tiap aspek). Angka ketersediaan SIADU di workbook tidak dihitung.`,
         },
       ],
-      contoh: [
-        {
-        soal: [
-        {
-          // TKP berskala: tiap opsi punya skor 1-5. `kunci` di sini adalah
-          // opsi berskor TERTINGGI, bukan satu-satunya jawaban benar.
-          nomor: 1,
-          tipe: 'skala',
-          pertanyaan: `Atasan memerintahkan Anda untuk melakukan sosialisasi mengenai program pelayanan baru kepada warga. Namun, saat pelaksanaannya Anda merasa waktunya sangat terbatas dan warga kurang antusias dalam menyimak penjelasan yang Anda berikan. Dalam mengatasi situasi tersebut, Anda pun berencana untuk melakukan interaksi secara aktif. Akan tetapi, apabila pemahaman warga yang terbatas juga menjadi hambatan dalam kegiatan sosialisasi tersebut. Sikap Anda seharusnya …`,
-          opsi: [
-            { label: 'A', teks: `Mencari cara untuk dapat meningkatkan pemahaman warga terhadap materi sosialisasi agar tujuan dari atasan tercapai` },
-            { label: 'B', teks: `Mencoba memahami kesulitan yang dialami warga terkait materi sosialisasi dengan membuka sesi tanya jawab` },
-            { label: 'C', teks: `Memastikan semua materi sosialisasi sudah tersampaikan kepada warga dan tidak melebihi batas waktu yang ditentukan` },
-            { label: 'D', teks: `Menjelaskan dengan bahasa sederhana yang mudah dipahami dan memberikan contoh konkrit sesuai kehidupan sehari-hari` },
-            { label: 'E', teks: `Memberi penjelasan ulang pada warga yang belum paham dan lanjut menjelaskan materi setelah semua warga paham` },
-          ],
-          kunci: 'D',
-          pembahasan: `Konsep yang digunakan: Memastikan warga mendapat informasi secara menyeluruh
-Kata kunci: Sosialisasi program baru, waktu terbatas, kurangnya pemahaman warga
-Pembahasan opsi yang benar:
-Dalam memberikan penjelasan mengenai program pelayanan baru pada warga. Menggunakan bahasa yang sederhana dan mudah dipahami menjadi tindakan yang tepat agar informasi terserap dengan cepat oleh warga. Selain itu, adanya pemberian contoh yang sesuai dengan kehidupan sehari-hari dapat memperdalam pemahaman warga terkait hal yang dijelaskan. Dengan begitu, meskipun waktu yang dimiliki terbatas. Akan tetapi, apabila menggunakan cara atau metode yang tepat. Maka, informasi dapat dengan mudah dipahami oleh warga secara menyeluruh.
-Jadi, dapat disimpulkan bahwa jawaban yang tepat adalah opsi D (5 poin).
-Pembahasan opsi yang salah:
-Opsi A mendapat nilai 1 poin karena belum dijelaskan cara yang akan dilakukan seperti apa, karena baru dalam proses mencari cara yang tepat.
-Opsi B mendapat nilai 3 poin karena adanya sesi tanya jawab dapat menjadi ruang terbuka untuk warga menyampaikan hal yang belum dipahami. Akan tetapi, cara metode penjelasan yang dilakukan belum pasti akan tetap sama seperti sebelumnya atau tidak.
-Opsi C mendapat nilai 4 poin karena menyampaikan materi sesuai waktu yang ditentukan memang sangat penting. Akan tetapi, belum dijelaskan cara atau metode yang dilakukan agar pemahaman warga terhadap program baru tersebut meningkat.
-Opsi E mendapat nilai 2 poin karena setiap warga memiliki tingkat pemahaman yang berbeda-beda, sehingga kurang tepat apabila menunggu penjelasan materi dilanjutkan setelah semua warga memahami materi yang disampaikan. Oleh karena itu, diperlukan strategi yang tepat agar informasi yang disampaikan dapat dimengerti dengan baik oleh warga.`,
-          tingkat: 'sedang',
-          status: 'final',
-        },
-        {
-          // TKP berskala: tiap opsi punya skor 1-5. `kunci` di sini adalah
-          // opsi berskor TERTINGGI, bukan satu-satunya jawaban benar.
-          nomor: 2,
-          tipe: 'skala',
-          pertanyaan: `Anda mendapat keluhan dari warga yang berada di daerah terpencil mengenai sulitnya akses untuk menerima pelayanan publik karena lokasi yang jaraknya cukup jauh. Dalam mengatasi masalah ini, Anda sebagai pimpinan unit daerah tersebut sudah mengajukan solusi atas masalah tersebut pada pimpinan pusat agar diadakannya program layanan keliling. Akan tetapi, apabila pimpinan tidak langsung setuju dengan solusi yang Anda berikan. Sikap Anda adalah …`,
-          opsi: [
-            { label: 'A', teks: `Berusaha menjelaskan secara rinci terkait solusi yang Anda miliki agar dapat dipahami dengan maksimal` },
-            { label: 'B', teks: `Bersikap terbuka pada keputusan yang pimpinan berikan dan menyiapkan solusi alternatif lainnya` },
-            { label: 'C', teks: `Berusaha dengan maksimal agar solusi tersebut disetujui oleh atasan tanpa memperdulikan hal lainnya` },
-            { label: 'D', teks: `Berusaha mencari solusi berdasarkan saran dari pimpinan saja agar tidak membuang banyak waktu` },
-            { label: 'E', teks: `Berusaha mencari tahu secara lebih mendalam terkait kesulitan yang dialami warga terpencil` },
-          ],
-          kunci: 'B',
-          pembahasan: `Konsep yang digunakan: Memastikan warga mendapat pelayanan yang dibutuhkan
-Kata kunci: Warga daerah terpencil, pengajuan solusi, program layanan keliling.
-Pembahasan opsi yang benar:
-Salah satu hambatan yang seringkali ditemui oleh warga di daerah terpencil adalah sulitnya akses jalan dan jarak yang cukup jauh. Oleh karena itu, berusaha mencari berbagai solusi alternatif yang dapat membuat warga daerah tersebut mendapatkan haknya merupakan tindakan yang tepat. Meskipun solusi sebelumnya ditolak oleh pimpinan pusat. Akan tetapi, terus berusaha mencari solusi alternatif lain menjadi tindakan yang tepat.
-Jadi, dapat disimpulkan bahwa jawaban yang tepat adalah opsi B (5 poin).
-Pembahasan opsi yang salah:
-Opsi A mendapat nilai 3 poin karena menguasai dengan baik solusi yang Anda miliki tentu sangat penting. Akan tetapi, apabila sebelumnya sudah mengalami penolakan. Maka, tindakan yang seharusnya dilakukan adalah mencari solusi lain yang lebih baik.
-Opsi C mendapat nilai 2 poin karena sikap pantang menyerah terhadap solusi yang dimiliki menunjukkan usaha dan kerja keras yang tinggi. Akan tetapi, mempertimbangkan setiap hal dari segala sisi juga diperlukan agar tidak melakukan kesalahan dengan memaksakan kehendak.
-Opsi D mendapat nilai 1 poin karena bergantung dengan saran dari atasan saja menunjukkan kurangnya sikap kreatif dalam menemukan solusi. Meskipun pimpinan memiliki kuasa atau tindakan yang akan dilakukan, tetapi setidaknya tunjukkan usaha dengan mengusulkan solusi terbaik.
-Opsi E mendapat nilai 4 poin karena adanya usaha untuk memahami lebih dalam kesulitan yang warga terpencil alami merupakan bentuk positif dari tindakan peduli. Akan tetapi, solusi yang tepat untuk mengatasi masalah tersebut lebih penting dibandingkan dengan rasa peduli tanpa adanya usaha.`,
-          tingkat: 'sedang',
-          status: 'final',
-        },
-        ],
-      },
-        ...contohTkp,
-      ],
+      contoh: contohGeneratorTkp,
     },
   ],
 };

@@ -9,9 +9,9 @@ import { tahapWawancaraPanel } from './t5-wawancara-panel';
  * PCAM 10.
  *
  * Disusun dari dokumen riset internal "JadiOJK - Riset PCAM dan MLE OJK 2026"
- * (Product Management, Oktober 2026), bukan dari paket tryout Markaz seperti
- * PCAM 9:
- *   Tahap 1  Tes Potensi Dasar: lengkap (subtes, jumlah soal, waktu, 32 contoh soal)
+ * (Product Management, Oktober 2026), bukan dari paket tryout Markaz:
+ *   Tahap 1  Tes Potensi Dasar: lengkap (subtes, jumlah soal, waktu dari dokumen
+ *            riset; 22 contoh soal dari satu paket Tes OJK Generator)
  *   Tahap 2-5  hanya nama dan ringkasan dari urutan seleksi (bagian 2.2)
  *
  * Nomor tahap mengikuti dokumen riset ("Tahap 1: Tes Potensi Dasar"), jadi
@@ -34,7 +34,7 @@ export const pcam10: Angkatan = {
     'Kepribadian dan Wawancara Psikologi, Tes Kesehatan, lalu Wawancara Panel. Baru Tahap 1 ' +
     '(Tes Potensi Dasar) yang terisi lengkap; Tahap 2 sampai 5 masih dalam proses riset. ' +
     'Jalur MLE memakai materi Tahap 1 yang sama.',
-  diperbarui: '2026-10-15',
+  diperbarui: '2026-10-19',
   info: [
     {
       tipe: 'lainnya',
@@ -76,8 +76,19 @@ export const pcam10: Angkatan = {
       catatan:
         'Jumlah soal, waktu, dan jenis soal Tahap 1 dari tabel Materi Pembelajaran (3.1) dan ' +
         'contoh soal BAB V. Alur seleksi mengacu pada PCAM 9 dan MLE 2025, bukan pengumuman ' +
-        'resmi PCAM 10. Dokumen tidak memuat kunci dan pembahasan; keduanya disusun ulang ' +
-        'dari soalnya dan berstatus draft.',
+        'resmi PCAM 10. Contoh soal BAB V tidak lagi ditampilkan; contoh soal Tahap 1 kini ' +
+        'berasal dari Tes OJK Generator (sumber berikut).',
+    },
+    {
+      jenis: 'internal',
+      judul: 'Tes OJK Generator Tahap 1 (bank v2, benih 2026, paket 1)',
+      tanggalAkses: '2026-10-19',
+      keandalan: 'asumsi',
+      catatan:
+        'Sumber 12 contoh soal Kemampuan Umum dan 10 contoh soal Penalaran Numerik Tahap 1. ' +
+        'Soal bentukan generator, bukan soal ujian sungguhan; validator internal generator ' +
+        'lulus (22 dari 22 butir, tanpa butir kembar). Berstatus draft sampai ditelaah tim ' +
+        'akademik.',
     },
   ],
 };

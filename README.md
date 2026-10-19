@@ -248,6 +248,15 @@ menghitung per baris membuat TPK PCPM 41 terbaca kurang 175, padahal sebenarnya
   dari halaman pembaca.
 - Sekolah kedinasan yang belum ditulis: SIPENCATAR (Kemenhub), STIN (BIN),
   Poltek SSN (BSSN), STIS (BPS), STMKG (BMKG), Poltekim/Poltekip.
-- Angka mapping SKD diambil dari sheet berlabel "15 Paket", tetapi totalnya
-  sama dengan 30 paket. Jumlah paket sengaja dikosongkan sampai maksud sheet
-  itu dipastikan; catatannya ikut tampil di halaman subtes.
+- Angka mapping SKD CPNS 2026 diambil dari sheet berlabel "15 Paket", tetapi
+  totalnya sama dengan 30 paket. Jumlah paket sengaja dikosongkan sampai maksud
+  sheet itu dipastikan; catatannya ikut tampil di halaman subtes.
+- Contoh soal SKD CPNS 2027 dan SKD Sekolah Kedinasan 2026 adalah satu paket
+  110 soal (TWK 30, TIU 35, TKP 45) dari SKD Generator, ditulis sekali di
+  `data/jadiasn/cpns/a2027/contoh-skd.ts` dan dipakai bersama kedua angkatan.
+  Materi dan mapping keduanya mengikuti Mapping SKD 2027 (3 paket x 30, 35, dan
+  45 soal). Hampir semua soalnya berstatus draft; 10 soal TIU (1 analogi kata,
+  1 deret angka, 8 figural) berasal dari contoh riset CPNS 2027 karena belum ada
+  di tryout generator. Kedua angkatan sengaja tidak punya target di
+  `skrip/ke-data.mjs`, supaya paket ini tidak tertimpa data Markaz. Contoh lama
+  (soal tulisan tangan, hasil Markaz, dan 125 contoh riset) masih ada di riwayat git.

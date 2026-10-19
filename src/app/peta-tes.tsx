@@ -8,8 +8,8 @@ import { Ikon, Kosong, Status } from './komponen';
  * Kartu satu tes di halaman platform ("peta tes"): identitas tes di kiri,
  * susunan tahapan dan subtes di kanan.
  *
- * Tes yang punya lebih dari satu angkatan (CPNS 2026 dan 2027, PCAM 9 dan 10)
- * mendapat pemilih angkatan, dan panel kanan berganti mengikuti pilihannya.
+ * Tes yang punya lebih dari satu angkatan (CPNS 2026 dan 2027) mendapat
+ * pemilih angkatan, dan panel kanan berganti mengikuti pilihannya.
  * Tes dengan satu angkatan tidak perlu pemilih.
  *
  * Semua angka dihitung di server (halaman platform) lalu dikirim sebagai props
