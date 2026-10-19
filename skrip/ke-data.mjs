@@ -60,7 +60,7 @@ const PETA = {
     ],
   },
   jadisekdin: {
-    keluar: 'data/jadisekdin/bersama/contoh-skd.ts',
+    keluar: 'data/jadisekdin/skd/a2026/contoh-skd.ts',
     judul: 'Contoh soal SKD sekolah kedinasan, dari Markaz paket "01 TO SEKOLAH KEDINASAN 2023".',
     ambil: [
       { sumber: 'out/soal-jadisekdin.json', lesson: 'TWK (Tes Wawasan Kebangsaan)', varian: 'contohTwk', mulaiNomor: 3, tipe: 'pg' },
@@ -84,24 +84,6 @@ const PETA = {
       // teks. Penalaran induktif diambil dari versi non-interaktifnya.
       { sumber: 'out/soal-jadiojk-pcam9-t2c.json', lesson: 'Tes Penalaran Induktif Non-Interaktif', varian: 'contohPenalaranInduktif', tipe: 'pg' },
       { sumber: 'out/soal-jadiojk-pcam9-t3.json', lesson: 'Tes Kepribadian', varian: 'contohKepribadian', tipe: 'skala' },
-    ],
-  },
-  'jadiojk-lps2025': {
-    keluar: 'data/jadiojk/lps/a2025/contoh.ts',
-    judul: 'Contoh soal rekrutmen LPS 2025, dari paket tryout Markaz Tahap 1 sampai 3.',
-    ambil: [
-      { sumber: 'out/soal-jadiojk-lps-t1.json', lesson: 'Hubungan Kata', varian: 'contohHubunganKata', tipe: 'pg' },
-      { sumber: 'out/soal-jadiojk-lps-t1.json', lesson: 'Angka', varian: 'contohAngka', tipe: 'pg' },
-      { sumber: 'out/soal-jadiojk-lps-t1.json', lesson: 'Gabungan Bagian', varian: 'contohGabunganBagian', tipe: 'pg' },
-      { sumber: 'out/soal-jadiojk-lps-t1.json', lesson: 'Abstrak', varian: 'contohAbstrak', tipe: 'pg' },
-      { sumber: 'out/soal-jadiojk-lps-t2.json', lesson: 'Psikotes 1', varian: 'contohPsikotes1', tipe: 'skala' },
-      { sumber: 'out/soal-jadiojk-lps-t2.json', lesson: 'Psikotes 2', varian: 'contohPsikotes2', tipe: 'skala' },
-      { sumber: 'out/soal-jadiojk-lps-t3.json', lesson: 'Structure and Written Expression', varian: 'contohStructure', tipe: 'pg' },
-      // Yang opsinya bisa disusun dari bagian bertekanan di sumbernya; 124863
-      // tidak menandai bagian mana pun sehingga opsinya hanya "Bagian bertanda".
-      { sumber: 'out/soal-jadiojk-lps-t3.json', lesson: 'Error Recognition', varian: 'contohErrorRecognition', tipe: 'pg',
-        pilih: ['124859', '124860', '124861', '124862', '124864'] },
-      { sumber: 'out/soal-jadiojk-lps-t3.json', lesson: 'Reading Comprehension', varian: 'contohReading', tipe: 'pg' },
     ],
   },
   'jadipppk-2026': {

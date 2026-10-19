@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import {
   PLATFORM, cariPlatform, angkaPlatform, angkatanAwal, angkaAngkatan, angkaTahapan, angkatanBisaSimulasi,
-  judulAngkatan, kodeChipTahapan, metaSubtes, ringkasAngka, tautanAngkatan, tautanSimulasiAngkatan,
-  tautanTahapan, totalAngka,
+  judulAngkatan, kodeChipTahapan, metaSubtes, nomorTahapan, ringkasAngka, tautanAngkatan,
+  tautanSimulasiAngkatan, tautanTahapan, totalAngka,
   type JalurAngkatan,
 } from '@/lib/data';
 import { Remah, Kosong } from '../komponen';
@@ -61,7 +61,7 @@ function ringkasAngkatan(j: JalurAngkatan): PetaAngkatan {
       const chip = kodeChipTahapan(t.subtes.map((s) => s.nama));
       return {
         kode: t.kode,
-        nomor: i + 1,
+        nomor: nomorTahapan(angkatan, t),
         nama: t.nama,
         status: t.status,
         ringkas: t.subtes.length ? ringkasAngka(angkaTahapan(t)) : '',
@@ -88,7 +88,7 @@ export default async function HalamanPlatform({
   const platform = cariPlatform(slug);
   if (!platform) notFound();
 
-  // Per objek unik: SKD yang dirujuk IPDN dan PKN STAN dihitung sekali.
+  // Per objek unik: subtes yang dirujuk beberapa angkatan dihitung sekali.
   const angka = angkaPlatform(platform);
   const adaPilihan = platform.tes.some((t) => t.angkatan.length > 1);
 

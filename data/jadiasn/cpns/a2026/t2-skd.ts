@@ -6,7 +6,8 @@ import { contohTwk, contohTiu, contohTkp } from './contoh-skd';
  *
  * MIRIP tapi TIDAK SAMA dengan SKD sekolah kedinasan: ambang batas TKP di sini
  * 166, sedangkan di sekolah kedinasan 156. Jalur afirmasinya juga berbeda.
- * Karena itu SKD CPNS ditulis terpisah, bukan merujuk bersama/skd-2026.
+ * Karena itu SKD CPNS ditulis terpisah, bukan memakai SKD sekolah kedinasan
+ * (data/jadisekdin/skd/a2026/t2-skd.ts).
  */
 export const tahapSkd: Tahapan = {
   kode: 'skd',

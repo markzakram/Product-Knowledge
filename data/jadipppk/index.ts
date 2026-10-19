@@ -19,5 +19,7 @@ export const jadipppk: Platform = {
   slug: 'jadipppk',
   logo: 'logo/icon-jadipppk.png',
   deskripsi: 'Persiapan seleksi Pegawai Pemerintah dengan Perjanjian Kerja.',
+  // Disembunyikan 19 Okt 2026: aplikasinya belum siap. Hapus baris ini untuk menampilkan lagi.
+  tampil: false,
   tes: [pppk],
 };

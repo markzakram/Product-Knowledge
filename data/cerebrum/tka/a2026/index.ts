@@ -33,7 +33,7 @@ export const tka2026: Angkatan = {
     '2026 menurut dokumen internal, belum dicocokkan dengan pengumuman resmi. Terisi: ketentuan, ' +
     'persyaratan, jadwal, kisi-kisi, dan 60 contoh soal mata uji wajib. Belum ada: waktu pengerjaan dan ' +
     'seluruh materi mata uji pilihan.',
-  diperbarui: '2026-10-15',
+  diperbarui: '2026-10-19',
   info: [
     {
       tipe: 'pendahuluan',
@@ -121,7 +121,63 @@ export const tka2026: Angkatan = {
         'biasanya dengan 5 opsi (A sampai E). Poin penuh hanya bila semua opsi yang benar dipilih; bila ' +
         'hanya sebagian, poin dianggap kurang atau salah. Tujuannya menghindari tebakan acak dan mengukur ' +
         'penguasaan materi secara menyeluruh.\n' +
-        'Dokumen tidak menyebut bobot poin PGK Kategori dan MCMA, rumus skor akhir, atau skala nilai.',
+        'Dokumen ini tidak menyebut bobot poin PGK Kategori dan MCMA, rumus skor akhir, atau skala ' +
+        'nilai. Rumus dan skala 200-800 di entri "Rumus skor" berasal dari riset dan pemberitaan, ' +
+        'bukan dari dokumen ini.',
+    },
+    {
+      tipe: 'penilaian',
+      judul: 'Rumus skor (rekonstruksi riset, indikasi)',
+      isi:
+        'Ini rekonstruksi riset tim, bukan rumus resmi. Pemberitaan menyebut TKA SMA 2026 memakai IRT ' +
+        '2PL dan skala 200-800, tetapi rumus konversinya tidak disebut, jadi hasil rumus ini bisa ' +
+        'berbeda dari skor resmi. Jangan disampaikan ke peserta sebagai skor resmi.\n\n' +
+        'M, S, D, dan H: jumlah jawaban benar pada tingkat Mudah, Sedang, Sulit, dan HOTS. TM, TS, TD, ' +
+        'dan TH: jumlah soal pada tingkat yang sama.\n\n' +
+        '1. Hitung dua variabel bantu:\n' +
+        `\\(C = M + 1,036636 \\cdot S + 1,058570 \\cdot D + 1,077060 \\cdot H\\)\n` +
+        `\\(W = (TM - M) + 1,036636 \\cdot (TS - S) + 1,058570 \\cdot (TD - D) + 1,077060 \\cdot (TH - H)\\)\n` +
+        '2. Hitung x:\n' +
+        `\\(x = \\ln\\left(\\frac{C}{W}\\right)\\)\n` +
+        '3. Hitung skor dengan parameter a dan b mata uji (lihat dua entri berikut):\n' +
+        `\\(\\text{Skor} = 200 + \\frac{600}{1 + e^{-a(x - b)}}\\)\n` +
+        'Jika C = 0, skor 200. Jika W = 0, skor 800.\n\n' +
+        'Bobot 1,036636 (Sedang), 1,058570 (Sulit), dan 1,077060 (HOTS) dibandingkan dengan Mudah (1). ' +
+        'Bobot ini dihitung dari data simulasi, bukan bobot resmi.\n' +
+        'Jumlah soal per tingkat TKA 2026 belum tersedia, jadi rumus belum bisa dipakai untuk peserta. ' +
+        'Cara memasukkan poin parsial PGK Kategori juga belum dibahas riset.',
+    },
+    {
+      tipe: 'penilaian',
+      judul: 'Parameter a dan b: mata uji wajib (indikasi)',
+      isi:
+        'Parameter a (kemiringan) dan b (lokasi) dicocokkan ke statistik nasional TKA 2025 (rata-rata, ' +
+        'simpangan baku, dan persentil). Ini bukan parameter item resmi TKA, dan sumber statistiknya ' +
+        'belum diverifikasi ke rilis resmi. RMSE mengukur selisih antara statistik model dan target, ' +
+        'dalam poin skor; makin kecil makin cocok.\n' +
+        '- Bahasa Indonesia: a = 0,720288328; b = -0,693499101; RMSE 0,53.\n' +
+        '- Matematika: a = 0,554383143; b = 0,725824388; RMSE 1,68.\n' +
+        '- Bahasa Inggris: a = 0,883536407; b = 1,088043921; RMSE 4,13. Simpangan baku dan persentil ' +
+        'ke-10 meleset jauh, jadi hanya pendekatan.',
+    },
+    {
+      tipe: 'penilaian',
+      judul: 'Parameter a dan b: mata uji pilihan (8 dari 19, indikasi)',
+      isi:
+        'Rumus skor di atas juga dipakai untuk 8 dari 19 mata uji pilihan, dengan parameter berikut. ' +
+        'Parameter ini dicocokkan dengan cara yang sama seperti mata uji wajib, jadi bukan parameter ' +
+        'item resmi.\n' +
+        '- Biologi: a = 0,620213256; b = -0,676187933; RMSE 1,03.\n' +
+        '- Matematika Lanjutan: a = 0,454979924; b = 0,539541797; RMSE 1,53.\n' +
+        '- Fisika: a = 0,729247964; b = 0,260508057; RMSE 1,14.\n' +
+        '- Kimia: a = 0,454927379; b = 0,813259107; RMSE 2,05.\n' +
+        '- Ekonomi: a = 0,484597192; b = 1,204609676; RMSE 1,74.\n' +
+        '- Geografi: a = 0,667023654; b = -1,739329076; RMSE 0,80.\n' +
+        '- Sosiologi: a = 0,797344142; b = -0,958033953; RMSE 1,10.\n' +
+        '- Sejarah: a = 0,682931303; b = -1,175398337; RMSE 0,97.\n' +
+        'Belum ada parameter untuk Bahasa Indonesia Lanjutan, Bahasa Inggris Lanjutan, PKN, Antropologi, ' +
+        'Bahasa Arab, Bahasa Prancis, Bahasa Jerman, Bahasa Jepang, Bahasa Korea, Bahasa Mandarin, dan ' +
+        'Produk Projek Kreatif dan Kewirausahaan.',
     },
     {
       tipe: 'lainnya',
@@ -181,6 +237,40 @@ export const tka2026: Angkatan = {
         'belum dicocokkan dengan sumber resmi. Dokumen merujuk Kepmendikdasmen Nomor 95/M/2025, tetapi ' +
         'aturan itu tidak dibaca langsung. Dokumen hanya memuat soal dan kunci jawaban; pembahasan di data ' +
         'ini disusun ulang dan berstatus draft.',
+    },
+    {
+      jenis: 'internal',
+      judul: 'Cerebrum - Penurunan Formula TKA (dokumen riset tanpa sampul, tanggal, dan penulis)',
+      tanggalAkses: '2026-10-19',
+      keandalan: 'asumsi',
+      catatan:
+        'Rekonstruksi formula umum, mata uji wajib, dan 8 mata uji pilihan. Respons 11.491 peserta dan ' +
+        'theta adalah simulasi; asal parameter 30 item tidak dijelaskan. Koefisien a, b, dan bobot ' +
+        'hasil fitting numerik riset, bukan parameter resmi. Statistik mata uji wajib dari tabel yang ' +
+        'dilampirkan pengguna (asalnya tidak tercatat). Statistik mata uji pilihan dari Taklimat Media ' +
+        '22 Des 2025 (angkanya belum dicek). Rata-rata Matematika 36,10 dan Bahasa Inggris 24,93 sesuai ' +
+        '"data awal" di pemberitaan (sekunder). Bagian awal memakai skala 0-100 (data 2025); bagian ' +
+        'terbaru 200-800 dan itu yang dipakai.',
+    },
+    {
+      jenis: 'media',
+      judul: 'Pojok Satu: skor TKA 2026 diubah jadi 200-800',
+      url: 'https://pojoksatu.id/edugov/skor-tka-2026-diubah-jadi-200-800-ini-5-alasan-kemendikdasmen-menggunakan-skala-baru',
+      tanggalAkses: '2026-10-19',
+      keandalan: 'media',
+      catatan:
+        'Terbit 16 Okt 2026. Mengutip Pusmendik dan BKPDM: skala 200-800 untuk SMA/sederajat, metode ' +
+        'IRT 2PL. Dasar hukum dan rumus konversi tidak disebut.',
+    },
+    {
+      jenis: 'media',
+      judul: 'Info Pendidikan: hasil TKA 2025',
+      url: 'https://bicarainfo.com/pendidikan/hasil-tka-2025-resmi-rilis-panduan-cek-nilai-syarat-snbp/',
+      tanggalAkses: '2026-10-19',
+      keandalan: 'media',
+      catatan:
+        'Angka berasal dari pernyataan Wakil Ketua Komisi X DPR, disebut data awal. Matematika tidak ' +
+        'dibedakan wajib atau lanjutan.',
     },
   ],
 };

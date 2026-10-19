@@ -79,7 +79,7 @@ Tangkapan layar prototipe:
 Layar awal: cara pengerjaan, pilihan "Kerjakan Sendiri" atau "Mode Simulasi", dan pengaturan lembar (preset rancangan asli: 2 halaman, 60 menit). Pilihan simulasi hanya ada di prototipe untuk pengujian.
 ⟦gambar:gambar/psikoteskerja/pauli-mengerjakan.webp⟧
 Saat mengerjakan: pengerjaan turun dari kiri atas; hasil penjumlahan diketik di kotak di antara dua angka.`,
-  penilaian: `Empat aspek yang sama dengan Tes Kraepelin, dihitung dari kurva kerja berupa jumlah jawaban benar per interval (garis).
+  penilaian: `Empat aspek, dihitung dari kurva kerja berupa jumlah jawaban benar per interval (garis).
 
 Kecepatan = jumlah jawaban terisi / waktu pengerjaan (menit), dalam jawaban per menit.
 - Rendah: sampai 13,07 · Cukup Rendah: 13,08-26,13 · Sedang: 26,14-39,20 · Cukup Tinggi: 39,21-52,27 · Tinggi: 52,28-65,33.
@@ -95,9 +95,9 @@ Hasilnya indikatif, bukan hasil klinis.
 Tangkapan layar hasil di prototipe (diputar otomatis oleh sistem, hanya ilustrasi):
 ⟦gambar:gambar/psikoteskerja/pauli-hasil.webp⟧
 Layar hasil: jumlah jawaban benar/salah/tidak dijawab, skor persen, dan kurva kerja (benar per interval dengan garis rata-rata).`,
-  catatan: `Prototipe Pauli juga menampilkan "skor akhir gabungan" berbobot (35% ketelitian, 30% kecepatan, 20% stabilitas, 15% performa) dengan pita Istimewa sampai Perlu Ditingkatkan. Bobot dan pita itu tidak muncul di prototipe Kraepelin, yang menyatakan bahwa dokumen sumber tidak menetapkan skor gabungan. Perlakukan sebagai buatan prototipe, bukan ketentuan sumber; tangkapan layar hasil di atas sengaja dipotong agar tidak memperlihatkannya.
+  catatan: `Prototipe Pauli juga menampilkan "skor akhir gabungan" berbobot (35% ketelitian, 30% kecepatan, 20% stabilitas, 15% performa) dengan pita Istimewa sampai Perlu Ditingkatkan. Dokumen riset tempat rumus empat aspek di atas berasal tidak menetapkan skor gabungan, jadi perlakukan bobot dan pita itu sebagai buatan prototipe, bukan ketentuan sumber; tangkapan layar hasil di atas sengaja dipotong agar tidak memperlihatkannya.
 
-Jumlah halaman, kolom, angka per kolom, durasi, dan interval garis dapat diatur di prototipe; angka di atas adalah preset rancangan asli. Rumus dan ambang empat aspek sama dengan yang dipakai prototipe Kraepelin.`,
+Jumlah halaman, kolom, angka per kolom, durasi, dan interval garis dapat diatur di prototipe; angka di atas adalah preset rancangan asli.`,
   materi: [
     { nama: 'Kecepatan', catatan: 'Jumlah jawaban terisi dibagi waktu pengerjaan, dalam jawaban per menit.' },
     { nama: 'Ketelitian', catatan: 'Jawaban benar dibagi jawaban yang dikerjakan, dalam persen.' },

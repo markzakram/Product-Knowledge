@@ -1,12 +1,17 @@
 import { notFound } from 'next/navigation';
 import {
   cariAngkatan, semuaAngkatan, jumlahContoh, tautanPlatform, tautanSubtes,
-  angkaId, angkaAngkatan, angkaTahapan, angkatanBisaSimulasi, idTahapan, judulAngkatan, kodeChipTahapan,
-  ringkasAngka, subtesBisaSimulasi, tautanSimulasiAngkatan, tautanSimulasiSubtes,
+  angkaId, angkaAngkatan, angkaTahapan, angkatanBisaSimulasi, idInfo, idTahapan, judulAngkatan,
+  kodeChipTahapan, labelTahapan, nomorTahapan, ringkasAngka, subtesBisaSimulasi,
+  tautanSimulasiAngkatan, tautanSimulasiSubtes,
 } from '@/lib/data';
 import { LABEL_STATUS } from '@/lib/skema';
+import { uraikan } from '@/lib/isi-kaya';
 import { Remah, Status, Kosong, LegendaStatus, Ikon, TabelGulir } from '../../../komponen';
+import { IsiKaya } from '../../../isi-kaya';
 import { Cetak } from '../../../cetak';
+// Gaya dan fon rumus KaTeX. Rumusnya sendiri dirender di server.
+import 'katex/dist/katex.min.css';
 
 export function generateStaticParams() {
   return semuaAngkatan().map((j) => ({
@@ -38,6 +43,68 @@ function ubinJumlah(label: string, nilai: string, punya: number, semua: number):
   };
 }
 
+interface ButirIsi {
+  id: string;
+  label: string;
+}
+
+interface IsiDaftar {
+  tahapan: ButirIsi[];
+  info: ButirIsi[];
+  adaSumber: boolean;
+}
+
+/**
+ * Daftar isi halaman angkatan: tahapan, tiap bagian Informasi seleksi, lalu
+ * Sumber, masing-masing menaut ke jangkarnya di halaman yang sama.
+ *
+ * Halaman merendernya dua kali: kartu di kolom samping (layar lebar) dan blok
+ * lipat di atas halaman (layar sempit, tempat kolom samping jatuh ke bawah).
+ * CSS menyembunyikan salah satunya dengan display: none, yang juga
+ * melepaskannya dari pembaca layar dan urutan Tab, jadi hanya satu yang terbaca.
+ */
+function DaftarIsi({ isi }: { isi: IsiDaftar }) {
+  return (
+    <ol className="toc">
+      <li>
+        <a className="toc-grup" href="#tahapan">
+          Tahapan seleksi
+        </a>
+        {isi.tahapan.length > 0 && (
+          <ol className="toc-anak">
+            {isi.tahapan.map((b) => (
+              <li key={b.id}>
+                <a href={`#${b.id}`}>{b.label}</a>
+              </li>
+            ))}
+          </ol>
+        )}
+      </li>
+      {isi.info.length > 0 && (
+        <li>
+          <a className="toc-grup" href="#informasi">
+            Informasi seleksi
+          </a>
+          <ol className="toc-anak">
+            {isi.info.map((b) => (
+              <li key={b.id}>
+                <a href={`#${b.id}`}>{b.label}</a>
+              </li>
+            ))}
+          </ol>
+        </li>
+      )}
+      {isi.adaSumber && (
+        <li>
+          <a className="toc-grup" href="#sumber">
+            Sumber
+          </a>
+        </li>
+      )}
+    </ol>
+  );
+}
+
 export default async function HalamanAngkatan({
   params,
 }: {
@@ -62,10 +129,19 @@ export default async function HalamanAngkatan({
   const info = angkatan.info ?? [];
   const sumber = angkatan.sumber ?? [];
   const statusSemua = [angkatan.status, ...angkatan.tahapan.map((t) => t.status)];
-  // Kolom samping hanya ada kalau ada isinya. LegendaStatus sendiri diam kalau
-  // semuanya terkonfirmasi, jadi di halaman yang bersih kolom ini ikut lenyap
-  // dan lini masa memakai seluruh lebar.
-  const adaSamping = info.length > 0 || statusSemua.some((s) => s !== 'terkonfirmasi');
+
+  // Daftar isi hanya menaut ke bagian yang memang tampil: tahapan, tiap Informasi
+  // seleksi, dan Sumber (kalau ada).
+  const isi: IsiDaftar = {
+    tahapan: angkatan.tahapan.map((t) => ({ id: idTahapan(t), label: labelTahapan(angkatan, t) })),
+    info: info.map((i, k) => ({ id: idInfo(k + 1, i.judul), label: i.judul })),
+    adaSumber: sumber.length > 0,
+  };
+  const adaDaftarIsi = isi.tahapan.length > 0 || isi.info.length > 0 || isi.adaSumber;
+  // LegendaStatus sendiri diam kalau semuanya terkonfirmasi.
+  const adaLegenda = statusSemua.some((s) => s !== 'terkonfirmasi');
+  // Kolom samping hanya ada kalau ada isinya: daftar isi atau legenda.
+  const adaSamping = adaDaftarIsi || adaLegenda;
   const label = LABEL_STATUS[angkatan.status];
 
   const meta = [
@@ -133,9 +209,21 @@ export default async function HalamanAngkatan({
         </div>
       )}
 
+      {/* Daftar isi untuk layar sempit, tempat kolom samping jatuh ke bawah
+          halaman. Di layar lebar blok ini disembunyikan CSS (display: none) dan
+          daftar isi yang sama tampil di kolom samping, lengket di sisi kanan. */}
+      {adaDaftarIsi && (
+        <details className="toc-atas tanpa-cetak">
+          <summary>Daftar isi</summary>
+          <nav aria-label="Daftar isi">
+            <DaftarIsi isi={isi} />
+          </nav>
+        </details>
+      )}
+
       <div className={`ang-tata${adaSamping ? '' : ' ang-tata-tunggal'}`}>
         <div className="ang-utama">
-          <div className="bagian-kepala">
+          <div className="bagian-kepala" id="tahapan">
             <h2>Tahapan seleksi</h2>
           </div>
           {/*
@@ -150,14 +238,14 @@ export default async function HalamanAngkatan({
             <Kosong teks="Belum ada tahapan" sebab="Angkatan ini belum punya tahapan yang datanya ditulis." />
           ) : (
             <ol className="lini">
-              {angkatan.tahapan.map((tahapan, i) => {
+              {angkatan.tahapan.map((tahapan) => {
                 const adaSubtes = tahapan.subtes.length > 0;
                 const adaSimulasi = tahapan.subtes.some(subtesBisaSimulasi);
                 const chip = kodeChipTahapan(tahapan.subtes.map((s) => s.nama));
                 return (
                   <li key={tahapan.kode} className={`lini-butir${adaSubtes ? '' : ' lini-kosong'}`}>
                     <div className="lini-jalur" aria-hidden>
-                      <div className="lini-nomor">{i + 1}</div>
+                      <div className="lini-nomor">{nomorTahapan(angkatan, tahapan)}</div>
                       <div className="lini-garis" />
                     </div>
                     <div className="lini-kartu" id={idTahapan(tahapan)}>
@@ -257,87 +345,106 @@ export default async function HalamanAngkatan({
               })}
             </ol>
           )}
+
+          {/* Informasi seleksi tampil penuh di bawah tahapan, bukan dilipat di kolom
+              samping: isinya panjang (persyaratan belasan poin, jadwal belasan baris)
+              dan di kolom sempit sulit dibaca. Tiap judul punya jangkar (idInfo) yang
+              dituju daftar isi. Isinya lewat uraikan(), seperti penilaian di halaman
+              subtes, jadi boleh memuat rumus LaTeX (\( … \)) dan gambar; baris baru
+              dan butir "- " tetap terbaca karena .pra memakai pre-wrap. */}
+          {info.length > 0 && (
+            <section className="ang-bagian" id="informasi">
+              <div className="bagian-kepala">
+                <h2>Informasi seleksi</h2>
+              </div>
+              {info.map((i, k) => (
+                <div key={`${k}-${i.judul}`} className="info-kartu" id={idInfo(k + 1, i.judul)}>
+                  <div className="info-kepala">
+                    <h3>{i.judul}</h3>
+                    <span className="lencana lencana-abu">{i.tipe}</span>
+                  </div>
+                  <p className="pra info-isi">
+                    <IsiKaya bagian={uraikan(i.isi)} />
+                  </p>
+                </div>
+              ))}
+            </section>
+          )}
+
+          {/* Di dalam kolom utama, bukan di bawah kedua kolom: daftar isi yang
+              lengket tetap menyertai pembaca sampai bagian paling akhir. */}
+          {sumber.length > 0 && (
+            <section className="ang-bagian sumber" id="sumber">
+              <div className="bagian-kepala">
+                <h2>Sumber</h2>
+              </div>
+              <div className="sumber-kartu">
+                <TabelGulir>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Judul</th>
+                        <th>Jenis</th>
+                        <th>Keandalan</th>
+                        <th>Diakses</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sumber.map((s) => (
+                        <tr key={s.judul}>
+                          <td>
+                            {s.url ? (
+                              <a href={s.url} target="_blank" rel="noreferrer">
+                                {s.judul}
+                              </a>
+                            ) : (
+                              s.judul
+                            )}
+                            {s.catatan && <div className="kartu-kecil">{s.catatan}</div>}
+                          </td>
+                          <td>{s.jenis}</td>
+                          <td>
+                            {/* Keandalan diberi warna: 'asumsi' harus terlihat berbeda
+                                dari 'resmi', karena itu yang memisahkan fakta dari
+                                rekonstruksi tim riset. */}
+                            <span
+                              className={`lencana ${
+                                s.keandalan === 'resmi'
+                                  ? 'lencana-hijau'
+                                  : s.keandalan === 'asumsi'
+                                    ? 'lencana-merah'
+                                    : 'lencana-kuning'
+                              }`}
+                            >
+                              {s.keandalan}
+                            </span>
+                          </td>
+                          <td>{s.tanggalAkses ?? '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </TabelGulir>
+              </div>
+            </section>
+          )}
         </div>
 
         {adaSamping && (
-          <aside className="samping" aria-label="Informasi tambahan">
-            {info.length > 0 && (
-              <section className="samping-kartu">
-                <h2 className="samping-judul">Informasi seleksi</h2>
-                {/* Tetap dilipat per judul: isinya panjang (persyaratan belasan
-                    poin, jadwal belasan baris) dan jarang dibaca utuh. Saat
-                    dicetak semuanya dibuka oleh <Cetak />. */}
-                {info.map((i, k) => (
-                  <details key={`${k}-${i.judul}`} className="info-butir">
-                    <summary>
-                      <span>{i.judul}</span>
-                      <span className="lencana lencana-abu">{i.tipe}</span>
-                    </summary>
-                    <p className="pra">{i.isi}</p>
-                  </details>
-                ))}
-              </section>
+          <aside
+            className={`ang-samping${adaLegenda ? '' : ' ang-samping-hanya-toc'}`}
+            aria-label="Informasi tambahan"
+          >
+            {adaDaftarIsi && (
+              <nav className="ang-samping-kartu toc-samping tanpa-cetak" aria-label="Daftar isi">
+                <div className="label-mini toc-judul">Daftar isi</div>
+                <DaftarIsi isi={isi} />
+              </nav>
             )}
             <LegendaStatus ada={statusSemua} />
           </aside>
         )}
       </div>
-
-      {sumber.length > 0 && (
-        <section className="sumber">
-          <div className="bagian-kepala">
-            <h2>Sumber</h2>
-          </div>
-          <div className="sumber-kartu">
-            <TabelGulir>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Judul</th>
-                    <th>Jenis</th>
-                    <th>Keandalan</th>
-                    <th>Diakses</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sumber.map((s) => (
-                    <tr key={s.judul}>
-                      <td>
-                        {s.url ? (
-                          <a href={s.url} target="_blank" rel="noreferrer">
-                            {s.judul}
-                          </a>
-                        ) : (
-                          s.judul
-                        )}
-                        {s.catatan && <div className="kartu-kecil">{s.catatan}</div>}
-                      </td>
-                      <td>{s.jenis}</td>
-                      <td>
-                        {/* Keandalan diberi warna: 'asumsi' harus terlihat berbeda
-                            dari 'resmi', karena itu yang memisahkan fakta dari
-                            rekonstruksi tim riset. */}
-                        <span
-                          className={`lencana ${
-                            s.keandalan === 'resmi'
-                              ? 'lencana-hijau'
-                              : s.keandalan === 'asumsi'
-                                ? 'lencana-merah'
-                                : 'lencana-kuning'
-                          }`}
-                        >
-                          {s.keandalan}
-                        </span>
-                      </td>
-                      <td>{s.tanggalAkses ?? '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </TabelGulir>
-          </div>
-        </section>
-      )}
     </>
   );
 }

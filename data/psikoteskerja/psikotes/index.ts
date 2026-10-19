@@ -6,8 +6,7 @@ export const psikotes: Tes = {
   nama: 'Kumpulan Psikotes',
   kategori: 'Psikotes',
   deskripsi:
-    'Sepuluh psikotes untuk seleksi kerja: empat tes kepribadian (Big Five, EPPS, PAPI Kostick, ' +
-    'Deskripsi Diri), tiga tes kecepatan dan ketelitian (Ketelitian, Kraepelin, Pauli), dan tiga ' +
-    'tes menggambar (Baum, DAP, Wartegg).',
+    'Tujuh psikotes untuk seleksi kerja: dua tes kepribadian (EPPS, Deskripsi Diri), dua tes ' +
+    'kecepatan dan ketelitian (Ketelitian, Pauli), dan tiga tes menggambar (Baum, DAP, Wartegg).',
   angkatan: [psikotes2026],
 };

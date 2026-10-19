@@ -1,8 +1,11 @@
 import 'server-only';
 import katex from 'katex';
 import type { Bagian, KelompokSiap, SoalSiap } from './bagian';
-import type { Kelompok, Soal } from './skema';
-import { labelTahapan, semuaSubtes, tautanSubtes, type Temuan } from './data';
+import type { Kelompok, Soal, Subtes } from './skema';
+import {
+  SEMUA_PLATFORM, idInfo, labelTahapan, semuaAngkatan, semuaSubtes, tautanAngkatan, tautanSubtes,
+  type Temuan,
+} from './data';
 import { POLA_RUMUS } from './rumus';
 
 /**
@@ -91,38 +94,65 @@ export function siapkanKelompok(daftar: Kelompok[]): KelompokSiap[] {
 /**
  * Rumus yang gagal diurai KaTeX. Saat tampil, KaTeX menulisnya merah alih-alih
  * menggagalkan halaman; di sini kegagalan itu dijadikan temuan Cek Data.
+ *
+ * Yang diperiksa: teks soal (pertanyaan, opsi, pembahasan, stimulus), format
+ * dan penilaian subtes, serta isi Informasi seleksi di halaman angkatan;
+ * semuanya ditampilkan lewat uraikan() dan boleh memuat rumus.
+ *
+ * Memeriksa SEMUA platform, termasuk yang disembunyikan (`tampil: false`), seperti
+ * periksaIsi: datanya tetap dikerjakan, jadi rumusnya harus tetap valid.
  */
 export function periksaRumus(): Temuan[] {
   const temuan: Temuan[] = [];
+
+  /** Satu teks: pembatas harus berpasangan dan tiap rumusnya harus bisa diurai KaTeX. */
+  const periksaTeks = (t: string, lokasi: string, ke: string, sebut: string) => {
+    const buka = (t.match(/\\\(/g) ?? []).length;
+    const tutup = (t.match(/\\\)/g) ?? []).length;
+    if (buka !== tutup) {
+      temuan.push({ jenis: 'Rumus tidak valid', lokasi, ke, pesan: `${sebut}: pembatas \\( dan \\) tidak berpasangan (${buka} buka, ${tutup} tutup).` });
+    }
+    for (const m of t.matchAll(POLA_RUMUS)) {
+      try {
+        katex.renderToString(komaDesimal(m[1]), { ...OPSI_KATEX, throwOnError: true });
+      } catch (e) {
+        temuan.push({
+          jenis: 'Rumus tidak valid', lokasi, ke,
+          pesan: `${sebut}: ${(e as Error).message.replace(/^KaTeX parse error: /, '')}`,
+        });
+      }
+    }
+  };
+
+  // Satu objek subtes atau soal boleh dirujuk lebih dari satu angkatan (saat ini tak
+  // ada yang begitu); cukup diperiksa sekali supaya temuannya tak ganda.
   const sudah = new Set<Soal>();
-  for (const j of semuaSubtes()) {
+  const subtesSudah = new Set<Subtes>();
+  for (const j of semuaSubtes(SEMUA_PLATFORM)) {
     const ke = tautanSubtes(j);
     const lokasi = `${j.platform.nama} · ${j.angkatan.nama} · ${labelTahapan(j.angkatan, j.tahapan)} · ${j.subtes.nama}`;
+    if (!subtesSudah.has(j.subtes)) {
+      subtesSudah.add(j.subtes);
+      if (j.subtes.formatKetentuan) periksaTeks(j.subtes.formatKetentuan, lokasi, ke, 'Format dan ketentuan');
+      if (j.subtes.penilaian) periksaTeks(j.subtes.penilaian, lokasi, ke, 'Penilaian');
+    }
     for (const k of j.subtes.contoh ?? []) {
       for (const soal of k.soal) {
         if (sudah.has(soal)) continue;
         sudah.add(soal);
         const teks = [soal.pertanyaan, soal.pembahasan, ...(soal.opsi ?? []).map((o) => o.teks)];
         if (k.stimulus?.isi) teks.push(k.stimulus.isi);
-        for (const t of teks) {
-          const buka = (t.match(/\\\(/g) ?? []).length;
-          const tutup = (t.match(/\\\)/g) ?? []).length;
-          if (buka !== tutup) {
-            temuan.push({ jenis: 'Rumus tidak valid', lokasi, ke, pesan: `Soal ${soal.nomor}: pembatas \\( dan \\) tidak berpasangan (${buka} buka, ${tutup} tutup).` });
-          }
-          for (const m of t.matchAll(POLA_RUMUS)) {
-            try {
-              katex.renderToString(komaDesimal(m[1]), { ...OPSI_KATEX, throwOnError: true });
-            } catch (e) {
-              temuan.push({
-                jenis: 'Rumus tidak valid', lokasi, ke,
-                pesan: `Soal ${soal.nomor}: ${(e as Error).message.replace(/^KaTeX parse error: /, '')}`,
-              });
-            }
-          }
-        }
+        for (const t of teks) periksaTeks(t, lokasi, ke, `Soal ${soal.nomor}`);
       }
     }
+  }
+
+  // Informasi seleksi: tautannya langsung ke bagian yang bermasalah (jangkar idInfo).
+  for (const j of semuaAngkatan(SEMUA_PLATFORM)) {
+    (j.angkatan.info ?? []).forEach((i, k) => {
+      const lokasi = `${j.platform.nama} · ${j.angkatan.nama} · Info: ${i.judul}`;
+      periksaTeks(i.isi, lokasi, `${tautanAngkatan(j)}#${idInfo(k + 1, i.judul)}`, 'Isi informasi');
+    });
   }
   return temuan;
 }

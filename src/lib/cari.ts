@@ -9,9 +9,10 @@
  *    (TWK 65, TIU 80) ada di deskripsi tahapan. Hasilnya menunjuk lokasi,
  *    bukan menjawab.
  *
- * 2. Entitas yang dipakai bersama digabung. SKD adalah SATU objek yang
- *    dirujuk JadiASN, IPDN, dan PKN STAN; menampilkannya tiga kali membuat
- *    daftar hasil penuh pengulangan.
+ * 2. Entitas yang dipakai bersama digabung. Tahapan atau subtes yang SATU
+ *    objek tetapi dirujuk beberapa angkatan tampil sekali, bukan sekali per
+ *    rujukan, supaya daftar hasil tidak penuh pengulangan. Saat ini tidak ada
+ *    yang dirujuk bersama, tapi mekanismenya dibiarkan untuk kasus berikutnya.
  *
  * Sengaja tanpa pustaka pencarian: seluruh data muat di memori dan sudah ikut
  * ter-bundle saat build.
@@ -155,9 +156,10 @@ export function cari(kueri: string, batas = 50): Hasil[] {
   }
 
   // ── Tahapan dan subtes: digabung per objek ────────────────────────────
-  // Objek yang sama (mis. SKD sekolah kedinasan) dirujuk beberapa tes.
+  // Objek yang sama bisa dirujuk beberapa tes (saat ini tidak ada).
   // Kuncinya objek itu sendiri, bukan namanya, supaya dua subtes berbeda
-  // yang kebetulan senama tidak ikut tergabung.
+  // yang kebetulan senama, mis. TWK di JadiASN dan di JadiSekdin, tidak ikut
+  // tergabung.
   const pakaiTahapan = new Map<Tahapan, { ke: string; konteks: string[] }>();
   const pakaiSubtes = new Map<Subtes, { ke: string; konteks: string[] }>();
 

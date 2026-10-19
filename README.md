@@ -1,6 +1,6 @@
 # Product Knowledge
 
-Basis pengetahuan produk lintas 12 platform: tahapan seleksi, subtes, materi,
+Basis pengetahuan produk lintas platform: tahapan seleksi, subtes, materi,
 mapping produksi konten, dan contoh soal beserta kunci dan pembahasannya.
 
 **Datanya tinggal di folder `data/` sebagai TypeScript bersarang.** Tidak ada
@@ -52,7 +52,7 @@ Folder di bawah `data/` mengikuti hierarkinya, satu tahapan satu file:
 
 ```
 data/
-  index.ts                             daftar 12 platform
+  index.ts                             daftar platform (`SEMUA_PLATFORM` dan `PLATFORM`)
   jadipcpm/
     index.ts                           platform
     pcpm-bi/
@@ -63,14 +63,15 @@ data/
         t2-seleksi-pengetahuan-teknis.ts
         …
   jadisekdin/
-    bersama/
-      skd-2026.ts                      SKD, dipakai SEMUA sekolah kedinasan
+    skd/
+      index.ts                         tes SKD, dipakai SEMUA sekolah kedinasan
+      a2026/ index.ts, t2-skd.ts, contoh-skd.ts
     ipdn/
-      index.ts
-      a2026/ index.ts, t1-administrasi.ts, t3-tkbi.ts, …
+      index.ts                         tes seleksi lanjutan IPDN
+      a2026/ index.ts, t3-tkbi.ts, …
     pkn-stan/
-      index.ts
-      a2026/ index.ts, t1-administrasi.ts, t3-lanjutan.ts
+      index.ts                         tes seleksi lanjutan PKN STAN
+      a2026/ index.ts, t3-lanjutan.ts
 public/gambar/…                        gambar soal dan stimulus
 ```
 
@@ -80,15 +81,25 @@ Tahapan yang subtesnya dikerjakan serentak dalam satu sesi (seperti SKD: TWK, TI
 
 ### Tahapan yang dipakai bersama
 
-SKD identik di seluruh sekolah kedinasan, jadi ia ditulis **sekali** di
-`data/jadisekdin/bersama/skd-2026.ts` lalu dirujuk dari IPDN dan PKN STAN.
-Kalau ketentuan SKD berubah, satu file disunting dan semua sekolah ikut berubah
-— tidak ada risiko salah satunya tertinggal.
+SKD identik di seluruh sekolah kedinasan, jadi ia tes sendiri di
+`data/jadisekdin/skd/` (SKD Sekolah Kedinasan). IPDN dan PKN STAN hanya memuat
+seleksi lanjutannya; seleksi administrasi dan alur lengkapnya ditulis di `info`
+tiap sekolah. Kalau ketentuan SKD berubah, satu file disunting. Tautan lama
+`/jadisekdin/ipdn/2026/skd/…` dan `/jadisekdin/pkn-stan/2026/skd/…` dialihkan
+permanen ke `/jadisekdin/skd/2026/skd/…` di `next.config.mjs`.
 
-Karena itu **nomor tahap tidak ditanam di dalam `nama`**. SKD adalah tahap ke-2
-di IPDN dan juga di PKN STAN, tapi objeknya sama persis; menulis "Tahap 2" di
-namanya akan salah begitu ada sekolah yang menaruhnya di posisi lain. Aplikasi
-menomori tahapan dari urutannya lewat `labelTahapan()`.
+Satu objek tahapan atau subtes masih boleh dirujuk oleh lebih dari satu angkatan
+(kartu platform, daftar kelengkapan, dan pencarian menghitungnya sekali, sedangkan
+total di `/cek-data`, dashboard, dan beranda masih per jalur), tetapi saat ini
+tidak ada yang dipakai begitu.
+
+**Nomor tahap tidak ditanam di dalam `nama`.** Angkatan hanya menulis tahapan
+yang punya isi, jadi nomor tahap pertamanya belum tentu 1: nomor tiap tahapan
+adalah `nomorAwal` angkatan (bawaan 1) ditambah posisinya, dengan SKD memakai
+`nomorAwal: 2` dan seleksi lanjutan IPDN dan PKN STAN memakai `nomorAwal: 3`,
+mengikuti alur resmi (tahap 1 seleksi administrasi, tahap 2 SKD). Aplikasi
+menomori tahapan lewat `nomorTahapan()` dan `labelTahapan()`, bukan dari indeks
+array.
 
 ### Menambah angkatan baru
 
@@ -114,19 +125,31 @@ Argumen terakhir adalah FOLDER angkatan. Skrip menulis `index.ts` plus satu
 file per tahapan, lalu **diff-nya direview sebelum commit**. Naskah
 masuk lewat jalur yang mereka bisa; yang tayang tetap lewat review.
 
+### Menyembunyikan platform
+
+Platform yang aplikasinya belum siap diberi `tampil: false` di objeknya (mis.
+`data/jadibumn/index.ts`). Datanya tetap ada di repo dan tetap diperiksa
+`/cek-data`, tetapi tidak muncul di halaman pembaca mana pun (beranda,
+pencarian, banding, dashboard, kelengkapan, simulasi) dan rutenya, mis.
+`/jadibumn`, 404. Untuk menampilkannya lagi, hapus barisnya; yang sedang
+disembunyikan terlihat lewat `grep -rn "tampil: false" data`. Di kode,
+`data/index.ts` mengekspor `SEMUA_PLATFORM` (lengkap, dipakai pemeriksa isi) dan
+`PLATFORM` (yang tampil, dipakai semua halaman pembaca).
+
 ## Halaman
 
 | Rute | Isi |
 | --- | --- |
-| `/` | Daftar 12 platform, dengan penanda mana yang sudah terisi |
+| `/` | Daftar platform yang tampil, dengan penanda mana yang sudah terisi |
 | `/<platform>` | Tes dan angkatan, mis. `/jadipcpm` |
-| `/<platform>/<tes>/<angkatan>` | Tahapan, subtes, info seleksi, sumber |
+| `/<platform>/<tes>/<angkatan>` | Tahapan, lalu info seleksi (tampil penuh di bawah tahapan), lalu sumber. Daftar isi menaut ke tiap bagian: lengket di samping di layar lebar, blok lipat di atas di layar sempit |
 | `/<platform>/<tes>/<angkatan>/<tahapan>/<subtes>` | Spesifikasi, materi, mapping, contoh soal |
 | `/<platform>/<tes>/<angkatan>/simulasi` | Simulasi seluruh angkatan dari contoh soalnya: subtes berurutan, tiap bagian dengan waktunya sendiri. Hasil dan pembahasan tampil di rute yang sama. Hanya angkatan yang punya subtes dengan soal |
 | `/<platform>/<tes>/<angkatan>/<tahapan>/<subtes>/simulasi` | Simulasi satu subtes. Hanya subtes yang punya soal untuk dikerjakan (bukan `bankSoal: false`, bukan hanya uraian) |
 | `/cari?q=` | Pencarian lintas semua isi termasuk opsi dan pembahasan soal |
 | `/dashboard` | Rekap kekurangan soal dan angkatan yang datanya belum lengkap |
-| `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, mapping janggal |
+| `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, mapping janggal, versi yang tak cocok dengan catatan pembaruan |
+| `/pembaruan` | Catatan pembaruan: tiap versi aplikasi dengan tanggal dan poin perubahannya, terbaru di atas |
 
 ### Mode simulasi
 
@@ -145,6 +168,19 @@ sedikit, semuanya dipakai dan subtesnya berlabel "parsial". Batas waktu = `waktu
 simulasinya stopwatch tanpa batas. Tahapan `waktuBersama` (SKD) menjadi satu
 sesi dengan satu timer di simulasi angkatan, dan di simulasi satu subtes
 jatahnya porsi dari waktu sesi menurut jumlah soal tahapan itu.
+
+### Versi dan catatan pembaruan
+
+Nomor versi yang tampil (lencana `v…` di header, tautan "Pembaruan · v…" di dasar
+tiap halaman, dan halaman `/pembaruan`) dibaca dari entri teratas
+`src/lib/pembaruan.ts`, bukan diketik di tempat lain. Tiap rilis:
+
+1. Tambahkan entri di **paling atas** `PEMBARUAN`: `versi`, `tanggal`
+   (YYYY-MM-DD), dan `poin` yang ditulis untuk pembaca CS dan marketing.
+2. Naikkan `version` di `package.json` ke angka yang sama.
+3. Buka `/cek-data`. Ia menjadi temuan kalau versi `package.json` berbeda dari
+   entri teratas, atau susunan catatannya salah (versi tidak menurun ke bawah,
+   tanggal tidak sah, rilis tanpa poin).
 
 ## Akses
 
@@ -190,7 +226,9 @@ Dua lapis, dan keduanya berjalan sebelum apa pun tayang:
    semuanya menggagalkan `npm run build`.
 2. **`/cek-data`.** Yang tidak bisa dilihat compiler: kunci jawaban yang tidak
    menunjuk opsi mana pun, pembahasan kosong, nomor soal ganda dalam satu
-   subtes, dan `paket × soalPerPaket` yang tidak sama dengan `dibutuhkan`.
+   subtes, `paket × soalPerPaket` yang tidak sama dengan `dibutuhkan`, rumus
+   LaTeX yang gagal diurai (di soal, penilaian subtes, dan info seleksi), dan
+   versi `package.json` yang tidak sama dengan catatan pembaruan.
 
 ## Catatan angka
 
@@ -205,12 +243,11 @@ menghitung per baris membuat TPK PCPM 41 terbaca kurang 175, padahal sebenarnya
   merendernya; tinggal menaruh berkasnya di `public/gambar/`.
 - Angka `tersedia` untuk Tahap 2 PCPM 41 masih gabungan, ditandai di field
   `catatan` pada mapping-nya.
-- Baru 2 dari 12 platform terisi: JadiPCPM dan JadiSekdin.
+- JadiBeasiswa, JadiPrajurit, dan JadiPolisi belum punya tes sama sekali. Bersama
+  platform lain yang aplikasinya belum siap, ketiganya disembunyikan (`tampil: false`)
+  dari halaman pembaca.
 - Sekolah kedinasan yang belum ditulis: SIPENCATAR (Kemenhub), STIN (BIN),
   Poltek SSN (BSSN), STIS (BPS), STMKG (BMKG), Poltekim/Poltekip.
 - Angka mapping SKD diambil dari sheet berlabel "15 Paket", tetapi totalnya
   sama dengan 30 paket. Jumlah paket sengaja dikosongkan sampai maksud sheet
   itu dipastikan; catatannya ikut tampil di halaman subtes.
-- Karena SKD dirujuk dua kali, ia terhitung dua kali di rekap `/cek-data` dan
-  akan terhitung dua kali di dashboard kalau nanti kekurangannya positif.
-  Saat ini ketersediaannya melebihi kebutuhan, jadi belum berdampak.

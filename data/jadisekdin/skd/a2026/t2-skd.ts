@@ -2,17 +2,23 @@ import type { Tahapan } from '@/lib/skema';
 import { contohTwk, contohTiu, contohTkp } from './contoh-skd';
 
 /**
- * Seleksi Kompetensi Dasar (SKD) 2026.
+ * Seleksi Kompetensi Dasar (SKD) 2026, tahap 2 dari alur seleksi sekolah
+ * kedinasan (angkatannya memakai `nomorAwal: 2`).
  *
- * SKD dipakai BERSAMA oleh semua sekolah kedinasan, jadi ia didefinisikan
- * sekali di sini lalu dirujuk dari tiap sekolah. Itu salah satu keuntungan
- * data berupa kode: yang sama benar-benar dibagi, bukan disalin dan berisiko
- * berbeda diam-diam saat salah satunya direvisi.
+ * SKD dipakai semua sekolah kedinasan dan berdiri sebagai tesnya sendiri (SKD
+ * Sekolah Kedinasan). Seleksi lanjutan tiap sekolah ada di tesnya masing-masing,
+ * mis. IPDN dan PKN STAN.
+ *
+ * Contoh soal nomor 1 dan 2 ditulis tangan di sini; nomor 3 dan seterusnya dari
+ * contoh-skd.ts, yang ditulis ulang oleh skrip/ke-data.mjs. Soal tulisan tangan
+ * sengaja tidak dipindah ke sana supaya tidak hilang saat skrip dijalankan lagi.
+ * Susunan `contoh` tiap subtes menaruh kelompok tulisan tangan lebih dulu, supaya
+ * soal tampil berurutan dari nomor 1.
  *
  * Sumber: JadiSekdin - Riset dan Kurikulum Sekolah Kedinasan SKD.docx
  *         dan Mapping ASN.xlsx (Product Management, April 2026).
  */
-export const skd2026: Tahapan = {
+export const tahapSkd: Tahapan = {
   kode: 'skd',
   nama: 'Seleksi Kompetensi Dasar (SKD)',
   mode: 'online',
@@ -48,7 +54,6 @@ Jalur Afirmasi Kewilayahan: nilai kumulatif SKD 281 dengan TIU minimal 55.`,
         },
       ],
       contoh: [
-        ...contohTwk,
         {
         soal: [
         {          nomor: 1,
@@ -107,6 +112,7 @@ Cara cepat: Menghargai jasa pahlawan berarti menjaga ingatan kolektif bangsa dan
         },
         ],
       },
+        ...contohTwk,
       ],
     },
     {
@@ -132,7 +138,6 @@ Cara cepat: Menghargai jasa pahlawan berarti menjaga ingatan kolektif bangsa dan
         },
       ],
       contoh: [
-        ...contohTiu,
         {
         soal: [
         {          nomor: 1,
@@ -183,6 +188,7 @@ E. Penggabungan dari arwana dan koi TIDAK menghasilkan hiu`,
         },
         ],
       },
+        ...contohTiu,
       ],
     },
     {
@@ -212,7 +218,6 @@ E. Penggabungan dari arwana dan koi TIDAK menghasilkan hiu`,
         },
       ],
       contoh: [
-        ...contohTkp,
         {
         soal: [
         {
@@ -271,6 +276,7 @@ Opsi E mendapat nilai 4 poin karena adanya usaha untuk memahami lebih dalam kesu
         },
         ],
       },
+        ...contohTkp,
       ],
     },
   ],

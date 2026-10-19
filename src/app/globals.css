@@ -147,17 +147,30 @@ code {
 }
 .merek-teks { display: flex; flex-direction: column; line-height: 1.15; }
 .merek-baris { display: flex; align-items: center; gap: 6px; }
-/* Versi sebagai lencana kecil terangkat, mengikuti pola ProductTrack. */
+/* Tautan merek dan lencana versi bersebelahan. Lencana tak boleh di dalam tautan
+   merek (tautan tak boleh bersarang), jadi keduanya dibungkus; lencana sejajar
+   dengan sisi atas logo. */
+.merek-grup { display: flex; align-items: flex-start; gap: 6px; }
+/* Versi sebagai lencana kecil terangkat, mengikuti pola ProductTrack. Ia tautan ke
+   catatan pembaruan dan tak lagi mewarisi gaya tautan merek, jadi gayanya ditulis
+   penuh di sini. */
 .merek-versi {
+  position: relative;
   font-size: 9.5px;
   font-weight: 700;
+  line-height: 1.15;
   letter-spacing: 0;
+  white-space: nowrap;
   color: var(--aksen);
   background: var(--aksen-lembut);
   border-radius: 4px;
   padding: 1px 4px;
-  align-self: flex-start;
-  margin-top: -2px;
+}
+.merek-versi:hover { background: var(--aksen-garis); text-decoration: none; }
+/* Layar sentuh (tablet; di ponsel lencana disembunyikan): area ketuk diperluas
+   sampai sekitar 44px tanpa mengubah tampilan. */
+@media (pointer: coarse) {
+  .merek-versi::after { content: ''; position: absolute; inset: -16px -6px; }
 }
 .merek-divisi {
   font-size: 9.5px;
@@ -188,6 +201,21 @@ code {
   border-radius: 99px;
 }
 .nav a:hover { color: var(--teks); background: var(--redup); text-decoration: none; }
+
+/* Tinggi header yang lengket. Dipakai jarak jangkar (scroll-margin-top) supaya judul
+   tujuan tautan #… tak tertutup header, dan offset kolom samping yang lengket.
+   Header satu baris di layar lebar (65px), dua baris saat merek, kotak cari, dan
+   menu tak muat sebaris (118px; di bawah 1190px, dan sampai 1250px bila ada tautan
+   Keluar, yaitu pengunjung yang sudah memasukkan PIN, jadi batasnya diberi
+   kelonggaran 30px), dan satu baris lagi di ponsel (67px). Di ponsel sempit merek
+   dan pemilih tema tak muat sebaris, jadi header membungkus lagi (101px, terukur di
+   360 dan 375px; batasnya diberi kelonggaran sampai 390px). Diukur di Chrome; ubah
+   angkanya bila isi header berubah. Salah ke arah lebih tinggi hanya menambah
+   jarak; salah ke arah lebih rendah menutupi judul. */
+:root { --tinggi-kepala: 65px; }
+@media (max-width: 1279.98px) { :root { --tinggi-kepala: 118px; } }
+@media (max-width: 767.98px) { :root { --tinggi-kepala: 67px; } }
+@media (max-width: 389.98px) { :root { --tinggi-kepala: 101px; } }
 
 /* ── Pencarian ───────────────────────────────────────────────────── */
 .cari { display: flex; flex: 1 1 250px; min-width: 190px; }
@@ -996,7 +1024,7 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
   border-radius: 18px;
   box-shadow: var(--bayang);
   /* Header menempel di atas layar; tanpa ini jangkar #tahap-… tertutup olehnya. */
-  scroll-margin-top: 88px;
+  scroll-margin-top: calc(var(--tinggi-kepala) + 23px);
 }
 .lini-kosong .lini-kartu { padding-bottom: 18px; }
 /* Tujuan tautan "+N subtes lainnya" dari halaman platform diberi sorotan. */
@@ -1044,7 +1072,9 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
 /* "Satu sesi" menggantikan waktu per subtes di tahapan yang dikerjakan serentak. */
 .waktu-bersama { color: var(--teks-2); }
 
-/* ── Halaman angkatan: kolom samping ─────────────────────────────────── */
+/* ── Kolom samping layar awal simulasi ───────────────────────────────────
+   Kartu aturan di samping layar awal simulasi (simulasi/klien.tsx). Halaman
+   angkatan memakai kolom sendiri yang lengket, .ang-samping di bawah. */
 .samping { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
 .samping-kartu {
   background: var(--kartu);
@@ -1053,46 +1083,114 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
   padding: 8px 20px;
 }
 .samping-judul { margin: 12px 0 4px; font-size: 17px; font-weight: 800; letter-spacing: -.01em; }
-/* Informasi seleksi dilipat per judul: isinya panjang dan jarang dibaca utuh. */
-.info-butir { border-top: 1px solid var(--garis); }
-.info-butir summary {
+
+/* ── Halaman angkatan: kolom samping ─────────────────────────────────────
+   Daftar isi di atas, legenda arti status di bawahnya. Kolom ini lengket: daftar
+   isi yang panjang (CPNS 2027 punya 18 bagian informasi) digulir di dalam kolomnya
+   sendiri, bukan terpotong di dasar layar. Header setinggi 65px, jadi top 84px
+   menyisakan jarak. Di layar sempit kolom jatuh ke bawah halaman dan tak lagi
+   lengket (blok 1023.98px di bawah). */
+.ang-samping {
+  position: sticky;
+  top: calc(var(--tinggi-kepala) + 19px);
+  min-width: 0;
+  max-height: calc(100vh - var(--tinggi-kepala) - 35px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+/* Kartu tak ikut diperas bila kolom lebih pendek dari isinya; kolomnya yang digulir. */
+.ang-samping > * { flex: none; }
+.ang-samping-kartu {
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 18px;
+  padding: 14px 12px 10px;
+}
+
+/* ── Halaman angkatan: daftar isi ────────────────────────────────────────
+   Satu daftar, dua tempat: kartu di kolom samping (layar lebar) dan blok lipat di
+   atas halaman (layar sempit). Halaman merendernya dua kali dan CSS menyembunyikan
+   salah satunya dengan display: none, jadi pembaca layar hanya menemukan satu. */
+.toc-judul { margin: 2px 8px 6px; }
+.toc, .toc-anak { list-style: none; margin: 0; padding: 0; }
+.toc-anak { margin: 2px 0 8px 10px; padding-left: 10px; border-left: 2px solid var(--garis); }
+.toc a {
+  display: block;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--teks-2);
+  overflow-wrap: anywhere;
+}
+.toc a:hover { background: var(--redup); color: var(--teks); text-decoration: none; }
+.toc a.toc-grup { font-weight: 700; color: var(--teks); }
+
+/* Blok lipat di atas halaman; baru tampil di layar sempit (blok 1023.98px di bawah). */
+.toc-atas { display: none; }
+.toc-atas summary {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 44px;
-  padding: 8px 0;
-  font-size: 14px;
-  font-weight: 600;
+  min-height: 48px;
+  padding: 8px 16px;
+  font-size: 14.5px;
+  font-weight: 700;
   cursor: pointer;
   list-style: none;
 }
-.info-butir summary::-webkit-details-marker { display: none; }
-.info-butir summary > span:first-child { flex: 1; min-width: 0; }
-.info-butir summary::after {
+.toc-atas summary::-webkit-details-marker { display: none; }
+.toc-atas summary::after {
   content: '›';
+  margin-left: auto;
   flex: none;
   font-size: 20px;
   line-height: 1;
   color: var(--teks-2);
   transition: transform .15s ease;
 }
-.info-butir[open] summary::after { transform: rotate(90deg); }
-.info-butir > p { margin: 0 0 12px; font-size: 13.5px; color: var(--teks-2); }
+.toc-atas[open] summary { border-bottom: 1px solid var(--garis); }
+.toc-atas[open] summary::after { transform: rotate(90deg); }
+.toc-atas nav { padding: 6px 8px 10px; }
+/* Target sentuh 44px. */
+.toc-atas .toc a { display: flex; align-items: center; min-height: 44px; font-size: 14px; }
+
+/* ── Halaman angkatan: informasi seleksi ─────────────────────────────────
+   Tampil penuh di bawah tahapan, satu kartu per judul. Tiap kartu punya jangkar
+   (idInfo di src/lib/data.ts) yang dituju daftar isi, dan disorot seperti kartu
+   tahapan saat sedang dituju. scroll-margin-top menyisakan ruang di bawah header
+   yang lengket supaya judul tak tertutup. */
+.ang-bagian { margin-top: 16px; }
+.ang-bagian, .bagian-kepala[id], .info-kartu { scroll-margin-top: calc(var(--tinggi-kepala) + 23px); }
+.info-kartu {
+  margin-bottom: 20px;
+  padding: 20px 22px;
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 18px;
+  box-shadow: var(--bayang);
+}
+.info-kartu:target { border-color: var(--aksen); box-shadow: 0 0 0 3px var(--aksen-lembut); }
+.info-kepala { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; margin-bottom: 10px; }
+.info-kepala h3 { margin: 0; font-size: 17px; font-weight: 800; letter-spacing: -.01em; overflow-wrap: anywhere; }
+/* Baris dibatasi supaya teks panjang tetap enak dibaca di kolom yang lebar. */
+.info-isi { max-width: 760px; font-size: 14.5px; line-height: 1.7; overflow-wrap: anywhere; }
 
 /* LegendaStatus dipakai juga di halaman lain dengan lebar penuh; di sini ia
    tinggal di kolom sempit, jadi tata letaknya dirapatkan dan disamakan dengan
    kartu sekitarnya. */
-.samping .legenda {
+.ang-samping .legenda {
   margin-top: 0;
   padding: 18px 20px;
   border-left-width: 1px;
   border-left-color: var(--garis);
   border-radius: 18px;
 }
-.samping .legenda dl > div { grid-template-columns: 1fr; gap: 3px; }
+.ang-samping .legenda dl > div { grid-template-columns: 1fr; gap: 3px; }
 
 /* ── Halaman angkatan: sumber ────────────────────────────────────────── */
-.sumber { margin-top: 36px; }
 .sumber-kartu {
   background: var(--kartu);
   border: 1px solid var(--garis);
@@ -1109,6 +1207,19 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
 /* ── Dua halaman ini di layar menengah dan ponsel ────────────────────── */
 @media (max-width: 1023.98px) {
   .ang-tata { grid-template-columns: minmax(0, 1fr); }
+  /* Kolom samping jatuh ke bawah halaman: tak lagi lengket, dan daftar isinya
+     pindah ke blok lipat di atas. Versi di kolom samping dibuang (display: none),
+     bukan hanya disembunyikan, supaya tak terbaca dua kali; kolom yang tinggal
+     daftar isi ikut dibuang karena kosong. */
+  .ang-samping { position: static; max-height: none; overflow: visible; }
+  .toc-samping, .ang-samping-hanya-toc { display: none; }
+  .toc-atas {
+    display: block;
+    margin: 0 0 24px;
+    background: var(--kartu);
+    border: 1px solid var(--garis);
+    border-radius: 16px;
+  }
   /* Lima ubin dalam satu baris menyempit; angkanya diperkecil supaya "195 mnt"
      tidak terpatah jadi dua baris. Berlaku juga untuk kertas. */
   .ubin-nilai { font-size: 22px; }
@@ -1158,7 +1269,11 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
   .lini-kepala h3 { font-size: 16.5px; }
   .lini-ringkas { margin-left: 0; flex-basis: 100%; }
   .samping-kartu { padding: 4px 16px; }
-  .sumber { margin-top: 28px; }
+  .toc-atas { margin-bottom: 20px; }
+  .ang-bagian { margin-top: 14px; }
+  .info-kartu { margin-bottom: 14px; padding: 14px 14px 16px; border-radius: 16px; }
+  .info-kepala h3 { font-size: 16px; }
+  .info-isi { font-size: 14px; }
   .sumber-kartu { padding: 4px 12px 12px; }
 }
 
@@ -1372,27 +1487,34 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
     display: none !important;
   }
   html, body { background: #fff; color: #000; font-size: 11pt; }
-  .bingkai { max-width: none; padding: 0; }
+  /* !important: blok ponsel di bawah (max-width: 767.98px, tanpa `screen`) ikut berlaku
+     di kertas yang lebarnya ~700px dan menaruh padding bawah 96px untuk bilah nav. Tanpa
+     ini isi yang pas dua halaman jadi tiga, dengan halaman terakhir kosong. */
+  .bingkai { max-width: none; padding: 0 !important; }
   .lini-butir, .soal, .panel, .banner, .legenda, tr { break-inside: avoid; }
   /* Judul tak boleh tertinggal sendirian di dasar halaman. Isi informasi yang
-     panjang dibiarkan terbelah antarhalaman, tapi barisnya ikut isinya. */
-  h2, h3, .bagian-kepala, .info-butir summary { break-after: avoid; }
+     panjang dibiarkan terbelah antarhalaman, tapi kepala kartunya ikut isinya. */
+  h2, h3, .bagian-kepala, .info-kepala { break-after: avoid; }
   a { color: #000; text-decoration: none; }
   .kartu, .panel, .soal { box-shadow: none; border-color: #ddd; }
-  .lini-kartu, .ubin { box-shadow: none; }
+  .lini-kartu, .ubin, .info-kartu, .info-kartu:target { box-shadow: none; }
   /* Informasi dan sumber mengalir seperti teks biasa, tanpa bingkai kartu yang
      akan terpotong di tiap batas halaman. */
-  .samping-kartu, .sumber-kartu { border: 0; padding: 0; }
+  .info-kartu, .samping-kartu, .sumber-kartu { border: 0; padding: 0; }
+  .info-kartu { margin-bottom: 14px; }
 
-  /* Satu kolom: kolom samping jatuh di bawah lini masa, selebar halaman. */
+  /* Satu kolom: kolom samping (tinggal legenda status; daftar isinya tanpa-cetak)
+     jatuh di bawah isi, selebar halaman. Sifat lengketnya dilepas: di kertas yang
+     lebar, max-height bisa memotong isinya. */
   .ang-tata { display: block; }
   .samping { margin-top: 16px; }
+  .ang-samping { position: static; max-height: none; overflow: visible; margin-top: 16px; }
+  .ang-samping-hanya-toc { display: none; }
   .tabel-bungkus { overflow: visible; }
   .tabel-petunjuk { display: none !important; }
   .tabel-subtes table, .sumber-kartu table { min-width: 0; }
   /* Panah hanya penunjuk ketuk. */
   .tabel-subtes th:last-child, .sub-panah { display: none; }
-  .info-butir summary::after { display: none; }
 
   /* Latar tak ikut tercetak (bawaan peramban), jadi tanda yang bersandar pada
      latar diberi garis: lingkaran nomor, penghubung, dan lencana. */
@@ -1422,6 +1544,46 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
 }
 .kaki-tautan a { color: var(--aksen); font-weight: 600; }
 .kaki-tautan .kartu-kecil { margin-top: 4px; }
+
+/* ── Tautan versi di dasar setiap halaman ────────────────────────────────
+   Lencana versi di header disembunyikan di ponsel (tak muat), jadi tautan ke
+   catatan pembaruan ada di sini. Tampil di semua lebar supaya perilakunya sama;
+   dibuang di layar ujian (mode fokus) dan kertas. */
+.kaki-versi { margin-top: 28px; }
+.kaki-versi a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 12.5px;
+  color: var(--teks-2);
+}
+.kaki-versi a:hover { color: var(--aksen); }
+body[data-fokus] .kaki-versi { display: none; }
+
+/* ── Halaman catatan pembaruan ───────────────────────────────────────────
+   Satu kartu per rilis, terbaru di atas dengan garis aksen. Lebarnya dibatasi
+   supaya baris poin tetap enak dibaca di layar lebar. */
+.rilis-daftar { max-width: 820px; }
+.rilis {
+  margin-top: 14px;
+  padding: 20px 22px 14px;
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 18px;
+  box-shadow: var(--bayang);
+  scroll-margin-top: calc(var(--tinggi-kepala) + 23px);
+}
+.rilis-baru { border-color: var(--aksen-garis); }
+.rilis-kepala { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; }
+.rilis-kepala h2 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+.rilis-tanggal { font-size: 13px; color: var(--teks-2); }
+.rilis-judul { margin: 6px 0 0; font-weight: 600; }
+.rilis-poin { margin: 10px 0 0; padding-left: 20px; font-size: 14.5px; }
+.rilis-poin li { margin: 6px 0; overflow-wrap: anywhere; }
+@media (max-width: 767.98px) {
+  .rilis { padding: 14px 14px 8px; border-radius: 16px; }
+  .rilis-kepala h2 { font-size: 18px; }
+}
 
 /* ══════════════════════════════════════════════════════════════════════
    PONSEL

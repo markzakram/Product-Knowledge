@@ -3,7 +3,7 @@ import { pknStan2026 } from './a2026';
 
 export const pknStan: Tes = {
   kode: 'pkn-stan',
-  nama: 'PKN STAN',
+  nama: 'Seleksi Lanjutan PKN STAN',
   instansi: 'Kementerian Keuangan',
   kategori: 'Sekolah Kedinasan',
   deskripsi:

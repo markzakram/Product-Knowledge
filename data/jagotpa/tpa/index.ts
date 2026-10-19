@@ -7,6 +7,6 @@ export const tpa: Tes = {
   kategori: 'Tes Potensi Akademik',
   deskripsi:
     'Tes potensi akademik tiga bagian: verbal, kuantitatif, dan penalaran. ' +
-    'Penilaian tryout-nya di Markaz memakai templat nilai "TPA Bappenas".',
+    'Penilaian tryout-nya di Markaz memakai templat nilai "TPA Bappenas", rumusnya belum diverifikasi.',
   angkatan: [tpa2026],
 };

@@ -16,5 +16,7 @@ export const jadibumn: Platform = {
   slug: 'jadibumn',
   logo: 'logo/icon-jadibumn.png',
   deskripsi: 'Persiapan seleksi rekrutmen Badan Usaha Milik Negara.',
+  // Disembunyikan 19 Okt 2026: aplikasinya belum siap. Hapus baris ini untuk menampilkan lagi.
+  tampil: false,
   tes: [kai, pertadate],
 };

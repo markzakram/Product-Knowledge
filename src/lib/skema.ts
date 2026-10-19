@@ -70,7 +70,7 @@ export interface Soal {
   kategori?: [string, string];
   /**
    * `true` untuk butir yang memang TIDAK punya jawaban benar: tes kepribadian
-   * dan minat (Big Five, EPPS, PAPI), uraian bebas, dan tugas menggambar.
+   * dan minat (mis. EPPS), uraian bebas, dan tugas menggambar.
    * Tampilan tidak menandai opsi mana pun sebagai kunci (bukan "KUNCI" dan
    * bukan "SKOR TERTINGGI"), dan Cek Data tidak menuntut kunci. Cara
    * penilaiannya ditulis di `pembahasan`: dimensi yang diukur, skor per opsi,
@@ -187,6 +187,14 @@ export interface Angkatan {
   kode: string;
   nama: string;
   tahun: number;
+  /**
+   * Nomor tahap pertama angkatan ini; bawaannya 1. Isi bila `tahapan` tidak
+   * dimulai dari tahap 1 menurut alur resmi seleksinya: seleksi lanjutan IPDN dan
+   * PKN STAN dimulai dari tahap 3 (tahap 1 seleksi administrasi, tahap 2 SKD), jadi
+   * `nomorAwal: 3`. Nomor tiap tahapan adalah `nomorAwal` ditambah posisinya di
+   * `tahapan` (lihat `nomorTahapan` di lib/data.ts).
+   */
+  nomorAwal?: number;
   status: StatusData;
   ringkasan?: string;
   pic?: string;
@@ -212,6 +220,17 @@ export interface Platform {
   deskripsi?: string;
   /** Jalur di bawah `public/`, mis. "logo/icon-jadiasn.png". */
   logo?: string;
+  /**
+   * `false` untuk platform yang aplikasinya belum siap. Datanya tetap disimpan
+   * di repo dan tetap diperiksa (periksaIsi, Cek Data), tetapi tidak muncul di
+   * halaman pembaca mana pun (beranda, pencarian, banding, dashboard,
+   * kelengkapan, simulasi) dan rutenya 404. Hapus field ini untuk
+   * menampilkannya lagi.
+   *
+   * Penyaringannya satu tempat: `PLATFORM` di data/index.ts hanya memuat platform
+   * tanpa field ini, sedangkan `SEMUA_PLATFORM` memuat semuanya.
+   */
+  tampil?: false;
   tes: Tes[];
 }
 

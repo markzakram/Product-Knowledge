@@ -6,10 +6,12 @@ import { Ikon } from './komponen';
 /**
  * Tombol cetak halaman angkatan.
  *
- * Bagian yang dilipat (<details>, mis. Informasi seleksi) tidak ikut tercetak
- * kalau sedang tertutup, padahal itu isi yang paling dicari di kertas. Jadi
- * semuanya dibuka sebelum cetak dan hanya yang tadinya tertutup dikembalikan
- * sesudahnya; yang memang sedang dibuka pembaca tidak disentuh.
+ * Bagian yang dilipat (<details>) tidak ikut tercetak kalau sedang tertutup,
+ * padahal isinya bisa jadi yang paling dicari di kertas. Jadi semuanya dibuka
+ * sebelum cetak dan hanya yang tadinya tertutup dikembalikan sesudahnya; yang
+ * memang sedang dibuka pembaca tidak disentuh. Informasi seleksi sendiri tak
+ * lagi dilipat (tampil penuh di bawah tahapan); yang kini berupa <details> di
+ * halaman ini hanya daftar isi untuk ponsel, dan itu memang tak ikut tercetak.
  *
  * Pendengarnya dipasang di komponen ini, jadi Ctrl+P ikut tertangani selama
  * halamannya memuat tombol ini, bukan hanya klik pada tombolnya.

@@ -1,6 +1,6 @@
 import 'server-only';
 import {
-  judulAngkatan, kodeChip, kodeChipTahapan, labelTahapan, subtesBisaSimulasi,
+  judulAngkatan, kodeChip, kodeChipTahapan, labelTahapan, nomorTahapan, subtesBisaSimulasi,
   subtesSimulasiBerikutnya, tautanAngkatan, tautanPlatform, tautanSimulasiAngkatan,
   tautanSimulasiSubtes, tautanSubtes, type JalurAngkatan, type JalurSubtes,
 } from './data';
@@ -132,7 +132,7 @@ export function rencanaAngkatan(j: JalurAngkatan): PropsSimulasi {
   const dilewati: PropsSimulasi['dilewati'] = [];
   const status: StatusData[] = [angkatan.status];
 
-  angkatan.tahapan.forEach((tahapan, ti) => {
+  angkatan.tahapan.forEach((tahapan) => {
     const chip = kodeChipTahapan(tahapan.subtes.map((s) => s.nama));
     const tahap = labelTahapan(angkatan, tahapan);
     const ikut: { asli: Subtes; sim: SubtesSim }[] = [];
@@ -149,7 +149,7 @@ export function rencanaAngkatan(j: JalurAngkatan): PropsSimulasi {
       bagian.push({
         id: `b${bagian.length}`,
         judul: tahapan.nama,
-        chip: kodeChip(tahapan.nama) || String(ti + 1),
+        chip: kodeChip(tahapan.nama) || String(nomorTahapan(angkatan, tahapan)),
         tahap,
         subtes: ikut.map((x) => x.sim),
         menit: batasMenit({

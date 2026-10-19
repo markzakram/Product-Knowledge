@@ -23,5 +23,21 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      // JadiSekdin dipecah jadi tiga tes (skd, ipdn, pkn-stan): SKD tidak lagi di
+      // bawah IPDN dan PKN STAN. Tautan lama ke subtes SKD (dan simulasinya)
+      // dialihkan. Hanya tahapan `skd` yang ikut; rute seleksi lanjutan (tkbi,
+      // psikologi, lanjutan, dan seterusnya) tetap di sekolahnya masing-masing.
+      // Simulasi tingkat angkatan SENGAJA tidak dialihkan: begitu seleksi
+      // lanjutan punya contoh soal, /jadisekdin/ipdn/2026/simulasi harus jadi
+      // simulasi IPDN sendiri, dan pengalihan di sini akan menutupinya diam-diam.
+      {
+        source: '/jadisekdin/:sekolah(ipdn|pkn-stan)/2026/skd/:path*',
+        destination: '/jadisekdin/skd/2026/skd/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 export default nextConfig;

@@ -4,11 +4,16 @@
  * Semuanya sinkron dan tanpa cache: datanya ikut ter-bundle saat build, jadi
  * tidak ada yang perlu ditarik, ditunggu, atau di-refresh saat aplikasi jalan.
  */
-import { PLATFORM } from '../../data';
+import { PLATFORM, SEMUA_PLATFORM } from '../../data';
 import { daftarKunci, type Angkatan, type Platform, type Subtes, type Tahapan, type Tes } from './skema';
 import { subtesBisaSimulasi } from './simulasi';
 
-export { PLATFORM };
+/**
+ * PLATFORM = yang tampil di halaman pembaca (tanpa `tampil: false`); semua
+ * penelusuran di bawah memakainya, jadi platform yang disembunyikan tidak
+ * ditemukan dan rutenya 404. SEMUA_PLATFORM = lengkap, hanya untuk pemeriksa isi.
+ */
+export { PLATFORM, SEMUA_PLATFORM };
 
 export interface JalurSubtes {
   platform: Platform;
@@ -57,14 +62,21 @@ export function cariSubtes(
 }
 
 /**
- * Label tahapan, bernomor menurut POSISINYA di angkatan.
+ * Nomor sebuah tahapan menurut alur resmi seleksinya: `nomorAwal` angkatan
+ * (bawaannya 1) ditambah POSISI tahapan di `tahapan` angkatan itu.
  *
- * Nomor sengaja tidak ditanam di dalam `nama`, karena satu tahapan bisa dipakai
- * di posisi berbeda: SKD adalah tahap ke-2 di IPDN dan juga di PKN STAN, tapi
- * objeknya sama persis. Menanam "Tahap 1" di namanya membuat salah satu salah.
+ * Nomor sengaja tidak ditanam di dalam `nama`, dan posisi di array belum tentu
+ * sama dengan nomor tahap: angkatan hanya menulis tahapan yang punya isi. Seleksi
+ * lanjutan IPDN dan PKN STAN dimulai dari tahap 3 (tahap 1 seleksi administrasi
+ * dan tahap 2 SKD ada di tempat lain), jadi angkatannya `nomorAwal: 3`. Semua
+ * tempat yang menomori tahapan harus lewat sini, bukan memakai indeks array.
  */
+export const nomorTahapan = (a: Angkatan, t: Tahapan) =>
+  (a.nomorAwal ?? 1) + a.tahapan.indexOf(t);
+
+/** Label tahapan, mis. "Tahap 3: Tes Kemampuan Bahasa Inggris (TKBI)". */
 export const labelTahapan = (a: Angkatan, t: Tahapan) =>
-  `Tahap ${a.tahapan.indexOf(t) + 1}: ${t.nama}`;
+  `Tahap ${nomorTahapan(a, t)}: ${t.nama}`;
 
 // ─── Tautan ──────────────────────────────────────────────────────────────
 
@@ -78,6 +90,25 @@ export const tautanSubtes = (j: JalurSubtes) =>
 
 /** Id jangkar kartu tahapan di halaman angkatan. */
 export const idTahapan = (t: Pick<Tahapan, 'kode'>) => `tahap-${t.kode}`;
+
+/**
+ * Id jangkar satu bagian Informasi seleksi di halaman angkatan, mis.
+ * "info-3-persyaratan-umum". `urutan` (mulai dari 1, menurut posisi di `info`)
+ * menjamin id tak pernah kembar walau dua judul sama; slug judulnya hanya supaya
+ * tautan terbaca. Judul diubah, slug-nya ikut berubah, tapi tautan lama tetap
+ * mendarat di halaman yang sama.
+ */
+export function idInfo(urutan: number, judul: string): string {
+  const slug = judul
+    .normalize('NFD')
+    .replace(/\p{M}+/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+/, '')
+    .slice(0, 48)
+    .replace(/-+$/, '');
+  return slug ? `info-${urutan}-${slug}` : `info-${urutan}`;
+}
 
 export const tautanTahapan = (j: JalurAngkatan, t: Tahapan) =>
   `${tautanAngkatan(j)}#${idTahapan(t)}`;
@@ -153,10 +184,13 @@ export function subtesSimulasiBerikutnya(j: JalurSubtes): JalurSubtes | null {
 
 // ─── Penjelajahan menyeluruh ─────────────────────────────────────────────
 
-/** Semua angkatan di semua platform, beserta jalurnya. */
-export function semuaAngkatan(): JalurAngkatan[] {
+/**
+ * Semua angkatan di semua platform yang tampil, beserta jalurnya. Pemeriksa isi
+ * memberi `SEMUA_PLATFORM` supaya platform yang disembunyikan ikut diperiksa.
+ */
+export function semuaAngkatan(daftar: Platform[] = PLATFORM): JalurAngkatan[] {
   const hasil: JalurAngkatan[] = [];
-  for (const platform of PLATFORM) {
+  for (const platform of daftar) {
     for (const tes of platform.tes) {
       for (const angkatan of tes.angkatan) hasil.push({ platform, tes, angkatan });
     }
@@ -164,10 +198,10 @@ export function semuaAngkatan(): JalurAngkatan[] {
   return hasil;
 }
 
-/** Semua subtes di semua platform, beserta jalurnya. */
-export function semuaSubtes(): JalurSubtes[] {
+/** Semua subtes di semua platform yang tampil, beserta jalurnya. `daftar` seperti di `semuaAngkatan`. */
+export function semuaSubtes(daftar: Platform[] = PLATFORM): JalurSubtes[] {
   const hasil: JalurSubtes[] = [];
-  for (const j of semuaAngkatan()) {
+  for (const j of semuaAngkatan(daftar)) {
     for (const tahapan of j.angkatan.tahapan) {
       for (const subtes of tahapan.subtes) hasil.push({ ...j, tahapan, subtes });
     }
@@ -314,8 +348,10 @@ export function totalAngka(a: AngkaSubtes): string {
 /**
  * Angka per platform, dipakai kepala halaman platform dan kartu platform di
  * beranda supaya keduanya selalu sama. Dihitung per OBJEK subtes (seperti
- * `kelengkapan`): SKD yang dirujuk IPDN dan PKN STAN adalah satu objek, dan
- * kalau dihitung per jalur ia terhitung dua kali.
+ * `kelengkapan`): subtes yang dirujuk beberapa angkatan adalah satu objek, dan
+ * kalau dihitung per jalur ia terhitung berkali-kali. Saat ini tidak ada subtes
+ * yang dirujuk bersama (SKD sekolah kedinasan sudah menjadi tes sendiri), tapi
+ * mekanismenya dibiarkan supaya tetap benar bila nanti ada lagi.
  */
 export function angkaPlatform(p: Platform) {
   const unik = new Set<Subtes>();
@@ -447,11 +483,14 @@ export interface Temuan {
  * Relasi putus dan salah ketik nama field sudah mustahil sejak datanya
  * bersarang dan bertipe, jadi yang tersisa hanya soal isi: kunci yang tidak
  * menunjuk opsi mana pun, pembahasan kosong, nomor soal ganda.
+ *
+ * Memeriksa SEMUA platform, termasuk yang disembunyikan (`tampil: false`): datanya
+ * tetap dikerjakan, jadi harus tetap benar sebelum platformnya ditampilkan.
  */
 export function periksaIsi(): Temuan[] {
   const temuan: Temuan[] = [];
 
-  for (const j of semuaSubtes()) {
+  for (const j of semuaSubtes(SEMUA_PLATFORM)) {
     const ke = tautanSubtes(j);
     const lokasi = `${j.platform.nama} · ${j.angkatan.nama} · ${labelTahapan(j.angkatan, j.tahapan)} · ${j.subtes.nama}`;
     const nomor = new Map<number, number>();
@@ -555,10 +594,11 @@ export interface KelengkapanPlatform {
 /**
  * Daftar kerja isi yang belum lengkap, per platform.
  *
- * Dihitung per OBJEK subtes, bukan per jalur. SKD sekolah kedinasan adalah
- * satu objek yang dirujuk IPDN dan PKN STAN; kalau dihitung per jalur, satu
- * kekurangan muncul dua kali, padahal mengisinya sekali sudah menyelesaikan
- * keduanya. Daftar kerja yang menggandakan pekerjaan menyesatkan tim.
+ * Dihitung per OBJEK subtes, bukan per jalur. Subtes yang dirujuk beberapa
+ * angkatan adalah satu objek; kalau dihitung per jalur, satu kekurangan muncul
+ * berkali-kali, padahal mengisinya sekali sudah menyelesaikan semuanya. Daftar
+ * kerja yang menggandakan pekerjaan menyesatkan tim. Saat ini tidak ada subtes
+ * yang dirujuk bersama, tapi mekanismenya dibiarkan untuk kasus berikutnya.
  */
 export function kelengkapan() {
   const hasil: KelengkapanPlatform[] = [];

@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import './globals.css';
 import { NAMA_COOKIE, cookieSah, gerbangAktif } from '@/lib/sesi';
 import { PemilihTema, SKRIP_TEMA } from './tema';
-import pkg from '../../package.json';
+import { VERSI_APLIKASI } from '@/lib/pembaruan';
 import { PintasanCari } from './pintasan';
 import { Pwa } from './pwa';
 
@@ -70,22 +70,34 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <PintasanCari />
         <header className="kepala">
           <div className="kepala-isi">
-            <a href="/" className="merek">
-              {/* Mark saja, bukan lockup: wordmark logo berwarna teal gelap
-                  di atas latar transparan, jadi ia hilang di mode gelap.
-                  Teksnya dirender HTML supaya ikut tema dan tetap tajam. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="merek-mark" src="/logo/pk-mark.png" alt="" aria-hidden />
-              <span className="merek-teks">
-                <span className="merek-baris">
-                  Product <span className="merek-tipis">Knowledge</span>
-                  {/* Versi dibaca dari package.json, bukan diketik di sini —
-                      supaya tidak ada dua sumber yang bisa berbeda. */}
-                  <span className="merek-versi">v{pkg.version}</span>
+            <div className="merek-grup">
+              <a href="/" className="merek">
+                {/* Mark saja, bukan lockup: wordmark logo berwarna teal gelap
+                    di atas latar transparan, jadi ia hilang di mode gelap.
+                    Teksnya dirender HTML supaya ikut tema dan tetap tajam. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="merek-mark" src="/logo/pk-mark.png" alt="" aria-hidden />
+                <span className="merek-teks">
+                  <span className="merek-baris">
+                    Product <span className="merek-tipis">Knowledge</span>
+                  </span>
+                  <span className="merek-divisi">Divisi Produk</span>
                 </span>
-                <span className="merek-divisi">Divisi Produk</span>
-              </span>
-            </a>
+              </a>
+              {/* Lencana versi jadi tautan ke catatan pembaruan, dan sengaja di LUAR
+                  tautan merek (tautan tak boleh bersarang). Angkanya dari rilis
+                  teratas di src/lib/pembaruan.ts; /cek-data memeriksa package.json
+                  tetap sama dengannya. Di ponsel lencana ini disembunyikan, dan
+                  tautan yang sama ada di dasar halaman. */}
+              <a
+                href="/pembaruan"
+                className="merek-versi"
+                title="Catatan pembaruan"
+                aria-label={`Catatan pembaruan v${VERSI_APLIKASI}`}
+              >
+                v{VERSI_APLIKASI}
+              </a>
+            </div>
             <form className="cari" action="/cari">
               <input
                 id="kotak-cari"
@@ -110,6 +122,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <div className="bingkai">
           <Pwa />
           {children}
+          {/* Di ponsel lencana versi di header tak muat, jadi tautan ke catatan
+              pembaruan ada di dasar setiap halaman. */}
+          <footer className="kaki-versi tanpa-cetak">
+            <a href="/pembaruan">Pembaruan · v{VERSI_APLIKASI}</a>
+          </footer>
         </div>
 
         {/* Nav bawah hanya tampil di ponsel. Header jadi ringkas, dan tautan

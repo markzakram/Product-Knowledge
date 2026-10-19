@@ -5,14 +5,15 @@ import {
 export default function Beranda() {
   // Angka kartu memakai helper yang sama dengan kepala halaman platform (per
   // objek unik), supaya kartu ini dan halaman yang dibukanya tak pernah beda.
-  // SKD yang dirujuk IPDN dan PKN STAN hanya terhitung sekali.
+  // Subtes yang dirujuk beberapa angkatan hanya terhitung sekali.
   const ringkas = PLATFORM.map((p) => ({ platform: p, r: angkaPlatform(p) }));
   const terisi = ringkas.filter((x) => x.r.subtes > 0);
   const kosong = ringkas.filter((x) => x.r.subtes === 0);
 
-  // Total lintas platform. Masih per jalur, jadi SKD IPDN dan PKN STAN terhitung
-  // dua kali dan jumlahnya bisa lebih besar dari penjumlahan kartu di atas.
-  // Dibereskan bersama item ROADMAP "SKD jangan terhitung dua kali di rekap".
+  // Total lintas platform. Masih per jalur, bukan per objek, jadi subtes yang
+  // dirujuk beberapa angkatan terhitung berkali-kali dan jumlahnya bisa lebih
+  // besar dari penjumlahan kartu di atas. Saat ini tidak ada subtes yang dirujuk
+  // bersama, jadi keduanya sama.
   const subtes = semuaSubtes();
   const total = {
     angkatan: semuaAngkatan().length,

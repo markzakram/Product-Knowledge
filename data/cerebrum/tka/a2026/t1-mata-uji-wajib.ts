@@ -62,7 +62,14 @@ export const tahapWajib: Tahapan = {
         '⟦gambar:gambar/cerebrum/tka-format-pgk-mcma.png⟧\n' +
         'Jumlah soal 25 dari matriks asesmen (BAB II). Waktu pengerjaan tidak tercantum: kolom "Banyak ' +
         'Soal dan Waktu Pengerjaan" hanya berisi jumlah soal.',
-      penilaian: penilaianTka,
+      penilaian:
+        `${penilaianTka}\n\n` +
+        `Rekonstruksi riset (indikasi, bukan rumus resmi): ` +
+        `\\(\\text{Skor} = 200 + \\frac{600}{1 + e^{-a(x - b)}}\\), dengan \\(x = \\ln\\left(\\frac{C}{W}\\right)\\) ` +
+        `dari jumlah benar dan jumlah soal per tingkat (lihat info Rumus skor). ` +
+        `Untuk Matematika, \\(a = 0,554383143\\) dan \\(b = 0,725824388\\). ` +
+        `Jumlah soal per tingkat TKA 2026 belum tersedia. Cara memasukkan poin parsial PGK Kategori ` +
+        `ke jumlah benar belum dibahas riset.`,
       catatan:
         'Contoh soal: 20 soal dari BAB V (5.1). Kunci semua soal dan tingkat kesulitannya dari dokumen. ' +
         'Dokumen tidak memuat pembahasan, jadi pembahasan di halaman ini disusun ulang dan dihitung ulang ' +
@@ -153,7 +160,14 @@ export const tahapWajib: Tahapan = {
         'dipakai bersama oleh beberapa soal. Tampilan tiap tipe soal sama seperti di subtes Matematika.\n\n' +
         'Jumlah soal 30 dari matriks asesmen (BAB II). Waktu pengerjaan tidak tercantum: kolom "Banyak ' +
         'Soal dan Waktu Pengerjaan" hanya berisi jumlah soal.',
-      penilaian: penilaianTka,
+      penilaian:
+        `${penilaianTka}\n\n` +
+        `Rekonstruksi riset (indikasi, bukan rumus resmi): ` +
+        `\\(\\text{Skor} = 200 + \\frac{600}{1 + e^{-a(x - b)}}\\), dengan \\(x = \\ln\\left(\\frac{C}{W}\\right)\\) ` +
+        `dari jumlah benar dan jumlah soal per tingkat (lihat info Rumus skor). ` +
+        `Untuk Bahasa Indonesia, \\(a = 0,720288328\\) dan \\(b = -0,693499101\\). ` +
+        `Jumlah soal per tingkat TKA 2026 belum tersedia. Cara memasukkan poin parsial PGK Kategori ` +
+        `ke jumlah benar belum dibahas riset.`,
       catatan:
         'Contoh soal: 20 soal dari BAB V (5.2). Kunci semua soal, tingkat kesulitan, dan label materinya ' +
         'dari dokumen. Dokumen tidak memuat pembahasan, jadi pembahasan di halaman ini disusun ulang dari ' +
@@ -234,7 +248,15 @@ export const tahapWajib: Tahapan = {
         'seperti di subtes Matematika.\n\n' +
         'Jumlah soal 30 dari matriks asesmen (BAB II). Waktu pengerjaan tidak tercantum: kolom "Banyak ' +
         'Soal dan Waktu Pengerjaan" hanya berisi jumlah soal.',
-      penilaian: penilaianTka,
+      penilaian:
+        `${penilaianTka}\n\n` +
+        `Rekonstruksi riset (indikasi, bukan rumus resmi): ` +
+        `\\(\\text{Skor} = 200 + \\frac{600}{1 + e^{-a(x - b)}}\\), dengan \\(x = \\ln\\left(\\frac{C}{W}\\right)\\) ` +
+        `dari jumlah benar dan jumlah soal per tingkat (lihat info Rumus skor). ` +
+        `Untuk Bahasa Inggris, \\(a = 0,883536407\\) dan \\(b = 1,088043921\\). ` +
+        `Ini hasil paling longgar di antara mata uji wajib, jadi hanya pendekatan. ` +
+        `Jumlah soal per tingkat TKA 2026 belum tersedia. Cara memasukkan poin parsial PGK Kategori ` +
+        `ke jumlah benar belum dibahas riset.`,
       catatan:
         'Contoh soal: 20 soal dari BAB V (5.3). Kunci semua soal, tingkat kesulitan, dan label materinya ' +
         'dari dokumen. Dokumen tidak memuat pembahasan, jadi pembahasan di halaman ini disusun ulang dari ' +

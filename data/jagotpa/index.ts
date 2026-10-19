@@ -19,5 +19,7 @@ export const jagotpa: Platform = {
   slug: 'jagotpa',
   logo: 'logo/icon-jagotpa.png',
   deskripsi: 'Persiapan Tes Potensi Akademik.',
+  // Disembunyikan 19 Okt 2026: aplikasinya belum siap. Hapus baris ini untuk menampilkan lagi.
+  tampil: false,
   tes: [tpa],
 };

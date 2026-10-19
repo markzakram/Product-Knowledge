@@ -19,5 +19,7 @@ export const jadippg: Platform = {
   slug: 'jadippg',
   logo: 'logo/icon-jadippg.png',
   deskripsi: 'Persiapan seleksi dan uji kompetensi Pendidikan Profesi Guru.',
+  // Disembunyikan 19 Okt 2026: aplikasinya belum siap. Hapus baris ini untuk menampilkan lagi.
+  tampil: false,
   tes: [prajabatan, dalamJabatan],
 };

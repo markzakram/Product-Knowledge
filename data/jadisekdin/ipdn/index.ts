@@ -3,7 +3,7 @@ import { ipdn2026 } from './a2026';
 
 export const ipdn: Tes = {
   kode: 'ipdn',
-  nama: 'IPDN',
+  nama: 'Seleksi Lanjutan IPDN',
   instansi: 'Kementerian Dalam Negeri',
   kategori: 'Sekolah Kedinasan',
   deskripsi:
