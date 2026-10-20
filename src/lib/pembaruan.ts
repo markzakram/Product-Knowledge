@@ -27,6 +27,17 @@ export interface Rilis {
 
 export const PEMBARUAN: readonly Rilis[] = [
   {
+    versi: '1.7.0',
+    tanggal: '2026-10-20',
+    poin: [
+      'JadiPrajurit kini tampil dengan Pa PK TNI 2026: lima tahap seleksi dari pendaftaran online sampai Sidang Pantukhir Pusat, syarat pendidikan dan daftar program studi, materi Mental Ideologi, Psikologi, dan Kesamaptaan Jasmani, serta contoh soal Mental Ideologi.',
+      'JadiBUMN kini tampil. Tes Psikologi PT KAI diperkaya dengan materi dan contoh soal Verbal, Hitung Cepat, Matematika Umum, Bangun Ruang, dan Ketelitian (lengkap dengan gambar), ditambah EPPS, Pauli, Wartegg, DAP, dan Baum. Ada juga tes baru "Kumpulan Psikotes" yang isinya sama dengan PsikotesKerja.',
+      'JadiPPPK kini tampil dan punya PPPK Sekolah Rakyat 2026: formasi Guru dan Tendik, persyaratan, jadwal, tahapan dan bobot nilai, serta Seleksi Kompetensi Tambahan (psikotes, bahasa Inggris, wawancara). Contoh soalnya menyusul.',
+      'JadiPPG kini tampil. PPG Prajabatan 2026 diperbarui: persyaratan, pembiayaan, daftar linearitas 33 bidang studi, serta tahapan administrasi, tes substantif, dan wawancara. PPG Dalam Jabatan ditambah tahap Ujian Kinerja.',
+      'Isi baru ini berstatus draf sampai ditelaah tim akademik; beberapa angka masih perlu dicocokkan dengan pengumuman resmi.',
+    ],
+  },
+  {
     versi: '1.6.0',
     tanggal: '2026-10-19',
     poin: [

@@ -260,3 +260,16 @@ menghitung per baris membuat TPK PCPM 41 terbaca kurang 175, padahal sebenarnya
   di tryout generator. Kedua angkatan sengaja tidak punya target di
   `skrip/ke-data.mjs`, supaya paket ini tidak tertimpa data Markaz. Contoh lama
   (soal tulisan tangan, hasil Markaz, dan 125 contoh riset) masih ada di riwayat git.
+- Rilis 1.7.0 diisi dari dokumen riset di shared drive tim (diekspor lewat
+  service account Agent Office): Riset Psikologi PT KAI, Pa PK - Riset, Riset dan
+  Kurikulum PPPK Sekolah Rakyat 2026, dan Riset dan Kurikulum PPG 2026. Gambarnya
+  ada di `public/gambar/<platform>/`.
+- "Kumpulan Psikotes" JadiBUMN (`data/jadibumn/psikotes/index.ts`) memakai ulang
+  tes dan angkatan PsikotesKerja lewat impor, bukan salinan; ubah isinya di
+  `data/psikoteskerja/psikotes/a2026`. Subtes EPPS, Pauli, Wartegg, DAP, dan
+  Baum di Tes Psikologi PT KAI juga diimpor dari sana, dengan waktu menurut riset KAI.
+- Kunci dua soal Bangun Ruang PT KAI disusun dari membaca gambar (riset tidak
+  memberi kunci) dan berstatus draft sampai dicek tim akademik.
+- PPPK Sekolah Rakyat 2026 dan PPG 2026 belum punya contoh soal baru: dokumen
+  contoh soal Mansoswan, Teknis, serta Panduan Soal Literasi, Numerasi, dan SJT
+  belum bisa dibaca service account (di luar shared drive).
