@@ -6,7 +6,8 @@ export const prajabatan: Tes = {
   nama: 'PPG Prajabatan',
   kategori: 'Pendidikan Profesi Guru',
   deskripsi:
-    'Pendidikan Profesi Guru untuk calon guru yang belum mengajar. Tes ' +
-    'substantif berisi literasi dan numerasi.',
+    'Pendidikan Profesi Guru untuk lulusan S-1/D-IV yang belum terdaftar sebagai ' +
+    'guru. Seleksi tiga tahap: administrasi, tes substantif (literasi, numerasi, ' +
+    'penguasaan konten), dan wawancara.',
   angkatan: [prajabatan2026],
 };

@@ -6,6 +6,7 @@ import { jadiojk } from './jadiojk';
 import { jadipcpm } from './jadipcpm';
 import { jadippg } from './jadippg';
 import { jadipppk } from './jadipppk';
+import { jadiprajurit } from './jadiprajurit';
 import { jadisekdin } from './jadisekdin';
 import { jagotpa } from './jagotpa';
 import { psikoteskerja } from './psikoteskerja';
@@ -35,7 +36,7 @@ export const SEMUA_PLATFORM: Platform[] = [
   { kode: 'JADIBEASISWA', nama: 'JadiBeasiswa', slug: 'jadibeasiswa', logo: 'logo/icon-jadibeasiswa.png', tampil: false, tes: [] },
   jadiojk,
   jadipcpm,
-  { kode: 'JADIPRAJURIT', nama: 'JadiPrajurit', slug: 'jadiprajurit', logo: 'logo/icon-jadiprajurit.png', tampil: false, tes: [] },
+  jadiprajurit,
   { kode: 'JADIPOLISI', nama: 'JadiPolisi', slug: 'jadipolisi', logo: 'logo/icon-jadipolisi.png', tampil: false, tes: [] },
   jagotpa,
   jadippg,
