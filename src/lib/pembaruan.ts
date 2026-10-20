@@ -27,6 +27,11 @@ export interface Rilis {
 
 export const PEMBARUAN: readonly Rilis[] = [
   {
+    versi: '1.7.1',
+    tanggal: '2026-10-20',
+    poin: ['JadiBUMN: tes Pertadate Pertamina dihapus. JadiBUMN kini berisi Psikologi PT KAI dan Kumpulan Psikotes.'],
+  },
+  {
     versi: '1.7.0',
     tanggal: '2026-10-20',
     poin: [

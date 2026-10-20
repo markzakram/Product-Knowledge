@@ -120,9 +120,8 @@ export const tautanTahapan = (j: JalurAngkatan, t: Tahapan) =>
  *
  * Kata pertama nama angkatan tidak diulang bila sudah ada di nama tes (termasuk
  * di dalam kurung), karena nama angkatan sering memuat nama tesnya sendiri:
- * "PCAM OJK" + "PCAM 10" jadi "PCAM OJK 10", "Pertadate Pertamina" + "Pertadate
- * 2026" jadi "Pertadate Pertamina 2026", "Tes Kemampuan Akademik (TKA)" + "TKA
- * SMA 2026" jadi "Tes Kemampuan Akademik (TKA) SMA 2026". Nama angkatan yang
+ * "PCAM OJK" + "PCAM 10" jadi "PCAM OJK 10", "Tes Kemampuan Akademik (TKA)" +
+ * "TKA SMA 2026" jadi "Tes Kemampuan Akademik (TKA) SMA 2026". Nama angkatan yang
  * hanya satu kata dibiarkan utuh.
  */
 export function judulAngkatan(tes: Tes, angkatan: Angkatan): string {
