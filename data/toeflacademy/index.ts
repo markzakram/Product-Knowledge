@@ -5,8 +5,8 @@ import { toeflItp } from './toefl-itp';
  * TOEFL Academy.
  *
  * Latihan TOEFL ITP. Format dan skala dicocokkan ke halaman ETS; soal contoh
- * berasal dari Toefl Generator (buatan AI, draft). Contoh Listening menunggu
- * pemutar audio di Product Knowledge.
+ * berasal dari Toefl Generator (buatan AI, draft).
+ * Listening memakai audio sintetis (edge-tts) yang diputar bebas.
  */
 export const toeflacademy: Platform = {
   kode: 'TOEFLACADEMY',

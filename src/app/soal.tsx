@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { KelompokSiap, SoalSiap } from '@/lib/bagian';
 import { daftarKunci } from '@/lib/skema';
+import { AudioSoal } from './audio-soal';
 import { IsiKaya } from './isi-kaya';
 
 const WARNA_REVIEW: Record<string, string> = {
@@ -79,6 +80,7 @@ function KartuSoal({
       </div>
 
       <div className="soal-badan">
+        <AudioSoal src={soal.audio} nomor={soal.nomor} />
         <p className="pra" style={{ fontWeight: 500 }}>
           <IsiKaya bagian={soal.pertanyaan} />
         </p>

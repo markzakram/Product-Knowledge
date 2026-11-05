@@ -51,7 +51,7 @@ export const itp2026: Angkatan = {
       tanggalAkses: '2026-11-05',
       keandalan: 'asumsi',
       catatan:
-        'Sumber contoh soal Structure and Written Expression (40) dan Reading (50), dibuat AI, berstatus draft. Contoh Listening belum ada karena Product Knowledge belum punya pemutar audio.',
+        'Sumber contoh soal Listening (50, output/uji-nyata/seed-2026), Structure and Written Expression (40), dan Reading (50), dibuat AI (model Claude), berstatus draft. Audio Listening dibuat dengan edge-tts; ketentuan pakai edge-tts belum dicek untuk produk yang dipakai peserta.',
     },
   ],
 };

@@ -1,4 +1,6 @@
 import 'server-only';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import katex from 'katex';
 import type { Bagian, KelompokSiap, SoalSiap } from './bagian';
 import type { Kelompok, Soal, Subtes } from './skema';
@@ -7,6 +9,7 @@ import {
   type Temuan,
 } from './data';
 import { POLA_RUMUS } from './rumus';
+import { audioAman } from './audio';
 
 /**
  * Mengurai teks soal menjadi teks, gambar, dan rumus — di SERVER.
@@ -153,6 +156,34 @@ export function periksaRumus(): Temuan[] {
       const lokasi = `${j.platform.nama} · ${j.angkatan.nama} · Info: ${i.judul}`;
       periksaTeks(i.isi, lokasi, `${tautanAngkatan(j)}#${idInfo(k + 1, i.judul)}`, 'Isi informasi');
     });
+  }
+  return temuan;
+}
+
+/**
+ * Berkas audio soal yang tidak ada di public/.
+ *
+ * Jalur yang tidak lolos pola aman dilaporkan periksaIsi, jadi di sini dilewati.
+ * Hanya di server: komponen klien tidak boleh menarik fs.
+ */
+export function periksaAudio(): Temuan[] {
+  const temuan: Temuan[] = [];
+  const sudah = new Set<Soal>();
+  for (const j of semuaSubtes(SEMUA_PLATFORM)) {
+    const ke = tautanSubtes(j);
+    const lokasi = `${j.platform.nama} · ${j.angkatan.nama} · ${labelTahapan(j.angkatan, j.tahapan)} · ${j.subtes.nama}`;
+    for (const k of j.subtes.contoh ?? []) {
+      for (const soal of k.soal) {
+        if (sudah.has(soal) || !audioAman(soal.audio)) continue;
+        sudah.add(soal);
+        if (!existsSync(path.join(process.cwd(), 'public', soal.audio))) {
+          temuan.push({
+            jenis: 'Berkas audio hilang', lokasi, ke,
+            pesan: `Soal ${soal.nomor}: public/${soal.audio} tidak ada.`,
+          });
+        }
+      }
+    }
   }
   return temuan;
 }

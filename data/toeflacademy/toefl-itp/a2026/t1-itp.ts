@@ -1,6 +1,7 @@
 import type { Tahapan } from '@/lib/skema';
 import { contohStructure, contohWrittenExpression } from './contoh-swe';
 import { contohReading } from './contoh-rc';
+import { contohListening } from './contoh-lc';
 
 const TOPIK_GRAMMAR =
   'subject-verb agreement, tenses, passive voice, gerund/infinitive, adjective clause, reduced clause, ' +
@@ -19,7 +20,8 @@ export const tahapItp: Tahapan = {
       waktuMenit: 35,
       penilaian:
         'Setiap soal pilihan ganda A–D dengan satu jawaban benar. Skor bagian Listening 31–68, hasil konversi ETS.',
-      catatan: 'Contoh audio belum tersedia di Product Knowledge.',
+      catatan:
+        'Audio contoh berupa suara sintetis (edge-tts), dan bebas diputar ulang serta dijeda. Di tes asli audio hanya diputar sekali. Audio tidak tersedia offline. Pada Part B dan C, percakapan atau kuliahnya hanya ada di audio soal pertama tiap kelompok empat soal; audio soal berikutnya hanya membacakan pertanyaannya.',
       materi: [
         {
           nama: 'Part A: percakapan pendek (soal 1–30)',
@@ -35,6 +37,7 @@ export const tahapItp: Tahapan = {
           catatan: '3 kuliah × 4 soal.',
         },
       ],
+      contoh: contohListening,
     },
     {
       kode: 'swe',

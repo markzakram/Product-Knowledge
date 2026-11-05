@@ -1,12 +1,12 @@
 import {
   PLATFORM, SEMUA_PLATFORM, periksaIsi, semuaAngkatan, semuaSubtes, jumlahContoh, tautanPlatform,
 } from '@/lib/data';
-import { periksaRumus } from '@/lib/isi-kaya';
+import { periksaAudio, periksaRumus } from '@/lib/isi-kaya';
 import { periksaPembaruan } from '@/lib/pembaruan';
 import pkg from '../../../package.json';
 
 export default function CekData() {
-  const temuan = [...periksaIsi(), ...periksaRumus(), ...periksaPembaruan(pkg.version)];
+  const temuan = [...periksaIsi(), ...periksaRumus(), ...periksaAudio(), ...periksaPembaruan(pkg.version)];
   const perJenis = new Map<string, typeof temuan>();
   for (const t of temuan) {
     if (!perJenis.has(t.jenis)) perJenis.set(t.jenis, []);

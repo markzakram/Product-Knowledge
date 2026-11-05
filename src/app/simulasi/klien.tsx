@@ -10,6 +10,7 @@ import {
   type SubtesSim,
 } from '@/lib/simulasi';
 import { Fokus } from '../fokus';
+import { AudioSoal } from '../audio-soal';
 import { IsiKaya } from '../isi-kaya';
 import { Ikon, Kosong, Remah, Status } from '../komponen';
 
@@ -186,6 +187,8 @@ function simpan(kunci: string, ttd: string, s: Sesi) {
 const jumlahSoalBagian = (b: BagianSim) => b.subtes.reduce((n, s) => n + jumlahSoalSubtes(s), 0);
 const jumlahDraf = (b: BagianSim) =>
   b.subtes.reduce((n, s) => n + s.kelompok.reduce((m, k) => m + k.soal.filter((q) => q.status === 'draft').length, 0), 0);
+const jumlahAudio = (b: BagianSim) =>
+  b.subtes.reduce((n, s) => n + s.kelompok.reduce((m, k) => m + k.soal.filter((q) => !!q.audio).length, 0), 0);
 /** Batas waktu satu bagian untuk dibaca orang; tanpa batas = stopwatch. Format durasinya satu-satunya: `formatDurasi`. */
 const batasTeks = (menit?: number) => (menit === undefined ? 'tanpa batas waktu' : formatMenit(menit));
 const sebut = (n: number, kata: string) => `${n} ${kata}`;
@@ -299,6 +302,7 @@ function Awal({ props, onMulai }: { props: PropsSimulasi; onMulai: () => void })
   const totalMenit = bagian.reduce((n, b) => n + (b.menit ?? 0), 0);
   const tanpaBatas = bagian.filter((b) => b.menit === undefined).length;
   const totalDraf = bagian.reduce((n, b) => n + jumlahDraf(b), 0);
+  const totalAudio = bagian.reduce((n, b) => n + jumlahAudio(b), 0);
   const dikunci = status === 'coming_soon';
 
   return (
@@ -431,6 +435,12 @@ function Awal({ props, onMulai }: { props: PropsSimulasi; onMulai: () => void })
               )}
               <li>Jawaban tersimpan di tab ini sampai ditutup.</li>
               <li>Pintasan: A sampai E memilih jawaban, panah kiri dan kanan pindah soal, R menandai ragu-ragu.</li>
+              {totalAudio > 0 && (
+                <li>
+                  {sebut(totalAudio, 'soal')} berisi audio. Audionya bebas diputar ulang dan dijeda; di tes asli audio hanya
+                  diputar sekali. Audio tidak tersedia offline.
+                </li>
+              )}
               <li>Soal berskala (misalnya TKP) dan soal tanpa jawaban benar tidak dinilai.</li>
               {totalDraf > 0 && <li>{sebut(totalDraf, 'soal')} berstatus draf (belum direview); skornya ikut menghitung soal itu.</li>}
             </ul>
@@ -639,6 +649,8 @@ function Ujian({
       const el = document.activeElement;
       if (
         el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement ||
+        // Pemutar audio memakai panah untuk menggeser lagu dan spasi untuk memutar: biarkan miliknya.
+        el instanceof HTMLMediaElement ||
         (el instanceof HTMLElement && el.isContentEditable) || document.querySelector('dialog[open]')
       ) return;
 
@@ -969,6 +981,7 @@ function SoalLayar({
         </div>
       )}
 
+      <AudioSoal src={soal.audio} nomor={butir.nomor} />
       <div className="pra sim-pertanyaan">
         <IsiKaya bagian={soal.pertanyaan} />
       </div>
@@ -1420,6 +1433,7 @@ function KartuHasil({ h, subtes }: { h: ButirHasil; subtes?: { chip: string; nam
 
           {buka && (
             <div className="sim-bahas" id={idIsi}>
+              <AudioSoal src={soal.audio} nomor={butir.nomor} />
               {adaStimulus && stimulus && (
                 <div className="stimulus sim-bahas-stimulus">
                   <div className="stimulus-label">Stimulus{stimulus.judul ? ` · ${stimulus.judul}` : ''}</div>

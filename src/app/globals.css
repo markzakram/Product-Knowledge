@@ -528,6 +528,13 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
   background: #fff;
 }
 
+/* Pemutar audio soal (Listening). Selebar wadahnya; tombol bawaan peramban sudah
+   cukup besar untuk disentuh, tingginya dijaga 44px. color-scheme membuat
+   kontrol bawaan terbaca di tema gelap tanpa warna baru. */
+.audio-soal { margin: 0 0 14px; }
+.audio-soal audio { display: block; width: 100%; max-width: 100%; min-height: 44px; color-scheme: light; }
+[data-tema='gelap'] .audio-soal audio { color-scheme: dark; }
+
 /* ── Daftar & spek ───────────────────────────────────────────────── */
 .daftar { padding-left: 20px; margin: 8px 0; }
 .daftar li { margin: 4px 0; }

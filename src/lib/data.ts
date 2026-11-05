@@ -7,6 +7,7 @@
 import { PLATFORM, SEMUA_PLATFORM } from '../../data';
 import { daftarKunci, type Angkatan, type Platform, type Subtes, type Tahapan, type Tes } from './skema';
 import { subtesBisaSimulasi } from './simulasi';
+import { audioAman } from './audio';
 
 /**
  * PLATFORM = yang tampil di halaman pembaca (tanpa `tampil: false`); semua
@@ -540,6 +541,15 @@ export function periksaIsi(): Temuan[] {
           temuan.push({
             jenis: 'Pembahasan kosong', lokasi, ke,
             pesan: `Soal ${soal.nomor}: belum ada pembahasan.`,
+          });
+        }
+
+        // Jalur audio yang janggal tidak pernah dipakai sebagai src. Ada-tidaknya
+        // berkasnya diperiksa di server oleh periksaAudio (lib/isi-kaya.ts).
+        if (soal.audio !== undefined && !audioAman(soal.audio)) {
+          temuan.push({
+            jenis: 'Audio tidak valid', lokasi, ke,
+            pesan: `Soal ${soal.nomor}: jalur audio "${soal.audio}" harus berpola audio/<nama>.mp3 (huruf, angka, ., _, -, /).`,
           });
         }
       }

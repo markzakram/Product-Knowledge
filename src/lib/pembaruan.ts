@@ -30,7 +30,7 @@ export const PEMBARUAN: readonly Rilis[] = [
     versi: '1.8.0',
     tanggal: '2026-11-05',
     poin: [
-      'TOEFL Academy kini tampil dengan TOEFL ITP Level 1: format, waktu, dan skala sesuai ETS, serta contoh soal Structure dan Written Expression (40) dan Reading (50). Contoh Listening menyusul karena perlu pemutar audio.',
+      'TOEFL Academy kini tampil dengan TOEFL ITP Level 1: format, waktu, dan skala sesuai ETS, serta contoh soal Listening (50, dengan audio), Structure dan Written Expression (40), dan Reading (50).',
       'JagoUKP kini tampil dengan Uji Kompetensi Perpajakan Tingkat A, B, dan C: cakupan materi dari BPPK, jadwal periode 1–8 tahun 2026, dan contoh soal orisinal per materi. Jumlah soal dan ambang lulus belum diumumkan resmi.',
       'JagoTPA kini tampil dengan 15 materi berikut kuotanya, mapping 10 tryout dan 5 latsol, serta 45 contoh soal baru dari TPA Generator (3 soal per materi).',
       'PCAM OJK Tahap 1: contoh soal diperbarui ke Tes OJK Generator versi terbaru, termasuk jenis soal Badges (Logical Ranking). Soal Penalaran Numerik kini dinilai otomatis di simulasi; jawabannya diketik sesuai format di soal.',

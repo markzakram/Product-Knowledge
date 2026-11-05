@@ -80,6 +80,17 @@ export interface Soal {
   pembahasan: string;
   /** Jalur di bawah `public/`, mis. "gambar/jadipcpm/digit-01.png". */
   gambar?: string;
+  /**
+   * Jalur audio di bawah `public/`, mis. "audio/toeflacademy/itp-lc-01.mp3".
+   * Satu soal satu berkas .mp3; berkas yang sama untuk beberapa soal tidak
+   * dipakai. Dipakai untuk soal Listening: pemutar tampil di atas pertanyaan,
+   * dan audionya boleh diulang karena ini latihan. Transkripnya ditulis di
+   * `pembahasan`, bukan di `pertanyaan`, supaya tidak terbaca sebelum jawaban
+   * dibuka. Jalur harus berpola audio/<huruf, angka, ., _, ->.mp3 dan
+   * berkasnya harus ada; kalau tidak, muncul sebagai temuan di Cek Data.
+   * Tidak ikut tersimpan untuk dipakai offline.
+   */
+  audio?: string;
   tingkat?: Tingkat;
   status?: StatusReview;
 }

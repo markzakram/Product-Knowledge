@@ -148,14 +148,34 @@ disembunyikan terlihat lewat `grep -rn "tampil: false" data`. Di kode,
 | `/<platform>/<tes>/<angkatan>/<tahapan>/<subtes>/simulasi` | Simulasi satu subtes. Hanya subtes yang punya soal untuk dikerjakan (bukan `bankSoal: false`, bukan hanya uraian) |
 | `/cari?q=` | Pencarian lintas semua isi termasuk opsi dan pembahasan soal |
 | `/dashboard` | Rekap kekurangan soal dan angkatan yang datanya belum lengkap |
-| `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, mapping janggal, versi yang tak cocok dengan catatan pembaruan |
+| `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, mapping janggal, jalur atau berkas audio yang salah, versi yang tak cocok dengan catatan pembaruan |
 | `/pembaruan` | Catatan pembaruan: tiap versi aplikasi dengan tanggal dan poin perubahannya, terbaru di atas |
+
+### Audio soal
+
+Soal Listening (kini TOEFL ITP, Toefl Academy) memakai field `audio` di `Soal`:
+
+| Field | Isi |
+|---|---|
+| `audio` | Jalur di bawah `public/`, mis. `audio/toeflacademy/itp-lc-01.mp3`. Satu soal satu berkas `.mp3`. |
+
+Berkasnya ada di `public/audio/<platform>/`. Pemutar `<audio controls>` tampil di atas
+pertanyaan di halaman subtes, layar ujian simulasi, dan pembahasan di layar hasil; audio hanya
+diunduh saat diputar. Satu halaman hanya satu audio berbunyi (memutar satu menjeda yang lain),
+dan pindah soal di simulasi menghentikan audionya. Transkrip ditulis di `pembahasan`, jadi tidak
+terbaca sebelum jawaban dibuka. Jalur harus berpola `audio/…mp3` dan berkasnya harus ada,
+kalau tidak muncul di `/cek-data`. `/audio/*` tetap di balik PIN seperti halaman lain.
+
+Audio **tidak tersedia offline**: service worker tidak menyimpannya (dan tidak mencegat
+permintaan Range-nya), jadi pemutar baru bisa dipakai saat tersambung. Audio TOEFL ITP adalah
+suara sintetis (edge-tts) yang dibuat Toefl Generator.
 
 ### Mode simulasi
 
 Contoh soal tiap subtes otomatis bisa dikerjakan sebagai simulasi di rute
 `…/simulasi`, tanpa menulis apa pun khusus di data; soal `uraian` tidak ikut.
-Soal `skala`, soal `tanpaKunci`, dan isian singkat yang kuncinya berupa kalimat
+Soal berisi audio (Listening) boleh diputar ulang sebebasnya karena ini latihan; di tes asli audio
+hanya diputar sekali, dan layar awal menyebutnya. Soal `skala`, soal `tanpaKunci`, dan isian singkat yang kuncinya berupa kalimat
 (lebih dari 24 karakter di luar spasi, atau 4 kata atau lebih) tidak dinilai
 otomatis: kuncinya tetap tampil di hasil untuk dibandingkan sendiri, jadi tulis
 kunci isian sependek mungkin bila ingin ikut dinilai. Bila contoh lebih banyak
