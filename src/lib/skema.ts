@@ -91,6 +91,14 @@ export interface Soal {
    * Tidak ikut tersimpan untuk dipakai offline.
    */
   audio?: string;
+  /**
+   * Posisi soal di index samping halaman subtes: "Category > Lesson", dipisah
+   * " > ", mis. "Verbal > Silogisme". Tanpa " > " berarti category saja.
+   * Sengaja terpisah dari `stimulus.judul`: judul adalah nama bacaan atau grup
+   * yang tampil di atas soal ("Latihan Lari Dita"), bukan jenis soalnya.
+   * Isi untuk semua soal satu subtes atau tidak sama sekali.
+   */
+  lesson?: string;
   tingkat?: Tingkat;
   status?: StatusReview;
 }

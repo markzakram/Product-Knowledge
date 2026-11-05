@@ -7,6 +7,8 @@ import { Remah, Status, Kosong, Waktu, Ikon } from '../../../../../komponen';
 import { siapkanKelompok, uraikan } from '@/lib/isi-kaya';
 import { IsiKaya } from '../../../../../isi-kaya';
 import { DaftarSoal } from '../../../../../soal';
+import { IndeksSoal } from '../../../../../indeks-soal';
+import { bangunIndeks } from '@/lib/indeks-soal';
 // Gaya dan fon rumus KaTeX. Rumusnya sendiri dirender di server.
 import 'katex/dist/katex.min.css';
 
@@ -35,7 +37,16 @@ export default async function HalamanSubtes({
   if (!jalur) notFound();
   const { platform, tes, angkatan, tahapan, subtes } = jalur;
   const tetangga = tetanggaSubtes(jalur);
-
+  const kelompok = siapkanKelompok(subtes.contoh ?? []);
+  // Index soal: kosong bila soal terlalu sedikit atau category kurang dari dua.
+  const indeks = bangunIndeks(kelompok);
+  const daftarSubtes = tahapan.subtes.map((s) => ({
+    nama: s.nama,
+    jumlah: jumlahContoh(s),
+    href: tautanSubtes({ ...jalur, subtes: s }),
+    aktif: s === subtes,
+  }));
+  const adaSamping = indeks.length > 0 || daftarSubtes.length > 1;
 
   return (
     <>
@@ -48,85 +59,93 @@ export default async function HalamanSubtes({
           { teks: subtes.nama },
         ]}
       />
-      <h1>{subtes.nama}</h1>
-      <p style={{ margin: '2px 0 10px' }}>
-        <Status nilai={tahapan.status} />
-        <span className="kartu-kecil"> · {labelTahapan(angkatan, tahapan)}</span>
-      </p>
-
-      <dl className="spek">
-        <div>
-          <dt>Jumlah soal</dt>
-          <dd>{subtes.jumlahSoal ?? '—'}</dd>
-        </div>
-        <div>
-          <dt>Waktu</dt>
-          <dd>
-            <Waktu menit={subtes.waktuMenit} />
-          </dd>
-        </div>
-        <div>
-          <dt>Contoh soal</dt>
-          <dd>{jumlahContoh(subtes) || '—'}</dd>
-        </div>
-      </dl>
-
-      {subtes.formatKetentuan && (
-        <div className="panel">
-          <div className="stimulus-label">Format dan ketentuan</div>
-          {/* Lewat uraikan(): boleh memuat gambar (mis. tangkapan layar bentuk tes). */}
-          <p className="pra" style={{ marginTop: 4 }}>
-            <IsiKaya bagian={uraikan(subtes.formatKetentuan)} />
+      <div className={`subtes-tata${adaSamping ? '' : ' subtes-tata-tunggal'}`}>
+        <div className="subtes-utama">
+          <h1>{subtes.nama}</h1>
+          <p style={{ margin: '2px 0 10px' }}>
+            <Status nilai={tahapan.status} />
+            <span className="kartu-kecil"> · {labelTahapan(angkatan, tahapan)}</span>
           </p>
-        </div>
-      )}
-      {subtes.penilaian && (
-        <div className="panel">
-          <div className="stimulus-label">Penilaian</div>
-          <p className="pra" style={{ marginTop: 4 }}>
-            <IsiKaya bagian={uraikan(subtes.penilaian)} />
-          </p>
-        </div>
-      )}
-      {subtes.catatan && (
-        <div className="panel panel-peringatan">
-          <p className="pra" style={{ margin: 0 }}>
-            {subtes.catatan}
-          </p>
-        </div>
-      )}
 
-      <h2>Materi</h2>
-      {(subtes.materi ?? []).length === 0 ? (
-        <Kosong teks="Belum ada rincian materi" sebab="Materi subtes ini belum dipecah di dokumen sumbernya." />
-      ) : (
-        <ul className="daftar">
-          {subtes.materi!.map((m) => (
-            <li key={m.nama}>
-              {m.nama}
-              {m.catatan && <span className="kartu-kecil"> — {m.catatan}</span>}
-            </li>
-          ))}
-        </ul>
-      )}
+          <dl className="spek">
+            <div>
+              <dt>Jumlah soal</dt>
+              <dd>{subtes.jumlahSoal ?? '—'}</dd>
+            </div>
+            <div>
+              <dt>Waktu</dt>
+              <dd>
+                <Waktu menit={subtes.waktuMenit} />
+              </dd>
+            </div>
+            <div>
+              <dt>Contoh soal</dt>
+              <dd>{jumlahContoh(subtes) || '—'}</dd>
+            </div>
+          </dl>
 
-      <div className="kepala-contoh">
-        <h2>Contoh Soal</h2>
-        {/* Hanya bila ada soal untuk dikerjakan; selainnya rutenya tak ada. */}
-        {subtesBisaSimulasi(subtes) && (
-          <a className="aksi aksi-garis tanpa-cetak" href={tautanSimulasiSubtes(jalur)}>
-            <Ikon nama="putar" ukuran={16} />
-            Simulasi subtes ini
-          </a>
+          {subtes.formatKetentuan && (
+            <div className="panel">
+              <div className="stimulus-label">Format dan ketentuan</div>
+              {/* Lewat uraikan(): boleh memuat gambar (mis. tangkapan layar bentuk tes). */}
+              <p className="pra" style={{ marginTop: 4 }}>
+                <IsiKaya bagian={uraikan(subtes.formatKetentuan)} />
+              </p>
+            </div>
+          )}
+          {subtes.penilaian && (
+            <div className="panel">
+              <div className="stimulus-label">Penilaian</div>
+              <p className="pra" style={{ marginTop: 4 }}>
+                <IsiKaya bagian={uraikan(subtes.penilaian)} />
+              </p>
+            </div>
+          )}
+          {subtes.catatan && (
+            <div className="panel panel-peringatan">
+              <p className="pra" style={{ margin: 0 }}>
+                {subtes.catatan}
+              </p>
+            </div>
+          )}
+
+          <h2>Materi</h2>
+          {(subtes.materi ?? []).length === 0 ? (
+            <Kosong teks="Belum ada rincian materi" sebab="Materi subtes ini belum dipecah di dokumen sumbernya." />
+          ) : (
+            <ul className="daftar">
+              {subtes.materi!.map((m) => (
+                <li key={m.nama}>
+                  {m.nama}
+                  {m.catatan && <span className="kartu-kecil"> — {m.catatan}</span>}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <div className="kepala-contoh">
+            <h2>Contoh Soal</h2>
+            {/* Hanya bila ada soal untuk dikerjakan; selainnya rutenya tak ada. */}
+            {subtesBisaSimulasi(subtes) && (
+              <a className="aksi aksi-garis tanpa-cetak" href={tautanSimulasiSubtes(jalur)}>
+                <Ikon nama="putar" ukuran={16} />
+                Simulasi subtes ini
+              </a>
+            )}
+        </div>
+        {/* Layar sempit: kolom samping dibuang CSS, index pindah ke blok lipat ini. */}
+        {indeks.length > 0 && <IndeksSoal varian="atas" subtes={daftarSubtes} isi={indeks} />}
+        {(subtes.contoh ?? []).length === 0 ? (
+          <Kosong teks="Belum ada contoh soal"
+            sebab={subtes.catatan ?? "Contoh soal untuk subtes ini belum dimasukkan."}
+          />
+        ) : (
+          <DaftarSoal contoh={kelompok} />
         )}
+        </div>
+
+        {adaSamping && <IndeksSoal varian="samping" subtes={daftarSubtes} isi={indeks} />}
       </div>
-      {(subtes.contoh ?? []).length === 0 ? (
-        <Kosong teks="Belum ada contoh soal"
-          sebab={subtes.catatan ?? "Contoh soal untuk subtes ini belum dimasukkan."}
-        />
-      ) : (
-        <DaftarSoal contoh={siapkanKelompok(subtes.contoh!)} />
-      )}
 
       {/* Navigasi menyamping. Orang meninjau subtes berurutan; tanpa ini tiap
           perpindahan berarti mundur dua kali lewat remah. */}

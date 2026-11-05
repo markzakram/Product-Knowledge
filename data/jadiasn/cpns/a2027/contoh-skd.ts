@@ -41,6 +41,7 @@ export const contohGeneratorTwk: Kelompok[] = [
       // tryout-ref-05-01 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 1
       {
         nomor: 1,
+        lesson: 'Nasionalisme',
         tipe: 'pg',
         pertanyaan: `Selama bertahun-tahun, petani di sebuah kabupaten di wilayah perbatasan membeli bibit dan pupuk dari negara tetangga. Sekelompok pemuda setempat kemudian membangun pembibitan dan produksi pupuk organik berbahan baku lokal. Hasilnya, kebutuhan pertanian di daerah itu kini dapat dipenuhi tanpa bergantung pada pasokan luar negeri.
 Unsur nasionalisme yang paling menonjol dari tindakan para pemuda tersebut adalah ….`,
@@ -65,6 +66,7 @@ Cara cepat: Tanyakan kemampuan apa yang dicapai warga dalam kasus, lalu bandingk
       // tryout-ref-04-06 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 6
       {
         nomor: 2,
+        lesson: 'Nasionalisme',
         tipe: 'pg',
         pertanyaan: `Provinsi A dan B mengelola pasar ikan bersama untuk memperkuat perdagangan antardaerah. Provinsi A memasok 65% volume ikan, sedangkan provinsi B memasok 35%.
 Hasil evaluasi menunjukkan bahwa alokasi slot lelang sudah sebanding dengan kebutuhan transaksi kedua provinsi. Namun, sebagian nelayan kecil B tetap kesulitan mengikuti lelang karena aturan pemesanan memberikan kesempatan lebih awal kepada pedagang yang mampu memesan banyak slot sekaligus. Aturan ini juga berlaku bagi koperasi atau kelompok yang memesan dalam jumlah besar.
@@ -91,6 +93,7 @@ Cara cepat: Periksa apakah masalah berasal dari jumlah slot atau aturan akses. J
       // tryout-ref-04-03 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 3
       {
         nomor: 3,
+        lesson: 'Nasionalisme',
         tipe: 'pg',
         pertanyaan: `Pemerintah daerah ingin meningkatkan kontribusi industri tenun lokal terhadap perekonomian nasional. Kelompok perajin telah memperoleh permintaan ekspor, tetapi belum mampu memenuhi standar ketahanan warna secara konsisten. Hasil uji menunjukkan bahwa ketidakkonsistenan terjadi karena takaran bahan pewarna dan lama perendaman berbeda pada setiap perajin, bukan karena kualitas bahan. Sebagian besar perajin menggunakan teknik pewarnaan tradisional yang menjadi ciri khas produk daerah.
 Pemerintah mempunyai dana untuk satu program dengan tiga sasaran berikut.
@@ -120,6 +123,7 @@ Cara cepat: Tentukan dulu penyebab masalah mutu menurut hasil uji, lalu periksa 
       // tryout-ref-05-05 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 5
       {
         nomor: 4,
+        lesson: 'Nasionalisme',
         tipe: 'pg',
         pertanyaan: `Pada awal abad ke-20, muncul organisasi Budi Utomo yang berupaya memajukan masyarakat melalui pendidikan dan pengembangan kemampuan kaum terpelajar. Kehadirannya menjadi salah satu tonggak perkembangan pergerakan nasional Indonesia.
 Perubahan paling mendasar dalam pola perjuangan bangsa yang ditandai lahirnya Budi Utomo adalah ....`,
@@ -144,6 +148,7 @@ Cara cepat: Bedakan dulu ciri perjuangan sebelum dan sesudah tahun 1908, lalu co
       // tryout-ref-05-02 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 2
       {
         nomor: 5,
+        lesson: 'Nasionalisme',
         tipe: 'pg',
         pertanyaan: `Sebuah platform digital kepemudaan menemukan bahwa sebagian besar penggunanya hanya berinteraksi dengan pemuda dari daerah yang sama. Pengelola ingin membangun jejaring nasional yang lebih kuat tanpa menghilangkan kekhasan budaya setiap daerah.
 Kebijakan yang paling mencerminkan semangat Sumpah Pemuda adalah ….`,
@@ -168,6 +173,7 @@ Cara cepat: Rumuskan dulu masalah utama platform dengan kalimat sendiri, lalu uj
       // tryout-ref-04-02 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 2
       {
         nomor: 6,
+        lesson: 'Nasionalisme',
         tipe: 'pg',
         pertanyaan: `Pada masa pergerakan nasional, sejumlah perkumpulan pemuda dari berbagai daerah membentuk forum kerja sama. Organisasi tersebut tetap menyelenggarakan kegiatan kebudayaan masing-masing, tetapi mulai menyusun agenda perjuangan bersama.
 Dalam perkembangannya, muncul perbedaan mengenai penggunaan dana kegiatan. Sebagian organisasi mengutamakan program bagi anggota daerahnya, sedangkan organisasi lain mengusulkan penggunaan dana untuk kegiatan bersama yang melibatkan pemuda dari berbagai daerah. Setelah melalui musyawarah, seluruh organisasi menyepakati pendanaan program lintas daerah, meskipun sebagian rencana kegiatan masing-masing harus ditunda.
@@ -198,6 +204,7 @@ Cara cepat: Dalam soal tentang perkembangan nasionalisme, identifikasi tindakan 
       // tryout-ref-03-13 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 13
       {
         nomor: 7,
+        lesson: 'Integritas',
         tipe: 'pg',
         pertanyaan: `Seorang kepala seksi yang penghasilannya tergolong tinggi tetap memakai sepeda motor lamanya untuk berangkat kerja. Ia menggelar resepsi pernikahan anaknya di rumah dengan tamu terbatas dan hanya membeli barang ketika benar-benar dibutuhkan. Dalam sembilan nilai antikorupsi KPK, perilaku tersebut paling tepat mencerminkan nilai …`,
         opsi: [
@@ -221,6 +228,7 @@ Cara cepat: Pisahkan perilaku yang berkaitan dengan gaya hidup dari perilaku yan
       // tryout-ref-05-08 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 8
       {
         nomor: 8,
+        lesson: 'Integritas',
         tipe: 'pg',
         pertanyaan: `Seorang auditor menemukan perbedaan antara laporan penggunaan dana bantuan pendidikan dan bukti transaksi yang tersedia. Sebagian transaksi telah terverifikasi, sedangkan beberapa transaksi lain masih memerlukan klarifikasi dari pihak terkait.
 Kepala instansi meminta laporan disampaikan sesuai tenggat karena keterlambatan dapat menghambat pencairan bantuan berikutnya. Pedoman audit memperbolehkan penyampaian laporan sementara, tetapi mewajibkan setiap temuan dan transaksi yang belum terverifikasi dicatat secara terpisah serta ditindaklanjuti melalui permintaan klarifikasi resmi.
@@ -246,6 +254,7 @@ Cara cepat: Uraikan isi pedoman audit menjadi beberapa syarat terpisah, lalu uji
       // tryout-ref-04-10 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 10
       {
         nomor: 9,
+        lesson: 'Integritas',
         tipe: 'pg',
         pertanyaan: `Pimpinan unit sedang memeriksa laporan capaian layanan. Dua kesalahan pengetikan telah diperbaiki berdasarkan dokumen sumber dan memiliki jejak audit.
 Namun, target layanan dalam sistem berubah dari 90% menjadi 80% setelah seorang staf menerima arahan lisan dari pejabat atasan. Pedoman instansi menetapkan bahwa perubahan target hanya berlaku setelah memperoleh persetujuan tertulis.
@@ -272,6 +281,7 @@ Cara cepat: Pilah setiap perubahan dalam laporan menurut statusnya, yaitu sudah 
       // tryout-ref-04-07 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 7
       {
         nomor: 10,
+        lesson: 'Integritas',
         tipe: 'pg',
         pertanyaan: `Panitia penerimaan barang pemerintah memeriksa 50 komputer. Hasil pemeriksaan menunjukkan 46 unit memenuhi spesifikasi kontrak, sedangkan empat unit memiliki kapasitas memori lebih rendah.
 Kontrak memperbolehkan penerimaan bertahap dan pembayaran hanya atas unit yang telah sah diterima. Penyedia menyatakan akan mengganti empat unit dalam 14 hari.
@@ -298,6 +308,7 @@ Cara cepat: Identifikasi barang yang memenuhi kontrak, kemudian periksa apakah h
       // tryout-ref-05-07 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 7
       {
         nomor: 11,
+        lesson: 'Integritas',
         tipe: 'pg',
         pertanyaan: `Seorang kepala daerah mengetahui bahwa perusahaan milik kerabat dekatnya mengikuti tender pembangunan fasilitas kesehatan. Perusahaan tersebut memenuhi seluruh persyaratan dan menawarkan harga yang kompetitif. Kepala daerah tidak pernah memberikan instruksi untuk memenangkan perusahaan tersebut, tetapi masih memiliki kewenangan dalam pengawasan proyek.
 Tindakan yang paling mencerminkan integritas pejabat publik adalah ….`,
@@ -322,6 +333,7 @@ Cara cepat: Pisahkan tiga hal dalam kasus, yaitu hubungan pribadi, kewenangan ya
       // tryout-ref-05-12 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 12
       {
         nomor: 12,
+        lesson: 'Integritas',
         tipe: 'pg',
         pertanyaan: `Seorang ketua panitia seleksi menemukan kesalahan pencatatan skor peserta yang berpotensi mengubah peringkat akhir. Hasil seleksi belum diumumkan, tetapi sebagian anggota panitia mengusulkan agar koreksi dilakukan tanpa dokumentasi tambahan karena kesalahan tersebut dianggap hanya persoalan teknis.
 Keputusan yang paling mencerminkan integritas dalam proses seleksi adalah ….`,
@@ -351,6 +363,7 @@ Cara cepat: Bedakan hasil akhir yang benar dari proses koreksi yang dapat dipert
       // tryout-ref-03-11 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 11
       {
         nomor: 13,
+        lesson: 'Bela Negara',
         tipe: 'pg',
         pertanyaan: `Dalam sesi pelatihan dasar CPNS, fasilitator menjelaskan bahwa Undang-Undang Nomor 23 Tahun 2019 tentang Pengelolaan Sumber Daya Nasional untuk Pertahanan Negara memuat lima nilai dasar bela negara. Fasilitator kemudian meminta peserta menyebutkan nilai yang menekankan kesiapan fisik, kesiapan psikis, serta keterampilan dasar warga negara untuk ikut serta membela negara. Nilai dasar bela negara yang dimaksud adalah …`,
         opsi: [
@@ -373,6 +386,7 @@ E. Rela berkorban menekankan kesediaan menyerahkan waktu, tenaga, dan harta bagi
       // tryout-ref-04-17 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 17
       {
         nomor: 14,
+        lesson: 'Bela Negara',
         tipe: 'pg',
         pertanyaan: `Sekolah di wilayah rawan bencana menyelenggarakan tiga program pembinaan bela negara.
 Program P memberikan pemahaman mengenai prosedur menghadapi keadaan darurat, dengan 90% peserta lulus tes pengetahuan.
@@ -401,6 +415,7 @@ Cara cepat: Tentukan aspek bela negara yang belum dikuasai. Pilih program yang s
       // tryout-ref-03-07 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 7
       {
         nomor: 15,
+        lesson: 'Bela Negara',
         tipe: 'pg',
         pertanyaan: `Seorang mahasiswa di wilayah perbatasan laut diajak bergabung dengan sebuah kelompok daring yang menyebarkan gagasan untuk mengganti dasar negara dengan paham transnasional. Ia menolak ajakan itu, lalu menginisiasi diskusi rutin di organisasi kampusnya tentang kedudukan dasar negara sebagai konsensus final para pendiri bangsa. Nilai dasar bela negara yang paling menonjol dari sikap mahasiswa tersebut adalah ....`,
         opsi: [
@@ -424,6 +439,7 @@ Cara cepat: Tentukan apa yang sedang dipertahankan tokoh dalam kasus, lalu cocok
       // tryout-ref-05-17 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 17
       {
         nomor: 16,
+        lesson: 'Bela Negara',
         tipe: 'pg',
         pertanyaan: `Sebuah kabupaten di wilayah perbatasan mengalami keterbatasan fasilitas kesehatan, pendidikan, dan jaringan komunikasi. Akibatnya, sebagian masyarakat lebih sering memanfaatkan layanan dari negara tetangga. Kondisi tersebut menimbulkan kekhawatiran mengenai melemahnya keterikatan masyarakat terhadap Indonesia.
 Strategi bela negara yang paling tepat untuk mengatasi persoalan tersebut adalah ….`,
@@ -448,6 +464,7 @@ Cara cepat: Tentukan dahulu penyebab warga beralih ke layanan negara tetangga, l
       // tryout-ref-03-10 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 10
       {
         nomor: 17,
+        lesson: 'Bela Negara',
         tipe: 'pg',
         pertanyaan: `Sebuah kabupaten di perbatasan darat menghadapi tiga kondisi. Pertama, warga lebih banyak membeli kebutuhan pokok dari negara tetangga. Kedua, siaran televisi negara tetangga lebih mudah diakses daripada siaran nasional. Ketiga, sebagian generasi muda mulai asing dengan budaya daerahnya sendiri.
 Hasil evaluasi menunjukkan bahwa ketergantungan ekonomi terjadi karena distribusi produk dalam negeri belum merata. Keterbatasan infrastruktur penyiaran nasional menyebabkan informasi dalam negeri sulit dijangkau, sedangkan berkurangnya kegiatan pendidikan budaya turut melemahkan pengetahuan generasi muda terhadap tradisi daerah.
@@ -474,6 +491,7 @@ Cara cepat: Dalam soal kebijakan terpadu berbasis Pancagatra, identifikasi penye
       // tryout-ref-04-13 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 13
       {
         nomor: 18,
+        lesson: 'Bela Negara',
         tipe: 'pg',
         pertanyaan: `Pemerintah kabupaten perbatasan menyiapkan dana khusus untuk dua program peningkatan ketahanan masyarakat selama enam bulan.
 Hasil evaluasi menunjukkan bahwa persediaan obat esensial di beberapa puskesmas sering terputus sehingga layanan kesehatan terhenti. Selain itu, radio komunikasi antarpos penanggulangan bencana tidak berfungsi dalam dua simulasi terakhir sehingga koordinasi evakuasi terganggu.
@@ -505,6 +523,7 @@ Cara cepat: Bedakan gangguan utama dari program pendukung. Pilih dua tindakan ya
       // tryout-ref-05-19 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 19
       {
         nomor: 19,
+        lesson: 'Pilar Negara',
         tipe: 'pg',
         pertanyaan: `Pemerintah daerah memiliki anggaran terbatas untuk memberikan bantuan pendidikan. Hasil pendataan menunjukkan bahwa wilayah A memiliki lebih banyak siswa yang kesulitan mengakses sekolah akibat jarak dan biaya transportasi, sedangkan wilayah B memiliki jumlah siswa lebih sedikit dan akses pendidikan yang relatif memadai.
 Kebijakan yang paling sesuai dengan prinsip keadilan sosial Pancasila adalah ….`,
@@ -529,6 +548,7 @@ Cara cepat: Bandingkan dahulu kondisi kedua wilayah dalam data, lalu uji setiap 
       // tryout-ref-05-23 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 23
       {
         nomor: 20,
+        lesson: 'Pilar Negara',
         tipe: 'pg',
         pertanyaan: `Sebuah komunitas pendidikan memberikan bantuan belajar kepada anak-anak dari keluarga kurang mampu. Salah satu pengurus mengusulkan agar seluruh penerima bantuan mengikuti kegiatan keagamaan tertentu sebagai bagian dari pembinaan karakter.
 Pengurus lain menilai bahwa pembinaan karakter tetap penting, tetapi pemberian bantuan tidak seharusnya membatasi kebebasan agama penerima.
@@ -554,6 +574,7 @@ Cara cepat: Tentukan dahulu hal yang diperselisihkan para pengurus, lalu periksa
       // tryout-ref-03-21 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 21
       {
         nomor: 21,
+        lesson: 'Pilar Negara',
         tipe: 'pg',
         pertanyaan: `Salah satu butir pengamalan sila ke-4 Pancasila berbunyi “menerima dan melaksanakan hasil musyawarah dengan iktikad baik dan rasa tanggung jawab”. Sikap yang paling tepat mencerminkan butir tersebut adalah …`,
         opsi: [
@@ -577,6 +598,7 @@ Cara cepat: Ubah butir pengamalan dalam soal menjadi perilaku konkret, lalu cari
       // tryout-ref-04-19 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 19
       {
         nomor: 22,
+        lesson: 'Pilar Negara',
         tipe: 'pg',
         pertanyaan: `Sebuah museum pendidikan menyiapkan pameran tentang pembentukan Pancasila sebagai dasar negara.
 Tim kurator mengumpulkan dokumen pidato 1 Juni 1945, Piagam Jakarta 22 Juni 1945, hasil pembahasan BPUPKI, dan keputusan PPKI 18 Agustus 1945.
@@ -603,6 +625,7 @@ Cara cepat: Pilih tindakan yang menjaga ketepatan sejarah sekaligus menunjukkan 
       // tryout-ref-04-22 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 22
       {
         nomor: 23,
+        lesson: 'Pilar Negara',
         tipe: 'pg',
         pertanyaan: `Dua komunitas budaya mengajukan penggunaan aula kecamatan pada waktu yang sama.
 Komunitas A akan menyelenggarakan ritual budaya yang pelaksanaannya terikat pada hari tertentu dan membutuhkan waktu tiga jam. Komunitas B akan mengadakan lokakarya kebudayaan selama tiga jam dengan menghadirkan narasumber yang masih dapat menyesuaikan jadwal satu hari.
@@ -630,6 +653,7 @@ Cara cepat: Catat dahulu fakta pembatas dalam kasus, yaitu kegiatan mana yang te
       // tryout-ref-03-22 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 22
       {
         nomor: 24,
+        lesson: 'Pilar Negara',
         tipe: 'pg',
         pertanyaan: `Dalam pembahasan rancangan APBD, sebuah DPRD kabupaten menerima usulan agar porsi belanja pendidikan diturunkan hingga di bawah 20 persen. Alasan usulan itu adalah pemerintah pusat telah menyediakan dana pendidikan yang besar melalui APBN. Berdasarkan Pasal 31 UUD 1945, penilaian yang paling tepat terhadap usulan tersebut adalah …`,
         opsi: [
@@ -658,6 +682,7 @@ Cara cepat: Pastikan lebih dahulu pihak yang diikat oleh ketentuan pasal itu, la
       // tryout-ref-02-01 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 1
       {
         nomor: 25,
+        lesson: 'Bahasa Negara > Ide pokok atau gagasan utama',
         tipe: 'pg',
         pertanyaan: `Pemerintah kota memperluas layanan administrasi melalui aplikasi digital. Namun, sebagian warga lanjut usia belum terbiasa mengunggah dokumen dan memantau permohonan secara daring. Untuk membantu mereka, pemerintah menyediakan petugas pendamping di kantor kelurahan. Warga tetap mengajukan permohonan melalui sistem yang sama, tetapi memperoleh bantuan sesuai kebutuhan. Dengan demikian, perluasan layanan digital disertai dukungan agar kelompok yang mengalami kesulitan tetap dapat mengakses pelayanan.
 Ide pokok paragraf tersebut adalah ....`,
@@ -687,6 +712,7 @@ Cara cepat: Tentukan gagasan yang mencakup keseluruhan paragraf, bukan hanya kel
       // tryout-ref-02-04 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 4
       {
         nomor: 26,
+        lesson: 'Bahasa Negara > Simpulan paragraf',
         tipe: 'pg',
         pertanyaan: `Sebuah kantor mengganti formulir permohonan dengan versi yang lebih singkat. Setelah satu bulan, rata-rata waktu pengisian berkurang dari dua belas menit menjadi delapan menit. Meskipun demikian, jumlah formulir yang harus dikembalikan untuk diperbaiki tidak banyak berubah. Pemeriksaan petugas menunjukkan bahwa kesalahan masih sering terjadi pada bagian persyaratan yang menggunakan istilah teknis tanpa penjelasan.
 Simpulan yang paling tepat adalah ....`,
@@ -716,6 +742,7 @@ Cara cepat: Bandingkan dua hasil evaluasi, yakni waktu pengisian dan kesalahan f
       // tryout-ref-03-30 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 30
       {
         nomor: 27,
+        lesson: 'Bahasa Negara > Kalimat efektif dan tidak efektif',
         tipe: 'pg',
         pertanyaan: `Perhatikan kalimat berikut.
 “Kegiatan posyandu bulan ini meliputi penimbangan balita, memberikan imunisasi, dan penyuluhan gizi bagi para ibu-ibu.”
@@ -746,6 +773,7 @@ Cara cepat: Periksa kesejajaran bentuk unsur perincian dan kehematan kata, lalu 
       // tryout-ref-02-08 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 8
       {
         nomor: 28,
+        lesson: 'Bahasa Negara > Kata baku dan tidak baku',
         tipe: 'pg',
         pertanyaan: `Pengelola layanan kesehatan akan memasang pengumuman berikut.
 Petugas menghimbau warga agar antri dengan tertib di depan apotik.
@@ -777,6 +805,7 @@ Cara cepat: Perhatikan bentuk baku mengimbau, antre, dan apotek. Satu bentuk tid
       // tryout-ref-02-09 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 9
       {
         nomor: 29,
+        lesson: 'Bahasa Negara > Penulisan tanda baca',
         tipe: 'pg',
         pertanyaan: `Sebuah kantor menyiapkan petunjuk pendaftaran. Petunjuk itu menyebutkan tiga dokumen persyaratan, lalu menjelaskan bahwa petugas akan memeriksa dokumen setelah menerimanya. Penyunting diminta menggunakan titik dua untuk memperkenalkan perincian dan titik koma untuk memisahkan dua klausa setara.
 Kalimat yang memenuhi ketentuan tersebut adalah ....`,
@@ -806,6 +835,7 @@ Cara cepat: Titik dua memperkenalkan perincian setelah pernyataan lengkap, sedan
       // tryout-ref-03-27 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 27
       {
         nomor: 30,
+        lesson: 'Bahasa Negara > Penulisan Ejaan Bahasa Indonesia yang Disempurnakan (EYD)',
         tipe: 'pg',
         pertanyaan: `(1) Desa itu memasang panel surya di balai warga, sekolah, dan pos kesehatan pada awal tahun ini. (2) Listrik dari panel tersebut dipakai untuk kegiatan siang hari, sedangkan sisanya disimpan dalam baterai cadangan milik desa. (3) Kepala desa menyebutkan bahwa biaya listrik bulanan balai warga kini turun hampir separuh dibandingkan tahun lalu. (4) Oleh karena itu pemerintah desa berencana menambah panel surya di rumah warga yang belum terjangkau jaringan listrik. (5) Jika cuaca mendung selama beberapa hari, petugas mengatur pemakaian listrik agar layanan kesehatan tetap berjalan.
 Penggunaan tanda baca yang keliru terdapat pada kalimat nomor …`,
@@ -839,6 +869,7 @@ export const contohGeneratorTiu: Kelompok[] = [
       // tryout-pattern-map-13-0-0-0 · Variasi baru dari pola tryout diterima; Mapping SKD 2027.xlsx, baris 13
       {
         nomor: 1,
+        lesson: 'Verbal > Silogisme > 3 Premis',
         tipe: 'pg',
         pertanyaan: `Pesanan Wulan yang dikemas dengan bahan pelindung memiliki pembayaran terverifikasi. Pesanan Wulan yang berada dalam antrean proses dikemas dengan bahan pelindung. Pesanan Wulan tidak masuk antrean proses.
 Apa yang dapat disimpulkan mengenai kebenaran pernyataan bahwa pesanan Wulan memiliki pembayaran terverifikasi?`,
@@ -881,6 +912,7 @@ Jawaban: Tidak dapat disimpulkan`,
       // tryout-pattern-map-14-0-0-0 · Contoh 57 (N2-03) pada Blueprint Silogisme Tanpa Logika Kuantor, Bagian B (tulisan tim akademik).
       {
         nomor: 2,
+        lesson: 'Verbal > Silogisme > 2 Premis - Narasi',
         tipe: 'pg',
         pertanyaan: `Pemeriksaan daftar persetujuan penelaah untuk katalog pameran memperlihatkan naskah milik Hana tidak tercantum di dalamnya pada pengajuan katalog yang dibahas. Naskah katalog pameran milik Hana dengan status siap dicetak tercakup dalam daftar persetujuan penelaah untuk katalog yang akan digunakan pada pameran tersebut.
 Simpulan yang pasti benar berdasarkan ketentuan tersebut adalah ….`,
@@ -927,6 +959,7 @@ E. Proses pencetakan naskah katalog pameran milik Hana sudah dimulai.
       // tryout-pattern-map-14-0-1-0 · Contoh 60 (N2-06) pada Blueprint Silogisme Tanpa Logika Kuantor, Bagian B (tulisan tim akademik).
       {
         nomor: 3,
+        lesson: 'Verbal > Silogisme > 2 Premis - Narasi',
         tipe: 'pg',
         pertanyaan: `Catatan pendaftaran Lala untuk kegiatan praktik komunitas menunjukkan dirinya tidak mengikuti kelas fotografi pada kegiatan praktik komunitas yang dibahas. Dalam kegiatan praktik komunitas yang sedang dijadwalkan Lala mengikuti kelas fotografi atau tidak menggunakan tripod miliknya pada kegiatan praktik yang dibahas tersebut.
 Simpulan yang pasti benar berdasarkan ketentuan tersebut adalah ….`,
@@ -978,6 +1011,7 @@ E. Penggunaan tripod milik Lala tidak berlangsung dalam kegiatan praktik komunit
       // tryout-pattern-map-15-0-0-0 · Contoh 63 (N3-01) pada Blueprint Silogisme Tanpa Logika Kuantor, Bagian B (tulisan tim akademik).
       {
         nomor: 4,
+        lesson: 'Verbal > Silogisme > 3 Premis - Narasi',
         tipe: 'pg',
         pertanyaan: `Kirana dengan pendaftaran yang disahkan oleh pengelola memiliki hak membuka kalender sesi praktik pada akun pelatihan kerajinan untuk kegiatan yang sedang dibahas dalam ketentuan pendaftaran tersebut. Kirana dalam kedudukannya sebagai pemilik hak membuka kalender sesi praktik tercakup dalam pemilik hak memilih satu sesi praktik pada kalender akun pelatihan tersebut. Pendaftaran pelatihan kerajinan milik Kirana untuk kegiatan yang sedang dibahas telah disahkan oleh pengelola dalam catatan pendaftaran kegiatan tersebut.
 Simpulan yang pasti benar berdasarkan ketentuan tersebut adalah ….`,
@@ -1033,6 +1067,7 @@ E. Pendaftaran pelatihan kerajinan milik Kirana tidak disahkan oleh pengelola ke
       // tryout-pattern-map-15-0-1-0 · Contoh 65 (N3-03) pada Blueprint Silogisme Tanpa Logika Kuantor, Bagian B (tulisan tim akademik).
       {
         nomor: 5,
+        lesson: 'Verbal > Silogisme > 3 Premis - Narasi',
         tipe: 'pg',
         pertanyaan: `Berkas usulan program P18 yang diterima dalam penelaahan administrasi berada dalam cakupan daftar penelaahan isi untuk usulan program pada periode pengajuan yang dibahas. Berkas usulan program P18 yang tercantum dalam daftar penelaahan isi pada periode pengajuan tersebut memiliki nomor agenda penelaahan menurut ketentuan penelaahan usulan. Berkas usulan program P18 bernomor agenda penelaahan merupakan bagian dari arsip penelaahan program untuk periode pengajuan yang menjadi pokok pembahasan dalam pengelolaan berkas tersebut.
 Hubungan yang pasti mengikuti ketentuan tersebut adalah ….`,
@@ -1092,6 +1127,7 @@ E. Berkas P18 bernomor agenda penelaahan termasuk berkas yang diterima dalam pen
       // tryout-pattern-map-16-0-0-0 · Variasi terhitung mengikuti mapping 2 Kata; acuan: Mapping SKD 2027.xlsx (contoh analogi dua kata belum disertakan)
       {
         nomor: 6,
+        lesson: 'Verbal > Analogi > 2 Kata',
         tipe: 'pg',
         pertanyaan: `Uang : Bank = … : …`,
         opsi: [
@@ -1121,6 +1157,7 @@ E: Hujan deras : Banjir: hubungan sebab dan akibat, sebab → akibat; tidak sepa
       // tryout-ref-10-01 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 1
       {
         nomor: 7,
+        lesson: 'Verbal > Analitis > Memperkuat/Memperlemah Argumen',
         tipe: 'pg',
         pertanyaan: `Perpustakaan kelurahan memasang label warna yang sama pada punggung buku dan rak sesuai jenis bacaannya. Pengelola berpendapat bahwa label tersebut membantu pengunjung mengembalikan buku ke rak yang tepat. Dengan demikian, waktu yang dibutuhkan petugas untuk menata ulang buku akan berkurang.
 Temuan manakah yang paling MEMPERKUAT pendapat pengelola?`,
@@ -1141,6 +1178,7 @@ Cara cepat: Cari bukti yang menghubungkan tindakan dengan hasil yang diklaim, bu
       // tryout-ref-10-02 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 2
       {
         nomor: 8,
+        lesson: 'Verbal > Analitis > Memperkuat/Memperlemah Argumen',
         tipe: 'pg',
         pertanyaan: `Sebuah sanggar menyediakan rekaman pelafalan untuk peserta kelas bahasa daerah. Peserta diminta mendengarkan rekaman, mengucapkan kata yang sama, lalu membandingkan suara mereka dengan contoh. Pengajar memperkirakan latihan ini dapat meningkatkan ketepatan pelafalan karena peserta lebih mudah mengenali dan memperbaiki bunyi yang mereka ucapkan secara keliru.
 Jika benar, informasi tambahan manakah yang paling MEMPERKUAT mekanisme dalam argumen tersebut?`,
@@ -1161,6 +1199,7 @@ Cara cepat: Untuk argumen yang menjelaskan suatu proses, cari informasi yang mem
       // tryout-ref-10-09 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 9
       {
         nomor: 9,
+        lesson: 'Verbal > Analitis > Memperkuat/Memperlemah Argumen',
         tipe: 'pg',
         pertanyaan: `Sebuah kantor perizinan melaporkan bahwa rata-rata waktu dari berkas dinyatakan lengkap hingga izin diterbitkan turun dari 18 hari menjadi 10 hari setelah prosedur baru diterapkan. Kepala kantor menggunakan data itu untuk menyimpulkan bahwa rata-rata seluruh waktu yang dihabiskan pemohon sejak pertama menyerahkan berkas hingga menerima izin kini lebih singkat.
 Informasi manakah yang paling MEMPERLEMAH kesimpulan kepala kantor tentang waktu keseluruhan yang dihabiskan pemohon?`,
@@ -1186,6 +1225,7 @@ Cara cepat: Periksa apakah data mengukur seluruh hal yang disebut dalam kesimpul
       // tryout-ref-11-01 · Uma - Verbal Analitis_Done Input.docx, soal 1
       {
         nomor: 10,
+        lesson: 'Verbal > Analitis > Susunan & Posisi',
         tipe: 'pg',
         pertanyaan: `Enam berkas milik Ardi, Beni, Caca, Dini, Ega, dan Fina disusun berjajar pada rak bernomor 1 sampai 6 dari kiri ke kanan. Berkas Caca berada di posisi keempat. Berkas Beni berada tepat di sebelah kiri berkas Caca. Berkas Fina berada tepat di sebelah kanan berkas Caca. Berkas Ardi berada di sebelah kiri berkas Beni. Berkas Dini berada tepat di sebelah kanan berkas Ardi. Berkas Ega berada di sebelah kanan berkas Fina.
 Berkas siapa yang berada pada posisi kedua?`,
@@ -1209,6 +1249,7 @@ Jadi, jawaban yang benar adalah C.`,
       // tryout-ref-11-02 · Uma - Verbal Analitis_Done Input.docx, soal 2
       {
         nomor: 11,
+        lesson: 'Verbal > Analitis > Susunan & Posisi',
         tipe: 'pg',
         pertanyaan: `Delapan peserta, yaitu Gani, Hira, Intan, Joko, Kila, Luki, Mira, dan Nando, duduk pada empat baris. Setiap baris terdiri atas kursi kiri dan kanan. Gani dan Hira duduk di baris pertama. Intan duduk tepat di belakang Gani. Joko duduk di samping Intan. Kila dan Luki duduk bersama pada baris ketiga. Mira tidak duduk di baris pertama, kedua, maupun ketiga.
 Siapakah yang duduk satu baris dengan Mira?`,
@@ -1240,6 +1281,7 @@ Jadi, jawaban yang benar adalah E.`,
       // tryout-ref-00-01 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 1 · subtopik sumber: Operasi Hitung - Pecahan Sederhana (diterima di baris mapping Operasi Hitung - Dasar)
       {
         nomor: 12,
+        lesson: 'Numerik > Berhitung > Operasi Hitung - Dasar',
         tipe: 'pg',
         pertanyaan: `Hasil dari \\(\\frac{3}{8}+\\frac{1}{8}-\\frac{3}{10}\\) adalah …`,
         opsi: [
@@ -1267,6 +1309,7 @@ Jadi, jawaban yang benar adalah E.`,
       // tryout-ref-00-05 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 5
       {
         nomor: 13,
+        lesson: 'Numerik > Berhitung > Perkalian Setara',
         tipe: 'pg',
         pertanyaan: `Pengelola gudang menyusun dua rencana pengemasan. Jumlah barang pada setiap rencana dihitung dari banyaknya paket dikalikan isi setiap paket. Manakah pasangan rencana yang memuat jumlah barang yang sama?`,
         opsi: [
@@ -1328,6 +1371,7 @@ Hasilnya sama: 4704 = 4704. Jadi, jawabannya adalah E.`,
       // tryout-ref-00-08 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 8
       {
         nomor: 14,
+        lesson: 'Numerik > Berhitung > Pembagian Setara',
         tipe: 'pg',
         pertanyaan: `Dari lima pasangan operasi di bawah ini, tentukan pasangan yang kedua hasil pembagiannya bernilai sama.`,
         opsi: [
@@ -1393,6 +1437,7 @@ Hasilnya sama: 540 = 540. Jadi, jawabannya adalah B.`,
       // tryout-ref-00-10 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 10
       {
         nomor: 15,
+        lesson: 'Numerik > Kecukupan Data > Aljabar - Operasi Aljabar',
         tipe: 'pg',
         pertanyaan: `Diketahui dua bilangan positif A dan B. Tentukan apakah A lebih besar daripada B!
 (1) A+B=480.
@@ -1425,6 +1470,7 @@ Jadi, jawaban yang benar adalah B.`,
       // tryout-ref-00-12 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 12 · subtopik sumber: Aljabar - Persamaan (diterima di baris mapping Aljabar - Operasi Aljabar)
       {
         nomor: 16,
+        lesson: 'Numerik > Kecukupan Data > Aljabar - Operasi Aljabar',
         tipe: 'pg',
         pertanyaan: `Diketahui x merupakan bilangan real. Berapakah nilai x?
 (1) 5x−8=47.
@@ -1459,6 +1505,7 @@ Jadi, jawaban yang benar adalah A.`,
       // tryout-ref-00-16 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 16
       {
         nomor: 17,
+        lesson: 'Numerik > Kecukupan Data > Bilangan - Jenis dan Sifat Bilangan',
         tipe: 'pg',
         pertanyaan: `Diketahui n merupakan bilangan bulat positif. Apakah n merupakan bilangan prima?
 (1) n merupakan bilangan ganjil yang lebih besar dari 14.
@@ -1490,6 +1537,7 @@ Jadi, jawaban yang benar adalah B.`,
       // tryout-ref-00-21 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 21 · subtopik sumber: Soal Cerita - Geometri (diterima di baris mapping Soal Cerita - Aljabar)
       {
         nomor: 18,
+        lesson: 'Numerik > Kecukupan Data > Soal Cerita - Aljabar',
         tipe: 'pg',
         pertanyaan: `Sebuah ruang pamer berbentuk persegi akan dipasangi karpet. Berapakah luas lantai ruang pamer tersebut?
 (1) Panjang salah satu sisi ruang pamer adalah 14 meter.
@@ -1527,6 +1575,7 @@ Masing-masing pernyataan secara terpisah cukup. Jadi, jawaban yang benar adalah 
       // tryout-ref-00-25 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 25 · subtopik sumber: Soal Cerita - Perbandingan Senilai dan Berbalik (diterima di baris mapping Soal Cerita - Aljabar)
       {
         nomor: 19,
+        lesson: 'Numerik > Kecukupan Data > Soal Cerita - Aljabar',
         tipe: 'pg',
         pertanyaan: `Perhatikan tabel berikut. Kelompok mesin A dan kelompok mesin B digunakan untuk menyelesaikan target pesanan masing-masing.
 \\(\\def\\arraystretch{1.4}\\begin{array}{|l|l|l|} \\hline \\textbf{Kelompok Mesin} & \\textbf{Jumlah Mesin} & \\textbf{Waktu Produksi} \\\\ \\hline \\text{Kelompok mesin A} & \\text{8 mesin} & \\text{20 jam} \\\\ \\hline \\text{Kelompok mesin B} & \\text{x mesin} & \\text{t jam} \\\\ \\hline \\end{array}\\)
@@ -1562,6 +1611,7 @@ Karena 10≤10, kelompok mesin B dapat menyelesaikan target dalam waktu maksimal
       // tryout-ref-00-19 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 19
       {
         nomor: 20,
+        lesson: 'Numerik > Kecukupan Data > Soal Cerita - Aljabar',
         tipe: 'pg',
         pertanyaan: `Sebuah pusat pelatihan menyediakan dua jenis layanan, yaitu Kelas Tatap Muka dan Kelas Daring. Setiap tiket berlaku untuk satu peserta. Perhatikan tabel berikut.
 \\(\\def\\arraystretch{1.4}\\begin{array}{|l|l|l|} \\hline \\textbf{Jenis Peserta} & \\textbf{Harga/Tiket} & \\textbf{Jumlah Tiket Terjual} \\\\ \\hline \\text{Kelas Tatap Muka} & \\text{Rp120.000} & \\text{m} \\\\ \\hline \\text{Kelas Daring} & \\text{Rp60.000} & \\text{n} \\\\ \\hline \\end{array}\\)
@@ -1615,6 +1665,7 @@ Jadi, kedua pernyataan bersama-sama cukup untuk menentukan total pendapatan sebe
       // tryout-ref-00-30 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 30 · subtopik sumber: Deret Angka - 3 Towew (diterima di baris mapping Deret Angka - 1 Towew)
       {
         nomor: 21,
+        lesson: 'Numerik > Deret Bilangan > Deret Angka - 3 Towew',
         tipe: 'pg',
         pertanyaan: `6,9,8,6,12,9,6,15,10,…`,
         opsi: [
@@ -1644,6 +1695,7 @@ Jadi, jawaban yang benar adalah E.`,
       // tryout-ref-00-32 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 32
       {
         nomor: 22,
+        lesson: 'Numerik > Deret Bilangan > Matriks Deret',
         tipe: 'pg',
         pertanyaan: `Bilangan berapakah yang tepat untuk menggantikan x pada tabel berikut?
 \\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline -18 & 9 & 28 \\\\ \\hline -11 & 5 & 22 \\\\ \\hline -4 & \\text{x} & 16 \\\\ \\hline \\end{array}\\)`,
@@ -1669,6 +1721,7 @@ Maka, diperoleh x=5−4=1.`,
       // tryout-ref-00-35 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 35
       {
         nomor: 23,
+        lesson: 'Numerik > Deret Bilangan > Matriks Deret',
         tipe: 'pg',
         pertanyaan: `Dengan menerapkan pola yang konsisten pada setiap baris, tentukan nilai x dalam tabel berikut.
 \\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline 7 & 16 & 33 \\\\ \\hline 9 & 23 & 58 \\\\ \\hline 8 & 19 & \\text{x} \\\\ \\hline \\end{array}\\)`,
@@ -1699,6 +1752,7 @@ Maka, diperoleh x=64−19=45.`,
       // tryout-ref-00-42 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 42
       {
         nomor: 24,
+        lesson: 'Numerik > Deret Bilangan > Pola Bilangan Tabel',
         tipe: 'pg',
         pertanyaan: `Perhatikan tabel berikut!
 \\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\textbf{Urutan ke-} & \\textbf{Nilai} \\\\ \\hline 1 & 2 \\\\ \\hline 2 & 6 \\\\ \\hline 4 & 54 \\\\ \\hline 6 & \\text{?} \\\\ \\hline 7 & 1458 \\\\ \\hline \\end{array}\\)
@@ -1727,6 +1781,7 @@ Jadi, \\(U_{6}=486\\).`,
       // tryout-ref-00-40 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 40
       {
         nomor: 25,
+        lesson: 'Numerik > Deret Bilangan > Pola Bilangan Tabel',
         tipe: 'pg',
         pertanyaan: `Perhatikan tabel berikut!
 \\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\textbf{Urutan ke-} & \\textbf{Nilai} \\\\ \\hline 2 & 2 \\\\ \\hline 5 & 20 \\\\ \\hline 9 & 72 \\\\ \\hline 15 & \\text{?} \\\\ \\hline 21 & 420 \\\\ \\hline \\end{array}\\)
@@ -1760,6 +1815,7 @@ Jadi, \\(U_{15}=210\\).`,
       // tryout-ref-00-43 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 43
       {
         nomor: 26,
+        lesson: 'Numerik > Soal Cerita > Tabel Pernyataan - Kombinasi Pernyataan',
         tipe: 'pg',
         pertanyaan: `Daftar harga satuan menu di sebuah kedai adalah sebagai berikut. Seluruh pembelian dikenai harga sesuai tabel tanpa biaya tambahan.
 \\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\textbf{Menu} & \\textbf{Harga} \\\\ \\hline \\text{Teh} & \\text{Rp8.000} \\\\ \\hline \\text{Kopi} & \\text{Rp12.000} \\\\ \\hline \\text{Roti} & \\text{Rp10.000} \\\\ \\hline \\text{Puding} & \\text{Rp7.000} \\\\ \\hline \\end{array}\\)
@@ -1800,6 +1856,7 @@ Cara cepat: Uji pernyataan yang paling membedakan pilihan untuk eliminasi awal, 
       // tryout-ref-00-48 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 48
       {
         nomor: 27,
+        lesson: 'Numerik > Soal Cerita > Tabel Pernyataan - Kombinasi Optimal',
         tipe: 'pg',
         pertanyaan: `Sebuah persemaian akan membeli baki untuk menempatkan bibit. Tersedia tiga jenis baki dengan kapasitas dan harga berikut.
 \\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline \\textbf{Jenis Baki} & \\textbf{Kapasitas} & \\textbf{Biaya} \\\\ \\hline \\text{A} & \\text{12 bibit} & \\text{Rp7.000} \\\\ \\hline \\text{B} & \\text{20 bibit} & \\text{Rp11.000} \\\\ \\hline \\text{C} & \\text{30 bibit} & \\text{Rp16.000} \\\\ \\hline \\end{array}\\)
@@ -1834,6 +1891,7 @@ Cara cepat: Coret opsi yang melanggar salah satu ketentuan (anggaran, jumlah bak
       // tryout-pattern-map-50-0-0-0 · Variasi terhitung mengikuti mapping Figural Analogi; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 28,
+        lesson: 'Figural > Bangun Datar > Figural Analogi',
         tipe: 'pg',
         pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?", sehingga kedua pasangan gambar di bawah ini memiliki hubungan yang serupa.
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s01-soal.png⟧`,
@@ -1861,6 +1919,7 @@ Jadi, jawaban yang benar adalah A.`,
       // tryout-pattern-map-50-0-1-0 · Variasi terhitung mengikuti mapping Figural Analogi; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 29,
+        lesson: 'Figural > Bangun Datar > Figural Analogi',
         tipe: 'pg',
         pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?", sehingga kedua pasangan gambar di bawah ini memiliki hubungan yang serupa.
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-soal.png⟧`,
@@ -1895,6 +1954,7 @@ Jadi, jawaban yang benar adalah D.`,
       // tryout-pattern-map-51-0-0-0 · Variasi terhitung mengikuti mapping Figural Ketidaksamaan; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 30,
+        lesson: 'Figural > Bangun Datar > Figural Ketidaksamaan',
         tipe: 'pg',
         pertanyaan: `Manakah gambar yang memiliki prinsip, pola, atau karakteristik yang berbeda dibandingkan gambar lainnya?`,
         opsi: [
@@ -1917,6 +1977,7 @@ Jadi, jawaban yang benar adalah E.`,
       // tryout-pattern-map-51-0-1-0 · Variasi terhitung mengikuti mapping Figural Ketidaksamaan; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 31,
+        lesson: 'Figural > Bangun Datar > Figural Ketidaksamaan',
         tipe: 'pg',
         pertanyaan: `Manakah gambar yang memiliki prinsip, pola, atau karakteristik yang berbeda dibandingkan gambar lainnya?`,
         opsi: [
@@ -1944,6 +2005,7 @@ Jadi, jawaban yang benar adalah B.`,
       // tryout-pattern-map-52-0-0-0 · Variasi terhitung mengikuti mapping Figural Serial; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 32,
+        lesson: 'Figural > Bangun Datar > Figural Serial',
         tipe: 'pg',
         pertanyaan: `Tentukanlah gambar berikutnya dari seri gambar di bawah ini!
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s01-soal.png⟧`,
@@ -1970,6 +2032,7 @@ Jadi, jawaban yang benar adalah C.`,
       // tryout-pattern-map-52-0-1-0 · Variasi terhitung mengikuti mapping Figural Serial; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 33,
+        lesson: 'Figural > Bangun Datar > Figural Serial',
         tipe: 'pg',
         pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?" pada seri gambar di bawah ini!
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s02-soal.png⟧`,
@@ -2003,6 +2066,7 @@ Jadi, jawaban yang benar adalah E.`,
       // tryout-pattern-map-53-0-0-0 · Variasi terhitung mengikuti mapping Figural Matriks (Kotak 3x3); acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 34,
+        lesson: 'Figural > Bangun Datar > Figural Matriks (Kotak 3x3)',
         tipe: 'pg',
         pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?" pada susunan gambar di bawah ini!
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-soal.png⟧`,
@@ -2033,6 +2097,7 @@ Jadi, jawaban yang benar adalah B.`,
       // tryout-pattern-map-53-0-1-0 · Variasi terhitung mengikuti mapping Figural Matriks (Kotak 3x3); acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 35,
+        lesson: 'Figural > Bangun Datar > Figural Matriks (Kotak 3x3)',
         tipe: 'pg',
         pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?" pada susunan gambar di bawah ini!
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-soal.png⟧`,
@@ -2078,6 +2143,7 @@ export const contohGeneratorTkp: Kelompok[] = [
       // tkp-kasus-pp-08 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 1,
+        lesson: 'Pelayanan Publik',
         tipe: 'skala',
         pertanyaan: `Anda anggota tim penerima permohonan bantuan usaha mikro. Batas penerimaan berkas ditutup kemarin pukul 16.00 dan berlaku sama bagi setiap pemohon. Pagi ini seorang pemilik warung datang dengan berkas lengkap, mengaku lupa tanggalnya, dan memohon berkasnya diterima karena modalnya menipis. Tidak ada gangguan layanan pada hari batas itu. Anda tidak berwenang memperpanjang tenggat, sedangkan gelombang penerimaan berikutnya dibuka bulan depan. Sikap Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2103,6 +2169,7 @@ Cara cepat: Tanyakan apakah ada keadaan yang membenarkan pengecualian, dan siapa
       // tkp-kasus-pp-21 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 2,
+        lesson: 'Pelayanan Publik',
         tipe: 'skala',
         pertanyaan: `Anda melayani pendaftaran bantuan pangan di stan layanan yang dibuka di balai warga. Seorang bapak datang dengan suara tinggi karena namanya tidak ada dalam daftar penerima, padahal tetangganya terdaftar. Setelah Anda periksa, namanya belum masuk karena pendataan di kelurahannya belum diperbarui. Ia mengancam akan mengunggah kemarahannya di media sosial, dan beberapa warga mulai memperhatikan. Anda berwenang menerima pengajuan sanggah untuk diteruskan ke kelurahan. Sikap Anda adalah ...`,
         opsi: [
@@ -2128,6 +2195,7 @@ Cara cepat: Dengarkan keluhan pengguna lebih dulu, lalu lihat bagian mana dari m
       // tkp-kasus-pp-06 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 3,
+        lesson: 'Pelayanan Publik',
         tipe: 'skala',
         pertanyaan: `Anda pegawai baru yang bertugas bersama tim layanan keliling di balai desa. Rekan senior yang biasa menangani verifikasi data kependudukan mendadak sakit dan pulang, sedangkan pelatihan yang baru Anda ikuti hanya mencakup penerimaan berkas. Seorang warga meminta pembaruan data keluarga yang harus diverifikasi petugas bersertifikat. Berkas yang sudah dicatat langsung masuk antrean verifikasi. Kepala tim dapat dihubungi lewat telepon dan dapat menunjuk petugas dari kantor yang tiba dalam satu jam. Apa yang sebaiknya Anda lakukan?`,
         opsi: [
@@ -2153,6 +2221,7 @@ Cara cepat: Ukur kemampuan dan kewenangan Anda lebih dulu, lalu cari langkah yan
       // tkp-kasus-pp-09 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 4,
+        lesson: 'Pelayanan Publik',
         tipe: 'skala',
         pertanyaan: `Lift di kantor layanan perizinan rusak sejak pagi dan baru selesai diperbaiki sore hari. Seorang pengguna kursi roda datang untuk mengambil izin yang sudah selesai di loket lantai dua. Anda koordinator loket yang berwenang mengatur lokasi layanan di unit Anda, dan prosedur membolehkan penyerahan dokumen di meja informasi lantai satu setelah identitas pemohon diperiksa. Rekan Anda di lantai dua sedang melayani antrean. Apa langkah Anda yang paling tepat?`,
         opsi: [
@@ -2178,6 +2247,7 @@ Cara cepat: Cari tahu bagian layanan mana yang terhambat dan siapa yang sebaikny
       // tkp-kasus-pp-13 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 5,
+        lesson: 'Pelayanan Publik',
         tipe: 'skala',
         pertanyaan: `Anda koordinator layanan perizinan daring. Setelah Anda menambah dua petugas penjawab telepon, jumlah panggilan yang menanyakan status permohonan tetap tinggi pada setiap awal pekan. Catatan panggilan menunjukkan sebagian besar penelepon tidak menerima pemberitahuan status karena pesan hanya dikirim lewat SMS ke nomor yang diisi saat mendaftar, dan banyak nomor itu sudah tidak aktif. Aplikasi sudah punya halaman cek status mandiri yang jarang dipakai, dan surel pemohon juga tercatat saat mendaftar. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2203,6 +2273,7 @@ Cara cepat: Telusuri penyebab masalah dari catatan yang tersedia, lalu bandingka
       // tkp-kasus-pp-11 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 6,
+        lesson: 'Pelayanan Publik',
         tipe: 'skala',
         pertanyaan: `Anda penghubung perusahaan jasa pengiriman yang bermitra dengan dinas perizinan untuk mengantar izin usaha. Pagi ini kurir Anda melapor bahwa izin milik Bu Rahma diserahkan kepada pemilik toko di sebelahnya yang namanya mirip, dan toko itu sudah membukanya. Kontrak kemitraan mengharuskan penghubung perusahaan melapor kepada penghubung dinas pada hari yang sama bila dokumen salah antar, sedangkan dinas yang menerbitkan ulang izin. Kurir masih berada di sekitar toko dan harus berangkat ke alamat berikutnya setengah jam lagi. Bagaimana Anda menanganinya?`,
         opsi: [
@@ -2228,6 +2299,7 @@ Cara cepat: Pisahkan apa yang dapat Anda lakukan sendiri sekarang dari apa yang 
       // tkp-kasus-pp-14 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 7,
+        lesson: 'Pelayanan Publik',
         tipe: 'skala',
         pertanyaan: `Dalam rapat unit, Anda sebagai kepala unit layanan memaparkan rencana mengganti nomor antrean kertas dengan pendaftaran lewat aplikasi mulai bulan depan. Petugas senior yang lama melayani lansia keberatan karena banyak lansia belum memiliki ponsel pintar. Sepertiga pengguna loket berusia di atas enam puluh tahun, tetapi belum ada data berapa yang benar-benar tidak dapat mendaftar, sebab sebagian datang bersama keluarga. Unit hanya punya tiga loket, tidak cukup untuk dua jalur antrean tetap. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2253,6 +2325,7 @@ Cara cepat: Perlakukan keberatan sebagai informasi yang perlu diuji, lalu lihat 
       // tkp-kasus-pp-10 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 8,
+        lesson: 'Pelayanan Publik',
         tipe: 'skala',
         pertanyaan: `Seorang pemohon izin usaha menerima dua perkiraan waktu: pusat panggilan dinas menyebut tiga hari kerja, sedangkan petugas loket menyebut tujuh hari kerja. Ia menghubungi Anda, anggota tim informasi layanan, karena akan menyerahkan izin itu kepada bank akhir pekan depan. Status berkasnya dalam verifikasi dan dinyatakan lengkap kemarin, sedangkan maklumat pelayanan menetapkan standar lima hari kerja sejak berkas lengkap. Anda dapat melihat status berkas, tetapi tidak dapat mempercepatnya. Sikap Anda adalah ...`,
         opsi: [
@@ -2283,6 +2356,7 @@ Cara cepat: Periksa lebih dulu informasi tertulis dan data yang dapat Anda lihat
       // tkp-kasus-jk-22 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 9,
+        lesson: 'Jejaring Kerja',
         tipe: 'skala',
         pertanyaan: `Anda warga yang aktif di karang taruna dan mengenal seorang kepala seksi di dinas pekerjaan umum karena pernah sekelas. Ketua RT meminta Anda menitipkan proposal perbaikan jalan kampung langsung kepada kenalan itu agar didahulukan. Dinas hanya menerima proposal lewat loket dan menelaahnya menurut urutan masuk, dan proposal itu belum ditandatangani lurah. Anda tidak punya wewenang atas telaah proposal. Sikap Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2308,6 +2382,7 @@ Cara cepat: Bedakan menolong lewat jalur yang berlaku dari memakai kedekatan, la
       // tkp-kasus-jk-02 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 10,
+        lesson: 'Jejaring Kerja',
         tipe: 'skala',
         pertanyaan: `Anda pelaksana yang menggabungkan data penerima bantuan dari dua unit dalam satu lembar kerja bersama. Unit pertama menulis nama kecamatan secara lengkap, sedangkan unit kedua memakai kode singkatan, sehingga penjumlahan per kecamatan terpecah menjadi dua baris. Pedoman data dinas menetapkan penulisan nama kecamatan secara lengkap. Kedua unit akan memakai lembar kerja itu bulan depan. Apa keputusan Anda yang paling tepat?`,
         opsi: [
@@ -2333,6 +2408,7 @@ Cara cepat: Bandingkan standar yang sudah ada dengan cara tiap unit bekerja, lal
       // tkp-kasus-jk-04 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 11,
+        lesson: 'Jejaring Kerja',
         tipe: 'skala',
         pertanyaan: `Anda koordinator forum lintas unit di sebuah dinas. Unit survei menargetkan hasil akhir survei pada akhir bulan, sedangkan unit kebijakan membutuhkan data survei pada tanggal 15 untuk menyusun rancangan peraturan. Tim survei menyatakan hasil antara dapat dibuka setelah pengumpulan data selesai pada tanggal 12. Forum ini memfasilitasi dan tidak berwenang memerintah salah satu unit. Kedua kepala unit bersedia hadir pada pertemuan minggu ini. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2358,6 +2434,7 @@ Cara cepat: Pikirkan kebutuhan sah masing-masing pihak, dan siapa yang tidak ber
       // tkp-kasus-jk-21 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 12,
+        lesson: 'Jejaring Kerja',
         tipe: 'skala',
         pertanyaan: `Anda pegawai baru yang membantu panitia pelatihan internal. Panitia membutuhkan narasumber tentang pengelolaan arsip, dan Anda mengenal seorang pejabat di instansi lain yang menguasainya karena ia kenalan keluarga Anda. Pejabat itu belum mengetahui kebutuhan pelatihan, dan dua calon narasumber lain yang dikenal panitia juga tersedia. Prosedur panitia mengharuskan undangan narasumber dikirim lewat surat resmi dari unit, dan anggaran honor narasumber sudah tersedia. Menetapkan narasumber bukan wewenang Anda. Apa yang paling tepat Anda lakukan?`,
         opsi: [
@@ -2383,6 +2460,7 @@ Cara cepat: Siapa yang memutuskan, dan apa yang perlu diketahui orang itu tentan
       // tkp-kasus-jk-24 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 13,
+        lesson: 'Jejaring Kerja',
         tipe: 'skala',
         pertanyaan: `Anda koordinator panitia acara penyuluhan sebuah dinas. Dalam rapat panitia yang sedang berlangsung, sponsor swasta menawarkan dana yang menutup kekurangan anggaran, dengan syarat materi acara menyebut produknya dipilih dinas. Lima dari tujuh anggota panitia setuju menerima karena dana kurang, sedangkan seorang anggota keberatan dan merasa pendapatnya diabaikan. Aturan dinas membolehkan sponsor mencantumkan logo, tetapi melarang pernyataan bahwa produk dipilih dinas. Apa yang sebaiknya Anda lakukan sebagai koordinator?`,
         opsi: [
@@ -2408,6 +2486,7 @@ Cara cepat: Suara siapa yang belum didengar, dan apa yang dibolehkan aturan sebe
       // tkp-kasus-jk-19 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 14,
+        lesson: 'Jejaring Kerja',
         tipe: 'skala',
         pertanyaan: `Anda kepala unit analisis yang menerima laporan mingguan dari tim lapangan di bidang lain. Laporan itu terlambat tiga minggu berturut-turut, dan analisis unit Anda ikut tertunda. Setelah bertanya sepintas, Anda tahu satu petugas lapangan menangani dua kecamatan karena rekannya cuti panjang. Petugas di unit Anda ada yang punya waktu luang dan paham data lapangan. Pembagian petugas ditetapkan kepala bidang tim lapangan, dan Anda hanya dapat mengusulkan. Langkah apa yang paling tepat Anda ambil?`,
         opsi: [
@@ -2433,6 +2512,7 @@ Cara cepat: Apa yang membuat keterlambatan itu terus berulang dari sudut pihak y
       // tkp-kasus-jk-11 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 15,
+        lesson: 'Jejaring Kerja',
         tipe: 'skala',
         pertanyaan: `Anda penghubung instansi dengan pemerintah desa yang baru menjadi mitra kegiatan penyuluhan. Kepala desa terbiasa menyepakati kegiatan lewat telepon dan merasa permintaan surat resmi bernada tidak percaya. Kepala desa menyatakan tidak berkeberatan mengikuti cara kerja lain bila alasannya jelas. Prosedur instansi mensyaratkan setiap kesepakatan kegiatan tertulis agar anggarannya dapat dicairkan. Anda dapat mengusulkan cara kerja yang disepakati kedua pihak, dan kegiatan pertama berlangsung bulan depan. Apa langkah Anda yang paling tepat?`,
         opsi: [
@@ -2458,6 +2538,7 @@ Cara cepat: Cermati kebiasaan mitra dan syarat prosedur, lalu lihat apakah kedua
       // tkp-kasus-jk-23 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 16,
+        lesson: 'Jejaring Kerja',
         tipe: 'skala',
         pertanyaan: `Anda anggota tim yang menyusun kajian bersama seorang rekan dari unit lain untuk dilaporkan kepada pimpinan. Menurut catatan pembagian tugas pada rapat awal, Anda menyusun tiga dari empat bagian kajian. Rekan itu dekat dengan kepala bidang dan menyatakan bahwa namanya akan ditulis sebagai penyusun utama. Urutan nama penyusun ditetapkan kepala bidang, dan Anda hanya dapat mengusulkan. Laporan akan dikirim pekan depan. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2488,6 +2569,7 @@ Cara cepat: Rekam kerja apa yang dapat dilihat bersama, dan siapa yang berhak me
       // tkp-kasus-sb-06 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 17,
+        lesson: 'Sosial Budaya',
         tipe: 'skala',
         pertanyaan: `Anda warga yang baru pindah ke sebuah kampung. Pada pertemuan warga, Anda menyapa seorang sesepuh dengan sebutan akrab yang biasa Anda pakai kepada kenalan sebaya, lalu beberapa warga terdiam. Seorang tetangga kemudian memberi tahu Anda dengan ramah bahwa di kampung itu sesepuh biasa disapa dengan sebutan yang lebih hormat. Sesepuh tersebut masih berada di balai pertemuan dan tampak tidak marah. Apa tindakan Anda yang paling tepat?`,
         opsi: [
@@ -2513,6 +2595,7 @@ Cara cepat: Siapa yang berhak menerima perbaikan, dan apakah ia masih dapat diju
       // tkp-kasus-sb-10 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 18,
+        lesson: 'Sosial Budaya',
         tipe: 'skala',
         pertanyaan: `Anda pegawai baru yang akan ditempatkan di kantor layanan pada wilayah dengan bahasa dan adat yang belum Anda kenal. Sebelum berangkat, Anda mengikuti pelatihan orientasi dua hari. Panitia menyediakan sesi tanya jawab dengan seorang tokoh masyarakat dari wilayah itu dan modul tertulis tentang ungkapan dasar bahasa setempat. Seorang peserta lain pernah bertugas di wilayah itu. Waktu belajar terbatas, dan modul itu tidak membahas kebiasaan sehari-hari warga. Apa langkah Anda yang paling tepat?`,
         opsi: [
@@ -2538,6 +2621,7 @@ Cara cepat: Bagian mana dari kebutuhan Anda yang belum ditutup bahan yang ada, d
       // tkp-kasus-sb-08 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 19,
+        lesson: 'Sosial Budaya',
         tipe: 'skala',
         pertanyaan: `Anda staf dinas kebudayaan yang menjadi penghubung dengan sebuah sanggar kesenian tradisional. Pengurus sanggar ingin mengiringi pertunjukan dengan alat musik modern agar menarik penonton muda, sedangkan sebagian penabuh muda menolak karena khawatir irama khas pertunjukan itu hilang. Keduanya bersedia bertemu bila diundang, dan pertunjukan berikutnya baru berlangsung dua bulan lagi. Anda hanya berwenang mengusulkan, bukan memutuskan format pertunjukan. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2563,6 +2647,7 @@ Cara cepat: Apakah pihak yang berbeda pandangan sudah saling mendengar alasan ma
       // tkp-kasus-sb-05 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 20,
+        lesson: 'Sosial Budaya',
         tipe: 'skala',
         pertanyaan: `Anda petugas desa yang mengatur pemakaian balai warga. Pada Kamis malam pukul 19.00, kelompok latihan tari sudah tercatat memakai aula sejak dua minggu lalu. Ketua kelompok pengajian anak datang ke loket dan meminta aula pada jam yang sama karena anggotanya baru pulang bekerja pada waktu itu. Pengajian beranggotakan sekitar dua belas orang, sedangkan ruang pertemuan kecil di balai itu kosong dan cukup untuk jumlah tersebut. Apa yang sebaiknya Anda lakukan?`,
         opsi: [
@@ -2588,6 +2673,7 @@ Cara cepat: Hak siapa yang sudah lebih dahulu berlaku, dan siapa yang perlu meng
       // tkp-kasus-sb-19 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 21,
+        lesson: 'Sosial Budaya',
         tipe: 'skala',
         pertanyaan: `Anda kepala seksi pemberdayaan masyarakat di kecamatan dan memimpin musyawarah perencanaan desa. Musyawarah biasanya dimulai pukul 20.00 di balai desa, dan sebagian besar yang hadir laki-laki. Sejumlah perempuan menyampaikan bahwa mereka sulit hadir malam hari karena mengurus anak, tetapi dapat hadir pukul 16.00. Laki-laki pekerja ladang juga dapat hadir pada jam itu. Balai desa memiliki ruang yang dapat dipakai bermain anak. Keputusan apa yang paling tepat Anda ambil?`,
         opsi: [
@@ -2613,6 +2699,7 @@ Cara cepat: Apakah cara yang dipakai membuat pihak yang terhambat ikut memutuska
       // tkp-kasus-sb-14 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 22,
+        lesson: 'Sosial Budaya',
         tipe: 'skala',
         pertanyaan: `Anda staf dinas yang menjadi penghubung antara tim survei dan sebuah desa adat. Tim dijadwalkan mengambil data di kawasan hutan desa pada Senin, padahal menurut pemangku adat kawasan itu tertutup bagi orang luar sampai Rabu selama masa larangan adat. Pemangku adat bersedia mengantar tim ke sisi desa yang tidak dilarang. Laporan akhir bulan harus memuat data hutan dan sisi desa, dan ketua tim ingin jadwal tidak berubah. Anda hanya berwenang mengusulkan kepada ketua tim. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2638,6 +2725,7 @@ Cara cepat: Bagian pekerjaan mana yang tidak dapat berjalan sekarang, dan bagian
       // tkp-kasus-sb-16 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 23,
+        lesson: 'Sosial Budaya',
         tipe: 'skala',
         pertanyaan: `Anda pelaksana di kantor desa wisata yang menyusun brosur bagi pengunjung. Setelah separuh dari seribu brosur dibagikan, seorang warga menyampaikan bahwa brosur menyebut upacara adat desa sebagai hiburan yang boleh difoto kapan saja, padahal pemangku adat meminta pengunjung tidak memotret pada bagian tertentu upacara. Sisa brosur masih ada di kantor. Pemangku adat bersedia memeriksa naskah. Tindakan apa yang paling tepat Anda ambil?`,
         opsi: [
@@ -2663,6 +2751,7 @@ Cara cepat: Siapa yang memahami makna yang disinggung, dan siapa yang sudah meme
       // tkp-kasus-sb-20 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 24,
+        lesson: 'Sosial Budaya',
         tipe: 'skala',
         pertanyaan: `Anda warga yang ikut dalam panitia pertunjukan tradisi tahunan kampung. Banyak perantau ingin menyaksikan acara itu, dan sebagian pemuda panitia mengusulkan siaran langsung di media sosial. Para sesepuh keberatan karena hanya bagian pertunjukan yang boleh disaksikan orang di luar warga, tetapi mereka bersedia menunjukkan bagian yang boleh disiarkan. Keputusan akhir ada pada panitia, dan Anda hanya dapat mengusulkan. Usul apa yang paling tepat Anda sampaikan?`,
         opsi: [
@@ -2693,6 +2782,7 @@ Cara cepat: Siapa yang menentukan batas, dan apakah keinginan pihak lain tetap d
       // tkp-kasus-tik-07 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 25,
+        lesson: 'Teknologi Informasi dan Komunikasi',
         tipe: 'skala',
         pertanyaan: `Anda warga yang memakai aplikasi layanan kependudukan di ponsel. Sebuah pesan singkat dari nomor tak dikenal mengaku dari layanan kependudukan dan menyatakan akun Anda akan ditutup hari ini, kecuali Anda memasukkan kode verifikasi melalui tautan di pesan itu. Pengumuman di aplikasi resmi menyebutkan bahwa kode verifikasi hanya dimasukkan di dalam aplikasi, yang juga menyediakan kanal pengaduan. Anda belum membuka tautan itu, dan status akun dapat Anda lihat langsung di aplikasi. Bagaimana sikap Anda terhadap pesan itu?`,
         opsi: [
@@ -2718,6 +2808,7 @@ Cara cepat: Perhatikan sumber pesan, isi pengumuman resmi, dan bagian yang dapat
       // tkp-kasus-tik-04 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 26,
+        lesson: 'Teknologi Informasi dan Komunikasi',
         tipe: 'skala',
         pertanyaan: `Anda petugas loket pendaftaran di sebuah puskesmas. Sistem pendaftaran daring berhenti bekerja sejak pagi dan menurut teknisi baru pulih sekitar dua jam lagi, sementara belasan pasien sudah mengantre. Prosedur cadangan puskesmas mengizinkan pendaftaran dengan formulir kertas, yang datanya harus dimasukkan ulang ke sistem setelah pulih. Anda tidak dapat memperbaiki sistem itu, dan data pasien tidak boleh dibagikan di luar petugas pendaftaran. Bagaimana Anda menangani pendaftaran pasien?`,
         opsi: [
@@ -2743,6 +2834,7 @@ Cara cepat: Perhatikan perkiraan lama gangguan, cara yang diizinkan, dan jenis d
       // tkp-kasus-tik-09 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 27,
+        lesson: 'Teknologi Informasi dan Komunikasi',
         tipe: 'skala',
         pertanyaan: `Anda pegawai baru di dinas pertanian dan baru menyelesaikan kunjungan penyuluhan di tiga desa. Untuk merapikan laporan, Anda memakai asisten AI yang disetujui kantor. Hasilnya enak dibaca, tetapi menyebut peserta sebanyak 84 orang padahal catatan lapangan Anda mencatat 48 orang, dan memuat satu kegiatan demonstrasi yang tidak ada di catatan itu. Catatan lapangan asli masih ada di tas Anda, dan laporan harus dikirim kepada koordinator sore ini. Apa langkah Anda yang paling tepat?`,
         opsi: [
@@ -2768,6 +2860,7 @@ Cara cepat: Perhatikan perbedaan isi dengan dokumen asli, tenggat pengiriman, da
       // tkp-kasus-tik-12 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 28,
+        lesson: 'Teknologi Informasi dan Komunikasi',
         tipe: 'skala',
         pertanyaan: `Anda kepala sebuah unit pelayanan yang memiliki tiga seksi. Kantor pusat telah menetapkan bahwa aplikasi persuratan lama ditutup pada akhir kuartal dan setiap unit beralih ke aplikasi baru. Baru satu seksi yang sudah lancar memakai aplikasi baru, sedangkan dua seksi lain masih sering salah mengirim surat. Anda dapat mengatur jadwal kerja seksi, dan pusat menyediakan dua sesi pelatihan untuk unit Anda. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2793,6 +2886,7 @@ Cara cepat: Perhatikan kesiapan tiap seksi, dukungan yang sudah tersedia, dan te
       // tkp-kasus-tik-23 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 29,
+        lesson: 'Teknologi Informasi dan Komunikasi',
         tipe: 'skala',
         pertanyaan: `Anda pegawai baru di sebuah dinas. Surel dari alamat yang sangat mirip dengan alamat kepala dinas meminta Anda dan dua rekan mengisi daftar gaji melalui sebuah tautan hari ini. Salah satu rekan di ruangan Anda baru saja memasukkan kata sandi akunnya pada halaman dari tautan itu, sedangkan rekan lainnya hampir membukanya. Tim keamanan informasi hanya menangani laporan yang masuk melalui formulir pada intranet. Anda tidak berwenang memblokir akun maupun mengatur sistem surel. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2818,6 +2912,7 @@ Cara cepat: Perhatikan siapa yang sudah menjadi korban, siapa yang masih dapat d
       // tkp-kasus-tik-15 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 30,
+        lesson: 'Teknologi Informasi dan Komunikasi',
         tipe: 'skala',
         pertanyaan: `Anda penghubung dinas sosial untuk sebuah desa mitra penyaluran bantuan. Daftar penerima di dinas memuat 412 nama, sedangkan daftar yang dipegang desa memuat 374 nama, sehingga ada selisih 38 nama. Penyaluran dilakukan dua pekan lagi. Anda dapat melihat daftar kedua pihak beserta dokumen pendukung masing-masing, tetapi penetapan daftar akhir berada pada kepala bidang di dinas. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
@@ -2843,6 +2938,7 @@ Cara cepat: Perhatikan asal tiap daftar, dokumen yang dapat Anda lihat, dan peme
       // tkp-kasus-tik-20 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 31,
+        lesson: 'Teknologi Informasi dan Komunikasi',
         tipe: 'skala',
         pertanyaan: `Anda anggota tim lapangan yang akan mensurvei calon penerima bantuan hari Kamis. Daftar calon penerima beserta alamatnya disimpan di folder bersama milik bagian data dan dibagikan melalui tautan yang dapat dibuka siapa pun yang memilikinya. Enam anggota tim lapangan memakai tautan itu karena belum terdaftar di sistem penyimpanan, yang dapat memberi akses atas nama lewat surel kerja. Aturan kantor melarang data calon penerima disimpan di akun pribadi. Hanya bagian data yang dapat mengubah pengaturan folder, dan bagian itu pernah mengganti tautan tanpa pemberitahuan sehingga survei terhenti. Bagaimana sikap Anda?`,
         opsi: [
@@ -2873,6 +2969,7 @@ Cara cepat: Perhatikan siapa yang dapat melihat data sekarang, kebutuhan kerja t
       // tkp-kasus-prof-07 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 32,
+        lesson: 'Profesionalisme',
         tipe: 'skala',
         pertanyaan: `Anda petugas pendata di sebuah desa terpencil. Sekarang pukul 15.30. Laporan harian wajib diunggah lewat aplikasi sebelum pukul 17.00, tetapi sejak siang jaringan seluler terputus dan baru aktif di kantor kecamatan, sekitar satu jam perjalanan dari lokasi Anda. Data warga hari ini sudah Anda catat di buku lapangan. Aturan dinas membolehkan laporan susulan paling lambat esok pagi bila kendala jaringan dilaporkan lewat telepon kepada koordinator, yang menerima laporan kendala sampai pukul 18.00. Apa langkah Anda yang paling tepat?`,
         opsi: [
@@ -2898,6 +2995,7 @@ Cara cepat: Apa yang masih mungkin dicapai sebelum batas, dan siapa yang perlu m
       // tkp-kasus-prof-03 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 33,
+        lesson: 'Profesionalisme',
         tipe: 'skala',
         pertanyaan: `Anda penghubung unit Anda dengan sebuah lembaga pelatihan mitra. Kemarin mitra meminta daftar nama peserta untuk mencetak sertifikat, paling lambat Jumat siang, dan Anda berjanji mengirimnya kemarin sore. Jumat pagi Anda sadar daftar itu belum dikirim karena terlewat dalam kesibukan, sedangkan mitra belum menghubungi Anda. Daftar nama sudah tersedia di berkas unit, dan sertifikat itu dijadwalkan dibagikan pada acara penutupan akhir pekan. Bagaimana sikap Anda?`,
         opsi: [
@@ -2923,6 +3021,7 @@ Cara cepat: Apa yang masih dapat dikerjakan hari ini, dan siapa yang sedang berg
       // tkp-kasus-prof-09 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 34,
+        lesson: 'Profesionalisme',
         tipe: 'skala',
         pertanyaan: `Anda panitia pendaftaran pada pelatihan dua hari yang diadakan kantor. Daftar hadir dipakai untuk menerbitkan sertifikat dan menghitung jam pelatihan setiap pegawai. Hari ini Dimas, rekan dekat Anda, pulang pukul 11.00 karena urusan keluarga, padahal sesi baru selesai pukul 16.00. Sebelum pergi ia meminta Anda memarafkan kolom kehadirannya hingga sore agar jam pelatihannya tidak dikurangi. Koordinator pelatihan menetapkan jam pegawai yang izin berdasarkan keterangan tertulis yang masuk sebelum daftar hadir ditutup pukul 16.00. Sikap Anda adalah ...`,
         opsi: [
@@ -2948,6 +3047,7 @@ Cara cepat: Untuk apa catatan resmi itu dipakai oleh pihak lain, dan jalan sah a
       // tkp-kasus-prof-18 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 35,
+        lesson: 'Profesionalisme',
         tipe: 'skala',
         pertanyaan: `Anda kepala unit pendaftaran di sebuah dinas. Dalam tiga bulan terakhir, kesalahan penulisan nomor identitas pada formulir pemohon muncul empat kali, dan dua kali di antaranya sudah ditangani dengan mengingatkan petugas. Data menunjukkan keempat kesalahan terjadi pada formulir cetak lama yang kolom nomornya tidak berpetak, sedangkan formulir berpetak yang baru dipakai di dua loket tidak menimbulkan kesalahan. Stok formulir berpetak tersedia di gudang unit. Bagaimana Anda menindaklanjutinya?`,
         opsi: [
@@ -2973,6 +3073,7 @@ Cara cepat: Kapan masalah muncul dan kapan tidak, dan apakah perbaikan terdahulu
       // tkp-kasus-prof-17 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 36,
+        lesson: 'Profesionalisme',
         tipe: 'skala',
         pertanyaan: `Anda koordinator tim penyusun laporan di sebuah dinas. Pimpinan menetapkan format laporan baru berbasis lembar kerja bersama mulai bulan depan. Bu Wati, rekan senior yang paling teliti, keberatan karena data tahun-tahun lalu tersimpan di format lama dan ia khawatir riwayat angka tidak terbaca. Dua anggota lain ingin segera beralih. Anda dapat mengatur cara tim mencoba format baru, sedangkan tanggal berlakunya tetap. Keputusan Anda adalah ...`,
         opsi: [
@@ -2998,6 +3099,7 @@ Cara cepat: Apa dasar kekhawatiran yang disampaikan, dan bagian perubahan mana y
       // tkp-kasus-prof-21 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 37,
+        lesson: 'Profesionalisme',
         tipe: 'skala',
         pertanyaan: `Anda petugas penyuluh di sebuah puskesmas. Sekarang pukul 08.00. Penyuluhan imunisasi di balai desa pukul 09.00 sudah diumumkan kepada warga, tetapi kepala puskesmas meminta revisi laporan imunisasi yang harus terkirim kepada dinas kesehatan sebelum pukul 12.00. Revisi itu hanya dapat dikerjakan dari berkas di komputer Anda dan memerlukan sekitar dua jam, sedangkan menyiapkan bahan untuk Mbak Dewi memerlukan setengah jam. Kepala puskesmas membolehkan petugas meminta bantuan sesama penyuluh, dan Mbak Dewi dapat menggantikan penyuluhan bila diberi bahan. Apa langkah Anda yang paling tepat?`,
         opsi: [
@@ -3023,6 +3125,7 @@ Cara cepat: Kewajiban mana yang harus Anda pegang sendiri, dan mana yang dapat d
       // tkp-kasus-prof-15 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 38,
+        lesson: 'Profesionalisme',
         tipe: 'skala',
         pertanyaan: `Anda pegawai baru di tim pemeriksa dokumen sebuah dinas. Dalam draf laporan Anda mencatat satu temuan: sebagian berkas hibah tidak memuat tanda tangan penerima, dan berkas pendukungnya lengkap. Ketua tim, Pak Arif, meminta temuan itu tidak dicantumkan pekan ini karena ia akan memperbaikinya bulan depan. Laporan dikirim kepada inspektur pekan ini, dan hanya ketua tim yang dapat mengubah isi laporan akhir. Anda hanya dapat mengusulkan perubahan. Bagaimana sebaiknya Anda menanggapi?`,
         opsi: [
@@ -3053,6 +3156,7 @@ Cara cepat: Siapa yang memegang keputusan akhir atas laporan itu, dan sejauh man
       // tkp-kasus-ar-10 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 39,
+        lesson: 'Anti Radikalisme',
         tipe: 'skala',
         pertanyaan: `Anda warga yang menjadi anggota panitia peringatan hari kemerdekaan tingkat RW, di bawah pembinaan ketua RW. Dalam rapat, mayoritas panitia menyetujui iuran dua kali lipat bagi warga pendatang dengan alasan mereka belum lama tinggal di sana. Biaya kegiatan dihitung sama untuk setiap rumah, dan keputusan itu belum diumumkan kepada warga. Anda tidak setuju, tetapi belum bersuara dalam rapat. Ketua panitia masih menerima usulan perbaikan keputusan. Sikap Anda yang paling tepat adalah ...`,
         opsi: [
@@ -3078,6 +3182,7 @@ Cara cepat: Perhatikan dasar perbedaan perlakuan itu dan apakah masih ada kesemp
       // tkp-kasus-ar-09 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 40,
+        lesson: 'Anti Radikalisme',
         tipe: 'skala',
         pertanyaan: `Anda anggota tim yang baru ditunjuk memoderasi forum diskusi kebijakan internal kantor. Beberapa diskusi sebelumnya memanas dan pernah muncul komentar yang menyerang pribadi. Anda belum pernah memoderasi forum, dan pedoman forum belum ada. Unit TIK membuka pelatihan moderasi forum pekan ini bagi pegawai yang ditunjuk, sedangkan penetapan pedoman menjadi urusan pimpinan, yang menerima usulan dari moderator. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
@@ -3103,6 +3208,7 @@ Cara cepat: Perhatikan bekal apa yang sudah tersedia dan siapa yang dapat meneta
       // tkp-kasus-ar-05 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 41,
+        lesson: 'Anti Radikalisme',
         tipe: 'skala',
         pertanyaan: `Anda petugas loket pengurusan izin usaha. Seorang pemohon yang sudah mengambil nomor antrean melihat nama dan mendengar logat Anda, lalu meminta dilayani petugas lain karena menurutnya orang dari daerah Anda tidak dapat dipercaya. Berkasnya lengkap, loket sebelah melayani izin yang sama dengan standar yang sama, dan permohonannya dapat Anda selesaikan di loket ini. Antrean di belakangnya mulai panjang. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
@@ -3128,6 +3234,7 @@ Cara cepat: Perhatikan apa yang menjadi hak pengguna dan apa yang hanya menjadi 
       // tkp-kasus-ar-04 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 42,
+        lesson: 'Anti Radikalisme',
         tipe: 'skala',
         pertanyaan: `Anda warga yang menerima pesan berantai di grup percakapan lingkungan. Pesan itu menyebut alamat sebuah rumah kontrakan warga pendatang dan mengajak warga berkumpul di sana malam ini untuk mengusir penghuninya secara paksa. Belum ada yang menanggapi, padahal waktu berkumpul tinggal tiga jam lagi dan belasan anggota grup sudah membacanya. Anda tidak mengenal pengirimnya, dan ketua RT dapat dihubungi lewat telepon. Apa yang sebaiknya Anda lakukan?`,
         opsi: [
@@ -3153,6 +3260,7 @@ Cara cepat: Perhatikan seberapa dekat waktu kejadian dan siapa yang dapat bertin
       // tkp-kasus-ar-18 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 43,
+        lesson: 'Anti Radikalisme',
         tipe: 'skala',
         pertanyaan: `Anda penghubung kelurahan dengan paguyuban warga untuk rencana pembangunan pos layanan. Paguyuban mengirim surat keberatan yang memuat alasan sah, yaitu pos akan mengurangi lahan parkir warga. Namun satu kalimat di surat itu menyatakan warga akan menutup paksa lokasi dengan massa pada Senin pagi bila rencana tidak dibatalkan. Pengamanan lokasi diatur bersama aparat keamanan setempat. Keputusan rencana ada di tangan lurah, dan Anda hanya dapat memberi usulan. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
@@ -3178,6 +3286,7 @@ Cara cepat: Perhatikan bagian surat yang berupa pendapat dan bagian yang berupa 
       // tkp-kasus-ar-21 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 44,
+        lesson: 'Anti Radikalisme',
         tipe: 'skala',
         pertanyaan: `Anda pimpinan unit yang memimpin rapat penyusunan tim proyek tahunan. Rapat itu dihadiri dua belas anggota tim. Mayoritas anggota mengusulkan seorang rekan tidak diikutkan karena ia aktif di sebuah komunitas yang dianggap kurang cocok dengan budaya kerja tim. Penilaian kinerja rekan itu tercatat baik, dan tidak ada laporan pelanggaran tentangnya. Anda berwenang menetapkan susunan tim. Beberapa anggota mendukung usulan itu karena merasa lebih nyaman bekerja bersama. Keputusan Anda yang paling tepat adalah ...`,
         opsi: [
@@ -3203,6 +3312,7 @@ Cara cepat: Perhatikan hal apa yang berkaitan dengan pekerjaan dan hal apa yang 
       // tkp-kasus-ar-20 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 45,
+        lesson: 'Anti Radikalisme',
         tipe: 'skala',
         pertanyaan: `Anda penghubung dinas sosial dengan relawan di posko bantuan banjir. Pembagian paket dilakukan menurut daftar dinas yang disusun dari tingkat kerusakan rumah. Sekelompok warga setempat tiba-tiba menghadang penerima dari kampung lain dan menuntut paket diberikan lebih dahulu kepada warga sekampung. Antrean berhenti hampir setengah jam dan suasana mulai tegang. Anda hanya dapat mengusulkan cara pembagian, sedangkan komandan posko berada di tenda dan memutuskan setelah mendengar usulan. Apa langkah Anda yang paling tepat?`,
         opsi: [

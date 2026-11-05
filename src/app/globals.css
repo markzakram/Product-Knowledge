@@ -1233,6 +1233,95 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
   .ang-ubin .ubin { padding: 12px 14px; }
 }
 
+/* ── Halaman subtes: index samping ───────────────────────────────────────
+   Soal bisa panjang, jadi index category > lesson menempel di kanan (layar lebar)
+   dan melompat ke soalnya; semua soal tetap tampil. Kolom ini meniru .ang-samping.
+   Di layar sempit kolomnya dibuang (display: none) dan Isi soal pindah ke blok lipat
+   .indeks-atas di atas soal, supaya pembaca layar hanya menemukan satu. Tak ada
+   index di simulasi: tes asli tak punya dan bisa memberi petunjuk. */
+.subtes-tata {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 20vw, 280px);
+  gap: 28px;
+  align-items: start;
+}
+.subtes-tata-tunggal { grid-template-columns: minmax(0, 1fr); }
+.subtes-utama { min-width: 0; }
+/* Judul soal dan kelompok tak boleh tertutup header yang lengket saat dituju. */
+.kelompok, .soal[id] { scroll-margin-top: calc(var(--tinggi-kepala) + 23px); }
+
+.indeks-samping {
+  position: sticky;
+  top: calc(var(--tinggi-kepala) + 19px);
+  min-width: 0;
+  max-height: calc(100vh - var(--tinggi-kepala) - 35px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.indeks-samping > * { flex: none; }
+.indeks-judul { margin: 2px 8px 6px; }
+.indeks-daftar { list-style: none; margin: 0; padding: 0; }
+.indeks-anak { margin: 0 0 6px 10px; padding-left: 10px; border-left: 2px solid var(--garis); }
+.indeks-tautan {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--teks-2);
+}
+.indeks-tautan:hover { background: var(--redup); color: var(--teks); text-decoration: none; }
+.indeks-kategori { font-weight: 700; color: var(--teks); }
+.indeks-nama { min-width: 0; overflow-wrap: anywhere; }
+.indeks-jumlah { flex: none; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--teks-2); }
+.indeks-tautan[aria-current] { background: var(--aksen-lembut); color: var(--aksen); font-weight: 700; }
+.indeks-tautan[aria-current] .indeks-jumlah { color: inherit; }
+
+/* Blok lipat di atas soal; baru tampil di layar sempit. */
+.indeks-atas { display: none; }
+.indeks-atas summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 16px;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.indeks-atas summary::-webkit-details-marker { display: none; }
+.indeks-atas summary::after {
+  content: '›';
+  margin-left: auto;
+  flex: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--teks-2);
+  transition: transform .15s ease;
+}
+.indeks-atas[open] summary { border-bottom: 1px solid var(--garis); }
+.indeks-atas[open] summary::after { transform: rotate(90deg); }
+.indeks-badan { padding: 6px 8px 10px; }
+.indeks-atas .indeks-tautan { align-items: center; min-height: 44px; font-size: 14px; }
+
+@media (max-width: 1023.98px) {
+  .subtes-tata { grid-template-columns: minmax(0, 1fr); }
+  .indeks-samping { display: none; }
+  .indeks-atas {
+    display: block;
+    margin: 16px 0 0;
+    background: var(--kartu);
+    border: 1px solid var(--garis);
+    border-radius: 16px;
+  }
+}
+
 /* `screen` supaya kertas (lebarnya ~720px) tidak ikut memakai tata letak ponsel. */
 @media screen and (max-width: 767.98px) {
   .plat-kepala { gap: 14px; margin: 14px 0 20px; }
@@ -1514,6 +1603,7 @@ a.tetangga-sisi:hover { text-decoration: none; border-color: var(--aksen); }
      jatuh di bawah isi, selebar halaman. Sifat lengketnya dilepas: di kertas yang
      lebar, max-height bisa memotong isinya. */
   .ang-tata { display: block; }
+  .subtes-tata { display: block; }
   .samping { margin-top: 16px; }
   .ang-samping { position: static; max-height: none; overflow: visible; margin-top: 16px; }
   .ang-samping-hanya-toc { display: none; }

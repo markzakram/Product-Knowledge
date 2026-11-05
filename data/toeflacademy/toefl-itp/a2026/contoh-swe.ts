@@ -10,6 +10,7 @@ export const contohStructure: Kelompok[] = [
     soal: [
       {
         nomor: 1,
+        lesson: 'Structure > Verbs',
         tipe: 'pg',
         pertanyaan: `The city council has decided ___ a new park near the river.`,
         opsi: [
@@ -31,6 +32,7 @@ Opsi D ("built") salah karena V3 tidak dipakai setelah 'decide'.`,
       },
       {
         nomor: 2,
+        lesson: 'Structure > Nouns, Pronouns, and Word Forms',
         tipe: 'pg',
         pertanyaan: `Only ___ students passed the advanced calculus exam this year.`,
         opsi: [
@@ -52,6 +54,7 @@ Opsi D ("much") salah karena 'much' untuk uncountable noun.`,
       },
       {
         nomor: 3,
+        lesson: 'Structure > Nouns, Pronouns, and Word Forms',
         tipe: 'pg',
         pertanyaan: `The scientist explained the theory very ___.`,
         opsi: [
@@ -73,6 +76,7 @@ Opsi D ("clearness") salah karena noun tidak bisa menerangkan verb.`,
       },
       {
         nomor: 4,
+        lesson: 'Structure > Clauses and Sentence Patterns',
         tipe: 'pg',
         pertanyaan: `The report shows ___ most parents support the new park.`,
         opsi: [
@@ -94,6 +98,7 @@ Opsi D ("which") salah karena 'which' tidak dipakai sebagai penghubung setelah '
       },
       {
         nomor: 5,
+        lesson: 'Structure > Verbs',
         tipe: 'pg',
         pertanyaan: `The new train station ___ by a team of local engineers in 2021.`,
         opsi: [
@@ -115,6 +120,7 @@ Opsi D ("designed") salah karena subjek menerima aksi dan ada 'by ...', jadi per
       },
       {
         nomor: 6,
+        lesson: 'Structure > Clauses and Sentence Patterns',
         tipe: 'pg',
         pertanyaan: `The small cottage ___ the famous poet was born has become a popular tourist destination.`,
         opsi: [
@@ -136,6 +142,7 @@ Opsi D ("who") salah karena 'who' untuk orang.`,
       },
       {
         nomor: 7,
+        lesson: 'Structure > Verbs',
         tipe: 'pg',
         pertanyaan: `Professor Novak ___ the same textbook since she began teaching in 2011.`,
         opsi: [
@@ -157,6 +164,7 @@ Opsi D ("uses") salah karena 'since' memerlukan present perfect, bukan simple pr
       },
       {
         nomor: 8,
+        lesson: 'Structure > Verbs',
         tipe: 'pg',
         pertanyaan: `If the city had more funding, it ___ more public clinics.`,
         opsi: [
@@ -178,6 +186,7 @@ Opsi D ("would have built") salah karena bentuk tipe 3 untuk kejadian lampau.`,
       },
       {
         nomor: 9,
+        lesson: 'Structure > Verbs',
         tipe: 'pg',
         pertanyaan: `The list of approved thesis titles ___ posted on the department website every semester.`,
         opsi: [
@@ -199,6 +208,7 @@ Opsi D ("are") salah karena subjek intinya 'list' tunggal; 'thesis titles' hanya
       },
       {
         nomor: 10,
+        lesson: 'Structure > Clauses and Sentence Patterns',
         tipe: 'pg',
         pertanyaan: `Each year, thousands of geese ___ south to escape the cold winter.`,
         opsi: [
@@ -220,6 +230,7 @@ Opsi D ("to travel") salah karena to infinitive tidak bisa menjadi verb utama.`,
       },
       {
         nomor: 11,
+        lesson: 'Structure > Nouns, Pronouns, and Word Forms',
         tipe: 'pg',
         pertanyaan: `The department changed ___ admission policy last year.`,
         opsi: [
@@ -241,6 +252,7 @@ Opsi C ("it's") salah karena 'it's' adalah singkatan 'it is'.`,
       },
       {
         nomor: 12,
+        lesson: 'Structure > Nouns, Pronouns, and Word Forms',
         tipe: 'pg',
         pertanyaan: `Many undergraduates are interested ___ studying abroad after graduation.`,
         opsi: [
@@ -262,6 +274,7 @@ Opsi C ("for") salah karena 'interested' berpasangan dengan 'in'.`,
       },
       {
         nomor: 13,
+        lesson: 'Structure > Clauses and Sentence Patterns',
         tipe: 'pg',
         pertanyaan: `Most of the photographs ___ in the exhibition were created by local artists.`,
         opsi: [
@@ -283,6 +296,7 @@ Opsi D ("are displayed") salah karena membuat dua predikat tanpa kata penghubung
       },
       {
         nomor: 14,
+        lesson: 'Structure > Clauses and Sentence Patterns',
         tipe: 'pg',
         pertanyaan: `The new policy was popular with residents; ___, it was criticized by several historians.`,
         opsi: [
@@ -304,6 +318,7 @@ Opsi C ("although") salah karena 'although' tidak dipakai setelah titik koma unt
       },
       {
         nomor: 15,
+        lesson: 'Structure > Clauses and Sentence Patterns',
         tipe: 'pg',
         pertanyaan: `Not only ___ the cost of the repair work, but it also delayed its completion.`,
         opsi: [
@@ -332,6 +347,7 @@ export const contohWrittenExpression: Kelompok[] = [
     soal: [
       {
         nomor: 16,
+        lesson: 'Written Expression > Passive Voice',
         tipe: 'pg',
         pertanyaan: `The memoir(A) was(B) translate(C) into more than forty languages(D).`,
         opsi: [
@@ -351,6 +367,7 @@ Bagian lain (A "memoir", B "was", D "languages") sudah benar.`,
       },
       {
         nomor: 17,
+        lesson: 'Written Expression > Tenses and Agreement',
         tipe: 'pg',
         pertanyaan: `The scientists in the field camp carefully records(A) the air pressure(B) every(C) hour during(D) the experiment.`,
         opsi: [
@@ -370,6 +387,7 @@ Bagian lain (B "pressure", C "every", D "during") sudah benar.`,
       },
       {
         nomor: 18,
+        lesson: 'Written Expression > Pronoun',
         tipe: 'pg',
         pertanyaan: `The hotel(A) announced that(B) their(C) profits had increased(D) last year.`,
         opsi: [
@@ -389,6 +407,7 @@ Bagian lain (A "hotel", B "that", D "increased") sudah benar.`,
       },
       {
         nomor: 19,
+        lesson: 'Written Expression > Tenses and Agreement',
         tipe: 'pg',
         pertanyaan: `Scientists discover(A) the new(B) species in(C) the rainforest two years ago(D).`,
         opsi: [
@@ -408,6 +427,7 @@ Bagian lain (B "new", C "in", D "ago") sudah benar.`,
       },
       {
         nomor: 20,
+        lesson: 'Written Expression > Preposition',
         tipe: 'pg',
         pertanyaan: `The results of the experiment(A) are similar with(B) those(C) of earlier research(D).`,
         opsi: [
@@ -427,6 +447,7 @@ Bagian lain (A "experiment", C "those", D "research") sudah benar.`,
       },
       {
         nomor: 21,
+        lesson: 'Written Expression > Clauses and Conjunctions',
         tipe: 'pg',
         pertanyaan: `Although(A) the high(B) cost, the plan(C) was approved(D).`,
         opsi: [
@@ -446,6 +467,7 @@ Bagian lain (B "high", C "plan", D "approved") sudah benar.`,
       },
       {
         nomor: 22,
+        lesson: 'Written Expression > Clauses and Conjunctions',
         tipe: 'pg',
         pertanyaan: `The architect which(A) designed(B) the bridge(C) has won(D) several awards.`,
         opsi: [
@@ -465,6 +487,7 @@ Bagian lain (B "designed", C "bridge", D "won") sudah benar.`,
       },
       {
         nomor: 23,
+        lesson: 'Written Expression > Word Form',
         tipe: 'pg',
         pertanyaan: `The team worked very(A) hard(B) to finish the presentation(C) quick(D).`,
         opsi: [
@@ -484,6 +507,7 @@ Bagian lain (A "very", B "hard", C "presentation") sudah benar.`,
       },
       {
         nomor: 24,
+        lesson: 'Written Expression > Clauses and Conjunctions',
         tipe: 'pg',
         pertanyaan: `The author(A), whom(B) poems have been translated into many languages(C), will visit(D) the campus next week.`,
         opsi: [
@@ -503,6 +527,7 @@ Bagian lain (A "author", C "languages", D "visit") sudah benar.`,
       },
       {
         nomor: 25,
+        lesson: 'Written Expression > Pronoun',
         tipe: 'pg',
         pertanyaan: `The committee gave(A) we(B) two(C) weeks(D) to prepare the speech.`,
         opsi: [
@@ -522,6 +547,7 @@ Bagian lain (A "gave", C "two", D "weeks") sudah benar.`,
       },
       {
         nomor: 26,
+        lesson: 'Written Expression > Comparison',
         tipe: 'pg',
         pertanyaan: `This strategy(A) is as(B) effective(C) than(D) the traditional one.`,
         opsi: [
@@ -541,6 +567,7 @@ Bagian lain (A "strategy", B "as", C "effective") sudah benar.`,
       },
       {
         nomor: 27,
+        lesson: 'Written Expression > Gerund and Infinitive',
         tipe: 'pg',
         pertanyaan: `After(A) finishing(B) the trial run, the researchers suggested(C) to repeat(D) the study next year.`,
         opsi: [
@@ -560,6 +587,7 @@ Bagian lain (A "After", B "finishing", C "suggested") sudah benar.`,
       },
       {
         nomor: 28,
+        lesson: 'Written Expression > Gerund and Infinitive',
         tipe: 'pg',
         pertanyaan: `The company plans expanding(A) its operations(B) to three(C) new(D) cities.`,
         opsi: [
@@ -579,6 +607,7 @@ Bagian lain (B "operations", C "three", D "new") sudah benar.`,
       },
       {
         nomor: 29,
+        lesson: 'Written Expression > Parallel Structure',
         tipe: 'pg',
         pertanyaan: `Hiking(A), swimming(B), and to ride(C) bicycles are popular activities(D) in the park.`,
         opsi: [
@@ -598,6 +627,7 @@ Bagian lain (A "Hiking", B "swimming", D "activities") sudah benar.`,
       },
       {
         nomor: 30,
+        lesson: 'Written Expression > Passive Voice',
         tipe: 'pg',
         pertanyaan: `The ancient(A) tools were(B) finding(C) by a farmer while he was plowing(D) his field.`,
         opsi: [
@@ -617,6 +647,7 @@ Bagian lain (A "ancient", B "were", D "plowing") sudah benar.`,
       },
       {
         nomor: 31,
+        lesson: 'Written Expression > Parallel Structure',
         tipe: 'pg',
         pertanyaan: `The new software is faster(A), cheaper(B), and more reliability(C) than(D) the old one.`,
         opsi: [
@@ -636,6 +667,7 @@ Bagian lain (A "faster", B "cheaper", D "than") sudah benar.`,
       },
       {
         nomor: 32,
+        lesson: 'Written Expression > Word Form',
         tipe: 'pg',
         pertanyaan: `The discovery of aspirin had a significance(A) impact(B) on modern(C) medicine(D).`,
         opsi: [
@@ -655,6 +687,7 @@ Bagian lain (B "impact", C "modern", D "medicine") sudah benar.`,
       },
       {
         nomor: 33,
+        lesson: 'Written Expression > Conditional',
         tipe: 'pg',
         pertanyaan: `If I were(A) the principal, I will(B) improve(C) public transportation(D).`,
         opsi: [
@@ -674,6 +707,7 @@ Bagian lain (A "were", C "improve", D "transportation") sudah benar.`,
       },
       {
         nomor: 34,
+        lesson: 'Written Expression > Noun and Quantifier',
         tipe: 'pg',
         pertanyaan: `The scientists(A) did not have(B) many(C) time to complete the survey(D).`,
         opsi: [
@@ -693,6 +727,7 @@ Bagian lain (A "scientists", B "have", D "survey") sudah benar.`,
       },
       {
         nomor: 35,
+        lesson: 'Written Expression > Preposition',
         tipe: 'pg',
         pertanyaan: `The region(A) is famous of(B) its ancient(C) bridges(D).`,
         opsi: [
@@ -712,6 +747,7 @@ Bagian lain (A "region", C "ancient", D "bridges") sudah benar.`,
       },
       {
         nomor: 36,
+        lesson: 'Written Expression > Conditional',
         tipe: 'pg',
         pertanyaan: `If the team(A) had(B) started earlier(C), they would finish(D) the project on time.`,
         opsi: [
@@ -731,6 +767,7 @@ Bagian lain (A "team", B "had", C "earlier") sudah benar.`,
       },
       {
         nomor: 37,
+        lesson: 'Written Expression > Tenses and Agreement',
         tipe: 'pg',
         pertanyaan: `By the time(A) the conference ends(B), the organizers(C) will collect(D) feedback from over five hundred participants.`,
         opsi: [
@@ -750,6 +787,7 @@ Bagian lain (A "time", B "ends", C "organizers") sudah benar.`,
       },
       {
         nomor: 38,
+        lesson: 'Written Expression > Noun and Quantifier',
         tipe: 'pg',
         pertanyaan: `Less(A) people attended(B) the lecture(C) than expected(D).`,
         opsi: [
@@ -769,6 +807,7 @@ Bagian lain (B "attended", C "lecture", D "expected") sudah benar.`,
       },
       {
         nomor: 39,
+        lesson: 'Written Expression > Tenses and Agreement',
         tipe: 'pg',
         pertanyaan: `The findings(A) of the two trials suggests(B) that the therapy is effective(C) for most(D) patients.`,
         opsi: [
@@ -788,6 +827,7 @@ Bagian lain (A "findings", C "effective", D "most") sudah benar.`,
       },
       {
         nomor: 40,
+        lesson: 'Written Expression > Comparison',
         tipe: 'pg',
         pertanyaan: `Of the three(A) models(B), the second(C) one is more practical(D) and the least expensive.`,
         opsi: [

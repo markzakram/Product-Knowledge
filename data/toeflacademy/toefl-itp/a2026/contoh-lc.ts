@@ -16,6 +16,7 @@ export const contohListening: Kelompok[] = [
     soal: [
       {
         nomor: 1,
+        lesson: 'Part A > Idiom',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-01.mp3',
@@ -41,6 +42,7 @@ Opsi C ("She found the material easy to follow.") salah karena kata 'Barely' dan
       },
       {
         nomor: 2,
+        lesson: 'Part A > Suggestion',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-02.mp3',
@@ -66,6 +68,7 @@ Opsi D ("Start looking for a new apartment soon.") salah karena pria itu tidak m
       },
       {
         nomor: 3,
+        lesson: 'Part A > Agreement',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-03.mp3',
@@ -91,6 +94,7 @@ Opsi D ("He has already read every chapter on his own.") salah karena tidak dise
       },
       {
         nomor: 4,
+        lesson: 'Part A > Implication',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-04.mp3',
@@ -116,6 +120,7 @@ Opsi D ("She doesn't usually work with that medium.") salah karena ia memiliki c
       },
       {
         nomor: 5,
+        lesson: 'Part A > Negative Expression',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-05.mp3',
@@ -141,6 +146,7 @@ Opsi D ("She has stopped eating cereal recently.") salah karena ia masih rutin m
       },
       {
         nomor: 6,
+        lesson: 'Part A > Idiom',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-06.mp3',
@@ -166,6 +172,7 @@ Opsi D ("The doctor wants to do more tests on him.") salah karena dokter sudah t
       },
       {
         nomor: 7,
+        lesson: 'Part A > Implication',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-07.mp3',
@@ -191,6 +198,7 @@ Opsi D ("He could apply for the account online instead.") salah karena wanita it
       },
       {
         nomor: 8,
+        lesson: 'Part A > Suggestion',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-08.mp3',
@@ -216,6 +224,7 @@ Opsi C ("Move into a dormitory on campus.") salah karena pria itu tidak menyingg
       },
       {
         nomor: 9,
+        lesson: 'Part A > Feeling',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-09.mp3',
@@ -241,6 +250,7 @@ Opsi D ("She's indifferent to the change.") salah karena reaksinya sangat antusi
       },
       {
         nomor: 10,
+        lesson: 'Part A > Implication',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-10.mp3',
@@ -266,6 +276,7 @@ Opsi D ("All the equipment in the room is outdated.") salah karena sebagian head
       },
       {
         nomor: 11,
+        lesson: 'Part A > Implication',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-11.mp3',
@@ -291,6 +302,7 @@ Opsi D ("The opening night will be postponed.") salah karena tidak ada pernyataa
       },
       {
         nomor: 12,
+        lesson: 'Part A > Idiom',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-12.mp3',
@@ -316,6 +328,7 @@ Opsi D ("Her parents are worried about her future.") salah karena idiom tersebut
       },
       {
         nomor: 13,
+        lesson: 'Part A > Negative Expression',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-13.mp3',
@@ -341,6 +354,7 @@ Opsi D ("She needs more training on the software.") salah karena ia tidak menyeb
       },
       {
         nomor: 14,
+        lesson: 'Part A > Suggestion',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-14.mp3',
@@ -366,6 +380,7 @@ Opsi D ("Email his advisor to set up a meeting.") salah karena wanita tidak meny
       },
       {
         nomor: 15,
+        lesson: 'Part A > Negative Expression',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-15.mp3',
@@ -391,6 +406,7 @@ Opsi D ("She would rather see a different doctor.") salah karena ia tidak menyat
       },
       {
         nomor: 16,
+        lesson: 'Part A > Next Action',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-16.mp3',
@@ -416,6 +432,7 @@ Opsi D ("Call a technician to repair the copier.") salah karena ia akan memeriks
       },
       {
         nomor: 17,
+        lesson: 'Part A > Idiom',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-17.mp3',
@@ -441,6 +458,7 @@ Opsi D ("He already accepted a position at the company.") salah karena belum ada
       },
       {
         nomor: 18,
+        lesson: 'Part A > Feeling',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-18.mp3',
@@ -466,6 +484,7 @@ Opsi C ("She doesn't care how long it takes.") salah karena nada keluhannya menu
       },
       {
         nomor: 19,
+        lesson: 'Part A > Next Action',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-19.mp3',
@@ -491,6 +510,7 @@ Opsi D ("Get something to eat before boarding.") salah karena ia tidak menyebut 
       },
       {
         nomor: 20,
+        lesson: 'Part A > Agreement',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-20.mp3',
@@ -516,6 +536,7 @@ Opsi D ("He hasn't visited the garden this year.") salah karena komentarnya menu
       },
       {
         nomor: 21,
+        lesson: 'Part A > Wish and Conditional',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-21.mp3',
@@ -541,6 +562,7 @@ Opsi D ("He plans to order dessert after his meal.") salah karena tidak ada pemb
       },
       {
         nomor: 22,
+        lesson: 'Part A > Agreement',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-22.mp3',
@@ -566,6 +588,7 @@ Opsi C ("He forgot to bring his lab manual today.") salah karena ia malah memban
       },
       {
         nomor: 23,
+        lesson: 'Part A > Wish and Conditional',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-23.mp3',
@@ -591,6 +614,7 @@ Opsi D ("She wants to return her old bookshelf.") salah karena yang dimaksud 'ol
       },
       {
         nomor: 24,
+        lesson: 'Part A > Wish and Conditional',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-24.mp3',
@@ -616,6 +640,7 @@ Opsi D ("She prefers traveling in cold weather.") salah karena ia tidak menunjuk
       },
       {
         nomor: 25,
+        lesson: 'Part A > Setting',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-25.mp3',
@@ -641,6 +666,7 @@ Opsi D ("In an apartment rental office") salah karena kantor penyewaan tidak ses
       },
       {
         nomor: 26,
+        lesson: 'Part A > Suggestion',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-26.mp3',
@@ -666,6 +692,7 @@ Opsi D ("Come back when the line is shorter") salah karena ia menyarankan pindah
       },
       {
         nomor: 27,
+        lesson: 'Part A > Implication',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-27.mp3',
@@ -691,6 +718,7 @@ Opsi D ("She thinks the coffee here is too strong.") salah karena keluhannya ten
       },
       {
         nomor: 28,
+        lesson: 'Part A > Idiom',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-28.mp3',
@@ -716,6 +744,7 @@ Opsi C ("She has decided to cancel her recital.") salah karena ia hanya merasa g
       },
       {
         nomor: 29,
+        lesson: 'Part A > Setting',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-29.mp3',
@@ -741,6 +770,7 @@ Opsi C ("In a student advising center") salah karena pusat bimbingan akademik ti
       },
       {
         nomor: 30,
+        lesson: 'Part A > Implication',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-30.mp3',
@@ -771,6 +801,7 @@ Opsi C ("There is a snack shop near track four.") salah karena tidak ada penyebu
     soal: [
       {
         nomor: 31,
+        lesson: 'Part B > Main Topic',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-31.mp3',
@@ -808,6 +839,7 @@ Opsi D ("Several ways to cut down on waste in the dining hall") salah karena rua
       },
       {
         nomor: 32,
+        lesson: 'Part B > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-32.mp3',
@@ -845,6 +877,7 @@ Opsi D ("Give her more time to finish the proposal") salah karena tenggat akhir 
       },
       {
         nomor: 33,
+        lesson: 'Part B > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-33.mp3',
@@ -882,6 +915,7 @@ Opsi D ("More than 300") salah karena angka tiga ratus tidak pernah disebutkan d
       },
       {
         nomor: 34,
+        lesson: 'Part B > Inference',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-34.mp3',
@@ -919,6 +953,7 @@ Opsi D ("Count the bottles thrown away on her floor") salah karena penghitungan 
       },
       {
         nomor: 35,
+        lesson: 'Part B > Main Topic',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-35.mp3',
@@ -955,6 +990,7 @@ Opsi C ("How students can use the free campus shuttle service") salah karena shu
       },
       {
         nomor: 36,
+        lesson: 'Part B > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-36.mp3',
@@ -991,6 +1027,7 @@ Opsi C ("By asking an academic advisor to approve it") salah karena penasihat ak
       },
       {
         nomor: 37,
+        lesson: 'Part B > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-37.mp3',
@@ -1027,6 +1064,7 @@ Opsi D ("It is reserved only for faculty members.") salah karena tidak ada infor
       },
       {
         nomor: 38,
+        lesson: 'Part B > Inference',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-38.mp3',
@@ -1068,6 +1106,7 @@ Opsi D ("He has decided to stop driving to campus altogether.") salah karena pri
     soal: [
       {
         nomor: 39,
+        lesson: 'Part C > Main Topic',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-39.mp3',
@@ -1098,6 +1137,7 @@ Opsi D ("Which spices give chocolate its most popular flavors today") salah kare
       },
       {
         nomor: 40,
+        lesson: 'Part C > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-40.mp3',
@@ -1128,6 +1168,7 @@ Opsi D ("To decorate their royal temples") salah karena profesor tidak menyebut 
       },
       {
         nomor: 41,
+        lesson: 'Part C > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-41.mp3',
@@ -1158,6 +1199,7 @@ Opsi D ("They took out the chili peppers") salah karena profesor tidak mengataka
       },
       {
         nomor: 42,
+        lesson: 'Part C > Inference',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-42.mp3',
@@ -1188,6 +1230,7 @@ Opsi D ("It was rejected by most chocolate makers in Europe") salah karena tidak
       },
       {
         nomor: 43,
+        lesson: 'Part C > Main Topic',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-43.mp3',
@@ -1217,6 +1260,7 @@ Opsi C ("How scientists predict the timing of large solar storms") salah karena 
       },
       {
         nomor: 44,
+        lesson: 'Part C > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-44.mp3',
@@ -1246,6 +1290,7 @@ Opsi D ("Distant galaxies") salah karena profesor tidak menyebut galaksi lain se
       },
       {
         nomor: 45,
+        lesson: 'Part C > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-45.mp3',
@@ -1275,6 +1320,7 @@ Opsi D ("The sun shines for longer periods near the poles") salah karena lamanya
       },
       {
         nomor: 46,
+        lesson: 'Part C > Inference',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-46.mp3',
@@ -1304,6 +1350,7 @@ Opsi C ("They can only experience the aurora through photographs") salah karena 
       },
       {
         nomor: 47,
+        lesson: 'Part C > Main Topic',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-47.mp3',
@@ -1334,6 +1381,7 @@ Opsi D ("The causes of forest loss in the Amazon region today") salah karena ker
       },
       {
         nomor: 48,
+        lesson: 'Part C > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-48.mp3',
@@ -1364,6 +1412,7 @@ Opsi D ("It caused health problems for its collectors.") salah karena bahaya kes
       },
       {
         nomor: 49,
+        lesson: 'Part C > Detail',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-49.mp3',
@@ -1394,6 +1443,7 @@ Opsi C ("A busy seaport for exporting goods") salah karena pelabuhan tidak diseb
       },
       {
         nomor: 50,
+        lesson: 'Part C > Inference',
         tipe: 'pg',
         pertanyaan: `Listen to the audio carefully.`,
         audio: 'audio/toeflacademy/itp-lc-50.mp3',

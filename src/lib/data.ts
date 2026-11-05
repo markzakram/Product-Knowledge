@@ -8,6 +8,7 @@ import { PLATFORM, SEMUA_PLATFORM } from '../../data';
 import { daftarKunci, type Angkatan, type Platform, type Subtes, type Tahapan, type Tes } from './skema';
 import { subtesBisaSimulasi } from './simulasi';
 import { audioAman } from './audio';
+import { segmenLesson } from './indeks-soal';
 
 /**
  * PLATFORM = yang tampil di halaman pembaca (tanpa `tampil: false`); semua
@@ -552,6 +553,25 @@ export function periksaIsi(): Temuan[] {
             pesan: `Soal ${soal.nomor}: jalur audio "${soal.audio}" harus berpola audio/<nama>.mp3 (huruf, angka, ., _, -, /).`,
           });
         }
+      }
+    }
+
+    // Label `lesson` (index soal): isi untuk semua soal satu subtes atau tidak sama
+    // sekali. Subtes tanpa label sama sekali tetap bersih.
+    const semuaSoal = (j.subtes.contoh ?? []).flatMap((k) => k.soal);
+    const berlabel = semuaSoal.filter((s) => s.lesson?.trim());
+    if (berlabel.length > 0 && berlabel.length < semuaSoal.length) {
+      temuan.push({
+        jenis: 'Lesson tak lengkap', lokasi, ke,
+        pesan: `${semuaSoal.length - berlabel.length} dari ${semuaSoal.length} soal belum punya lesson (nomor ${semuaSoal.filter((s) => !s.lesson?.trim()).map((s) => s.nomor).join(', ')}).`,
+      });
+    }
+    for (const s of berlabel) {
+      if (segmenLesson(s.lesson!).some((x) => !x)) {
+        temuan.push({
+          jenis: 'Lesson tak lengkap', lokasi, ke,
+          pesan: `Soal ${s.nomor}: lesson "${s.lesson}" punya segmen kosong; tulis "Category > Lesson".`,
+        });
       }
     }
 

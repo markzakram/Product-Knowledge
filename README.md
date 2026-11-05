@@ -148,7 +148,7 @@ disembunyikan terlihat lewat `grep -rn "tampil: false" data`. Di kode,
 | `/<platform>/<tes>/<angkatan>/<tahapan>/<subtes>/simulasi` | Simulasi satu subtes. Hanya subtes yang punya soal untuk dikerjakan (bukan `bankSoal: false`, bukan hanya uraian) |
 | `/cari?q=` | Pencarian lintas semua isi termasuk opsi dan pembahasan soal |
 | `/dashboard` | Rekap kekurangan soal dan angkatan yang datanya belum lengkap |
-| `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, mapping janggal, jalur atau berkas audio yang salah, versi yang tak cocok dengan catatan pembaruan |
+| `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, lesson tak lengkap, mapping janggal, jalur atau berkas audio yang salah, versi yang tak cocok dengan catatan pembaruan |
 | `/pembaruan` | Catatan pembaruan: tiap versi aplikasi dengan tanggal dan poin perubahannya, terbaru di atas |
 
 ### Audio soal
@@ -169,6 +169,19 @@ kalau tidak muncul di `/cek-data`. `/audio/*` tetap di balik PIN seperti halaman
 Audio **tidak tersedia offline**: service worker tidak menyimpannya (dan tidak mencegat
 permintaan Range-nya), jadi pemutar baru bisa dipakai saat tersambung. Audio TOEFL ITP adalah
 suara sintetis (edge-tts) yang dibuat Toefl Generator.
+
+### Index soal (field `lesson`)
+
+Soal boleh diberi `lesson` berpola `"Category > Lesson"` (mis. `"Verbal > Silogisme"`), yaitu
+jenis soalnya, bukan judul stimulus. Hanya dua tingkat yang dipakai; segmen ketiga dan seterusnya
+(`"Verbal > Silogisme > 3 Premis"`) digabung ke lesson `Silogisme`, dan `"Verbal"` saja berarti
+category tanpa lesson. Isi untuk semua soal satu subtes atau tidak sama sekali; soal tanpa label di
+subtes yang sebagian berlabel masuk "Lainnya" dan `/cek-data` menandainya ("Lesson tak lengkap").
+Bila satu subtes punya minimal 10 soal dan minimal 2 category, halaman subtes menampilkan index di
+samping kanan (lengket) dengan jumlah soal per category dan lesson; klik melompat ke soalnya dan
+semua soal tetap tampil, penanda mengikuti bagian yang sedang dibaca. Di layar sempit index jadi blok
+lipat "Index soal" di atas soal. Bagian "Subtes" (pindah antarsubtes satu tahapan) tampil di kolom
+yang sama bila tahapan punya lebih dari satu subtes. Simulasi tidak memakai index.
 
 ### Mode simulasi
 

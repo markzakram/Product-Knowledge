@@ -37,6 +37,7 @@ const CONTOH: Record<string, ContohUkp[]> = {
         soal: [
           {
             nomor: 1,
+            lesson: 'Pembayaran & pelaporan',
             tipe: 'pg',
             pertanyaan: `PT Mitra Selaras memakai tahun buku 1 Juli sampai dengan 30 Juni. Untuk tahun buku yang berakhir 30 Juni 2026, PT Mitra Selaras tidak mengajukan perpanjangan. Batas akhir penyampaian SPT Tahunan PPh Badan untuk tahun buku tersebut adalah ...`,
             opsi: [
@@ -69,6 +70,7 @@ Dasar hukum: UU KUP Pasal 1 angka 8 dan Pasal 3 ayat (3) huruf c, ayat (4); PMK 
         soal: [
           {
             nomor: 1,
+            lesson: 'NPWP, PKP & pembukuan',
             tipe: 'pg',
             pertanyaan: `PT Sumber Rejeki menyelenggarakan pembukuan secara elektronik. Buku, catatan, dan dokumen yang menjadi dasar pembukuan, termasuk hasil pengolahan data elektronik, wajib disimpan ...`,
             opsi: [
@@ -101,6 +103,7 @@ Dasar hukum: UU KUP Pasal 28 ayat (1) dan ayat (11) (UU 28/2007)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Penagihan & daluwarsa',
             tipe: 'pg',
             pertanyaan: `Surat Paksa atas utang pajak PT Jaya Kencana diberitahukan pada 4 Mei 2026. Bila utang pajak belum juga dilunasi, Surat Perintah Melaksanakan Penyitaan dapat diterbitkan setelah lewat ...`,
             opsi: [
@@ -133,6 +136,7 @@ Dasar hukum: UU 19/1997 s.t.d.d. UU 19/2000 (PPSP); PMK 61/2023 Pasal 6`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Penagihan & daluwarsa',
             tipe: 'pg',
             pertanyaan: `SKPKB PPh Badan PT Mega Jaya terbit pada 10 Maret 2021. Karena tidak dilunasi, Surat Paksa diberitahukan kepada penanggung pajak pada 2 Februari 2022. Tidak ada pengakuan utang dan penyidikan. Hak melakukan penagihan atas SKPKB tersebut daluwarsa pada ...`,
             opsi: [
@@ -165,6 +169,7 @@ Dasar hukum: UU KUP Pasal 22 ayat (1) dan ayat (2) beserta Penjelasan (UU 28/200
         soal: [
           {
             nomor: 1,
+            lesson: 'Banding, gugatan & PK',
             tipe: 'pg',
             pertanyaan: `Atas SKPKB PPh Badan, PT Arta Guna melunasi Rp100.000.000 yang disetujuinya sebelum mengajukan keberatan. Keberatan ditolak, lalu perusahaan mengajukan banding. Putusan Banding menolak banding sehingga pajak terutang tetap Rp500.000.000. Denda Pasal 27 ayat (5d) UU KUP yang dikenakan adalah ...`,
             opsi: [
@@ -197,6 +202,7 @@ Dasar hukum: UU KUP Pasal 27 ayat (5d) s.t.d.d. UU 7/2021 (HPP)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Surat ketetapan & STP',
             tipe: 'pg',
             pertanyaan: `PT Laut Biru melaporkan SPT Tahunan PPh Badan lebih bayar Rp90.000.000. Hasil pemeriksaan menunjukkan PPh terutang Rp410.000.000 dan kredit pajak Rp455.000.000. Ketetapan yang diterbitkan adalah ...`,
             opsi: [
@@ -229,6 +235,7 @@ Dasar hukum: UU KUP Pasal 13 ayat (1), Pasal 17 ayat (1), dan Pasal 17A ayat (1)
         soal: [
           {
             nomor: 1,
+            lesson: 'Pemeriksaan, restitusi & pidana',
             tipe: 'pg',
             pertanyaan: `Permohonan pengembalian kelebihan pembayaran pajak PT Sinar Pagi (bukan Wajib Pajak kriteria tertentu atau persyaratan tertentu) diterima lengkap pada 3 Maret 2025. Sampai 3 Maret 2026 DJP belum menerbitkan surat ketetapan pajak, dan tidak ada pemeriksaan bukti permulaan. Akibatnya ...`,
             opsi: [
@@ -261,6 +268,7 @@ Dasar hukum: UU KUP Pasal 17B ayat (1) dan ayat (2) s.t.d.t.d. UU 6/2023`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Pembayaran & pelaporan',
             tipe: 'pg',
             pertanyaan: `PT Cahaya Persada terlambat menyampaikan tiga SPT untuk Masa Pajak Mei 2026: SPT Masa PPN, SPT Masa PPh Unifikasi, dan SPT Masa PPh Pasal 21/26. Ketiga SPT tidak diperpanjang dan tidak ada keadaan kahar. Jumlah denda Pasal 7 UU KUP yang ditagih atas keterlambatan tersebut adalah ...`,
             opsi: [
@@ -295,6 +303,7 @@ Dasar hukum: UU KUP Pasal 7 ayat (1); UU KUP Pasal 14 ayat (1) huruf c`,
         soal: [
           {
             nomor: 1,
+            lesson: 'PTKP, tarif & PPh terutang',
             tipe: 'pg',
             pertanyaan: `Tn. Fajar menjalankan usaha dengan pembukuan. Rugi fiskal Tahun Pajak 2021 Rp80.000.000. Penghasilan neto fiskal (sebelum kompensasi) Tahun Pajak 2022 Rp20.000.000, 2023 Rp15.000.000, 2024 Rp10.000.000, dan 2025 Rp30.000.000. Tidak ada kerugian tahun lain. Sisa kerugian 2021 yang masih dapat dikompensasikan dengan penghasilan Tahun Pajak 2026 adalah ...`,
             opsi: [
@@ -327,6 +336,7 @@ Dasar hukum: UU PPh Pasal 6 ayat (2) s.t.d.d. UU 36/2008`,
         soal: [
           {
             nomor: 1,
+            lesson: 'PPh final UMKM (peredaran bruto tertentu)',
             tipe: 'pg',
             pertanyaan: `Ny. Ratna, Wajib Pajak orang pribadi yang memenuhi syarat PPh final 0,5% pada 2026 berdasarkan peredaran bruto 2025, mencatat peredaran bruto kumulatif 2026 melewati Rp4,8 miliar pada Agustus 2026. Perlakuan PPh atas peredaran bruto September–Desember 2026 adalah ...`,
             opsi: [
@@ -359,6 +369,7 @@ Dasar hukum: PP 55/2022 Pasal 58 ayat (1) dan Pasal 61 s.t.d.d. PP 20/2026`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Kredit pajak, PPh 25/29 & SPT Tahunan OP',
             tipe: 'pg',
             pertanyaan: `Menurut SPT Tahunan 2025, PPh terutang Sdr. Hendra (bukan OP pengusaha tertentu) Rp48.000.000. Kredit pajaknya: PPh 21 Rp6.000.000, PPh 23 Rp6.000.000, dan angsuran PPh 25 yang dibayar selama 2025 Rp24.000.000. Angsuran PPh Pasal 25 per bulan untuk 2026 setelah SPT disampaikan adalah ...`,
             opsi: [
@@ -391,6 +402,7 @@ Dasar hukum: UU PPh Pasal 25 ayat (1) s.t.d.d. UU 36/2008; PMK 81/2024 Pasal 226
         soal: [
           {
             nomor: 1,
+            lesson: 'Subjek pajak & kewajiban subjektif',
             tipe: 'pg',
             pertanyaan: `Mr. Lars, warga negara Swedia, tiba di Indonesia pada 1 Maret 2026 untuk bekerja di Jakarta dan kembali ke Swedia pada 30 September 2026 (214 hari). Ia tidak berniat menetap. Status subjek pajak Mr. Lars untuk Tahun Pajak 2026 adalah ...`,
             opsi: [
@@ -423,6 +435,7 @@ Dasar hukum: UU PPh Pasal 2 ayat (3) huruf a s.t.d.d. UU 36/2008`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Pemajakan penghasilan keluarga',
             tipe: 'pg',
             pertanyaan: `Ny. Rina menikah dengan Tn. Darma sejak 2020, tanpa perjanjian pisah harta dan tidak hidup berpisah. Pada 2026 Ny. Rina bekerja sebagai pegawai tetap pada satu pemberi kerja yang memotong PPh 21, dan juga mengelola butik sendiri. Perlakuan penghasilan Ny. Rina dalam SPT Tahunan 2026 adalah ...`,
             opsi: [
@@ -457,6 +470,7 @@ Dasar hukum: UU PPh Pasal 8 ayat (1) beserta Penjelasan s.t.d.t.d. UU 6/2023`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Natura & kenikmatan',
             tipe: 'pg',
             pertanyaan: `Sepanjang 2026 PT Graha Mulia menyediakan apartemen bagi manajer pemasarannya (tempat tinggal individual) dengan nilai sewa Rp5.000.000 per bulan selama 12 bulan. Tidak ada natura lain. Nilai natura tempat tinggal yang menjadi objek PPh Pasal 21 manajer tersebut untuk Tahun 2026 adalah ...`,
             opsi: [
@@ -489,6 +503,7 @@ Dasar hukum: UU PPh Pasal 4 ayat (1) huruf a s.t.d.d. UU 7/2021 (HPP); PMK 66/20
         soal: [
           {
             nomor: 1,
+            lesson: 'PPh 21: pemotong, penerima & objek',
             tipe: 'pg',
             pertanyaan: `Untuk Masa Pajak Maret 2026, Sdr. Bima (pegawai tetap) menerima gaji Rp12.000.000 dan tunjangan transportasi Rp1.500.000. Pemberi kerja juga membayar iuran JKK Rp29.000, JKM Rp36.000, BPJS Kesehatan bagian pemberi kerja Rp540.000, dan iuran JHT bagian pemberi kerja Rp444.000. Penghasilan bruto Sdr. Bima untuk penghitungan PPh Pasal 21 Masa Maret 2026 adalah ...`,
             opsi: [
@@ -521,6 +536,7 @@ Dasar hukum: PMK 168/2023 Pasal 5 ayat (2) dan ayat (3)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'PPh 21 pegawai tetap',
             tipe: 'pg',
             pertanyaan: `Sdri. Laras mulai bekerja sebagai pegawai tetap pada 1 Juli 2026 dengan gaji Rp15.000.000 per bulan, tanpa penghasilan lain, dan sebelumnya tidak bekerja pada tahun itu. Biaya jabatan yang dapat dikurangkan dalam penghitungan PPh Pasal 21 Masa Pajak Terakhir (Desember 2026) adalah ...`,
             opsi: [
@@ -553,6 +569,7 @@ Dasar hukum: UU PPh Pasal 21 ayat (3) s.t.d.d. UU 36/2008; PMK 168/2023 Pasal 10
         soal: [
           {
             nomor: 1,
+            lesson: 'PPh Pasal 26 & BUT',
             tipe: 'pg',
             pertanyaan: `Kencana Holdings Ltd, Wajib Pajak luar negeri tanpa BUT di Indonesia, menjual seluruh sahamnya pada PT Tirta Utama (tidak tercatat di bursa) kepada PT Samudra Jaya dengan harga Rp4.000.000.000. Harga perolehan saham tersebut Rp2.500.000.000, dan menurut P3B yang berlaku hak pemajakan atas penghasilan ini ada pada Indonesia. PPh Pasal 26 yang wajib dipotong PT Samudra Jaya adalah ...`,
             opsi: [
@@ -587,6 +604,7 @@ Dasar hukum: UU PPh Pasal 26 ayat (2) dan (3); PMK 81/2024 Pasal 238–240`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Objek PPN & saat terutang',
             tipe: 'pg',
             pertanyaan: `PT Karya Mandiri adalah PKP produsen peralatan dapur. Pada Masa Pajak Mei 2026 terjadi empat peristiwa berikut. Peristiwa yang TIDAK termasuk penyerahan Barang Kena Pajak menurut UU PPN adalah ...`,
             opsi: [
@@ -619,6 +637,7 @@ Dasar hukum: UU PPN Pasal 1A ayat (1) dan ayat (2) s.t.d.t.d. UU 6/2023`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Objek PPN & saat terutang',
             tipe: 'pg',
             pertanyaan: `PT Bumi Sentosa (PKP) menerima uang muka Rp150.000.000 pada 22 Juni 2026 atas pesanan mesin pengemas. Mesin diserahkan kepada pembeli pada 6 Agustus 2026 dan sisa harga dilunasi pada 15 September 2026. PPN atas uang muka tersebut terutang pada Masa Pajak ...`,
             opsi: [
@@ -651,6 +670,7 @@ Dasar hukum: UU PPN Pasal 11 ayat (1) dan ayat (2); PP 44/2022 Pasal 23`,
         soal: [
           {
             nomor: 1,
+            lesson: 'PKP, pemungut PPN & SPT Masa PPN',
             tipe: 'pg',
             pertanyaan: `PT Logam Raya (PKP) menyerahkan suku cadang kepada sebuah BUMN yang menjadi Pemungut PPN. Nilai pembayaran seluruhnya Rp8.880.000, sudah termasuk PPN Rp880.000. Perlakuan PPN atas penyerahan tersebut adalah ...`,
             opsi: [
@@ -683,6 +703,7 @@ Dasar hukum: UU PPN Pasal 16A ayat (1); PMK 81/2024 Pasal 291 dan Pasal 292`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Faktur Pajak & nota retur',
             tipe: 'pg',
             pertanyaan: `PT Sari Wangi (PKP) menyerahkan BKP kepada PT Teguh Abadi (PKP) pada 10 Januari 2026, tetapi baru membuat Faktur Pajak pada 15 Mei 2026. Akibat bagi PT Teguh Abadi atas PPN yang tercantum dalam faktur tersebut adalah ...`,
             opsi: [
@@ -715,6 +736,7 @@ Dasar hukum: PMK 81/2024 Pasal 382 ayat (2) dan Pasal 384; UU KUP Pasal 14 ayat 
         soal: [
           {
             nomor: 1,
+            lesson: 'Faktur Pajak & nota retur',
             tipe: 'pg',
             pertanyaan: `PT Andalas (PKP) menjual BKP kepada PT Borneo (PKP) pada Masa Pajak Maret 2026 dengan PPN Rp12.000.000, yang dikreditkan PT Borneo pada masa itu. Pada 8 Mei 2026 PT Borneo mengembalikan sebagian barang dengan PPN Rp3.000.000 dan membuat nota retur elektronik. Perlakuan PPN yang benar adalah ...`,
             opsi: [
@@ -747,6 +769,7 @@ Dasar hukum: UU PPN Pasal 5A ayat (1); PMK 81/2024 Pasal 286 dan Pasal 288`,
         soal: [
           {
             nomor: 1,
+            lesson: 'PPN besaran tertentu',
             tipe: 'pg',
             pertanyaan: `CV Roda Prima adalah PKP pedagang kendaraan bermotor bekas yang memakai PPN besaran tertentu. Pada Masa Pajak Juni 2026 ia menjual sebuah mobil bekas dengan harga jual Rp180.000.000 (tidak termasuk PPN). PPN yang wajib dipungut atas penjualan mobil tersebut adalah ...`,
             opsi: [
@@ -779,6 +802,7 @@ Dasar hukum: UU PPN Pasal 9A ayat (1); PMK 65/PMK.03/2022 s.t.d.d. PMK 11/2025`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Fasilitas PPN',
             tipe: 'pg',
             pertanyaan: `PT Nusa Tirta (PKP) memiliki dua lini penjualan: lini I mendapat fasilitas PPN tidak dipungut, sedangkan lini II mendapat fasilitas PPN dibebaskan. Perlakuan Pajak Masukan yang berkaitan langsung dengan kedua lini tersebut adalah ...`,
             opsi: [
@@ -811,6 +835,7 @@ Dasar hukum: UU PPN Pasal 16B ayat (1), (2), dan (3) s.t.d.d. UU 7/2021 (HPP)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Pengkreditan Pajak Masukan',
             tipe: 'pg',
             pertanyaan: `PT Lintas Bahari (PKP) menerima Faktur Pajak masukan atas pembelian bahan baku yang dibuat pada Maret 2026. Pajak Masukan itu belum dikreditkan pada SPT Masa PPN Maret 2026, belum dibebankan sebagai biaya, dan tidak dikapitalisasi. Masa Pajak paling akhir yang masih dapat dipakai untuk mengkreditkan Pajak Masukan tersebut adalah ...`,
             opsi: [
@@ -843,6 +868,7 @@ Dasar hukum: UU PPN Pasal 9 ayat (9) s.t.d.d. UU 7/2021 (HPP); PMK 81/2024 Pasal
         soal: [
           {
             nomor: 1,
+            lesson: 'Pengkreditan Pajak Masukan',
             tipe: 'pg',
             pertanyaan: `CV Arta Gemilang seharusnya dikukuhkan sebagai PKP sejak Masa Pajak Juli 2026, tetapi baru dikukuhkan pada Oktober 2026. Pajak Keluaran yang seharusnya dipungut untuk Masa Juli–September 2026 sebesar Rp150.000.000, sedangkan PPN dalam Faktur Pajak pembelian pada masa yang sama Rp90.000.000. Pajak Masukan yang dapat dikreditkan untuk Masa Juli–September 2026 adalah ...`,
             opsi: [
@@ -877,6 +903,7 @@ Dasar hukum: UU PPN Pasal 9 ayat (9a), (9b), (9c) s.t.d.d. UU 7/2021 (HPP); PMK 
         soal: [
           {
             nomor: 1,
+            lesson: 'Tarif, saat & pihak terutang',
             tipe: 'pg',
             pertanyaan: `CV Sentosa menerima pelunasan piutang Rp8.000.000 dari PT Cahaya Abadi. CV Sentosa membuat dan menandatangani kuitansi, lalu menyerahkannya kepada PT Cahaya Abadi. Para pihak tidak membuat kesepakatan lain. Pihak yang terutang Bea Meterai atas kuitansi tersebut adalah ...`,
             opsi: [
@@ -909,6 +936,7 @@ Dasar hukum: UU 10/2020 Pasal 3 ayat (2) dan Pasal 9`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Pemungut & pembayaran',
             tipe: 'pg',
             pertanyaan: `PT Bank Arta Sejahtera ditetapkan sebagai Pemungut Bea Meterai atas dokumen cek dan bilyet giro. Bea Meterai yang dipungut atas dokumen Masa Pajak Maret 2026 wajib disetor dan SPT Masa Bea Meterainya dilaporkan paling lambat ...`,
             opsi: [
@@ -941,6 +969,7 @@ Dasar hukum: UU 10/2020 Pasal 10 dan Pasal 11; PMK 78/2024 Pasal 55–65`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Objek & pengecualian',
             tipe: 'pg',
             pertanyaan: `Semua dokumen berikut bernilai lebih dari Rp5.000.000. Dokumen yang tidak dikenai Bea Meterai adalah ...`,
             opsi: [
@@ -974,6 +1003,7 @@ Dasar hukum: UU 10/2020 Pasal 3 ayat (2) dan Pasal 7`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Aspek pajak aset, piutang & persediaan',
             tipe: 'pg',
             pertanyaan: `Secara komersial, PT Pangan Lestari menilai persediaan dengan metode LIFO dan membentuk penyisihan penurunan nilai persediaan ke nilai realisasi neto Rp75.000.000. Perlakuan fiskal yang benar dalam rekonsiliasi adalah ...`,
             opsi: [
@@ -1006,6 +1036,7 @@ Dasar hukum: UU PPh Pasal 10 ayat (6); UU PPh Pasal 9 ayat (1) huruf c`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Aspek pajak aset, piutang & persediaan',
             tipe: 'pg',
             pertanyaan: `PT Mitra Dagang (bukan bank atau lembaga pembiayaan) membebankan dalam laba rugi 2025: (1) pembentukan CKPN piutang usaha Rp80.000.000; (2) penghapusan piutang Rp30.000.000 yang hanya didukung memo direksi (debiturnya bukan debitur kecil); (3) penghapusan piutang Rp20.000.000 yang perkaranya telah diserahkan ke Pengadilan Negeri dan daftarnya diserahkan ke DJP. Koreksi fiskal positif atas ketiga beban tersebut adalah ...`,
             opsi: [
@@ -1038,6 +1069,7 @@ Dasar hukum: UU PPh Pasal 6 ayat (1) huruf h dan Pasal 9 ayat (1) huruf c s.t.d.
         soal: [
           {
             nomor: 1,
+            lesson: 'Organisasi nirlaba',
             tipe: 'pg',
             pertanyaan: `Yayasan Pendidikan Cendekia (nirlaba, terdaftar pada instansi yang membidanginya) memperoleh sisa lebih Rp800.000.000 pada Tahun 2022. Selama 2023–2026 yayasan menanamkan Rp650.000.000 dalam sarana dan prasarana pendidikan di Indonesia dan melaporkannya dalam SPT. Perlakuan atas sisa lebih Rp150.000.000 yang tidak ditanamkan adalah ...`,
             opsi: [
@@ -1070,6 +1102,7 @@ Dasar hukum: UU PPh Pasal 4 ayat (3) huruf m s.t.d.d. UU 7/2021 (HPP); PP 55/202
         soal: [
           {
             nomor: 1,
+            lesson: 'Jurnal PPh & PPN',
             tipe: 'pg',
             pertanyaan: `PT Harmoni Teguh menyetor angsuran PPh Pasal 25 Masa Juli 2026 sebesar Rp45.000.000 pada 14 Agustus 2026. Jurnal yang tepat saat penyetoran adalah ...`,
             opsi: [
@@ -1102,6 +1135,7 @@ Dasar hukum: UU PPh Pasal 25 dan Pasal 28 ayat (1) huruf d; PSAK 212 (Pajak Peng
         soal: [
           {
             nomor: 1,
+            lesson: 'Merger & likuidasi',
             tipe: 'pg',
             pertanyaan: `PT Armada Jaya dilikuidasi pada 2026. Mesin produksi dengan nilai sisa buku fiskal Rp1.200.000.000 dan harga pasar Rp1.700.000.000 dialihkan kepada pemegang saham sebagai pembagian sisa kekayaan. Tidak ada penetapan lain dari Menteri Keuangan. Penghasilan PT Armada Jaya dari pengalihan mesin tersebut adalah ...`,
             opsi: [
@@ -1136,6 +1170,7 @@ Dasar hukum: UU PPh Pasal 10 ayat (3); UU PPh Pasal 4 ayat (1) huruf d angka 3`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Subjek, objek & pengecualian objek',
             tipe: 'pg',
             pertanyaan: `Pada 2026 PT Sinar Andalas (Wajib Pajak badan dalam negeri) menerima dividen Rp250.000.000 dari PT Kencana Agri (Wajib Pajak badan dalam negeri). Kepemilikan PT Sinar Andalas pada PT Kencana Agri 8%. Perlakuan PPh atas dividen tersebut bagi PT Sinar Andalas adalah ...`,
             opsi: [
@@ -1168,6 +1203,7 @@ Dasar hukum: UU PPh Pasal 4 ayat (3) huruf f angka 1 s.t.d.d. UU 7/2021 (HPP)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Biaya boleh & tidak boleh dikurangkan',
             tipe: 'pg',
             pertanyaan: `PT Rekayasa Prima membebankan biaya jamuan relasi bisnis Rp60.000.000 pada 2025. Semua jamuan berkaitan dengan kegiatan mendapatkan, menagih, dan memelihara penghasilan, tetapi Rp20.000.000 di antaranya tidak dibuatkan daftar nominatif. Koreksi fiskal positif atas biaya jamuan tersebut adalah ...`,
             opsi: [
@@ -1200,6 +1236,7 @@ Dasar hukum: UU PPh Pasal 6 ayat (1) huruf a; SE-27/PJ.22/1986`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Kompensasi kerugian fiskal',
             tipe: 'pg',
             pertanyaan: `PT Bahari Sentosa mempunyai sisa rugi fiskal Tahun 2020 Rp150.000.000 dan rugi fiskal Tahun 2022 Rp100.000.000. Penghasilan neto fiskal Tahun 2025 Rp200.000.000, tanpa fasilitas Pasal 31A. PKP Tahun 2025 dan sisa kerugian yang masih dapat dikompensasikan ke Tahun 2026 adalah ...`,
             opsi: [
@@ -1234,6 +1271,7 @@ Dasar hukum: UU PPh Pasal 6 ayat (2) s.t.d.d. UU 7/2021 (HPP) beserta Penjelasan
         soal: [
           {
             nomor: 1,
+            lesson: 'Bentuk usaha tetap (BUT)',
             tipe: 'pg',
             pertanyaan: `Dua tenaga ahli Norvik AS, badan dari negara yang tidak memiliki P3B dengan Indonesia, memberikan jasa konsultansi kepada PT Sinar Logam di Batam selama tepat 60 hari dalam jangka waktu 12 bulan. Tidak ada tempat usaha tetap atau agen di Indonesia. Status Norvik AS menurut UU PPh adalah ...`,
             opsi: [
@@ -1266,6 +1304,7 @@ Dasar hukum: UU PPh Pasal 2 ayat (5) beserta Penjelasan s.t.d.t.d. UU 6/2023; UU
         soal: [
           {
             nomor: 1,
+            lesson: 'Hubungan istimewa, harga perolehan & persediaan',
             tipe: 'pg',
             pertanyaan: `PT Alfa memiliki 80% saham PT Beta, dan PT Beta memiliki 40% saham PT Gama. PT Alfa tidak memiliki saham PT Gama secara langsung, dan tidak ada hubungan penguasaan atau keluarga lain. Hubungan antara PT Alfa dan PT Gama menurut UU PPh adalah ...`,
             opsi: [
@@ -1298,6 +1337,7 @@ Dasar hukum: UU PPh Pasal 18 ayat (4) huruf a beserta Penjelasan s.t.d.d. UU 7/2
         soal: [
           {
             nomor: 1,
+            lesson: 'Angsuran PPh Pasal 25 & SPT Tahunan PPh Badan',
             tipe: 'pg',
             pertanyaan: `PT Delta Samudra didirikan dan terdaftar pada Maret 2025, sehingga angsuran PPh Pasal 25 Tahun 2025 nihil. SPT Tahunan 2025 (Maret–Desember, 10 bulan) menunjukkan PPh terutang Rp200.000.000 dengan kredit PPh Pasal 22 dan 23 seluruhnya Rp50.000.000. Angsuran PPh Pasal 25 per bulan Tahun 2026 sesudah SPT disampaikan adalah ...`,
             opsi: [
@@ -1330,6 +1370,7 @@ Dasar hukum: UU PPh Pasal 25 ayat (1) dan ayat (7) huruf a; PMK 81/2024 Pasal 23
         soal: [
           {
             nomor: 1,
+            lesson: 'Subjek pajak badan & kewajiban subjektif',
             tipe: 'pg',
             pertanyaan: `PT Sulawesi Mineral didirikan dan berkedudukan di Makassar; seluruh sahamnya dimiliki badan Korea Selatan. Pada 2026 perusahaan memperoleh laba usaha dalam negeri dan laba cabang di Filipina. Kedudukan PT Sulawesi Mineral sebagai subjek pajak adalah ...`,
             opsi: [
@@ -1362,6 +1403,7 @@ Dasar hukum: UU PPh Pasal 2 ayat (3) huruf b; UU PPh Pasal 4 ayat (1) s.t.d.d. U
         soal: [
           {
             nomor: 1,
+            lesson: 'CFC: saat diperolehnya dividen',
             tipe: 'pg',
             pertanyaan: `PT Lembah Hijau (35%) dan PT Pesisir Indah (20%), keduanya Wajib Pajak dalam negeri, bersama-sama memiliki 55% saham Orion Ltd., badan usaha luar negeri yang sahamnya tidak diperdagangkan di bursa. Batas waktu penyampaian SPT Orion Ltd. untuk Tahun Pajak 2025 di negaranya adalah 31 Maret 2026. Dividen atas penyertaan itu dianggap diperoleh pada ...`,
             opsi: [
@@ -1396,6 +1438,7 @@ Dasar hukum: UU PPh Pasal 18 ayat (2) s.t.d.d. UU 7/2021 (HPP); PMK 107/PMK.03/2
         soal: [
           {
             nomor: 1,
+            lesson: 'Pembayaran, jatuh tempo & denda',
             tipe: 'pg',
             pertanyaan: `PT Rimba Lestari menerima SPPT PBB-P5L sektor perkebunan dengan PBB terutang Rp100.000.000 dan melunasinya tepat 3 bulan setelah tanggal jatuh tempo. Denda administrasi yang ditagih dengan STP PBB adalah ...`,
             opsi: [
@@ -1427,6 +1470,7 @@ Dasar hukum: UU PBB Pasal 11 ayat (3) s.t.d.d. UU 12/1994; PMK 186/PMK.03/2019 P
         soal: [
           {
             nomor: 1,
+            lesson: 'Keberatan & upaya hukum non-keberatan',
             tipe: 'pg',
             pertanyaan: `PT Sawit Makmur menerima SPPT PBB-P5L sektor perkebunan Tahun 2026 pada 10 Maret 2026. Perusahaan menilai NJOP bumi per meter persegi dalam SPPT terlalu tinggi. Pernyataan yang benar mengenai upaya yang dapat ditempuh adalah ...`,
             opsi: [
@@ -1459,6 +1503,7 @@ Dasar hukum: UU PBB Pasal 15; PMK 118/2024 Pasal 9`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Objek & subjek PBB-P5L',
             tipe: 'pg',
             pertanyaan: `Di areal perkebunan PT Agro Lestari, bangunan pabrik pengolahan kelapa sawit selesai dibangun dan mulai dipakai pada September 2026. Bangunan pabrik tersebut dikenai PBB-P5L untuk pertama kali pada ...`,
             opsi: [
@@ -1493,6 +1538,7 @@ Dasar hukum: UU PBB Pasal 4 ayat (1) dan Pasal 8 ayat (2)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'P3B: hak pemajakan & Formulir DGT',
             tipe: 'pg',
             pertanyaan: `PT Musik Nusantara membayar royalti Rp400.000.000 kepada Melodie BV, perusahaan Belanda. Tarif royalti dalam P3B Indonesia–Belanda 10%. Formulir DGT yang diserahkan Melodie BV tidak disahkan pejabat berwenang Belanda dan tidak dilampiri surat keterangan domisili. PPh Pasal 26 yang harus dipotong adalah ...`,
             opsi: [
@@ -1525,6 +1571,7 @@ Dasar hukum: UU PPh Pasal 26 ayat (1); PMK 112/2025 Pasal 8 dan Pasal 9`,
         soal: [
           {
             nomor: 1,
+            lesson: 'P3B: hak pemajakan & Formulir DGT',
             tipe: 'pg',
             pertanyaan: `Hikari Air Co., maskapai penduduk Jepang dengan Formulir DGT yang sah, memperoleh penghasilan dari angkutan kargo udara internasional Denpasar–Osaka. Berdasarkan P3B Indonesia–Jepang, hak pemajakan atas laba tersebut ...`,
             opsi: [
@@ -1557,6 +1604,7 @@ Dasar hukum: P3B Indonesia–Jepang Pasal 8 ayat (1); PMK 112/2025 Pasal 21`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Transfer pricing, TP Doc, MAP & APA',
             tipe: 'pg',
             pertanyaan: `Data Tahun Pajak 2025 PT Mitra Global: peredaran bruto Rp40 miliar; penjualan barang kepada pihak afiliasi Rp15 miliar; pembayaran jasa manajemen kepada pihak afiliasi Rp6 miliar; tidak ada afiliasi di yurisdiksi bertarif lebih rendah. Kewajiban dokumentasi harga transfer PT Mitra Global untuk Tahun Pajak 2026 adalah ...`,
             opsi: [
@@ -1589,6 +1637,7 @@ Dasar hukum: PMK 172/2023 Pasal 16 ayat (2) dan ayat (3)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Transfer pricing, TP Doc, MAP & APA',
             tipe: 'pg',
             pertanyaan: `PT Sentosa Global (tahun buku sama dengan tahun kalender) ingin mengajukan APA unilateral untuk periode Tahun Pajak 2028–2032. Permohonan APA tersebut harus diajukan dalam jangka waktu ...`,
             opsi: [
@@ -1621,6 +1670,7 @@ Dasar hukum: UU PPh Pasal 18 ayat (3a) s.t.d.d. UU 7/2021 (HPP); PMK 172/2023 Pa
         soal: [
           {
             nomor: 1,
+            lesson: 'Pertukaran informasi, bantuan penagihan & pajak minimum global',
             tipe: 'pg',
             pertanyaan: `Peredaran bruto konsolidasi grup PMN tempat PT Andalan Prima menjadi entitas konstituen (dalam juta euro): 2022: 690; 2023: 780; 2024: 720; 2025: 760. Penerapan pajak minimum global (PMK 136/2024) bagi grup tersebut untuk Tahun Pajak 2026 adalah ...`,
             opsi: [
@@ -1653,6 +1703,7 @@ Dasar hukum: PMK 136/2024 Pasal 2 ayat (1)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'P3B: bentuk usaha tetap',
             tipe: 'pg',
             pertanyaan: `Kontraktor penduduk Jepang dengan Formulir DGT yang sah membangun gudang di Cikarang dari 1 Februari sampai 15 Juli 2026 (165 hari). Tidak ada proyek lain dan tidak ada pihak erat terkait di lokasi itu. Menurut P3B Indonesia–Jepang, status kontraktor tersebut adalah ...`,
             opsi: [
@@ -1685,6 +1736,7 @@ Dasar hukum: P3B Indonesia–Jepang Pasal 5 ayat (3) dan Pasal 7 ayat (1); PMK 1
         soal: [
           {
             nomor: 1,
+            lesson: 'P3B: bentuk usaha tetap',
             tipe: 'pg',
             pertanyaan: `Perusahaan penduduk Jepang membuka kantor di Medan yang semata-mata membeli biji kopi untuk dikirim ke kantor pusatnya. Kantor itu tidak menjual, tidak menutup kontrak penjualan, dan tidak ada pihak erat terkait yang menjalankan kegiatan pelengkap di Indonesia. Menurut P3B Indonesia–Jepang, kantor tersebut ...`,
             opsi: [
@@ -1717,6 +1769,7 @@ Dasar hukum: P3B Indonesia–Jepang Pasal 5 ayat (4) jo. MLI Pasal 13; PMK 112/2
         soal: [
           {
             nomor: 1,
+            lesson: 'Metode penghindaran pajak berganda',
             tipe: 'pg',
             pertanyaan: `PT Dirga Persada (Wajib Pajak dalam negeri) memperoleh penghasilan dari Malaysia yang telah dipajaki di sana. Metode penghindaran pajak berganda yang diterapkan Indonesia atas penghasilan tersebut adalah ...`,
             opsi: [
@@ -1749,6 +1802,7 @@ Dasar hukum: UU PPh Pasal 4 ayat (1) dan Pasal 24 ayat (1)–(2)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'P3B: residensi & tie breaker',
             tipe: 'pg',
             pertanyaan: `Tn. Kenji Mori menjadi penduduk Indonesia karena berada di Indonesia lebih dari 183 hari, dan juga penduduk Jepang menurut hukum Jepang. Untuk keperluan P3B Indonesia–Jepang, status residensi Tn. Kenji Mori ditentukan dengan ...`,
             opsi: [
@@ -1781,6 +1835,7 @@ Dasar hukum: P3B Indonesia–Jepang Pasal 4 ayat (2)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Anti-penghindaran P3B: treaty shopping, beneficial owner, PPT',
             tipe: 'pg',
             pertanyaan: `Harmoni BV, badan penduduk Belanda dengan Formulir DGT yang sah secara formal, menerima royalti dari PT Suara Indah. Menurut laporan keuangan nonkonsolidasinya, 65% penghasilan Harmoni BV dipakai untuk memenuhi kewajiban kepada pemegang sahamnya di negara yang tidak memiliki P3B dengan Indonesia. Perlakuan atas royalti tersebut adalah ...`,
             opsi: [
@@ -1813,6 +1868,7 @@ Dasar hukum: PMK 112/2025 Pasal 19; UU PPh Pasal 26 ayat (1a)`,
         soal: [
           {
             nomor: 1,
+            lesson: 'Ruang lingkup & dasar P3B',
             tipe: 'pg',
             pertanyaan: `Terumbu Pte. Ltd., badan penduduk Singapura tanpa BUT di Indonesia, pada 2026 menerima bunga pinjaman Rp75.000.000 dari PT Laut Indah (Wajib Pajak dalam negeri) dan imbalan jasa Rp120.000.000 dari klien di Thailand atas jasa yang dikerjakan di Thailand. Penghasilan Terumbu Pte. Ltd. yang dapat dikenai PPh Indonesia adalah ...`,
             opsi: [

@@ -27,6 +27,14 @@ export interface Rilis {
 
 export const PEMBARUAN: readonly Rilis[] = [
   {
+    versi: '1.9.0',
+    tanggal: '2026-11-05',
+    poin: [
+      'Halaman subtes kini punya index di samping: daftar subtes satu tahapan, lalu category dan lesson beserta jumlah soalnya. Klik untuk langsung melompat ke jenis soal yang dicari; posisi yang sedang dibaca ikut menyala. Di ponsel, index ada di atas soal dan bisa dibuka-tutup.',
+      'Index jenis soal sudah tersedia di subtes panjang SKD CPNS 2027, SKD Sekolah Kedinasan, TOEFL, PCAM OJK, JagoTPA, dan JagoUKP. UTBK, TKA, dan lainnya menyusul.',
+    ],
+  },
+  {
     versi: '1.8.0',
     tanggal: '2026-11-05',
     poin: [

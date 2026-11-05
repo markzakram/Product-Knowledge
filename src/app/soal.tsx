@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { KelompokSiap, SoalSiap } from '@/lib/bagian';
+import { adaStimulus } from '@/lib/indeks-soal';
 import { daftarKunci } from '@/lib/skema';
 import { AudioSoal } from './audio-soal';
 import { IsiKaya } from './isi-kaya';
@@ -153,17 +154,18 @@ function KartuSoal({
 
 function Kelompokan({
   kelompok,
+  indeks,
   latihan,
   dibuka,
   buka,
 }: {
   kelompok: KelompokSiap;
+  indeks: number;
   latihan: boolean;
   dibuka: Set<string>;
   buka: (id: string) => void;
 }) {
   const { stimulus, soal } = kelompok;
-  const punyaStimulus = stimulus && (stimulus.isi?.length || stimulus.gambar || stimulus.judul);
 
   const daftar = soal.map((s) => (
     <KartuSoal
@@ -175,10 +177,11 @@ function Kelompokan({
     />
   ));
 
-  if (!punyaStimulus) return <>{daftar}</>;
+  if (!adaStimulus(kelompok) || !stimulus) return <>{daftar}</>;
 
   return (
-    <div className="kelompok">
+    // id dipakai index soal (lib/indeks-soal.ts) agar lompat ke soal pertama kelompok menampilkan stimulusnya
+    <div className="kelompok" id={`kelompok-${indeks}`}>
       <div className="soal" style={{ paddingBottom: 18 }}>
         <div className="stimulus">
           <div className="stimulus-label">
@@ -271,6 +274,7 @@ export function DaftarSoal({ contoh }: { contoh: KelompokSiap[] }) {
         <Kelompokan
           key={i}
           kelompok={kelompok}
+          indeks={i}
           latihan={siap && latihan}
           dibuka={dibuka}
           buka={(id) => setDibuka((s) => new Set(s).add(id))}

@@ -19,6 +19,7 @@ Although the first electronic computers were large, costly, and difficult to mai
     soal: [
       {
         nomor: 1,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `What does the passage mainly discuss?`,
         opsi: [
@@ -40,6 +41,7 @@ Opsi D ("The history of calculating devices from ancient times to today") salah 
       },
       {
         nomor: 2,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `It can be inferred from paragraph 1 that the word "computer"`,
         opsi: [
@@ -61,6 +63,7 @@ Opsi D ("was rarely used before the Second World War") salah karena tidak diduku
       },
       {
         nomor: 3,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `The word "they" in the phrase "Because they had no moving parts" in paragraph 2 refers to`,
         opsi: [
@@ -82,6 +85,7 @@ Opsi D ("calculating machines") salah karena calculating machines adalah mesin l
       },
       {
         nomor: 4,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `All of the following are mentioned as characteristics of ENIAC EXCEPT that it`,
         opsi: [
@@ -103,6 +107,7 @@ Opsi D ("produced a great deal of heat") salah karena disebut dalam teks ("gener
       },
       {
         nomor: 5,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `It can be inferred from paragraph 2 that keeping ENIAC in operation required`,
         opsi: [
@@ -124,6 +129,7 @@ Opsi D ("daily oiling of its moving parts") salah karena bertentangan dengan tek
       },
       {
         nomor: 6,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `The word "demanding" in paragraph 3 is closest in meaning to`,
         opsi: [
@@ -145,6 +151,7 @@ Opsi C ("brief") salah karena bertentangan dengan konteks karena persiapannya bi
       },
       {
         nomor: 7,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `Why does the author mention that preparing a new problem "could take days" while the machine "might solve it in minutes" in paragraph 3?`,
         opsi: [
@@ -166,6 +173,7 @@ Opsi C ("To suggest that early computers could solve only one problem") salah ka
       },
       {
         nomor: 8,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `According to the passage, the stored-program concept made it possible for a computer to`,
         opsi: [
@@ -187,6 +195,7 @@ Opsi D ("display results on keyboards and screens") salah karena teks hanya meny
       },
       {
         nomor: 9,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `According to paragraph 4, what was one result of using the transistor in place of the vacuum tube?`,
         opsi: [
@@ -208,6 +217,7 @@ Opsi D ("Computers needed more frequent repairs.") salah karena bertentangan kar
       },
       {
         nomor: 10,
+        lesson: 'The Dawn of Electronic Computing',
         tipe: 'pg',
         pertanyaan: `The author's attitude toward the first electronic computers can best be described as`,
         opsi: [
@@ -243,6 +253,7 @@ The endowment effect has practical consequences. Homeowners frequently set askin
     soal: [
       {
         nomor: 11,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `What does the passage mainly discuss?`,
         opsi: [
@@ -264,6 +275,7 @@ Opsi C ("The methods businesses use to design effective free trials") salah kare
       },
       {
         nomor: 12,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `The word "demand" in paragraph 1 is closest in meaning to`,
         opsi: [
@@ -285,6 +297,7 @@ Opsi D ("pay out") salah karena yang membayar adalah pembeli, bukan pemilik.`,
       },
       {
         nomor: 13,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `The word "merely" in paragraph 2 is closest in meaning to`,
         opsi: [
@@ -306,6 +319,7 @@ Opsi C ("rarely") salah karena "rarely" berarti jarang, tidak cocok dengan konte
       },
       {
         nomor: 14,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `According to paragraph 2, owners require a higher price for the mug because they`,
         opsi: [
@@ -327,6 +341,7 @@ Opsi D ("feel more pleasure from money than from objects") salah karena teks mem
       },
       {
         nomor: 15,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `The word "they" in paragraph 3 refers to`,
         opsi: [
@@ -348,6 +363,7 @@ Opsi D ("achievements") salah karena achievements adalah objek pengingat, bukan 
       },
       {
         nomor: 16,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `It can be inferred from paragraph 3 that a buyer`,
         opsi: [
@@ -369,6 +385,7 @@ Opsi C ("often shares the same memories as the item's owner") salah karena makna
       },
       {
         nomor: 17,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `According to paragraph 4, investors affected by the endowment effect may`,
         opsi: [
@@ -390,6 +407,7 @@ Opsi D ("refuse to invest in new firms") salah karena investasi pada perusahaan 
       },
       {
         nomor: 18,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `According to the passage, businesses offer free trials because`,
         opsi: [
@@ -411,6 +429,7 @@ Opsi D ("buyers expect to receive gifts before making a purchase") salah karena 
       },
       {
         nomor: 19,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `It can be inferred from the passage that homeowners who set high asking prices`,
         opsi: [
@@ -432,6 +451,7 @@ Opsi D ("have usually lived in their homes for only a short time") salah karena 
       },
       {
         nomor: 20,
+        lesson: 'The Endowment Effect',
         tipe: 'pg',
         pertanyaan: `How is the information in the passage organized?`,
         opsi: [
@@ -467,6 +487,7 @@ When Japan opened its ports to Western trade in the mid-nineteenth century, ukiy
     soal: [
       {
         nomor: 21,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `What does the passage mainly discuss?`,
         opsi: [
@@ -488,6 +509,7 @@ Opsi D ("The careers of two famous Japanese landscape artists") salah karena ter
       },
       {
         nomor: 22,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `The word "they" in paragraph 1 refers to`,
         opsi: [
@@ -509,6 +531,7 @@ Opsi C ("cities") salah karena cities disebut di kalimat pertama dan tidak mungk
       },
       {
         nomor: 23,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `According to paragraph 1, why were ukiyo-e prints available to ordinary people?`,
         opsi: [
@@ -530,6 +553,7 @@ Opsi D ("They were painted by hand as unique works of art.") salah karena karya 
       },
       {
         nomor: 24,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `Which of the following is NOT mentioned as part of the process of making a print?`,
         opsi: [
@@ -551,6 +575,7 @@ Opsi C ("Pressing paper against the blocks by hand") salah karena disebut sebaga
       },
       {
         nomor: 25,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `It can be inferred from paragraph 2 that the artist's original drawing`,
         opsi: [
@@ -572,6 +597,7 @@ Opsi C ("was printed in color before any carving began") salah karena pewarnaan 
       },
       {
         nomor: 26,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `The word "aligning" in paragraph 2 is closest in meaning to`,
         opsi: [
@@ -593,6 +619,7 @@ Opsi D ("coloring") salah karena pewarnaan dilakukan pada balok, bukan makna dar
       },
       {
         nomor: 27,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `According to paragraph 3, one reason landscape prints became popular was that`,
         opsi: [
@@ -614,6 +641,7 @@ Opsi D ("Hokusai trained many younger artists to draw mountains") salah karena t
       },
       {
         nomor: 28,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `According to paragraph 4, which feature of ukiyo-e attracted artists in Paris?`,
         opsi: [
@@ -635,6 +663,7 @@ Opsi C ("The use of rich oil paints") salah karena cat minyak tidak disebut; pen
       },
       {
         nomor: 29,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `The word "struck" in paragraph 4 is closest in meaning to`,
         opsi: [
@@ -656,6 +685,7 @@ Opsi C ("bored") salah karena rasa bosan bertentangan dengan tindakan mengoleksi
       },
       {
         nomor: 30,
+        lesson: 'The Art of Ukiyo-e',
         tipe: 'pg',
         pertanyaan: `How is the information in the passage organized?`,
         opsi: [
@@ -691,6 +721,7 @@ In the twentieth century, electric lamps replaced oil, and automatic systems all
     soal: [
       {
         nomor: 31,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `What does the passage mainly discuss?`,
         opsi: [
@@ -712,6 +743,7 @@ Opsi C ("The growth of sea trade in the ancient Mediterranean") salah karena per
       },
       {
         nomor: 32,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `It can be inferred from paragraph 1 that the move from open fires to stone towers was encouraged by`,
         opsi: [
@@ -733,6 +765,7 @@ Opsi C ("the invention of more powerful lenses for lamps") salah karena lensa ba
       },
       {
         nomor: 33,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `According to paragraph 1, the Pharos of Alexandria`,
         opsi: [
@@ -754,6 +787,7 @@ Opsi D ("was named after a European word for a lighthouse") salah karena justru 
       },
       {
         nomor: 34,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `According to paragraph 2, early light sources were inefficient because`,
         opsi: [
@@ -775,6 +809,7 @@ Opsi D ("their flames usually went out before the night ended") salah karena tek
       },
       {
         nomor: 35,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `The word "concentrated" in paragraph 2 is closest in meaning to`,
         opsi: [
@@ -796,6 +831,7 @@ Opsi D ("softened") salah karena melembutkan cahaya bertentangan dengan berkas y
       },
       {
         nomor: 36,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `Why does the author mention that "many coastlines looked alike" in paragraph 3?`,
         opsi: [
@@ -817,6 +853,7 @@ Opsi D ("To suggest that lighthouses were less useful on some coasts") salah kar
       },
       {
         nomor: 37,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `The word "distinctive" in paragraph 3 is closest in meaning to`,
         opsi: [
@@ -838,6 +875,7 @@ Opsi D ("complex") salah karena pola seperti garis atau pita tidak digambarkan s
       },
       {
         nomor: 38,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `The word "they" in paragraph 3 refers to`,
         opsi: [
@@ -859,6 +897,7 @@ Opsi D ("patterns") salah karena pola cat tidak bisa melihat mercusuar.`,
       },
       {
         nomor: 39,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `According to paragraph 4, why were many lighthouses taken out of service?`,
         opsi: [
@@ -880,6 +919,7 @@ Opsi D ("Museums wanted to use the buildings for exhibits.") salah karena penggu
       },
       {
         nomor: 40,
+        lesson: 'Guiding Lights: A History of Lighthouses',
         tipe: 'pg',
         pertanyaan: `All of the following are mentioned as twentieth-century developments EXCEPT`,
         opsi: [
@@ -915,6 +955,7 @@ Studying these animals has long been a challenge. Many are so fragile that they 
     soal: [
       {
         nomor: 41,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `What does the passage mainly discuss?`,
         opsi: [
@@ -936,6 +977,7 @@ Opsi D ("The reasons sunlight cannot reach the deep sea") salah karena hanya men
       },
       {
         nomor: 42,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `All of the following are mentioned as uses of bioluminescence EXCEPT`,
         opsi: [
@@ -957,6 +999,7 @@ Opsi D ("hiding the body's outline") salah karena disebut dalam contoh hatchetfi
       },
       {
         nomor: 43,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `Why does the author mention squid that "squirt dark ink" in paragraph 2?`,
         opsi: [
@@ -978,6 +1021,7 @@ Opsi D ("To argue that ink is a more effective defense than light") salah karena
       },
       {
         nomor: 44,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `According to the passage, the glow on the hatchetfish's underside helps the fish`,
         opsi: [
@@ -999,6 +1043,7 @@ Opsi D ("warn other hatchetfish of danger") salah karena teks tidak menyebut cah
       },
       {
         nomor: 45,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `It can be inferred from paragraph 3 that the dragonfish's red light would be less useful if`,
         opsi: [
@@ -1020,6 +1065,7 @@ Opsi D ("the dragonfish's prey lived in large groups") salah karena teks tidak m
       },
       {
         nomor: 46,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `The word "detect" in paragraph 3 is closest in meaning to`,
         opsi: [
@@ -1041,6 +1087,7 @@ Opsi D ("reflect") salah karena memantulkan cahaya tidak berkaitan dengan kemamp
       },
       {
         nomor: 47,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `According to paragraph 4, why do researchers increasingly rely on submersibles?`,
         opsi: [
@@ -1062,6 +1109,7 @@ Opsi D ("Bright laboratory lights tend to damage sensitive cameras.") salah kare
       },
       {
         nomor: 48,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `The word "fragile" in paragraph 4 is closest in meaning to`,
         opsi: [
@@ -1083,6 +1131,7 @@ Opsi D ("aggressive") salah karena sifat agresif bertentangan dengan konteks hew
       },
       {
         nomor: 49,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `Which of the following can be inferred from paragraph 4?`,
         opsi: [
@@ -1104,6 +1153,7 @@ Opsi D ("Deep-sea animals permanently lose their ability to glow once they are c
       },
       {
         nomor: 50,
+        lesson: 'Living Light in the Deep Sea',
         tipe: 'pg',
         pertanyaan: `The tone of the passage can best be described as`,
         opsi: [

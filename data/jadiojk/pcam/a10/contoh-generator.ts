@@ -39,6 +39,7 @@ export const contohKemampuanUmum: Kelompok[] = [
     soal: [
       {
         nomor: 1,
+        lesson: 'Verbal',
         tipe: 'benar_salah',
         pertanyaan: `Ada pengguna yang memakai kata sandi yang sama untuk beberapa akun sekaligus.`,
         opsi: [
@@ -74,6 +75,7 @@ Jawaban: A (Benar)`,
     soal: [
       {
         nomor: 2,
+        lesson: 'Verbal',
         tipe: 'benar_salah',
         pertanyaan: `Pada prinsipnya, meter listrik di setiap lantai memungkinkan lonjakan pemakaian ditemukan lebih awal.`,
         opsi: [
@@ -110,6 +112,7 @@ Jawaban: A (Benar)`,
     soal: [
       {
         nomor: 3,
+        lesson: 'Verbal',
         tipe: 'benar_salah',
         pertanyaan: `Cakram keras eksternal lebih tahan lama daripada pita magnetik.`,
         opsi: [
@@ -145,6 +148,7 @@ Jawaban: B (Salah)`,
     soal: [
       {
         nomor: 4,
+        lesson: 'Soal Cerita',
         tipe: 'pg',
         pertanyaan: `Berapa bunga yang diperoleh selama periode tersebut?`,
         opsi: [
@@ -186,6 +190,7 @@ Jawaban: D ($1.020)`,
     soal: [
       {
         nomor: 5,
+        lesson: 'Soal Cerita',
         tipe: 'pg',
         pertanyaan: `Berapa persentase peningkatan kecepatan memindainya dari hari pertama hingga akhir bulan?`,
         opsi: [
@@ -231,6 +236,7 @@ Anggap setiap bulan produksi selalu mencapai produksi maksimum dan seluruh unit 
     soal: [
       {
         nomor: 6,
+        lesson: 'Tabel',
         tipe: 'pg',
         pertanyaan: `Jika metode produksi baru memungkinkan biaya tenaga kerja Produk C turun menjadi $6,13 per unit sekaligus meningkatkan produksi maksimum menjadi 200 unit per bulan, berapa persentase kenaikan laba perusahaan dari produk tersebut?`,
         opsi: [
@@ -279,6 +285,7 @@ Jawaban: E (120%)`,
     soal: [
       {
         nomor: 7,
+        lesson: 'Tabel',
         tipe: 'pg',
         pertanyaan: `Berapa perbandingan antara komputer untuk pengarsipan dan komputer untuk pengolahan kata di Delta Media?`,
         opsi: [
@@ -322,6 +329,7 @@ Grafik mencatat pendapatan dan seluruh biaya rutin sebuah usaha rekaan, dalam do
     soal: [
       {
         nomor: 8,
+        lesson: 'Grafik Batang',
         tipe: 'pg',
         pertanyaan: `Berapa persentase laba gabungan terhadap pendapatan gabungan keempat bulan? Bulatkan sampai dua angka di belakang koma.`,
         opsi: [
@@ -364,6 +372,7 @@ Jawaban: B (34,58%)`,
     soal: [
       {
         nomor: 9,
+        lesson: 'Figural > Serial',
         tipe: 'pg',
         pertanyaan: `⟦gambar:gambar/jadiojk/pcam10-tpd-gen-ku-09-soal.png⟧
 Gunakan gambar di bagian atas untuk menentukan jawaban yang benar dari pilihan di bawah. Pilih jawaban yang menggantikan tanda tanya. Jika tidak ada tanda tanya, pilih jawaban yang merupakan kelanjutan dari urutan tersebut.`,
@@ -403,6 +412,7 @@ Jawaban: D`,
     soal: [
       {
         nomor: 10,
+        lesson: 'Figural > Serial',
         tipe: 'pg',
         pertanyaan: `⟦gambar:gambar/jadiojk/pcam10-tpd-gen-ku-10-soal.png⟧
 Gunakan gambar di bagian atas untuk menentukan jawaban yang benar dari pilihan di bawah. Pilih jawaban yang menggantikan tanda tanya. Jika tidak ada tanda tanya, pilih jawaban yang merupakan kelanjutan dari urutan tersebut.`,
@@ -439,6 +449,7 @@ Jawaban: E`,
     soal: [
       {
         nomor: 11,
+        lesson: 'Figural > Matriks',
         tipe: 'pg',
         pertanyaan: `⟦gambar:gambar/jadiojk/pcam10-tpd-gen-ku-11-soal.png⟧
 Pilih gambar yang tepat untuk menggantikan tanda tanya.`,
@@ -472,6 +483,7 @@ Jawaban: C`,
     soal: [
       {
         nomor: 12,
+        lesson: 'Figural > Matriks',
         tipe: 'pg',
         pertanyaan: `⟦gambar:gambar/jadiojk/pcam10-tpd-gen-ku-12-soal.png⟧
 Pilih gambar yang tepat untuk menggantikan tanda tanya. Urutan simbol pada pilihan mengikuti nomor pada posisi kosong.`,
@@ -522,6 +534,7 @@ Kuartal 2: pendapatan penjualan wilayah Barat meningkat $40.000 dari Kuartal 1 k
     soal: [
       {
         nomor: 1,
+        lesson: 'Bar Chart',
         tipe: 'isian_singkat',
         pertanyaan: `Atur total pendapatan penjualan dan persentase pendapatan penjualan wilayah Timur serta pendapatan penjualan wilayah Barat untuk setiap kuartal.
 Format jawaban: empat bilangan dipisah spasi, tanpa tanda $, tanda % maupun titik ribuan, berurutan: total Kuartal 1, persentase Wilayah Timur Kuartal 1, total Kuartal 2, persentase Wilayah Timur Kuartal 2 (persentase Wilayah Barat adalah sisanya).`,
@@ -575,6 +588,7 @@ Kuartal 2: dana kelolaan reksa dana saham turun 25% dibandingkan Kuartal 1.
     soal: [
       {
         nomor: 2,
+        lesson: 'Bar Chart',
         tipe: 'isian_singkat',
         pertanyaan: `Atur total dana kelolaan dan persentase dana kelolaan reksa dana pasar uang serta dana kelolaan reksa dana saham untuk setiap kuartal.
 Format jawaban: empat bilangan dipisah spasi, tanpa tanda $, tanda % maupun titik ribuan, berurutan: total Kuartal 1, persentase Pasar uang Kuartal 1, total Kuartal 2, persentase Pasar uang Kuartal 2 (persentase Saham adalah sisanya).`,
@@ -630,6 +644,7 @@ Kondisi akhir (kunci):
     soal: [
       {
         nomor: 3,
+        lesson: 'Table',
         tipe: 'isian_singkat',
         pertanyaan: `Tentukan kategori insentif yang tepat untuk setiap agen. Setiap tabel di bawah mewakili tampilan tabel ketika tab nama tersebut dipilih.
 
@@ -712,6 +727,7 @@ Tab Orang D
     soal: [
       {
         nomor: 4,
+        lesson: 'Table',
         tipe: 'pg_kategori',
         pertanyaan: `Tentukan apakah setiap orang mencapai target penjualan kuartalnya. Setiap tabel di bawah mewakili tampilan tabel ketika tab nama tersebut dipilih.
 
@@ -811,6 +827,7 @@ Harimau: Menjual 9.000 unit/bulan dengan laba $2,00/unit.`,
     soal: [
       {
         nomor: 5,
+        lesson: 'Badges',
         tipe: 'isian_singkat',
         pertanyaan: `Pasangkan lencana 1 sampai 6 berdasarkan laba penjualan rata-rata per bulan, dari terbesar ke terkecil.
 Format jawaban: nomor lencana tiap nama dipisah spasi, sesuai urutan nama berikut: Kelinci, Bebek, Anjing, Panda, Zebra, Harimau.`,
@@ -869,6 +886,7 @@ Dahlia: Memerlukan 43 jam.`,
     soal: [
       {
         nomor: 6,
+        lesson: 'Badges',
         tipe: 'isian_singkat',
         pertanyaan: `Pasangkan lencana 1 sampai 6 berdasarkan total waktu perawatan seluruh kelompok dalam jam, dari terkecil ke terbesar.
 Format jawaban: nomor lencana tiap nama dipisah spasi, sesuai urutan nama berikut: Eukaliptus, Bambu, Mawar, Cemara, Kaktus, Dahlia.`,
@@ -923,6 +941,7 @@ Urutan final:
     soal: [
       {
         nomor: 7,
+        lesson: 'Line Graph',
         tipe: 'isian_singkat',
         pertanyaan: `Gambarkan area cakupan (dalam mil persegi) untuk setiap bulan.
 Format jawaban: 5 bilangan dipisah spasi, tanpa titik ribuan dan tanpa satuan, berurutan: Agu, Sep, Okt, Nov, Des.`,
@@ -963,6 +982,7 @@ Kondisi akhir (kunci):
     soal: [
       {
         nomor: 8,
+        lesson: 'Line Graph',
         tipe: 'isian_singkat',
         pertanyaan: `Gambarkan nilai rekening saham pada akhir setiap hari.
 Format jawaban: 5 bilangan dipisah spasi, tanpa titik ribuan dan tanpa satuan, berurutan: Senin, Selasa, Rabu, Kamis, Jumat.`,
@@ -1011,6 +1031,7 @@ Pesanan Topi: Jumlah pesanan topi adalah 15 kali jumlah pesanan kemeja.
     soal: [
       {
         nomor: 9,
+        lesson: 'Pie Chart',
         tipe: 'isian_singkat',
         pertanyaan: `Sesuaikan diagram lingkaran untuk menunjukkan persentase tiap kelompok pesanan.
 Format jawaban: 4 bilangan bulat dipisah spasi, tanpa tanda %, berurutan: Pesanan kemeja, Pesanan celana, Pesanan jaket, Pesanan topi.`,
@@ -1072,6 +1093,7 @@ Kelas Manajemen Risiko: Jumlah pesertanya 3 kali jumlah peserta Kelas Akuntansi.
     soal: [
       {
         nomor: 10,
+        lesson: 'Pie Chart',
         tipe: 'isian_singkat',
         pertanyaan: `Sesuaikan diagram lingkaran untuk menunjukkan proporsi peserta pada setiap kelas.
 Format jawaban: 4 bilangan bulat dipisah spasi, tanpa tanda %, berurutan: Kelas Akuntansi, Kelas Perpajakan, Kelas Audit, Kelas Manajemen Risiko.`,

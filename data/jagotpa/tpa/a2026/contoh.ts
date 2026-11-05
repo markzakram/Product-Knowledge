@@ -34,6 +34,7 @@ export const contohVerbal: Kelompok[] = [
       // Sinonim
       {
         nomor: 1,
+        lesson: 'Sinonim',
         tipe: 'pg',
         pertanyaan: `Pilih kata yang maknanya SETARA dengan kata berhuruf KAPITAL berikut.
 CACI`,
@@ -64,6 +65,7 @@ Cara Cepat: Caci maki sama dengan cerca, yaitu celaan.`,
       },
       {
         nomor: 2,
+        lesson: 'Sinonim',
         tipe: 'pg',
         pertanyaan: `Pilih kata yang maknanya SETARA dengan kata berhuruf KAPITAL berikut.
 JAMAK`,
@@ -95,6 +97,7 @@ Cara Cepat: Uji dengan kalimat 'Itu sudah jamak terjadi'. Kata yang dapat mengga
       },
       {
         nomor: 3,
+        lesson: 'Sinonim',
         tipe: 'pg',
         pertanyaan: `Pilih kata yang maknanya SETARA dengan kata berhuruf KAPITAL berikut.
 KAMIL`,
@@ -126,6 +129,7 @@ Cara Cepat: Kamil sekeluarga dengan kata 'kamal' dan 'akmal', yang semuanya berm
       // Antonim
       {
         nomor: 4,
+        lesson: 'Antonim',
         tipe: 'pg',
         pertanyaan: `Pilih kata yang maknanya BERKEBALIKAN dengan kata berhuruf KAPITAL berikut.
 ENCER`,
@@ -157,6 +161,7 @@ Cara Cepat: Encer = tidak kental, jadi lawannya kental.`,
       },
       {
         nomor: 5,
+        lesson: 'Antonim',
         tipe: 'pg',
         pertanyaan: `Pilih kata yang maknanya BERKEBALIKAN dengan kata berhuruf KAPITAL berikut.
 LUMRAH`,
@@ -189,6 +194,7 @@ Cara Cepat: Lumrah sama dengan biasa, dan lawannya aneh atau ganjil.`,
       },
       {
         nomor: 6,
+        lesson: 'Antonim',
         tipe: 'pg',
         pertanyaan: `Pilih kata yang maknanya BERKEBALIKAN dengan kata berhuruf KAPITAL berikut.
 MORTALITAS`,
@@ -221,6 +227,7 @@ Cara Cepat: Hubungkan mort- dengan 'mati' dan nat- dengan 'lahir'.`,
       // Analogi
       {
         nomor: 7,
+        lesson: 'Analogi',
         tipe: 'pg',
         pertanyaan: `Pilih kata atau pasangan kata yang hubungannya paling serupa dengan pasangan kata berikut.
 BIOSKOP : MENONTON = Lumbung : ...`,
@@ -252,6 +259,7 @@ Cara Cepat: Buat kalimat: "Bioskop adalah tempat untuk menonton." Lalu "Lumbung 
       },
       {
         nomor: 8,
+        lesson: 'Analogi',
         tipe: 'pg',
         pertanyaan: `Pilih kata atau pasangan kata yang hubungannya paling serupa dengan pasangan kata berikut.
 FILOLOGI : NASKAH KUNO = ...`,
@@ -283,6 +291,7 @@ Cara Cepat: Periksa apakah kata pertama adalah nama ilmu, biasanya berakhiran -l
       },
       {
         nomor: 9,
+        lesson: 'Analogi',
         tipe: 'pg',
         pertanyaan: `Pilih kata atau pasangan kata yang hubungannya paling serupa dengan pasangan kata berikut.
 KOKON : SUTRA = Kaolin : ...`,
@@ -326,6 +335,7 @@ Cara Cepat: Kaolin adalah tanah liat putih, dan keramik putih halus dari tanah l
     soal: [
       {
         nomor: 10,
+        lesson: 'Pemahaman Bacaan',
         tipe: 'pg',
         pertanyaan: `Simpulan yang paling tepat dari bacaan tersebut adalah ...`,
         opsi: [
@@ -356,6 +366,7 @@ Cara Cepat: Cari unsur yang muncul di setiap paragraf, yaitu karbon dioksida.`,
       },
       {
         nomor: 11,
+        lesson: 'Pemahaman Bacaan',
         tipe: 'pg',
         pertanyaan: `Menurut paragraf 1, apa yang membuat sedotan soda berubah bentuk menjadi kerucut?`,
         opsi: [
@@ -385,6 +396,7 @@ Cara Cepat: Pindai kata kerucut di paragraf 1, lalu baca klausa syarat sebelumny
       },
       {
         nomor: 12,
+        lesson: 'Pemahaman Bacaan',
         tipe: 'pg',
         pertanyaan: `Berdasarkan paragraf 1 dan 2, mengapa stalaktit di Gua Lawang Sela tumbuh lebih cepat pada musim kemarau?`,
         opsi: [
@@ -423,6 +435,7 @@ export const contohKuantitatif: Kelompok[] = [
       // Hitung Menghitung
       {
         nomor: 1,
+        lesson: 'Hitung Menghitung',
         tipe: 'pg',
         pertanyaan: `Nilai \\(x\\) berbanding lurus dengan \\(y\\), dan \\(x = 13\\) jika \\(y = 10\\). Jika \\(x = 17\\), maka \\(y\\) = …`,
         opsi: [
@@ -448,6 +461,7 @@ E. Tidak tepat karena rumus untuk hubungan terbalik yang dipakai`,
       },
       {
         nomor: 2,
+        lesson: 'Hitung Menghitung',
         tipe: 'pg',
         pertanyaan: `Jika \\(2p + 2q = 8\\) dan \\(p - q = 0\\), maka \\(p^2 + q^2\\) = …`,
         opsi: [
@@ -474,6 +488,7 @@ E. Tidak tepat karena nilai 9 tidak diperoleh dari langkah hitung yang benar`,
       },
       {
         nomor: 3,
+        lesson: 'Hitung Menghitung',
         tipe: 'pg',
         pertanyaan: `Jika x, y, dan z adalah bilangan kelipatan 3 berurutan dengan \\(x < y < z\\), maka …`,
         opsi: [
@@ -501,6 +516,7 @@ Cara Cepat: Uji dengan satu contoh tiga bilangan, lalu uji lagi dengan contoh la
       // Deret Bilangan
       {
         nomor: 4,
+        lesson: 'Deret Bilangan',
         tipe: 'pg',
         pertanyaan: `Bilangan berikutnya pada barisan 640, 320, 1.280, 640, 2.560, … adalah …`,
         opsi: [
@@ -526,6 +542,7 @@ E. Tidak tepat karena pembagian diganti pengurangan`,
       },
       {
         nomor: 5,
+        lesson: 'Deret Bilangan',
         tipe: 'pg',
         pertanyaan: `Bilangan yang tepat untuk mengisi bagian kosong pada barisan XIV, XVIII, XXII, XXVI, __, XXXIV adalah …`,
         opsi: [
@@ -551,6 +568,7 @@ E. Tidak tepat karena selisih barisan dihitung kurang teliti`,
       },
       {
         nomor: 6,
+        lesson: 'Deret Bilangan',
         tipe: 'pg',
         pertanyaan: `Unsur pertama pada barisan 5, 9, 17, 33, … yang lebih besar dari 150 adalah …`,
         opsi: [
@@ -577,6 +595,7 @@ E. Tidak tepat karena ada unsur yang lebih kecil dan sudah melewati batas`,
       // Komparasi Kuantitatif
       {
         nomor: 7,
+        lesson: 'Komparasi Kuantitatif',
         tipe: 'pg',
         pertanyaan: `Jika \\(x = y - 4\\) dan \\(3 < y < 6\\), maka …`,
         opsi: [
@@ -602,6 +621,7 @@ Cara Cepat: Rentang y tidak perlu dipakai untuk menjawab.`,
       },
       {
         nomor: 8,
+        lesson: 'Komparasi Kuantitatif',
         tipe: 'pg',
         pertanyaan: `Pertidaksamaan \\(4 - 3x > 4 - 3y\\) pasti terpenuhi jika …`,
         opsi: [
@@ -628,6 +648,7 @@ E. Tidak tepat karena tanda bilangan saja tidak menentukan mana yang lebih besar
       },
       {
         nomor: 9,
+        lesson: 'Komparasi Kuantitatif',
         tipe: 'pg',
         pertanyaan: `Misalkan \\(a\\) dan \\(b\\) bilangan positif, \\(r = ab\\), dan \\(s = a + b\\). Maka …`,
         opsi: [
@@ -655,6 +676,7 @@ D. Tidak tepat karena pernyataan ini gagal, misalnya pada \\(a = 1, b = 1, r = 1
       // Soal Cerita
       {
         nomor: 10,
+        lesson: 'Soal Cerita',
         tipe: 'pg',
         pertanyaan: `Sebuah kelas berisi 50 siswa, dan setiap siswa mengikuti sedikitnya satu klub. Sebanyak 33 siswa mengikuti klub pramuka dan 29 siswa mengikuti klub PMR. Banyak siswa yang mengikuti kedua klub adalah …`,
         opsi: [
@@ -680,6 +702,7 @@ E. Tidak tepat karena kedua klub dijumlahkan tanpa mengurangi banyak siswa`,
       },
       {
         nomor: 11,
+        lesson: 'Soal Cerita',
         tipe: 'pg',
         pertanyaan: `Zahra makan \\(\\frac{3}{5}\\) bagian martabak. Wulan makan \\(\\frac{3}{5}\\) dari sisanya. Bagian yang tersisa untuk Putri adalah …`,
         opsi: [
@@ -706,6 +729,7 @@ E. Tidak tepat karena yang dihitung bagian yang dimakan Wulan`,
       },
       {
         nomor: 12,
+        lesson: 'Soal Cerita',
         tipe: 'pg',
         pertanyaan: `Jika panjang sisi sebuah persegi ditambah 6 cm, luasnya bertambah 336 cm². Luas persegi semula adalah …`,
         opsi: [
@@ -741,6 +765,7 @@ export const contohPenalaran: Kelompok[] = [
       // Verbal Silogisme
       {
         nomor: 1,
+        lesson: 'Verbal > Silogisme',
         tipe: 'pg',
         pertanyaan: `Pilihlah kesimpulan yang paling tepat dari premis berikut.
 Semua apoteker adalah lulusan farmasi.
@@ -769,6 +794,7 @@ Cara Cepat: Gambar dua premis sebagai diagram Venn, lalu uji setiap opsi.`,
       },
       {
         nomor: 2,
+        lesson: 'Verbal > Silogisme',
         tipe: 'pg',
         pertanyaan: `Jika pernyataan "Tidak ada penyuluh yang merupakan aparatur desa" salah, maka pernyataan yang pasti benar adalah …`,
         opsi: [
@@ -794,6 +820,7 @@ Jebakan Soal: Ingkaran "semua" bukan "tidak ada".`,
       },
       {
         nomor: 3,
+        lesson: 'Verbal > Silogisme',
         tipe: 'pg',
         pertanyaan: `Perhatikan penalaran berikut.
 Semua auditor adalah akuntan.
@@ -824,6 +851,7 @@ D. Tidak tepat karena premis diterima sebagai benar dalam soal jenis ini`,
       // Verbal Analitis
       {
         nomor: 4,
+        lesson: 'Verbal > Analitis',
         tipe: 'pg',
         pertanyaan: `Lima roti, yaitu K, L, M, R, dan S, dibandingkan dengan keterangan berikut:
 1. Roti R lebih lama diproduksi daripada roti L.
@@ -856,6 +884,7 @@ D. Tidak tepat karena urutan R berada di posisi ke-4 dari yang terbesar`,
       },
       {
         nomor: 5,
+        lesson: 'Verbal > Analitis',
         tipe: 'pg',
         pertanyaan: `Berikut jadwal kegiatan di gedung olahraga:
 Judo: Senin, Sabtu.
@@ -887,6 +916,7 @@ E. Tidak tepat karena pada hari Jumat, basket dan renang tidak sama-sama berlang
       },
       {
         nomor: 6,
+        lesson: 'Verbal > Analitis',
         tipe: 'pg',
         pertanyaan: `Bima akan mengambil 4 dari 7 mata kuliah, yaitu Fisika, Kimia, Statistika, Musik, Mengarang, Sejarah, Bahasa Inggris. Mata kuliah sains adalah Fisika, Kimia, Statistika, dan Bima wajib mengambil tepat 2 mata kuliah sains. Jadwal yang bentrok: Musik dengan Kimia; Musik dengan Sejarah; Fisika dengan Mengarang.
 Jika Bima mengambil Musik, tiga mata kuliah lainnya adalah …`,
@@ -915,6 +945,7 @@ E. Tidak tepat karena Musik bentrok dengan Kimia`,
       // Rotasi Kubus
       {
         nomor: 7,
+        lesson: 'Figural > Rotasi Kubus',
         tipe: 'pg',
         pertanyaan: `Perhatikan kubus berikut. Setiap sisinya bertanda berbeda. Gambar mana yang mungkin merupakan kubus yang sama setelah diputar?
 ⟦gambar:gambar/jagotpa/to1-p31-soal-1.png⟧`,
@@ -944,6 +975,7 @@ Cara Cepat: Mulai dari tanda yang arahnya paling jelas, lalu periksa tetangganya
       },
       {
         nomor: 8,
+        lesson: 'Figural > Rotasi Kubus',
         tipe: 'pg',
         pertanyaan: `Perhatikan kubus berikut. Setiap sisinya bertanda berbeda. Gambar mana yang mungkin merupakan kubus yang sama setelah diputar?
 ⟦gambar:gambar/jagotpa/to1-p32-soal-1.png⟧`,
@@ -974,6 +1006,7 @@ Cara Cepat: Mulai dari tanda yang arahnya paling jelas, lalu periksa tetangganya
       },
       {
         nomor: 9,
+        lesson: 'Figural > Rotasi Kubus',
         tipe: 'pg',
         pertanyaan: `Perhatikan kubus berikut. Setiap sisinya bertanda berbeda. Gambar mana yang mungkin merupakan kubus yang sama setelah diputar?
 ⟦gambar:gambar/jagotpa/to1-p34-soal-1.png⟧`,
@@ -1005,6 +1038,7 @@ Cara Cepat: Mulai dari tanda yang arahnya paling jelas, lalu periksa tetangganya
       // Visualisasi Kubus
       {
         nomor: 10,
+        lesson: 'Figural > Visualisasi Kubus',
         tipe: 'pg',
         pertanyaan: `Tiga gambar berikut menunjukkan kubus yang sama dari sudut pandang berbeda. Setiap sisinya bertanda berbeda. Gambar apa yang tepat untuk sisi bertanda tanya pada kubus ketiga?
 ⟦gambar:gambar/jagotpa/to1-p37-soal-1.png⟧`,
@@ -1036,6 +1070,7 @@ Cara Cepat: Coret dulu tanda yang sudah tampak pada kubus ketiga dan tanda yang 
       },
       {
         nomor: 11,
+        lesson: 'Figural > Visualisasi Kubus',
         tipe: 'pg',
         pertanyaan: `Tiga gambar berikut menunjukkan kubus yang sama dari sudut pandang berbeda. Setiap sisinya bertanda berbeda. Gambar apa yang tepat untuk sisi bertanda tanya pada kubus ketiga?
 ⟦gambar:gambar/jagotpa/to1-p36-soal-1.png⟧`,
@@ -1067,6 +1102,7 @@ Cara Cepat: Coret dulu tanda yang sudah tampak pada kubus ketiga dan tanda yang 
       },
       {
         nomor: 12,
+        lesson: 'Figural > Visualisasi Kubus',
         tipe: 'pg',
         pertanyaan: `Tiga gambar berikut menunjukkan kubus yang sama dari sudut pandang berbeda. Setiap sisinya bertanda berbeda. Gambar apa yang tepat untuk sisi bertanda tanya pada kubus ketiga?
 ⟦gambar:gambar/jagotpa/to1-p39-soal-1.png⟧`,
@@ -1099,6 +1135,7 @@ Cara Cepat: Coret dulu tanda yang sudah tampak pada kubus ketiga dan tanda yang 
       // Jaring-jaring Kubus
       {
         nomor: 13,
+        lesson: 'Figural > Jaring-jaring Kubus',
         tipe: 'pg',
         pertanyaan: `Jaring-jaring di sebelah kiri dilipat ke belakang dengan gambar berada di sisi luar sehingga membentuk kubus di sebelah kanan. Gambar apa yang tepat untuk sisi bertanda tanya?
 ⟦gambar:gambar/jagotpa/to1-p41-soal-1.png⟧`,
@@ -1129,6 +1166,7 @@ Cara Cepat: Tentukan dulu pasangan sisi yang berhadapan. Biasanya dua opsi langs
       },
       {
         nomor: 14,
+        lesson: 'Figural > Jaring-jaring Kubus',
         tipe: 'pg',
         pertanyaan: `Jaring-jaring di sebelah kiri dilipat ke belakang dengan gambar berada di sisi luar sehingga membentuk kubus di sebelah kanan. Gambar apa yang tepat untuk sisi bertanda tanya?
 ⟦gambar:gambar/jagotpa/to1-p42-soal-1.png⟧`,
@@ -1159,6 +1197,7 @@ Cara Cepat: Tentukan dulu pasangan sisi yang berhadapan. Biasanya dua opsi langs
       },
       {
         nomor: 15,
+        lesson: 'Figural > Jaring-jaring Kubus',
         tipe: 'pg',
         pertanyaan: `Jaring-jaring di sebelah kiri dilipat ke belakang dengan gambar berada di sisi luar sehingga membentuk kubus di sebelah kanan. Gambar apa yang tepat untuk sisi bertanda tanya?
 ⟦gambar:gambar/jagotpa/to1-p43-soal-1.png⟧`,
@@ -1190,6 +1229,7 @@ Cara Cepat: Tentukan dulu pasangan sisi yang berhadapan. Biasanya dua opsi langs
       // Kotak 3x3
       {
         nomor: 16,
+        lesson: 'Figural > Kotak 3x3',
         tipe: 'pg',
         pertanyaan: `Pilih gambar yang tepat untuk menggantikan tanda tanya pada matriks berikut.
 ⟦gambar:gambar/jagotpa/to1-p46-soal-1.png⟧`,
@@ -1220,6 +1260,7 @@ Cara Cepat: Cari unsur yang belum muncul pada baris dan kolom kotak kosong.`,
       },
       {
         nomor: 17,
+        lesson: 'Figural > Kotak 3x3',
         tipe: 'pg',
         pertanyaan: `Pilih gambar yang tepat untuk menggantikan tanda tanya pada matriks berikut.
 ⟦gambar:gambar/jagotpa/to1-p49-soal-1.png⟧`,
@@ -1252,6 +1293,7 @@ Cara Cepat: Hitung jumlah unsur per baris lebih dulu karena paling mudah diperik
       },
       {
         nomor: 18,
+        lesson: 'Figural > Kotak 3x3',
         tipe: 'pg',
         pertanyaan: `Pilih gambar yang tepat untuk menggantikan tanda tanya pada matriks berikut.
 ⟦gambar:gambar/jagotpa/to1-p57-soal-1.png⟧`,
@@ -1282,6 +1324,7 @@ Cara Cepat: Uji operasinya pada baris yang lengkap, lalu terapkan pada baris yan
       // The Next Box
       {
         nomor: 19,
+        lesson: 'Figural > The Next Box',
         tipe: 'pg',
         pertanyaan: `Pilih kotak yang melanjutkan deret gambar berikut.
 ⟦gambar:gambar/jagotpa/to1-p65-soal-1.png⟧`,
@@ -1315,6 +1358,7 @@ Cara Cepat: Ikuti satu corak yang paling mudah dikenali, misalnya hitam penuh, d
       },
       {
         nomor: 20,
+        lesson: 'Figural > The Next Box',
         tipe: 'pg',
         pertanyaan: `Pilih kotak yang melanjutkan deret gambar berikut.
 ⟦gambar:gambar/jagotpa/to1-p61-soal-1.png⟧`,
@@ -1347,6 +1391,7 @@ Cara Cepat: Periksa satu ciri pada satu waktu, lalu coret opsi yang menyalahi ci
       },
       {
         nomor: 21,
+        lesson: 'Figural > The Next Box',
         tipe: 'pg',
         pertanyaan: `Pilih kotak yang melanjutkan deret gambar berikut.
 ⟦gambar:gambar/jagotpa/to1-p62-soal-1.png⟧`,
