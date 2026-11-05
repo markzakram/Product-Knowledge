@@ -50,7 +50,7 @@ export const SEMUA_PLATFORM: Platform[] = [
 /**
  * Platform yang tampil di halaman pembaca: SEMUA_PLATFORM tanpa yang diberi
  * `tampil: false` (aplikasinya belum siap). Beranda, halaman platform, tes,
- * angkatan, dan subtes, simulasi, pencarian, banding, dashboard, dan
+ * angkatan, dan subtes, pencarian, banding, dashboard, dan
  * kelengkapan semuanya membaca daftar ini lewat lib/data.ts, dan rute platform
  * yang disembunyikan 404. Untuk menampilkannya lagi, hapus `tampil: false` di
  * objek platformnya.

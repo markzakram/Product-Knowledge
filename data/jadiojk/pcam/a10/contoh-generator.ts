@@ -23,7 +23,7 @@ import type { Kelompok } from '@/lib/skema';
  *
  * Soal interaktif tidak bisa digeser di sini, jadi jawabannya diketik sebagai isian
  * singkat yang pendek (angka atau huruf berurutan, format jawabannya tertulis di
- * soal) supaya dinilai otomatis di simulasi. Table 2 opsi memakai PG kategori.
+ * soal) supaya bisa dicocokkan dengan kunci. Table 2 opsi memakai PG kategori.
  * Badges (Logical Ranking) dijawab dengan nomor lencana tiap nama; pembahasannya
  * memuat teks langkah dan satu gambar urutan final.
  */
@@ -567,7 +567,7 @@ Kesimpulan
 Atur batang Kuartal 1 ke $200.000 dengan pembagian Wilayah Timur 75% / Wilayah Barat 25%.
 Atur batang Kuartal 2 ke $300.000 dengan pembagian Wilayah Timur 70% / Wilayah Barat 30%.
 Tampilan awal: Kuartal 1 total $200.000 (sudah sesuai) dan Kuartal 2 total $130.000, keduanya berpembagian 50% / 50%. Atur yang belum sama dengan kondisi akhir di atas.
-Isian pada simulasi (total, persentase Wilayah Timur, total, persentase Wilayah Timur): 200000 75 300000 70
+Jawaban ringkas (total, persentase Wilayah Timur, total, persentase Wilayah Timur): 200000 75 300000 70
 Jawaban: Kuartal 1: total $200.000, Wilayah Timur 75% ($150.000), Wilayah Barat 25% ($50.000). Kuartal 2: total $300.000, Wilayah Timur 70% ($210.000), Wilayah Barat 30% ($90.000).
 Kondisi akhir (kunci):
 ⟦gambar:gambar/jadiojk/pcam10-tpd-gen-pn-01-kunci.png⟧`,
@@ -621,7 +621,7 @@ Kesimpulan
 Atur batang Kuartal 1 ke $330.000 dengan pembagian Pasar uang 20% / Saham 80%.
 Atur batang Kuartal 2 ke $360.000 dengan pembagian Pasar uang 45% / Saham 55%.
 Tampilan awal: Kuartal 1 total $330.000 (sudah sesuai) dan Kuartal 2 total $220.000, keduanya berpembagian 50% / 50%. Atur yang belum sama dengan kondisi akhir di atas.
-Isian pada simulasi (total, persentase Pasar uang, total, persentase Pasar uang): 330000 20 360000 45
+Jawaban ringkas (total, persentase Pasar uang, total, persentase Pasar uang): 330000 20 360000 45
 Jawaban: Kuartal 1: total $330.000, Pasar uang 20% ($66.000), Saham 80% ($264.000). Kuartal 2: total $360.000, Pasar uang 45% ($162.000), Saham 55% ($198.000).
 Kondisi akhir (kunci):
 ⟦gambar:gambar/jadiojk/pcam10-tpd-gen-pn-02-kunci.png⟧`,
@@ -701,7 +701,7 @@ Orang D:
 \\(\\$41 \\le \\$72{,}78 < \\$101 \\to \\text{insentif }5\\%\\)
 Kesimpulan
 Pilih B (5%) pada tab Orang A; A (Tanpa insentif) pada tab Orang B; C (10%) pada tab Orang C; B (5%) pada tab Orang D.
-Isian pada simulasi (Orang A, Orang B, Orang C, Orang D): BACB
+Jawaban ringkas (Orang A, Orang B, Orang C, Orang D): BACB
 Jawaban: Orang A: 5%. Orang B: Tanpa insentif. Orang C: 10%. Orang D: 5%.
 Kondisi akhir tiap tab (kunci):
 Tab Orang A
@@ -862,7 +862,7 @@ Hasil Harimau: $18.000,00.
 Semua laba bulanan unit sudah dihitung. Urutkan dari nilai terbesar hingga terkecil, lalu pasangkan lencana 1 sampai 6.
 Kesimpulan
 1. Bebek; 2. Harimau; 3. Zebra; 4. Anjing; 5. Panda; 6. Kelinci.
-Isian pada simulasi (nomor lencana Kelinci, Bebek, Anjing, Panda, Zebra, Harimau): 6 1 4 5 3 2
+Jawaban ringkas (nomor lencana Kelinci, Bebek, Anjing, Panda, Zebra, Harimau): 6 1 4 5 3 2
 Jawaban: 1. Bebek; 2. Harimau; 3. Zebra; 4. Anjing; 5. Panda; 6. Kelinci.
 Urutan final:
 ⟦gambar:gambar/jadiojk/pcam10-tpd-gen-pn-05-kunci.png⟧`,
@@ -922,7 +922,7 @@ Hasil Dahlia: 43 jam.
 Semua waktu sudah dalam jam. Urutkan dari waktu paling singkat hingga paling lama, lalu pasangkan lencana 1 sampai 6.
 Kesimpulan
 1. Bambu; 2. Mawar; 3. Eukaliptus; 4. Dahlia; 5. Cemara; 6. Kaktus.
-Isian pada simulasi (nomor lencana Eukaliptus, Bambu, Mawar, Cemara, Kaktus, Dahlia): 3 1 2 5 6 4
+Jawaban ringkas (nomor lencana Eukaliptus, Bambu, Mawar, Cemara, Kaktus, Dahlia): 3 1 2 5 6 4
 Jawaban: 1. Bambu; 2. Mawar; 3. Eukaliptus; 4. Dahlia; 5. Cemara; 6. Kaktus.
 Urutan final:
 ⟦gambar:gambar/jadiojk/pcam10-tpd-gen-pn-06-kunci.png⟧`,
@@ -964,7 +964,7 @@ Kejadian pada Nov dihitung sekali pada titik itu; pengaruhnya terbawa ke titik-t
 \\(\\text{Des} = 8.950 + 450 = 9.400\\)
 Kesimpulan
 Geser titik Agu ke 6.700 mil persegi, Sep ke 7.150 mil persegi, Okt ke 7.600 mil persegi, Nov ke 8.950 mil persegi, dan Des ke 9.400 mil persegi, sehingga garis tersambung dari Agu sampai Des.
-Isian pada simulasi (Agu, Sep, Okt, Nov, Des): 6700 7150 7600 8950 9400
+Jawaban ringkas (Agu, Sep, Okt, Nov, Des): 6700 7150 7600 8950 9400
 Jawaban: Agu 6.700; Sep 7.150; Okt 7.600; Nov 8.950; Des 9.400.
 Kondisi akhir (kunci):
 ⟦gambar:gambar/jadiojk/pcam10-tpd-gen-pn-07-kunci.png⟧`,
@@ -1008,7 +1008,7 @@ Titik Senin adalah nilai awal:
 \\(\\text{Jumat} = \\$4.200 - \\$360 = \\$3.840\\)
 Kesimpulan
 Geser titik Senin ke $6.000, Selasa ke $5.640, Rabu ke $5.280, Kamis ke $4.200, dan Jumat ke $3.840, sehingga garis tersambung dari Senin sampai Jumat.
-Isian pada simulasi (Senin, Selasa, Rabu, Kamis, Jumat): 6000 5640 5280 4200 3840
+Jawaban ringkas (Senin, Selasa, Rabu, Kamis, Jumat): 6000 5640 5280 4200 3840
 Jawaban: Senin $6.000; Selasa $5.640; Rabu $5.280; Kamis $4.200; Jumat $3.840.
 Kondisi akhir (kunci):
 ⟦gambar:gambar/jadiojk/pcam10-tpd-gen-pn-08-kunci.png⟧`,
@@ -1071,7 +1071,7 @@ Keempat persentase berjumlah 100%:
 \\(4\\% + 4\\% + 32\\% + 60\\% = 100\\%\\)
 Kesimpulan
 Atur irisan Pesanan Kemeja ke 4%, Pesanan Celana ke 4%, Pesanan Jaket ke 32%, dan Pesanan Topi ke 60%.
-Isian pada simulasi (Pesanan kemeja, Pesanan celana, Pesanan jaket, Pesanan topi): 4 4 32 60
+Jawaban ringkas (Pesanan kemeja, Pesanan celana, Pesanan jaket, Pesanan topi): 4 4 32 60
 Jawaban: Kemeja 4% (2.000); Celana 4% (2.000); Jaket 32% (16.000); Topi 60% (30.000).
 Kondisi akhir (kunci):
 ⟦gambar:gambar/jadiojk/pcam10-tpd-gen-pn-09-kunci.png⟧`,
@@ -1126,7 +1126,7 @@ Keempat persentase berjumlah 100%:
 \\(20\\% + 10\\% + 10\\% + 60\\% = 100\\%\\)
 Kesimpulan
 Atur irisan Kelas Akuntansi ke 20%, Kelas Perpajakan ke 10%, Kelas Audit ke 10%, dan Kelas Manajemen Risiko ke 60%.
-Isian pada simulasi (Kelas Akuntansi, Kelas Perpajakan, Kelas Audit, Kelas Manajemen Risiko): 20 10 10 60
+Jawaban ringkas (Kelas Akuntansi, Kelas Perpajakan, Kelas Audit, Kelas Manajemen Risiko): 20 10 10 60
 Jawaban: Kelas Akuntansi 20% (4); Kelas Perpajakan 10% (2); Kelas Audit 10% (2); Kelas Manajemen Risiko 60% (12).
 Kondisi akhir (kunci):
 ⟦gambar:gambar/jadiojk/pcam10-tpd-gen-pn-10-kunci.png⟧`,

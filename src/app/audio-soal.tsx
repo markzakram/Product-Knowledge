@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { audioAman } from '@/lib/audio';
 
 /**
- * Pemutar audio sebuah soal (Soal.audio), dipakai halaman subtes dan simulasi.
+ * Pemutar audio sebuah soal (Soal.audio), dipakai halaman subtes.
  *
  * Hanya tampil kalau jalurnya lolos pola aman (lib/audio.ts); jalur yang
  * janggal tidak pernah jadi atribut src. preload="none": audio baru diunduh

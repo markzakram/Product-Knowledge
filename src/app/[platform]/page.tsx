@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import {
-  PLATFORM, cariPlatform, angkaPlatform, angkatanAwal, angkaAngkatan, angkaTahapan, angkatanBisaSimulasi,
+  PLATFORM, cariPlatform, angkaPlatform, angkatanAwal, angkaAngkatan, angkaTahapan,
   judulAngkatan, kodeChipTahapan, metaSubtes, nomorTahapan, ringkasAngka, tautanAngkatan,
-  tautanSimulasiAngkatan, tautanTahapan, totalAngka,
+  tautanTahapan, totalAngka,
   type JalurAngkatan,
 } from '@/lib/data';
 import { Remah, Kosong } from '../komponen';
@@ -52,8 +52,6 @@ function ringkasAngkatan(j: JalurAngkatan): PetaAngkatan {
     tautan: tautanAngkatan(j),
     judul: judulAngkatan(tes, angkatan),
     total: totalAngka(angkaAngkatan(angkatan)),
-    // Rute simulasi hanya ada bila sedikitnya satu subtesnya punya soal untuk dikerjakan.
-    simulasi: angkatanBisaSimulasi(angkatan) ? tautanSimulasiAngkatan(j) : undefined,
     tahapan: angkatan.tahapan.map((t, i) => {
       // Dihitung dari SEMUA subtes tahapan, bukan hanya yang tampil: bentrok di
       // subtes yang tersembunyi tetap mengubah seluruh tahapan jadi nomor, dan

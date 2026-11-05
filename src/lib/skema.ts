@@ -243,7 +243,7 @@ export interface Platform {
    * `false` untuk platform yang aplikasinya belum siap. Datanya tetap disimpan
    * di repo dan tetap diperiksa (periksaIsi, Cek Data), tetapi tidak muncul di
    * halaman pembaca mana pun (beranda, pencarian, banding, dashboard,
-   * kelengkapan, simulasi) dan rutenya 404. Hapus field ini untuk
+   * kelengkapan) dan rutenya 404. Hapus field ini untuk
    * menampilkannya lagi.
    *
    * Penyaringannya satu tempat: `PLATFORM` di data/index.ts hanya memuat platform

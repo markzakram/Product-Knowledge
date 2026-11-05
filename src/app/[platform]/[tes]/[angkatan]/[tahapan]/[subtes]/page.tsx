@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import {
-  cariSubtes, semuaSubtes, jumlahContoh, judulAngkatan, labelTahapan, subtesBisaSimulasi, tetanggaSubtes,
-  tautanAngkatan, tautanPlatform, tautanSimulasiSubtes, tautanSubtes,
+  cariSubtes, semuaSubtes, jumlahContoh, judulAngkatan, labelTahapan, tetanggaSubtes,
+  tautanAngkatan, tautanPlatform, tautanSubtes,
 } from '@/lib/data';
 import { Remah, Status, Kosong, Waktu, Ikon } from '../../../../../komponen';
 import { siapkanKelompok, uraikan } from '@/lib/isi-kaya';
@@ -125,13 +125,6 @@ export default async function HalamanSubtes({
 
           <div className="kepala-contoh">
             <h2>Contoh Soal</h2>
-            {/* Hanya bila ada soal untuk dikerjakan; selainnya rutenya tak ada. */}
-            {subtesBisaSimulasi(subtes) && (
-              <a className="aksi aksi-garis tanpa-cetak" href={tautanSimulasiSubtes(jalur)}>
-                <Ikon nama="putar" ukuran={16} />
-                Simulasi subtes ini
-              </a>
-            )}
         </div>
         {/* Layar sempit: kolom samping dibuang CSS, index pindah ke blok lipat ini. */}
         {indeks.length > 0 && <IndeksSoal varian="atas" subtes={daftarSubtes} isi={indeks} />}

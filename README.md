@@ -130,7 +130,7 @@ masuk lewat jalur yang mereka bisa; yang tayang tetap lewat review.
 Platform yang aplikasinya belum siap diberi `tampil: false` di objeknya (mis.
 `data/jadibumn/index.ts`). Datanya tetap ada di repo dan tetap diperiksa
 `/cek-data`, tetapi tidak muncul di halaman pembaca mana pun (beranda,
-pencarian, banding, dashboard, kelengkapan, simulasi) dan rutenya, mis.
+pencarian, banding, dashboard, kelengkapan) dan rutenya, mis.
 `/jadibumn`, 404. Untuk menampilkannya lagi, hapus barisnya; yang sedang
 disembunyikan terlihat lewat `grep -rn "tampil: false" data`. Di kode,
 `data/index.ts` mengekspor `SEMUA_PLATFORM` (lengkap, dipakai pemeriksa isi) dan
@@ -144,8 +144,6 @@ disembunyikan terlihat lewat `grep -rn "tampil: false" data`. Di kode,
 | `/<platform>` | Tes dan angkatan, mis. `/jadipcpm` |
 | `/<platform>/<tes>/<angkatan>` | Tahapan, lalu info seleksi (tampil penuh di bawah tahapan), lalu sumber. Daftar isi menaut ke tiap bagian: lengket di samping di layar lebar, blok lipat di atas di layar sempit |
 | `/<platform>/<tes>/<angkatan>/<tahapan>/<subtes>` | Spesifikasi, materi, mapping, contoh soal |
-| `/<platform>/<tes>/<angkatan>/simulasi` | Simulasi seluruh angkatan dari contoh soalnya: subtes berurutan, tiap bagian dengan waktunya sendiri. Hasil dan pembahasan tampil di rute yang sama. Hanya angkatan yang punya subtes dengan soal |
-| `/<platform>/<tes>/<angkatan>/<tahapan>/<subtes>/simulasi` | Simulasi satu subtes. Hanya subtes yang punya soal untuk dikerjakan (bukan `bankSoal: false`, bukan hanya uraian) |
 | `/cari?q=` | Pencarian lintas semua isi termasuk opsi dan pembahasan soal |
 | `/dashboard` | Rekap kekurangan soal dan angkatan yang datanya belum lengkap |
 | `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, lesson tak lengkap, mapping janggal, jalur atau berkas audio yang salah, versi yang tak cocok dengan catatan pembaruan |
@@ -160,9 +158,9 @@ Soal Listening (kini TOEFL ITP, Toefl Academy) memakai field `audio` di `Soal`:
 | `audio` | Jalur di bawah `public/`, mis. `audio/toeflacademy/itp-lc-01.mp3`. Satu soal satu berkas `.mp3`. |
 
 Berkasnya ada di `public/audio/<platform>/`. Pemutar `<audio controls>` tampil di atas
-pertanyaan di halaman subtes, layar ujian simulasi, dan pembahasan di layar hasil; audio hanya
-diunduh saat diputar. Satu halaman hanya satu audio berbunyi (memutar satu menjeda yang lain),
-dan pindah soal di simulasi menghentikan audionya. Transkrip ditulis di `pembahasan`, jadi tidak
+pertanyaan di halaman subtes; audio hanya diunduh saat diputar. Satu halaman hanya satu audio
+berbunyi (memutar satu menjeda yang lain), dan pemutarnya bebas diulang karena ini latihan,
+sedangkan di tes asli audio hanya diputar sekali. Transkrip ditulis di `pembahasan`, jadi tidak
 terbaca sebelum jawaban dibuka. Jalur harus berpola `audio/…mp3` dan berkasnya harus ada,
 kalau tidak muncul di `/cek-data`. `/audio/*` tetap di balik PIN seperti halaman lain.
 
@@ -181,27 +179,7 @@ Bila satu subtes punya minimal 10 soal dan minimal 2 category, halaman subtes me
 samping kanan (lengket) dengan jumlah soal per category dan lesson; klik melompat ke soalnya dan
 semua soal tetap tampil, penanda mengikuti bagian yang sedang dibaca. Di layar sempit index jadi blok
 lipat "Index soal" di atas soal. Bagian "Subtes" (pindah antarsubtes satu tahapan) tampil di kolom
-yang sama bila tahapan punya lebih dari satu subtes. Simulasi tidak memakai index.
-
-### Mode simulasi
-
-Contoh soal tiap subtes otomatis bisa dikerjakan sebagai simulasi di rute
-`…/simulasi`, tanpa menulis apa pun khusus di data; soal `uraian` tidak ikut.
-Soal berisi audio (Listening) boleh diputar ulang sebebasnya karena ini latihan; di tes asli audio
-hanya diputar sekali, dan layar awal menyebutnya. Soal `skala`, soal `tanpaKunci`, dan isian singkat yang kuncinya berupa kalimat
-(lebih dari 24 karakter di luar spasi, atau 4 kata atau lebih) tidak dinilai
-otomatis: kuncinya tetap tampil di hasil untuk dibandingkan sendiri, jadi tulis
-kunci isian sependek mungkin bila ingin ikut dinilai. Bila contoh lebih banyak
-dari `jumlahSoal`, soal yang dipakai disebar merata di seluruh daftar, bukan
-diambil dari depan (urutan data tetap; kelompok yang stimulusnya berisi teks
-atau gambar tetap utuh, jadi jumlahnya bisa lebih dari `jumlahSoal`, sedangkan
-kelompok tanpa stimulus atau yang hanya berjudul dipecah per soal); bila lebih
-sedikit, semuanya dipakai dan subtesnya berlabel "parsial". Batas waktu = `waktuMenit` ×
-(soal yang dipakai ÷ `jumlahSoal`, paling besar 1); tanpa `waktuMenit`
-simulasinya stopwatch tanpa batas, begitu pula tahapan `waktuBersama` yang
-`jumlahSoal`-nya belum diketahui (UKP), karena waktu sesinya tak bisa dibagi. Tahapan `waktuBersama` (SKD) menjadi satu
-sesi dengan satu timer di simulasi angkatan, dan di simulasi satu subtes
-jatahnya porsi dari waktu sesi menurut jumlah soal tahapan itu.
+yang sama bila tahapan punya lebih dari satu subtes.
 
 ### Versi dan catatan pembaruan
 

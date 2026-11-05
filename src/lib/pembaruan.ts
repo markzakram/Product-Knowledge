@@ -27,6 +27,13 @@ export interface Rilis {
 
 export const PEMBARUAN: readonly Rilis[] = [
   {
+    versi: '1.10.0',
+    tanggal: '2026-11-05',
+    poin: [
+      'Fitur simulasi dihapus karena tidak digunakan: halaman simulasi, tombol "Coba simulasi" dan "Mulai simulasi", serta kolom Simulasi di tabel subtes. Contoh soal tetap lengkap dan tetap bisa dicoba lewat mode latihan di halaman subtes.',
+    ],
+  },
+  {
     versi: '1.9.0',
     tanggal: '2026-11-05',
     poin: [
