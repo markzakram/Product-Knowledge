@@ -9,7 +9,9 @@ import { jadipppk } from './jadipppk';
 import { jadiprajurit } from './jadiprajurit';
 import { jadisekdin } from './jadisekdin';
 import { jagotpa } from './jagotpa';
+import { jagoukp } from './jagoukp';
 import { psikoteskerja } from './psikoteskerja';
+import { toeflacademy } from './toeflacademy';
 
 /**
  * Seluruh isi Product Knowledge, termasuk platform yang disembunyikan.
@@ -39,6 +41,8 @@ export const SEMUA_PLATFORM: Platform[] = [
   jadiprajurit,
   { kode: 'JADIPOLISI', nama: 'JadiPolisi', slug: 'jadipolisi', logo: 'logo/icon-jadipolisi.png', tampil: false, tes: [] },
   jagotpa,
+  toeflacademy,
+  jagoukp,
   jadippg,
   psikoteskerja,
 ];

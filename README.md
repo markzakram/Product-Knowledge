@@ -165,7 +165,8 @@ atau gambar tetap utuh, jadi jumlahnya bisa lebih dari `jumlahSoal`, sedangkan
 kelompok tanpa stimulus atau yang hanya berjudul dipecah per soal); bila lebih
 sedikit, semuanya dipakai dan subtesnya berlabel "parsial". Batas waktu = `waktuMenit` ×
 (soal yang dipakai ÷ `jumlahSoal`, paling besar 1); tanpa `waktuMenit`
-simulasinya stopwatch tanpa batas. Tahapan `waktuBersama` (SKD) menjadi satu
+simulasinya stopwatch tanpa batas, begitu pula tahapan `waktuBersama` yang
+`jumlahSoal`-nya belum diketahui (UKP), karena waktu sesinya tak bisa dibagi. Tahapan `waktuBersama` (SKD) menjadi satu
 sesi dengan satu timer di simulasi angkatan, dan di simulasi satu subtes
 jatahnya porsi dari waktu sesi menurut jumlah soal tahapan itu.
 
@@ -255,9 +256,14 @@ menghitung per baris membuat TPK PCPM 41 terbaca kurang 175, padahal sebenarnya
   110 soal (TWK 30, TIU 35, TKP 45) dari SKD Generator, ditulis sekali di
   `data/jadiasn/cpns/a2027/contoh-skd.ts` dan dipakai bersama kedua angkatan.
   Materi dan mapping keduanya mengikuti Mapping SKD 2027 (3 paket x 30, 35, dan
-  45 soal). Hampir semua soalnya berstatus draft; 10 soal TIU (1 analogi kata,
-  1 deret angka, 8 figural) berasal dari contoh riset CPNS 2027 karena belum ada
-  di tryout generator. Kedua angkatan sengaja tidak punya target di
+  45 soal). Semua soalnya berstatus draft. Paket dibuat ulang 2026-11-05 dari
+  SKD Generator (HEAD `3d4e92e`, ada perubahan belum di-commit) dengan
+  `npm run generate -- --profile tryout-2027 --twk accepted --tkp accepted --tiu accepted --paket 1 --seed PK-SKD-2027-PAKET-2`.
+  TWK dan 21 soal TIU dari contoh tryout internal; TKP dari 144 kasus orisinal
+  generator (skor 1 sampai 5 adalah skor rubrik latihan); 14 soal TIU (5 silogisme,
+  1 analogi dua kata, 8 figural bergambar) dibangkitkan mesin generator dan belum
+  ditelaah ahli. Gambar figural dirender dari SVG generator ke
+  `public/gambar/jadiasn/cpns2027-tiu-*.png`. Kedua angkatan sengaja tidak punya target di
   `skrip/ke-data.mjs`, supaya paket ini tidak tertimpa data Markaz. Contoh lama
   (soal tulisan tangan, hasil Markaz, dan 125 contoh riset) masih ada di riwayat git.
 - Rilis 1.7.0 diisi dari dokumen riset di shared drive tim (diekspor lewat

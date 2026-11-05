@@ -34,7 +34,7 @@ export const pcam10: Angkatan = {
     'Kepribadian dan Wawancara Psikologi, Tes Kesehatan, lalu Wawancara Panel. Baru Tahap 1 ' +
     '(Tes Potensi Dasar) yang terisi lengkap; Tahap 2 sampai 5 masih dalam proses riset. ' +
     'Jalur MLE memakai materi Tahap 1 yang sama.',
-  diperbarui: '2026-10-19',
+  diperbarui: '2026-11-05',
   info: [
     {
       tipe: 'lainnya',
@@ -81,14 +81,14 @@ export const pcam10: Angkatan = {
     },
     {
       jenis: 'internal',
-      judul: 'Tes OJK Generator Tahap 1 (bank v2, benih 2026, paket 1)',
-      tanggalAkses: '2026-10-19',
+      judul: 'Tes OJK Generator Tahap 1 (bank v23, benih 2026, paket 1)',
+      tanggalAkses: '2026-11-05',
       keandalan: 'asumsi',
       catatan:
         'Sumber 12 contoh soal Kemampuan Umum dan 10 contoh soal Penalaran Numerik Tahap 1. ' +
-        'Soal bentukan generator, bukan soal ujian sungguhan; validator internal generator ' +
-        'lulus (22 dari 22 butir, tanpa butir kembar). Berstatus draft sampai ditelaah tim ' +
-        'akademik.',
+        'Snapshot 2026-11-05 dari generator dengan perubahan yang belum di-commit. Soal ' +
+        'bentukan generator, bukan soal ujian sungguhan; validator internal generator lulus ' +
+        '(22 dari 22 butir, tanpa butir kembar). Berstatus draft sampai ditelaah tim akademik.',
     },
   ],
 };

@@ -32,7 +32,7 @@ export const cpns2027: Angkatan = {
     'Isinya mengikuti riset Product Management Oktober 2026; belum ada pengumuman resmi ' +
     'seleksi CPNS 2027. Perubahan materi TIU adalah proyeksi dari SKD Sekdin 2026. ' +
     'Contoh soal SKD: satu paket 110 soal dari SKD Generator (draf).',
-  diperbarui: '2026-10-19',
+  diperbarui: '2026-11-05',
   info: [
     {
       tipe: 'pendahuluan',
@@ -43,7 +43,7 @@ export const cpns2027: Angkatan = {
 - Perubahan materi TIU 2027 adalah proyeksi tim riset berdasarkan SKD Sekdin 2026.
 - Yang tidak dibahas riset (SKB, bobot nilai akhir SKD 40 persen dan SKB 60 persen, mode tahapan) disalin dari data CPNS 2026 (a2026) dan diberi catatan sumber di tempatnya.
 - Ringkasan perubahan TIU berasal dari dokumen "Contoh Soal TIU SKD 2027"; kisi-kisi dan ringkasan aturan produksi enam aspek TKP berasal dari "Panduan Produksi TKP SKD CPNS" (PT Cerebrum Edukanesia Nusantara, 2026). Keduanya dokumen terpisah yang dirujuk riset.
-- Contoh soal SKD (TWK 30, TIU 35, TKP 45) adalah satu paket dari SKD Generator, memakai kuota Mapping SKD 2027. Sebanyak 100 soal berasal dari contoh tryout internal 2027 dan berstatus draft sampai ditelaah tim; 10 soal TIU (1 analogi kata, 1 deret angka, dan 8 figural bergambar) berasal dari dokumen "Contoh Soal TIU SKD 2027" dan berstatus direview, karena belum ada di tryout generator. Paket yang sama dipakai di SKD Sekolah Kedinasan 2026.
+- Contoh soal SKD (TWK 30, TIU 35, TKP 45) adalah satu paket dari SKD Generator, memakai kuota Mapping SKD 2027. Paket dibuat ulang 2026-11-05 dari SKD Generator versi terbaru dan semuanya berstatus draft sampai ditelaah tim: 51 soal (TWK 30, TIU 21) dari contoh tryout internal 2027, 45 soal TKP dari kasus orisinal generator (skor 1 sampai 5 adalah skor rubrik latihan), dan 14 soal TIU buatan mesin generator (5 silogisme, 1 analogi dua kata, 8 figural bergambar) yang belum ditelaah ahli. Paket yang sama dipakai di SKD Sekolah Kedinasan 2026.
 - Contoh soal riset sebelumnya (40 TWK, 59 TIU, 26 TKP) sudah diganti paket itu dan masih ada di riwayat git (commit 24ad183).`,
     },
     {
@@ -331,9 +331,9 @@ Evaluasi, tiga sasaran:
       tanggalAkses: '2026-10-15',
       keandalan: 'resmi',
       catatan:
-        'Dokumen PDF 74 halaman (dibuat 7 Oktober 2026) yang dirujuk riset BAB V butir 5.2. Sumber 10 soal TIU di paket contoh SKD ' +
-        '(1 analogi kata, 1 deret angka, dan 8 figural bergambar). Contoh TIU lainnya dari dokumen ini sudah diganti paket SKD Generator ' +
-        'dan masih ada di riwayat git (commit 24ad183).',
+        'Dokumen PDF 74 halaman (dibuat 7 Oktober 2026) yang dirujuk riset BAB V butir 5.2. Sumber ringkasan perubahan TIU. Sepuluh soal TIU dari dokumen ini ' +
+        '(1 analogi kata, 1 deret angka, dan 8 figural bergambar) sudah diganti paket SKD Generator 2026-11-05; ' +
+        'seluruh contoh TIU dari dokumen ini masih ada di riwayat git (commit 24ad183 dan 54f9407).',
     },
     {
       jenis: 'internal',
@@ -348,7 +348,7 @@ Evaluasi, tiga sasaran:
     {
       jenis: 'internal',
       judul: 'SKD Generator - mapping SKD 2027 (skd-mapping.json)',
-      tanggalAkses: '2026-10-19',
+      tanggalAkses: '2026-11-05',
       keandalan: 'resmi',
       catatan:
         'Mapping SKD 2027.xlsx (sheet "1 TO 0 Latsol" dan rotasi tiga paket) yang dibaca SKD Generator: 57 chapter, 37 di antaranya ' +
@@ -357,11 +357,21 @@ Evaluasi, tiga sasaran:
     {
       jenis: 'internal',
       judul: 'SKD Generator - 12 dokumen tryout 2027',
-      tanggalAkses: '2026-10-19',
+      tanggalAkses: '2026-11-05',
       keandalan: 'asumsi',
       catatan:
         'Contoh tryout internal: 12 dokumen tim yang diterima SKD Generator (312 soal: TWK 90, TIU 87, TKP 135; satu dokumen versi awal ' +
-        'tidak dihitung). Berstatus draf sampai ditelaah tim. Sumber 100 dari 110 soal paket contoh SKD. Angka ketersediaan SIADU tidak dihitung.',
+        'tidak dihitung). Berstatus draf sampai ditelaah tim. Sumber 51 dari 110 soal paket contoh SKD (TWK 30 dan TIU 21). Angka ketersediaan SIADU tidak dihitung.',
+    },
+    {
+      jenis: 'internal',
+      judul: 'SKD Generator - kasus TKP orisinal dan mesin figural',
+      tanggalAkses: '2026-11-05',
+      keandalan: 'asumsi',
+      catatan:
+        'SKD Generator (HEAD 3d4e92e, ada perubahan yang belum di-commit), profil tryout-2027, seed PK-SKD-2027-PAKET-2. ' +
+        'Sumber 45 soal TKP (kasus orisinal data/tkp-kasus; skor 1 sampai 5 adalah skor rubrik latihan, bukan skor dokumen tryout) ' +
+        'dan 14 soal TIU buatan mesin generator (5 silogisme, 1 analogi dua kata, 8 figural). Belum ditelaah ahli.',
     },
     {
       jenis: 'resmi',

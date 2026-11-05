@@ -35,6 +35,15 @@ function waktuSesi(t: Tahapan): number | undefined {
 /** Jumlah soal SELURUH subtes tahapan, termasuk yang tak punya contoh: itulah isi sesi yang waktunya dibagi. */
 const jumlahSoalTahapan = (t: Tahapan) => t.subtes.reduce((n, s) => n + (s.jumlahSoal ?? 0), 0);
 
+/**
+ * Batas waktu `n` soal dari sesi tahapan `waktuBersama`. Tanpa jumlah soal resmi (UKP),
+ * waktu sesi tak bisa dibagi: tanpa batas (stopwatch), bukan 210 menit untuk 2 soal.
+ */
+function batasSesi(t: Tahapan, n: number): number | undefined {
+  const jumlahSoal = jumlahSoalTahapan(t);
+  return jumlahSoal > 0 ? batasMenit({ waktuMenit: waktuSesi(t), jumlahSoal, n }) : undefined;
+}
+
 const LATEX_ATAU_GAMBAR = /\\\(|⟦gambar:/;
 const ANGKA_KECIL: Record<string, string> = {
   '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9',
@@ -88,7 +97,7 @@ export function rencanaSubtes(j: JalurSubtes): PropsSimulasi {
   const n = jumlahSoalSubtes(sim);
   // Subtes dari tahapan `waktuBersama` mendapat porsi dari waktu sesi, menurut jumlah soal SELURUH tahapan.
   const menit = tahapan.waktuBersama
-    ? batasMenit({ waktuMenit: waktuSesi(tahapan), jumlahSoal: jumlahSoalTahapan(tahapan), n })
+    ? batasSesi(tahapan, n)
     : batasMenit({ waktuMenit: subtes.waktuMenit, jumlahSoal: subtes.jumlahSoal, n });
   const berikutnya = subtesSimulasiBerikutnya(j);
 
@@ -152,11 +161,7 @@ export function rencanaAngkatan(j: JalurAngkatan): PropsSimulasi {
         chip: kodeChip(tahapan.nama) || String(nomorTahapan(angkatan, tahapan)),
         tahap,
         subtes: ikut.map((x) => x.sim),
-        menit: batasMenit({
-          waktuMenit: waktuSesi(tahapan),
-          jumlahSoal: jumlahSoalTahapan(tahapan),
-          n: ikut.reduce((n, x) => n + jumlahSoalSubtes(x.sim), 0),
-        }),
+        menit: batasSesi(tahapan, ikut.reduce((n, x) => n + jumlahSoalSubtes(x.sim), 0)),
         satuSesi: true,
       });
       return;

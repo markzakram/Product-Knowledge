@@ -5,6 +5,8 @@ import { tahapTpa } from './t1-tpa';
  * TPA bukan seleksi berangkatan, jadi "angkatan" di sini adalah FORMAT soal
  * yang berlaku: susunan tryout "Tes Potensi Akademik Part 2" (Juni 2026).
  * Susunan itu sama persis dengan Part 1 (Februari 2026), jadi dianggap stabil.
+ * Kuota per materi, paket tryout dan latsol, serta contoh soal berasal dari
+ * TPA Generator (batch JAGOTPA-2026, 5 November 2026).
  */
 export const tpa2026: Angkatan = {
   kode: '2026',
@@ -13,8 +15,9 @@ export const tpa2026: Angkatan = {
   status: 'indikasi',
   ringkasan:
     'Satu sesi tes berisi tiga subtes: Verbal, Kuantitatif, dan Penalaran, ' +
-    'total 250 soal di paket tryout.',
-  diperbarui: '2026-10-19',
+    'total 250 soal di paket tryout. Tersedia 10 paket tryout (250 soal) dan ' +
+    '5 paket latsol (50 soal, tiap subtes 18/18/14 soal), total 2.750 soal.',
+  diperbarui: '2026-11-05',
   info: [
     {
       tipe: 'penilaian',
@@ -43,7 +46,37 @@ export const tpa2026: Angkatan = {
       keandalan: 'asumsi',
       catatan:
         'Struktur dan jumlah soal diturunkan dari susunan paket tryout, bukan ' +
-        'dari dokumen kurikulum atau pengumuman resmi.',
+        'dari dokumen kurikulum atau pengumuman resmi. Contoh soal dari paket ini sudah ' +
+        'diganti dengan contoh dari TPA Generator (5 November 2026).',
+    },
+    {
+      jenis: 'internal',
+      judul: 'TPA Generator — batch JAGOTPA-2026 (profil 10to5latol)',
+      tanggalAkses: '2026-11-05',
+      keandalan: 'asumsi',
+      catatan:
+        'Batch f32479cb45, seed JAGOTPA-2026: 10 tryout + 5 latsol, 2.750 soal. Sumber kuota ' +
+        'materi, mapping, dan 45 contoh soal. Soal Verbal dari AI dan soal Kuantitatif/Penalaran ' +
+        'dari famili generator; telaah dikerjakan Claude atas keputusan pemilik, bukan tim independen, ' +
+        'jadi contoh berstatus draft. Hal yang belum selesai menurut LAPORAN-QC.md: uji impor ke SiAdu ' +
+        'belum dilakukan, audit 40 gambar soal figural FR belum dilakukan, dan 109 kunci Antonim ' +
+        'tidak tercatat di data KBBI (kuncinya terlihat benar, tetapi perlu dilihat penelaah).',
+    },
+    {
+      jenis: 'internal',
+      judul: 'Riset dan Kurikulum TPA Bappenas 2026 (dokumen riset internal)',
+      tanggalAkses: '2026-11-05',
+      keandalan: 'asumsi',
+      catatan:
+        'Dasar blueprint materi dan kuota di TPA Generator. Bukan dokumen resmi penyelenggara.',
+    },
+    {
+      jenis: 'internal',
+      judul: 'Sheet JAGO TPA (latsol 18/18/14)',
+      tanggalAkses: '2026-11-05',
+      keandalan: 'asumsi',
+      catatan:
+        'Dasar ukuran paket latsol: 18 soal Verbal, 18 Kuantitatif, 14 Penalaran per paket.',
     },
     {
       jenis: 'internal',

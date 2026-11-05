@@ -5,166 +5,92 @@ import type { Kelompok } from '@/lib/skema';
  *
  * Dipakai bersama oleh SKD CPNS 2027 (data/jadiasn/cpns/a2027) dan SKD Sekolah Kedinasan 2026
  * (data/jadisekdin/skd/a2026): kedua angkatan mengimpor berkas ini, jadi paketnya SATU dan SAMA.
- * Ditulis sekali di sini, bukan disalin; gambar figural tetap di public/gambar/jadiasn/.
+ * Ditulis sekali di sini, bukan disalin; gambar (figural dan acuan deret) ada di public/gambar/jadiasn/.
  *
- * Sumber: data/tryout-reference.json (312 contoh tryout 2027 yang diterima di SKD Generator, dari
- * 12 dokumen tim) dan data/skd-mapping.json (Mapping SKD 2027, kuota paket 1). Pemilihan memakai
- * kuota baris berkuota mapping: TWK 6 soal per materi (Bahasa Negara 1 soal tiap chapter), TIU
- * verbal 11, numerik 16, dan figural 8, TKP 8/8/8/7/7/7. Rotasi paket 1 dipakai untuk Kecukupan
- * Data (Aljabar: Operasi Aljabar dan Persamaan; Bilangan: Jenis dan Sifat; Soal Cerita: Geometri,
- * Perbandingan Senilai dan Berbalik, Aljabar). Soal diurut per materi lalu per tingkat; nomor
- * berurutan 1 sampai 30, 1 sampai 35, dan 1 sampai 45 di tiap subtes. Di atas tiap soal ada
- * komentar rujukan ke berkas sumbernya.
+ * Dibuat ulang 2026-11-05 dari SKD Generator (G:\Ali\code\SKD Generator, HEAD 3d4e92e, plus
+ * perubahan yang belum di-commit) dengan perintah:
+ *   npm run generate -- --profile tryout-2027 --twk accepted --tkp accepted --tiu accepted
+ *     --paket 1 --seed PK-SKD-2027-PAKET-2
+ * Diambil paket pertama (110 soal) dan validasi generator lulus (110 soal diperiksa, 0 galat,
+ * 0 duplikat). Pembahasan diambil lewat fungsi runtime generator (explanationOf), jadi pembahasan
+ * TIU revisi 3 Nov dan koreksi TWK ikut. Kunci dan urutan opsi mengikuti keluaran generator.
  *
- * Seleksi deterministik: seed "PK-SKD-2027-PAKET-1"; di dalam tiap materi, soal diacak dengan seed itu lalu
- * diambil menurut target tingkat (mudah/sedang/sulit) yang seimbang. Tidak dipilih: 10 soal yang
- * pembahasannya memuat gambar docx yang tidak ikut ke data (tiga Deret Angka 2 dan 3 Towew, tiga
- * Rute dan Jalur, dua Logika Pernyataan, satu Urutan dan Peringkat, satu Susunan dan Posisi) dan
- * TKP Nynda soal 1 (alasan opsi D tidak sesuai di sumbernya).
- *
- * Pengisi kekosongan: tryout generator tidak punya contoh analogi 2 kata, deret angka 1 Towew
- * (ketiga contoh deretnya bergambar dan gambarnya tidak ikut), maupun figural. Kesepuluh soal itu
- * (1 analogi, 1 deret, 8 figural) diambil dari contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD
- * 2027") yang sudah ada di Product Knowledge, lengkap dengan gambarnya, dan tetap berstatus
- * 'direview' seperti sebelumnya. Dokumen itu tidak menulis tingkat kesulitan, jadi kesepuluhnya
- * tanpa `tingkat`.
+ * Asal soal. TWK (30): contoh tryout 2027 yang diterima di generator (dokumen tim akademik).
+ * TIU (35): 21 contoh tryout (16 numerik, 3 argumen, 2 susunan dan posisi) dan 14 variasi yang
+ * dibangkitkan mesin generator (5 silogisme, 1 analogi dua kata, dan 8 figural). Variasi mesin
+ * dan figural belum ditelaah ahli. TKP (45): kasus orisinal data/tkp-kasus (bank TKP generator),
+ * dengan skor 1 sampai 5 rubrik latihan, bukan contoh dokumen tryout.
  *
  * Konversi: `answer` (indeks 0) menjadi huruf; `difficulty` menjadi `tingkat` ("hots" ditulis
- * 'sulit'); `pembahasan` = penjelasan + alasan opsi yang tidak generik (alasan baku "Penjelasan per
- * pilihan tidak dipisahkan dalam sumber" dan "Pilihan ini sesuai dengan konsep" dibuang) + "Cara
- * cepat" bila ada tip. Pecahan dan pangkat notasi Word (pembilang, penyebut, dan pangkat dalam
- * kurung) ditulis LaTeX, tabel soal dan tabel
- * pembahasan ditulis sebagai rumus array LaTeX, angka tebal matematis diganti angka biasa, dan
- * angka bercoret ditulis \cancel. TKP bertipe 'skala': `kunci` adalah opsi berskor 5, skor 1 sampai
- * 5 tiap opsi ada di pembahasan. Akhiran "(Aspek)" di stem TKP dokumen sumber (label kategori,
- * mis. "(Pelayanan Publik)") dibuang karena aspeknya sudah menjadi judul kelompok. Satu salah ketik
- * yang jelas diperbaiki ("bukan bukan" di soal TWK 3); selebihnya teks sumber utuh.
+ * 'sulit'); `pembahasan` = pembahasan generator. Penanda tebal, coret, dan warna dibuang
+ * (Product Knowledge hanya menampilkan teks, gambar, dan rumus). Pecahan notasi Word "(a)/(b)"
+ * ditulis \frac, tabel soal dan tabel pembahasan ditulis sebagai rumus array LaTeX, dan diagram
+ * pembahasan figural digambar sebagai PNG. TKP bertipe 'skala': `kunci` adalah opsi berskor 5,
+ * skor 1 sampai 5 tiap opsi ada di pembahasan. Soal diurut per materi lalu per tingkat; nomor
+ * berurutan 1 sampai 30, 1 sampai 35, dan 1 sampai 45 di tiap subtes. Di atas tiap soal ada
+ * komentar rujukan ke butir sumbernya.
  *
- * Status 'draft': isinya hasil dokumen tim generator dan belum ditelaah untuk etalase.
+ * Status 'draft': isi hasil generator dan belum ditelaah untuk etalase.
  */
-/** 30 soal TWK: Nasionalisme, Integritas, Bela Negara, Pilar Negara (6 soal), dan Bahasa Negara (6 soal, 1 per chapter). */
+
+/** 30 soal TWK. */
 export const contohGeneratorTwk: Kelompok[] = [
   {
     stimulus: { judul: `Nasionalisme` },
     soal: [
-      // tryout-ref-03-03 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 3
+      // tryout-ref-05-01 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 1
       {
         nomor: 1,
         tipe: 'pg',
-        pertanyaan: `Sebuah daerah memiliki potensi hasil laut yang melimpah, tetapi sebagian besar hasil tangkapannya dijual sebagai bahan mentah ke luar negeri. Untuk meningkatkan kemampuan ekonomi daerah, pemerintah setempat bekerja sama dengan nelayan dan pelaku usaha membangun industri pengolahan hasil laut. Produk yang dihasilkan kemudian dipasarkan ke berbagai wilayah Indonesia sehingga masyarakat memperoleh manfaat ekonomi yang lebih besar dari sumber daya yang dimiliki.
-Unsur nasionalisme yang paling menonjol dalam upaya tersebut adalah ....`,
+        pertanyaan: `Selama bertahun-tahun, petani di sebuah kabupaten di wilayah perbatasan membeli bibit dan pupuk dari negara tetangga. Sekelompok pemuda setempat kemudian membangun pembibitan dan produksi pupuk organik berbahan baku lokal. Hasilnya, kebutuhan pertanian di daerah itu kini dapat dipenuhi tanpa bergantung pada pasokan luar negeri.
+Unsur nasionalisme yang paling menonjol dari tindakan para pemuda tersebut adalah ….`,
         opsi: [
-          { label: 'A', teks: `Cinta tanah air melalui pengutamaan produk hasil daerah sendiri` },
-          { label: 'B', teks: `Kemandirian melalui pengembangan kemampuan mengolah sumber daya lokal` },
-          { label: 'C', teks: `Persatuan melalui kerja sama pemerintah dengan masyarakat pesisir` },
-          { label: 'D', teks: `Kepedulian sosial melalui peningkatan kesejahteraan masyarakat nelayan` },
-          { label: 'E', teks: `Identitas nasional melalui pengenalan kekayaan hasil laut Indonesia` },
+          { label: 'A', teks: `Kepedulian sosial` },
+          { label: 'B', teks: `Persatuan` },
+          { label: 'C', teks: `Kemandirian` },
+          { label: 'D', teks: `Identitas nasional` },
+          { label: 'E', teks: `Cinta tanah air` },
         ],
-        kunci: 'B',
-        pembahasan: `Konsep dalam soal ini menekankan unsur kemandirian dalam nasionalisme, yaitu kemampuan masyarakat atau bangsa mengelola potensi dan sumber daya yang dimiliki untuk menghasilkan nilai tambah serta memperkuat kemampuan ekonomi sendiri.
-Dalam kasus tersebut, daerah yang sebelumnya hanya menjual hasil laut sebagai bahan mentah mulai mengembangkan industri pengolahan. Upaya ini menunjukkan peningkatan kemampuan masyarakat dalam memanfaatkan sumber daya lokal sehingga tidak hanya bergantung pada penjualan bahan mentah.
-Opsi B paling tepat karena tindakan utama dalam soal adalah membangun kemampuan pengolahan sumber daya lokal untuk meningkatkan kemandirian ekonomi daerah.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Cinta tanah air dapat diwujudkan melalui dukungan terhadap produk dalam negeri. Namun, fokus utama kasus bukan pengutamaan konsumsi produk lokal, melainkan peningkatan kemampuan mengolah sumber daya.
-Opsi C salah: Persatuan tercermin dalam kerja sama pemerintah dan masyarakat. Akan tetapi, kerja sama tersebut merupakan sarana untuk mengembangkan industri, bukan unsur nasionalisme yang paling menonjol.
-Opsi D salah: Kepedulian sosial berkaitan dengan perhatian terhadap kesejahteraan masyarakat. Peningkatan pendapatan nelayan merupakan dampak positif, tetapi bukan inti tindakan yang digambarkan.
-Opsi E salah: Identitas nasional berkaitan dengan karakteristik dan jati diri bangsa. Meskipun hasil laut merupakan kekayaan Indonesia, kasus tidak menekankan penguatan simbol atau identitas nasional.
-
-Cara cepat: Perhatikan tindakan utama dalam kasus. Apabila masyarakat meningkatkan kemampuan mengolah dan memanfaatkan sumber daya sendiri untuk memperkuat perekonomian, unsur nasionalisme yang paling tepat adalah kemandirian.`,
-        tingkat: 'sedang',
+        kunci: 'C',
+        pembahasan: `Konsep dalam soal menekankan kemandirian nasional, yaitu kemampuan memenuhi kebutuhan menggunakan sumber daya dan kapasitas sendiri sehingga ketergantungan terhadap pihak luar berkurang. Para pemuda membangun produksi bibit dan pupuk berbahan baku lokal hingga kebutuhan pertanian tidak lagi bergantung pada pasokan negara tetangga. Keberhasilan memenuhi kebutuhan secara mandiri menjadi indikator utama. Opsi yang paling tepat adalah C, karena menekankan kemampuan masyarakat mengelola sumber daya dan memenuhi kebutuhan sendiri.
+Alasan opsi salah:
+A. Kepedulian sosial berkaitan dengan perhatian terhadap kesejahteraan masyarakat, tetapi bukan unsur yang paling menonjol dalam kasus.
+B. Persatuan menekankan kebersamaan berbagai kelompok untuk mencapai tujuan bersama, sedangkan kasus berfokus pada kemampuan produksi lokal.
+D. Identitas nasional mengacu pada jati diri dan karakteristik bangsa, seperti bahasa, budaya, dan simbol negara.
+E. Cinta tanah air merupakan konsep yang lebih luas, sedangkan indikator spesifik dalam soal adalah berkurangnya ketergantungan pada pihak asing.
+Cara cepat: Tanyakan kemampuan apa yang dicapai warga dalam kasus, lalu bandingkan dengan pengertian tiap unsur nasionalisme, termasuk unsur yang tampak mirip.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-04-04 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 4
+      // tryout-ref-04-06 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 6
       {
         nomor: 2,
         tipe: 'pg',
-        pertanyaan: `Forum warga yang terdiri atas masyarakat dari berbagai daerah sedang mempersiapkan peringatan kemerdekaan. Dalam rapat sebelumnya, usulan dari warga yang telah lama tinggal lebih sering dipertimbangkan, sedangkan gagasan dari warga yang baru bergabung jarang dibahas meskipun berkaitan dengan kebutuhan kegiatan.
-Untuk memperbaiki keadaan tersebut, forum akan memilih koordinator baru. Panitia ingin memastikan pemilihan tidak hanya menghasilkan pemimpin yang mampu mengelola program, tetapi juga memperkuat rasa kebersamaan seluruh warga.
-Mekanisme yang paling tepat untuk mencapai tujuan tersebut adalah ....`,
+        pertanyaan: `Provinsi A dan B mengelola pasar ikan bersama untuk memperkuat perdagangan antardaerah. Provinsi A memasok 65% volume ikan, sedangkan provinsi B memasok 35%.
+Hasil evaluasi menunjukkan bahwa alokasi slot lelang sudah sebanding dengan kebutuhan transaksi kedua provinsi. Namun, sebagian nelayan kecil B tetap kesulitan mengikuti lelang karena aturan pemesanan memberikan kesempatan lebih awal kepada pedagang yang mampu memesan banyak slot sekaligus. Aturan ini juga berlaku bagi koperasi atau kelompok yang memesan dalam jumlah besar.
+Pemerintah ingin menjaga kelancaran perdagangan kedua provinsi dan memperbaiki kesempatan nelayan kecil tanpa mengubah alokasi yang telah sesuai kebutuhan.
+Kebijakan yang paling mencerminkan nasionalisme dalam kerja sama ekonomi antardaerah adalah ....`,
         opsi: [
-          { label: 'A', teks: `Seleksi oleh perwakilan warga lama dan baru` },
-          { label: 'B', teks: `Pemilihan tokoh berpengalaman setempat` },
-          { label: 'C', teks: `Seleksi kompetensi dengan komitmen pelibatan warga setara` },
-          { label: 'D', teks: `Musyawarah berdasarkan dukungan warga` },
-          { label: 'E', teks: `Pemungutan suara berdasarkan program calon` },
+          { label: 'A', teks: `Subsidi biaya reservasi bagi kelompok nelayan kecil` },
+          { label: 'B', teks: `Pelatihan pemesanan dan pendampingan akses bagi nelayan kecil` },
+          { label: 'C', teks: `Pengaturan batas reservasi awal bagi seluruh peserta lelang` },
+          { label: 'D', teks: `Penambahan sementara kuota provinsi B` },
+          { label: 'E', teks: `Penguatan koperasi pemasaran untuk reservasi slot bersama` },
         ],
         kunci: 'C',
-        pembahasan: `Nasionalisme Indonesia menekankan persatuan masyarakat yang memiliki latar belakang beragam. Dalam kehidupan bermasyarakat, nilai tersebut dapat diterapkan melalui penghargaan terhadap kontribusi setiap warga tanpa membedakan daerah asal atau lama tinggal.
-Masalah utama dalam stimulus adalah ketimpangan kesempatan menyampaikan dan mempertimbangkan gagasan. Warga yang lebih lama tinggal lebih sering mendapat perhatian, sedangkan usulan warga baru kurang dipertimbangkan meskipun relevan.
-Karena itu, pemilihan koordinator harus memperbaiki dua hal, yaitu kualitas kepemimpinan dan kesempatan berpartisipasi.
-Opsi C paling tepat karena kompetensi calon dinilai bersama komitmen melibatkan warga lama dan baru secara setara dalam penyusunan kegiatan. Dengan demikian, kriteria pemimpin berkaitan langsung dengan masalah dominasi gagasan dalam forum.
-Dengan demikian, persatuan diwujudkan melalui kerja sama dan keterlibatan nyata, bukan hanya melalui keterwakilan simbolis.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Keterwakilan warga lama dan baru dalam tim seleksi memperluas partisipasi pemilih, tetapi belum menetapkan kemampuan dan komitmen calon mengelola kegiatan secara inklusif.
-Opsi B salah: Pemahaman kebiasaan lingkungan dapat membantu pelaksanaan kegiatan. Namun, menjadikannya dasar utama pemilihan belum memperbaiki kesempatan bagi warga lain untuk berkontribusi dalam pengambilan keputusan.
-Opsi D salah: Musyawarah lintas kelompok mendukung pengambilan keputusan bersama. Akan tetapi, kemampuan memperoleh dukungan belum tentu menunjukkan kemampuan mengelola program dan memastikan kesempatan berpartisipasi yang setara.
-Opsi E salah: Pemungutan suara dan presentasi program dapat meningkatkan keterbukaan pemilihan. Namun, mekanisme tersebut belum memastikan bahwa usulan warga baru akan mendapat ruang yang setara dalam proses penyusunan kegiatan.
-
-Cara cepat: Identifikasi masalah utama dalam stimulus. Jika persoalannya adalah gagasan sebagian kelompok kurang dipertimbangkan, pilih mekanisme yang menjamin penilaian objektif sekaligus memperbaiki keterlibatan kelompok tersebut dalam proses pengambilan keputusan.`,
+        pembahasan: `Konsep yang digunakan adalah nasionalisme yang mengutamakan kepentingan bersama serta kerja sama ekonomi yang memberikan kesempatan adil bagi masyarakat antardaerah. Stimulus menyatakan bahwa jumlah slot telah sesuai kebutuhan. Masalahnya terletak pada aturan pemesanan yang memberi keunggulan waktu kepada pemesan dalam jumlah besar. Opsi yang paling tepat adalah C, karena mengubah aturan penyebab ketimpangan dan berlaku sama bagi seluruh peserta. Dengan batas reservasi awal, pemesan kecil memiliki kesempatan yang lebih setara tanpa mengubah alokasi kedua provinsi.
+Alasan opsi salah:
+A. Bantuan biaya menekan beban transaksi, tetapi tidak mengatasi prioritas waktu pemesanan yang tidak setara.
+B. Pelatihan dan pendampingan membantu nelayan menggunakan sistem, tetapi tidak mengubah hak pemesanan awal yang menjadi sumber hambatan.
+D. Penambahan kuota B tidak diperlukan karena jumlah slot telah sesuai kebutuhan. Hambatan sebenarnya berada pada mekanisme pemesanan.
+E. Reservasi kolektif dapat meningkatkan posisi tawar nelayan, tetapi tetap tunduk pada aturan keunggulan waktu bagi pemesan jumlah besar sehingga hambatan utama tidak berubah.
+Cara cepat: Periksa apakah masalah berasal dari jumlah slot atau aturan akses. Jika jumlahnya sudah sesuai, pilih kebijakan yang memperbaiki aturan penyebab ketimpangan tanpa merugikan kerja sama kedua daerah.`,
         tingkat: 'sedang',
-        status: 'draft',
-      },
-      // tryout-ref-05-05 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 5
-      {
-        nomor: 3,
-        tipe: 'pg',
-        pertanyaan: `Pada awal abad ke-20, muncul organisasi Budi Utomo yang berupaya memajukan masyarakat melalui pendidikan dan pengembangan kemampuan kaum terpelajar. Kehadirannya menjadi salah satu tonggak perkembangan pergerakan nasional Indonesia.
-Perubahan paling mendasar dalam pola perjuangan bangsa yang ditandai lahirnya Budi Utomo adalah ....`,
-        opsi: [
-          { label: 'A', teks: `Menandai peralihan dari perlawanan kedaerahan ke organisasi modern` },
-          { label: 'B', teks: `Menunjukkan bahwa pendidikan menjadi sarana penting bagi kemajuan masyarakat.` },
-          { label: 'C', teks: `Memperlihatkan meningkatnya peran kaum terpelajar dalam kehidupan sosial masyarakat.` },
-          { label: 'D', teks: `Mendorong kerja sama antarkelompok masyarakat melalui kegiatan pendidikan dan kebudayaan.` },
-          { label: 'E', teks: `Membuka ruang bagi pengembangan kesadaran masyarakat mengenai pentingnya kemajuan bersama.` },
-        ],
-        kunci: 'A',
-        pembahasan: `Budi Utomo yang berdiri pada 20 Mei 1908 merupakan salah satu tonggak perkembangan perjuangan melalui organisasi modern.
-Pergerakan bangsa yang sebelumnya banyak berlangsung melalui perjuangan lokal dan perlawanan fisik mulai berkembang menggunakan organisasi modern sebagai sarana perjuangan.
-Opsi A paling tepat karena menunjukkan perubahan pola perjuangan dari perlawanan kedaerahan menjadi organisasi modern yang terorganisasi.
-
-Pembahasan Opsi Salah:
-Opsi B salah: Pendidikan memang menjadi perhatian Budi Utomo, tetapi hanya menggambarkan salah satu bidang kegiatannya.
-Opsi C salah: Kaum terpelajar berperan penting, tetapi opsi ini tidak menjelaskan perubahan bentuk perjuangan nasional.
-Opsi D salah: Kerja sama masyarakat merupakan manfaat organisasi, tetapi bukan perubahan pola perjuangan.
-Opsi E salah: Kesadaran akan kemajuan masyarakat berkaitan dengan tujuan organisasi, tetapi belum menunjukkan perkembangan pola perjuangan.
-
-Cara cepat: Pada soal Budi Utomo, perhatikan frasa perubahan pola perjuangan: dari perlawanan kedaerahan menuju organisasi modern.`,
-        tingkat: 'sedang',
-        status: 'draft',
-      },
-      // tryout-ref-05-03 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 3
-      {
-        nomor: 4,
-        tipe: 'pg',
-        pertanyaan: `Setelah Agresi Militer Belanda II, Belanda berusaha meyakinkan dunia internasional bahwa Republik Indonesia tidak lagi memiliki kekuatan politik maupun militer. Serangan Umum 1 Maret 1949 menunjukkan bahwa TNI masih mampu melaksanakan operasi terorganisasi di Yogyakarta.
-Jika dikaitkan dengan strategi perjuangan mempertahankan kemerdekaan, makna paling penting dari peristiwa tersebut adalah ….`,
-        opsi: [
-          { label: 'A', teks: `Menunjukkan kemampuan TNI mempertahankan struktur organisasi dalam menghadapi tekanan militer Belanda.` },
-          { label: 'B', teks: `Memperkuat semangat perlawanan masyarakat melalui keberhasilan operasi militer di wilayah yang dikuasai Belanda.` },
-          { label: 'C', teks: `Membuktikan bahwa kekuatan militer Indonesia tetap dapat menjalankan operasi sekalipun menghadapi keterbatasan persenjataan.` },
-          { label: 'D', teks: `Memperlihatkan bahwa perjuangan bersenjata dapat memperkuat posisi politik dan diplomasi Indonesia di tingkat internasional.` },
-          { label: 'E', teks: `Menegaskan pentingnya penguasaan wilayah strategis sebagai dasar mempertahankan keberadaan pemerintahan nasional.` },
-        ],
-        kunci: 'D',
-        pembahasan: `Serangan Umum 1 Maret 1949 memiliki arti strategis secara militer, politik, dan diplomatik. Operasi tersebut menunjukkan bahwa Republik Indonesia masih memiliki kemampuan melakukan perlawanan terorganisasi.
-Keberhasilan operasi memperlemah klaim Belanda bahwa Republik Indonesia telah kehilangan kekuatannya. Hal ini turut memperkuat posisi Indonesia dalam memperjuangkan pengakuan kedaulatan.
-Opsi D paling tepat karena menjelaskan hubungan strategis antara keberhasilan militer dengan perjuangan politik dan diplomasi.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Kemampuan organisasi TNI memang terlihat, tetapi belum menggambarkan dampak strategis yang lebih luas.
-Opsi B salah: Peningkatan semangat rakyat merupakan dampak penting, tetapi bukan keseluruhan makna strategis peristiwa tersebut.
-Opsi C salah: Kemampuan operasi di tengah keterbatasan merupakan aspek militer, sedangkan soal meminta makna bagi keseluruhan perjuangan.
-Opsi E salah: Wilayah strategis penting, tetapi Serangan Umum 1 Maret tidak bertujuan mempertahankan penguasaan Yogyakarta secara permanen.
-
-Cara cepat: Apabila stimulus menekankan klaim Belanda di dunia internasional dan keberhasilan perlawanan TNI, hubungkan perjuangan militer dengan penguatan diplomasi.`,
-        tingkat: 'sulit',
         status: 'draft',
       },
       // tryout-ref-04-03 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 3
       {
-        nomor: 5,
+        nomor: 3,
         tipe: 'pg',
         pertanyaan: `Pemerintah daerah ingin meningkatkan kontribusi industri tenun lokal terhadap perekonomian nasional. Kelompok perajin telah memperoleh permintaan ekspor, tetapi belum mampu memenuhi standar ketahanan warna secara konsisten. Hasil uji menunjukkan bahwa ketidakkonsistenan terjadi karena takaran bahan pewarna dan lama perendaman berbeda pada setiap perajin, bukan karena kualitas bahan. Sebagian besar perajin menggunakan teknik pewarnaan tradisional yang menjadi ciri khas produk daerah.
 Pemerintah mempunyai dana untuk satu program dengan tiga sasaran berikut.
@@ -174,55 +100,94 @@ Pemerintah mempunyai dana untuk satu program dengan tiga sasaran berikut.
 Lima program yang diusulkan sama-sama diperkirakan dapat meningkatkan mutu, tetapi memiliki pendekatan dan konsekuensi berbeda.
 Kebijakan yang paling sesuai dengan nasionalisme ekonomi berdasarkan ketiga sasaran tersebut adalah ....`,
         opsi: [
-          { label: 'A', teks: `Standardisasi takaran dan lama pewarnaan bersama ahli dengan uji teknik khas perajin` },
-          { label: 'B', teks: `Pengujian mutu rutin dan pendampingan pemilahan hasil tenun` },
-          { label: 'C', teks: `Kemitraan industri untuk menguji mutu dan menjaga pasar ekspor` },
-          { label: 'D', teks: `Modernisasi alat perajin dengan pelatihan dan pengawasan mutu` },
+          { label: 'A', teks: `Pembakuan prosedur pewarnaan bersama ahli berbasis teknik khas perajin` },
+          { label: 'B', teks: `Pengujian mutu rutin di setiap sentra dan pendampingan pemilahan hasil tenun` },
+          { label: 'C', teks: `Kemitraan dengan industri besar dalam pengujian mutu dan pemasaran ekspor` },
+          { label: 'D', teks: `Modernisasi alat celup perajin disertai pelatihan dan pengawasan mutu` },
           { label: 'E', teks: `Pembinaan teknik tradisional dan pengujian daya tahan warna produk akhir` },
         ],
         kunci: 'A',
-        pembahasan: `Nasionalisme ekonomi dalam konteks soal ini diwujudkan melalui kebijakan yang memperkuat kemampuan produk lokal bersaing, mempertahankan kontribusi pelaku usaha dalam negeri, dan menjaga kekayaan budaya bangsa.
-Ketiga sasaran harus dipertimbangkan secara bersamaan. Sasaran pertama menuntut ketahanan warna yang konsisten. Sasaran kedua menghendaki perajin lokal tetap menjadi pelaku utama produksi. Sasaran ketiga menghendaki teknik khas tenun tidak dihilangkan demi memenuhi permintaan pasar.
-Penyebab masalah adalah takaran dan lama pewarnaan yang berbeda antarperajin. Opsi A paling tepat karena menstandarkan kedua hal tersebut bersama ahli, sedangkan teknik khas perajin tetap dijadikan dasar pengujian. Dengan demikian mutu meningkat, perajin tetap menjalankan produksi, dan karakter budaya terjaga.
-Kebijakan tersebut tidak sekadar mengejar peningkatan ekspor, tetapi juga memperkuat kemampuan dan peran pelaku usaha lokal secara berkelanjutan.
-
-Pembahasan Opsi Salah:
-Opsi B salah: Pengujian dan pemilahan hasil tenun memperbaiki seleksi produk, tetapi tidak memperbaiki secara langsung konsistensi proses pewarnaan yang menjadi masalah utama.
-Opsi C salah: Kemitraan industri bermanfaat untuk pengujian mutu dan perluasan pasar, tetapi belum memastikan proses produksi tetap dikuasai perajin atau teknik khas tetap digunakan.
-Opsi D salah: Modernisasi dan pelatihan dapat meningkatkan mutu, tetapi penggantian alat tidak otomatis menjaga ciri tradisional metode pewarnaan.
-Opsi E salah: Pembinaan teknik tradisional dan pengujian produk akhir menjaga budaya dan mengukur hasil, tetapi belum menstandarkan takaran dan lama pewarnaan yang menyebabkan ketidakkonsistenan.
-
-Cara cepat: Jika stimulus memberikan beberapa sasaran kebijakan, periksa apakah pilihan jawaban memenuhi setiap sasaran dan menyentuh penyebab masalahnya. Jangan memilih kebijakan yang hanya mengukur hasil atau hanya unggul pada satu sasaran.`,
-        tingkat: 'sulit',
+        pembahasan: `Konsep dalam soal ini menekankan nasionalisme ekonomi, yaitu memperkuat daya saing produk dalam negeri tanpa menyingkirkan pelaku usaha lokal dan identitas budaya bangsa. Hasil uji menunjukkan bahwa masalah mutu bersumber dari takaran bahan pewarna dan lama perendaman yang berbeda antarperajin, bukan dari bahan, sedangkan teknik pewarnaan tradisional adalah ciri khas yang harus dipertahankan. Program yang tepat harus menyentuh penyebab itu dan memenuhi ketiga sasaran sekaligus: mutu ekspor, keterlibatan perajin, dan identitas tenun. Opsi yang paling tepat adalah A, yaitu pembakuan prosedur pewarnaan bersama ahli berbasis teknik khas perajin, karena program ini menyeragamkan takaran dan lama pewarnaan di semua perajin, membiarkan perajin tetap menjadi pelaku produksi, dan tidak mengganti teknik tradisionalnya.
+Alasan opsi salah:
+B. Pengujian dan pemilahan hanya menyaring produk yang sudah jadi; perbedaan takaran dan lama pewarnaan antarperajin tetap tidak diperbaiki.
+C. Kemitraan dengan industri besar membantu pengujian dan pemasaran, tetapi tidak menyentuh proses pewarnaan dan berisiko menggeser kendali produksi dari perajin lokal.
+D. Alat celup modern dapat menyeragamkan proses, tetapi menggeser teknik pewarnaan tradisional yang menjadi ciri khas sehingga sasaran menjaga identitas budaya tidak terpenuhi.
+E. Pembinaan teknik tradisional menjaga identitas dan pengujian produk akhir mengukur hasil, tetapi perbedaan takaran dan lama pewarnaan antarperajin belum dibakukan.
+Cara cepat: Tentukan dulu penyebab masalah mutu menurut hasil uji, lalu periksa setiap program: apakah program itu menyentuh penyebab tersebut dan apakah ketiga sasaran tetap terpenuhi.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-04-05 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 5
+      // tryout-ref-05-05 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 5
+      {
+        nomor: 4,
+        tipe: 'pg',
+        pertanyaan: `Pada awal abad ke-20, muncul organisasi Budi Utomo yang berupaya memajukan masyarakat melalui pendidikan dan pengembangan kemampuan kaum terpelajar. Kehadirannya menjadi salah satu tonggak perkembangan pergerakan nasional Indonesia.
+Perubahan paling mendasar dalam pola perjuangan bangsa yang ditandai lahirnya Budi Utomo adalah ....`,
+        opsi: [
+          { label: 'A', teks: `Peralihan dari perlawanan fisik kedaerahan ke perjuangan melalui perkumpulan modern` },
+          { label: 'B', teks: `Peralihan dari organisasi kaum priayi ke organisasi massa rakyat lintas daerah` },
+          { label: 'C', teks: `Peralihan dari organisasi kooperatif ke organisasi nonkooperatif terhadap penjajah` },
+          { label: 'D', teks: `Peralihan dari perjuangan bersenjata ke jalur perundingan dan diplomasi internasional` },
+          { label: 'E', teks: `Peralihan dari organisasi pemuda kedaerahan ke ikrar persatuan se-Nusantara` },
+        ],
+        kunci: 'A',
+        pembahasan: `Konsep dalam soal ini menekankan makna Budi Utomo (20 Mei 1908) sebagai tonggak Kebangkitan Nasional. Sebelum 1908, perlawanan terhadap penjajah umumnya berupa perlawanan fisik yang bersifat kedaerahan dan bergantung pada tokoh setempat, sehingga mudah dipatahkan. Budi Utomo memperkenalkan cara baru, yaitu perjuangan melalui perkumpulan modern yang memiliki pengurus, anggota, dan program kerja, terutama di bidang pendidikan dan kebudayaan. Peralihan lain dalam pilihan memang terjadi dalam sejarah pergerakan, tetapi ditandai oleh tonggak yang berbeda: Sarekat Islam, PNI, masa diplomasi 1945–1949, dan Sumpah Pemuda. Opsi yang paling tepat adalah A, yaitu peralihan dari perlawanan fisik kedaerahan ke perjuangan melalui perkumpulan modern, karena perubahan bentuk perjuangan inilah yang dimulai dengan lahirnya Budi Utomo.
+Alasan opsi salah:
+B. Budi Utomo sendiri dipimpin kaum priayi dan terpelajar. Organisasi yang menjangkau massa rakyat luas baru menonjol pada Sarekat Islam.
+C. Budi Utomo bersikap kooperatif. Sikap nonkooperatif terhadap pemerintah kolonial menonjol pada organisasi yang lebih kemudian, seperti PNI.
+D. Perjuangan melalui perundingan dan diplomasi internasional menonjol pada masa mempertahankan kemerdekaan 1945–1949, bukan pada masa Budi Utomo.
+E. Peralihan dari organisasi pemuda kedaerahan ke ikrar persatuan adalah makna Sumpah Pemuda 1928. Pada awalnya Budi Utomo masih berfokus pada masyarakat Jawa dan Madura.
+Cara cepat: Bedakan dulu ciri perjuangan sebelum dan sesudah tahun 1908, lalu cocokkan setiap peralihan dalam pilihan dengan tonggak sejarah yang benar-benar menandainya.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-ref-05-02 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 2
+      {
+        nomor: 5,
+        tipe: 'pg',
+        pertanyaan: `Sebuah platform digital kepemudaan menemukan bahwa sebagian besar penggunanya hanya berinteraksi dengan pemuda dari daerah yang sama. Pengelola ingin membangun jejaring nasional yang lebih kuat tanpa menghilangkan kekhasan budaya setiap daerah.
+Kebijakan yang paling mencerminkan semangat Sumpah Pemuda adalah ….`,
+        opsi: [
+          { label: 'A', teks: `Menyelenggarakan kompetisi konten budaya antardaerah dengan penilaian juri nasional.` },
+          { label: 'B', teks: `Mengajak pengguna dari berbagai daerah menggarap proyek bersama dalam bahasa Indonesia.` },
+          { label: 'C', teks: `Mengembangkan pusat dokumentasi digital berisi ragam budaya daerah se-Indonesia.` },
+          { label: 'D', teks: `Memperluas kegiatan komunitas daring berdasarkan kesamaan minat dan hobi pengguna.` },
+          { label: 'E', teks: `Menyelenggarakan festival budaya daring dengan penampilan setiap daerah secara bergantian.` },
+        ],
+        kunci: 'B',
+        pembahasan: `Konsep dalam soal ini menekankan semangat Sumpah Pemuda 1928, yaitu kesadaran pemuda dari berbagai daerah sebagai satu bangsa dengan bahasa Indonesia sebagai bahasa persatuan. Bahasa persatuan tidak menghapus bahasa dan budaya daerah, tetapi menjadi sarana yang mempertemukan pemuda yang berbeda latar. Masalah di platform bukan kurangnya informasi budaya, melainkan pengguna yang hanya berinteraksi dengan pemuda sedaerah. Kebijakan yang tepat harus mempertemukan pengguna lintas daerah dalam kegiatan nyata tanpa menyeragamkan budaya mereka. Opsi yang paling tepat adalah B, yaitu mengajak pengguna dari berbagai daerah menggarap proyek bersama dalam bahasa Indonesia, karena kebijakan ini langsung memecah kebiasaan berinteraksi sedaerah, memakai bahasa persatuan sebagai penghubung, dan tetap memberi ruang bagi latar budaya setiap anggota.
+Alasan opsi salah:
+A. Kompetisi konten budaya menumbuhkan kebanggaan daerah, tetapi peserta tetap bersaing dalam kelompok daerahnya masing-masing sehingga interaksi lintas daerah tidak terbangun.
+C. Pusat dokumentasi melestarikan pengetahuan budaya, tetapi hanya menyediakan informasi dan tidak mengubah pola interaksi pengguna yang terbatas pada daerahnya.
+D. Kegiatan berdasarkan minat memperluas pergaulan, tetapi tidak memastikan pengguna dari daerah berbeda bertemu dan tidak terkait dengan kesadaran sebagai satu bangsa.
+E. Festival bergiliran mengenalkan keberagaman, tetapi pengguna hanya menonton penampilan daerah lain tanpa bekerja sama satu sama lain.
+Cara cepat: Rumuskan dulu masalah utama platform dengan kalimat sendiri, lalu uji setiap pilihan: apakah pilihan itu mengubah pola interaksi pengguna dan sejalan dengan isi ikrar Sumpah Pemuda.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-ref-04-02 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 2
       {
         nomor: 6,
         tipe: 'pg',
-        pertanyaan: `Sebuah museum daerah akan menyelenggarakan pameran sejarah perdagangan antarpulau untuk menumbuhkan rasa kebangsaan pengunjung melalui pemahaman tentang kontribusi daerah dalam perkembangan Nusantara.
-Hasil penelitian menunjukkan bahwa pelabuhan setempat berperan sebagai tempat pengumpulan komoditas dari daerah sekitarnya. Arsip transaksi juga mencatat hubungan perdagangan dengan sejumlah wilayah lain. Namun, belum ditemukan bukti yang cukup untuk menyatakan bahwa pelabuhan tersebut lebih penting daripada pelabuhan lainnya.
-Tim kurator mempertimbangkan lima pendekatan penyajian pameran. Pendekatan yang paling tepat untuk menumbuhkan rasa kebangsaan tanpa mengabaikan bukti sejarah adalah ....`,
+        pertanyaan: `Pada masa pergerakan nasional, sejumlah perkumpulan pemuda dari berbagai daerah membentuk forum kerja sama. Organisasi tersebut tetap menyelenggarakan kegiatan kebudayaan masing-masing, tetapi mulai menyusun agenda perjuangan bersama.
+Dalam perkembangannya, muncul perbedaan mengenai penggunaan dana kegiatan. Sebagian organisasi mengutamakan program bagi anggota daerahnya, sedangkan organisasi lain mengusulkan penggunaan dana untuk kegiatan bersama yang melibatkan pemuda dari berbagai daerah. Setelah melalui musyawarah, seluruh organisasi menyepakati pendanaan program lintas daerah, meskipun sebagian rencana kegiatan masing-masing harus ditunda.
+Berdasarkan perkembangan nasionalisme Indonesia, makna utama keputusan tersebut adalah ....`,
         opsi: [
-          { label: 'A', teks: `Kajian dampak sosial perdagangan` },
-          { label: 'B', teks: `Kronologi dan pemeringkatan pengaruh antarpelabuhan` },
-          { label: 'C', teks: `Pemetaan asal komoditas Nusantara` },
-          { label: 'D', teks: `Peran pelabuhan sebagai simpul perdagangan berdasarkan arsip transaksi` },
-          { label: 'E', teks: `Narasi kejayaan pelabuhan sebagai pusat perdagangan Nusantara` },
+          { label: 'A', teks: `Keberlanjutan pendanaan bersama` },
+          { label: 'B', teks: `Penguatan sistem perwakilan` },
+          { label: 'C', teks: `Solidaritas antarlembaga kedaerahan` },
+          { label: 'D', teks: `Penguatan mekanisme musyawarah` },
+          { label: 'E', teks: `Perluasan kesadaran kebangsaan` },
         ],
-        kunci: 'D',
-        pembahasan: `Nasionalisme Indonesia mencakup penghargaan terhadap sejarah dan kebudayaan daerah sebagai bagian dari perjalanan bangsa. Penghargaan tersebut tidak boleh dibangun dengan klaim yang tidak didukung bukti.
-Dalam stimulus, dua fakta telah didukung bukti, yaitu peran pelabuhan dalam pengumpulan komoditas dan adanya transaksi dengan wilayah lain. Perbandingan tingkat kepentingan antarpelabuhan belum didukung bukti.
-Opsi D paling tepat karena menyajikan kontribusi lokal berdasarkan arsip yang ada sekaligus memperlihatkan keterhubungan daerah dengan wilayah lain dalam jaringan perdagangan Nusantara. Pengunjung memahami peran daerah sebagai bagian dari bangsa tanpa menerima klaim keunggulan yang belum terbukti.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Perubahan sosial merupakan topik pameran yang relevan. Namun, stimulus belum memberikan bukti yang cukup untuk menyimpulkan pengaruh perdagangan terhadap hubungan sosial masyarakat.
-Opsi B salah: Kronologi berguna untuk pameran, tetapi pemeringkatan pengaruh pelabuhan memerlukan bukti pembanding yang tidak tersedia.
-Opsi C salah: Pemetaan asal komoditas dapat menjelaskan keragaman sumber daya Nusantara, tetapi lebih menekankan asal barang daripada peran pelabuhan lokal yang menjadi fokus pameran.
-Opsi E salah: Narasi kejayaan dapat menumbuhkan kebanggaan, tetapi menyatakan pelabuhan sebagai pusat perdagangan Nusantara merupakan klaim yang belum didukung bukti.
-
-Cara cepat: Identifikasi fakta yang benar-benar tersedia dalam stimulus. Pilih narasi yang menjelaskan kontribusi daerah dan keterhubungannya dengan wilayah lain tanpa menambahkan klaim yang belum didukung bukti.`,
-        tingkat: 'sulit',
+        kunci: 'E',
+        pembahasan: `Nasionalisme Indonesia berkembang melalui proses tumbuhnya kesadaran sebagai satu bangsa, yang mempunyai kepentingan dan cita-cita bersama. Materi perkembangan nasionalisme menjelaskan bahwa pada awal Kebangkitan Nasional, sejumlah gerakan masih memiliki keterikatan kuat dengan kelompok atau lingkungan tertentu. Seiring berkembangnya gerakan kebangsaan, kesadaran tersebut meluas hingga melampaui identitas kedaerahan. Hal penting dalam stimulus bukan sekadar terbentuknya forum, terselenggaranya musyawarah, atau adanya dana bersama. Bukti utama perubahan ikatan kebangsaan justru terlihat ketika organisasi bersedia menunda sebagian kepentingan kelompoknya untuk mendukung kegiatan bersama lintas daerah. Tindakan tersebut menunjukkan bahwa organisasi tidak lagi menjadikan kepentingan daerah sebagai satu-satunya dasar pengambilan keputusan. Opsi yang paling tepat adalah E, karena menghubungkan keputusan konkret organisasi dengan perkembangan nasionalisme, yaitu kesediaan menempatkan tujuan kebangsaan bersama di atas kepentingan kelompok ketika keduanya harus diprioritaskan.
+Alasan opsi salah:
+A. Pendanaan bersama dapat memperkuat solidaritas dan keberlanjutan kegiatan. Akan tetapi, opsi ini lebih menekankan manfaat pengelolaan sumber daya daripada perubahan orientasi dari kepentingan daerah menuju kepentingan bangsa.
+B. Kesepakatan perwakilan memperlihatkan perkembangan hubungan organisasi. Namun, mekanisme perwakilan merupakan sarana pengambilan keputusan, sedangkan inti perubahan nasionalisme terletak pada tujuan kebangsaan yang menjadi dasar keputusan tersebut.
+C. Kerja sama antardaerah memang dapat meningkatkan manfaat kegiatan dan hubungan organisasi. Namun, perluasan manfaat merupakan dampak kerja sama, sedangkan pertanyaan meminta makna perubahan ikatan kebangsaan yang terlihat dari kesediaan organisasi menyesuaikan kepentingannya.
+D. Musyawarah merupakan mekanisme yang digunakan untuk mengambil keputusan. Namun, keberhasilan musyawarah tidak dengan sendirinya menunjukkan nasionalisme apabila hasilnya tidak mencerminkan komitmen terhadap kepentingan kebangsaan bersama.
+Cara cepat: Dalam soal tentang perkembangan nasionalisme, identifikasi tindakan yang menunjukkan pergeseran prioritas dari kepentingan kelompok menuju kepentingan bangsa. Jangan terkecoh oleh opsi yang hanya menjelaskan sarana, seperti forum, musyawarah, pendanaan, atau kerja sama. Perhatikan apakah tindakan tersebut menunjukkan perubahan kesadaran dan komitmen kebangsaan.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -244,154 +209,137 @@ Cara cepat: Identifikasi fakta yang benar-benar tersedia dalam stimulus. Pilih n
         ],
         kunci: 'C',
         pembahasan: `Konsep dalam soal ini menekankan pengenalan nilai antikorupsi dari penanda gaya hidup seorang pejabat, menggunakan framework sembilan nilai antikorupsi KPK. Kepala seksi dalam stem mampu hidup lebih mewah, tetapi tetap memakai kendaraan lama, menggelar resepsi di rumah dengan tamu terbatas, dan membeli barang sesuai kebutuhan. Inti integritas di sini adalah gaya hidup wajar dan bersahaja yang mendahulukan kebutuhan daripada keinginan. Gaya hidup seperti ini menutup salah satu penyebab internal korupsi, yaitu gaya hidup konsumtif. Opsi yang paling tepat adalah C, karena ketiga penanda di stem (tidak boros, tidak bermewah-mewah, dan membeli sesuai kebutuhan) persis merupakan indikator nilai Sederhana.
-
-Pembahasan Opsi Salah:
-Opsi A salah karena Jujur berkaitan dengan tidak berbohong dan tidak mengambil yang bukan haknya, sedangkan stem tidak memuat penggunaan harta atau fasilitas yang bukan milik pejabat tersebut.
-Opsi B salah karena Mandiri menekankan tidak bergantung pada bantuan orang lain dalam menyelesaikan pekerjaan, sedangkan stem tidak membahas ketergantungan.
-Opsi D salah karena Disiplin menekankan ketaatan pada aturan dan ketepatan waktu, sedangkan stem tidak menyebut aturan, jadwal, atau tenggat.
-Opsi E salah karena Kerja Keras menekankan kegigihan dan pantang menyerah menghadapi kesulitan, sedangkan stem menonjolkan pola konsumsi, bukan etos kerja.
-
-Cara cepat: Apabila soal menyebut “mampu hidup mewah tetapi memilih tidak boros dan membeli sesuai kebutuhan”, maka jawabannya mengarah ke “Sederhana”.`,
+Alasan opsi salah:
+A. Jujur berkaitan dengan tidak berbohong dan tidak mengambil yang bukan haknya, sedangkan stem tidak memuat penggunaan harta atau fasilitas yang bukan milik pejabat tersebut.
+B. Mandiri menekankan tidak bergantung pada bantuan orang lain dalam menyelesaikan pekerjaan, sedangkan stem tidak membahas ketergantungan.
+D. Disiplin menekankan ketaatan pada aturan dan ketepatan waktu, sedangkan stem tidak menyebut aturan, jadwal, atau tenggat.
+E. Kerja Keras menekankan kegigihan dan pantang menyerah menghadapi kesulitan, sedangkan stem menonjolkan pola konsumsi, bukan etos kerja.
+Cara cepat: Pisahkan perilaku yang berkaitan dengan gaya hidup dari perilaku yang berkaitan dengan kerja atau kejujuran, lalu cocokkan dengan pengertian tiap nilai antikorupsi.`,
         tingkat: 'mudah',
-        status: 'draft',
-      },
-      // tryout-ref-03-15 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 15
-      {
-        nomor: 8,
-        tipe: 'pg',
-        pertanyaan: `Seorang petugas pemeriksa kelengkapan izin usaha mengatakan kepada pemohon bahwa berkasnya tidak akan diproses jika pemohon tidak menyerahkan uang Rp2.000.000 di luar biaya resmi. Pemohon yang khawatir usahanya terhambat akhirnya menyerahkan uang tersebut. Menurut pengelompokan tindak pidana korupsi dalam UU 31/1999 jo. UU 20/2001, perbuatan petugas tersebut paling tepat dikategorikan sebagai …`,
-        opsi: [
-          { label: 'A', teks: `Suap-menyuap` },
-          { label: 'B', teks: `Gratifikasi` },
-          { label: 'C', teks: `Penggelapan dalam jabatan` },
-          { label: 'D', teks: `Perbuatan curang` },
-          { label: 'E', teks: `Pemerasan` },
-        ],
-        kunci: 'E',
-        pembahasan: `Konsep dalam soal ini menekankan klasifikasi perbuatan menurut tujuh kelompok tindak pidana korupsi dalam UU 31/1999 jo. UU 20/2001 sebagaimana dipetakan KPK. Unsur pembeda dalam stem ada dua. Pertama, inisiatif datang dari petugas, bukan dari pemohon. Kedua, pemohon tidak punya pilihan karena layanan yang menjadi haknya diancam tidak diproses. Inti integritas di sini adalah larangan menyalahgunakan kekuasaan jabatan untuk memaksa warga memberikan sesuatu. Opsi yang paling tepat adalah E, karena pegawai negeri yang menyalahgunakan kekuasaannya untuk memaksa seseorang memberikan atau membayar sesuatu termasuk kelompok pemerasan (Pasal 12 huruf e, f, dan g), dan pemohon dalam hal ini berposisi sebagai korban.
-
-Pembahasan Opsi Salah:
-Opsi A salah karena suap mensyaratkan kesepakatan sukarela atau tawaran dari pemberi, sedangkan stem menunjukkan pemohon menyerahkan uang di bawah tekanan petugas.
-Opsi B salah karena gratifikasi adalah pemberian yang datang dari pemberi tanpa paksaan, sedangkan stem memuat permintaan disertai ancaman dari pegawai.
-Opsi C salah karena penggelapan dalam jabatan menyangkut uang atau barang yang sudah dikuasai pegawai karena jabatannya, sedangkan uang dalam stem berasal dari pemohon.
-Opsi D salah karena perbuatan curang menurut Pasal 7 dan Pasal 12 huruf h berkaitan dengan kecurangan pemborong, pengawas proyek, rekanan, atau penggunaan tanah negara, bukan pungutan dalam layanan perizinan.
-
-Cara cepat: Apabila soal menyebut “pegawai mensyaratkan pembayaran di luar biaya resmi dan mengancam layanan tidak diproses”, maka jawabannya mengarah ke “Pemerasan”.`,
-        tingkat: 'sedang',
-        status: 'draft',
-      },
-      // tryout-ref-04-11 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 11
-      {
-        nomor: 9,
-        tipe: 'pg',
-        pertanyaan: `Seorang petugas pelayanan menyatakan kepada pemohon bahwa berkas izin yang telah memenuhi seluruh persyaratan tidak akan diproses sebelum pemohon menyerahkan uang tambahan di luar tarif resmi. Karena membutuhkan izin tersebut segera, pemohon akhirnya memberikan uang yang diminta.
-Dalam konteks integritas pelayanan publik, unsur yang paling menentukan bahwa tindakan petugas mengarah pada pemerasan terkait jabatan adalah ....`,
-        opsi: [
-          { label: 'A', teks: `Permintaan biaya di luar tarif resmi` },
-          { label: 'B', teks: `Perubahan persyaratan demi keuntungan pribadi` },
-          { label: 'C', teks: `Penyimpangan prosedur pembayaran layanan` },
-          { label: 'D', teks: `Pemaksaan pembayaran melalui ancaman penahanan layanan` },
-          { label: 'E', teks: `Pemanfaatan jabatan untuk keuntungan pribadi` },
-        ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan adalah penyalahgunaan kewenangan dan pemerasan terkait jabatan.
-Unsur pembeda utamanya adalah adanya pemaksaan melalui penyalahgunaan kekuasaan jabatan. Petugas mengancam tidak memproses berkas yang telah memenuhi persyaratan apabila pemohon tidak menyerahkan uang tambahan.
-Opsi D paling tepat karena memuat hubungan antara kewenangan, ancaman, dan pembayaran yang dipaksakan.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Pembayaran di luar tarif resmi merupakan penyimpangan, tetapi tidak selalu disertai ancaman.
-Opsi B salah: Perubahan persyaratan untuk keuntungan pribadi menunjukkan penyalahgunaan kewenangan, tetapi belum menegaskan adanya pemaksaan terhadap pemohon.
-Opsi C salah: Penyalahgunaan prosedur dapat menjadi bagian dari pemerasan, tetapi belum menjelaskan unsur ancaman yang menjadi pembeda utama.
-Opsi E salah: Keuntungan pribadi dapat muncul dalam berbagai bentuk penyalahgunaan jabatan, tetapi belum secara khusus menunjukkan pemaksaan.
-
-Cara cepat: Bedakan pungutan tidak resmi dengan pemerasan terkait jabatan. Fokus pada tindakan menggunakan kekuasaan jabatan untuk memaksa pemohon menyerahkan uang.`,
-        tingkat: 'sedang',
         status: 'draft',
       },
       // tryout-ref-05-08 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 8
       {
-        nomor: 10,
+        nomor: 8,
         tipe: 'pg',
         pertanyaan: `Seorang auditor menemukan perbedaan antara laporan penggunaan dana bantuan pendidikan dan bukti transaksi yang tersedia. Sebagian transaksi telah terverifikasi, sedangkan beberapa transaksi lain masih memerlukan klarifikasi dari pihak terkait.
 Kepala instansi meminta laporan disampaikan sesuai tenggat karena keterlambatan dapat menghambat pencairan bantuan berikutnya. Pedoman audit memperbolehkan penyampaian laporan sementara, tetapi mewajibkan setiap temuan dan transaksi yang belum terverifikasi dicatat secara terpisah serta ditindaklanjuti melalui permintaan klarifikasi resmi.
 Tindakan yang paling mencerminkan integritas auditor dalam situasi tersebut adalah ....`,
         opsi: [
-          { label: 'A', teks: `Menyampaikan laporan berdasarkan bukti yang tersedia dengan mencatat transaksi yang belum terverifikasi untuk diperiksa pada audit berikutnya.` },
-          { label: 'B', teks: `Meminta perpanjangan waktu pemeriksaan agar seluruh transaksi dapat diklarifikasi sebelum laporan disampaikan kepada pimpinan.` },
-          { label: 'C', teks: `Menyampaikan laporan sementara dengan memisahkan transaksi yang belum terverifikasi serta mengajukan klarifikasi resmi terhadap seluruh temuan yang belum terselesaikan.` },
-          { label: 'D', teks: `Berkoordinasi dengan tim keuangan untuk mempercepat kelengkapan bukti dan melakukan penyesuaian laporan berdasarkan dokumen yang telah diterima.` },
-          { label: 'E', teks: `Menyampaikan hasil pemeriksaan yang telah terverifikasi kepada pimpinan dan merekomendasikan perbaikan prosedur pencatatan pada periode berikutnya.` },
+          { label: 'A', teks: `Menyampaikan laporan sementara sesuai tenggat, memisahkan transaksi yang belum terverifikasi, dan menjadwalkan klarifikasinya pada audit berikutnya.` },
+          { label: 'B', teks: `Meminta perpanjangan tenggat, memisahkan transaksi yang belum terverifikasi, dan mengajukan permintaan klarifikasi resmi kepada pihak terkait.` },
+          { label: 'C', teks: `Mengirim laporan tepat waktu, menyajikan transaksi yang belum terverifikasi di bagian khusus, dan meminta klarifikasi tertulis dari pihak terkait.` },
+          { label: 'D', teks: `Menyampaikan laporan sementara sesuai tenggat, menggabungkan seluruh transaksi dalam satu daftar, dan meminta klarifikasi resmi atas selisihnya.` },
+          { label: 'E', teks: `Menyampaikan laporan berisi transaksi yang sudah terverifikasi dan menyimpan catatan transaksi lainnya dalam kertas kerja auditor.` },
         ],
         kunci: 'C',
-        pembahasan: `Integritas auditor menuntut kejujuran, objektivitas, ketelitian, dan akuntabilitas dalam menyampaikan hasil pemeriksaan. Auditor harus memastikan bahwa laporan mencerminkan kondisi yang sebenarnya, termasuk transaksi yang belum memiliki bukti memadai.
-Dalam stimulus, terdapat dua tuntutan yang harus dipenuhi, yaitu penyampaian laporan sesuai tenggat dan kewajiban mencatat serta menindaklanjuti seluruh temuan yang belum terselesaikan.
-Opsi C paling tepat karena auditor menyampaikan laporan sementara sesuai ketentuan, membedakan transaksi berdasarkan status verifikasinya, dan tetap mengajukan klarifikasi resmi terhadap transaksi yang belum dapat dipastikan.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Menyampaikan laporan berdasarkan bukti yang tersedia merupakan tindakan yang tepat. Namun, menunda pemeriksaan transaksi yang belum terverifikasi hingga audit berikutnya tidak sesuai dengan kewajiban tindak lanjut melalui klarifikasi resmi.
-Opsi B salah: Meminta tambahan waktu dapat meningkatkan kelengkapan pemeriksaan. Namun, laporan sementara sudah diperbolehkan sehingga penundaan bukan pilihan paling tepat dalam situasi tersebut.
-Opsi D salah: Koordinasi dengan tim keuangan membantu mempercepat pengumpulan bukti. Namun, penyesuaian laporan belum cukup apabila tidak disertai pemisahan status transaksi dan tindak lanjut resmi terhadap temuan yang belum terselesaikan.
-Opsi E salah: Menyampaikan hasil yang telah terverifikasi dan merekomendasikan perbaikan prosedur merupakan tindakan positif. Namun, pilihan tersebut belum menjamin seluruh transaksi yang masih dipersoalkan dicatat dan ditindaklanjuti dalam pemeriksaan berjalan.
-
-Cara cepat: Dalam soal integritas auditor, perhatikan tiga unsur utama, yaitu keakuratan laporan, transparansi status verifikasi, dan tindak lanjut temuan. Pilih tindakan yang memenuhi ketiganya sesuai ketentuan yang berlaku.`,
-        tingkat: 'sulit',
+        pembahasan: `Konsep dalam soal ini menekankan integritas auditor: laporan harus jujur tentang status setiap temuan, tepat waktu, dan dapat dipertanggungjawabkan. Pedoman audit sudah memberi jalan keluar atas tekanan tenggat, yaitu laporan sementara boleh disampaikan asalkan setiap transaksi yang belum terverifikasi dicatat terpisah dan segera ditindaklanjuti melalui permintaan klarifikasi resmi. Ketiga syarat itu berlaku bersamaan. Tindakan yang hanya memenuhi dua di antaranya, misalnya meminta perpanjangan, menggabungkan semua transaksi dalam satu daftar, atau menunda klarifikasi ke audit berikutnya, belum mencerminkan integritas yang utuh. Opsi yang paling tepat adalah C, yaitu mengirim laporan tepat waktu, menyajikan transaksi yang belum terverifikasi di bagian khusus, dan meminta klarifikasi tertulis dari pihak terkait, karena tindakan itu memenuhi tenggat sekaligus seluruh kewajiban pedoman audit.
+Alasan opsi salah:
+A. Laporan tepat waktu dan pemisahan transaksi sudah sesuai pedoman, tetapi klarifikasi yang dijadwalkan pada audit berikutnya berarti transaksi yang belum terverifikasi tidak ditindaklanjuti dalam pemeriksaan yang sedang berjalan.
+B. Pemisahan transaksi dan permintaan klarifikasi resmi sudah benar, tetapi perpanjangan tenggat tidak diperlukan karena pedoman membolehkan laporan sementara, dan keterlambatan dapat menghambat pencairan bantuan berikutnya.
+D. Laporan tepat waktu dan permintaan klarifikasi resmi sudah benar, tetapi menggabungkan seluruh transaksi dalam satu daftar mengaburkan beda antara transaksi yang sudah dan belum terverifikasi, padahal pedoman mewajibkan pencatatan terpisah.
+E. Laporan hanya memuat transaksi terverifikasi, sedangkan transaksi lain disimpan di kertas kerja internal tanpa permintaan klarifikasi, jadi temuan itu tidak tampak dalam laporan dan tidak ditindaklanjuti.
+Cara cepat: Uraikan isi pedoman audit menjadi beberapa syarat terpisah, lalu uji setiap pilihan langkah demi langkah dan cari langkah yang menyimpang dari salah satu syarat itu.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-05-09 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 9
+      // tryout-ref-04-10 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 10
+      {
+        nomor: 9,
+        tipe: 'pg',
+        pertanyaan: `Pimpinan unit sedang memeriksa laporan capaian layanan. Dua kesalahan pengetikan telah diperbaiki berdasarkan dokumen sumber dan memiliki jejak audit.
+Namun, target layanan dalam sistem berubah dari 90% menjadi 80% setelah seorang staf menerima arahan lisan dari pejabat atasan. Pedoman instansi menetapkan bahwa perubahan target hanya berlaku setelah memperoleh persetujuan tertulis.
+Laporan harus disampaikan sebelum persetujuan tersebut diperoleh. Pimpinan diperbolehkan menambahkan catatan klarifikasi pada laporan.
+Keputusan yang paling mencerminkan integritas adalah ....`,
+        opsi: [
+          { label: 'A', teks: `Pertahankan dua koreksi, gunakan target 90%, dan abaikan perubahan 80% di sistem` },
+          { label: 'B', teks: `Pertahankan dua koreksi, gunakan target 90%, dan jelaskan usulan 80% dalam laporan` },
+          { label: 'C', teks: `Pertahankan dua koreksi, gunakan target 80%, dan catat persetujuan yang masih diproses` },
+          { label: 'D', teks: `Kembalikan dua koreksi ke angka awal, gunakan target 90%, dan catat usulan 80%` },
+          { label: 'E', teks: `Pertahankan dua koreksi, catat usulan 80%, dan tunda laporan sampai target disahkan` },
+        ],
+        kunci: 'B',
+        pembahasan: `Konsep dalam soal ini menekankan integritas sebagai kejujuran dan akuntabilitas data: laporan hanya memuat angka yang sah, tetapi perubahan yang belum sah tidak disembunyikan. Dua koreksi salah ketik sudah sah karena didasarkan pada dokumen sumber dan memiliki jejak audit; ketentuan persetujuan tertulis hanya berlaku bagi perubahan target. Target 80% belum berlaku karena baru berupa arahan lisan, sehingga target yang dipakai tetap 90%. Laporan harus disampaikan sebelum persetujuan diperoleh, dan pedoman membolehkan catatan klarifikasi, sehingga perubahan di sistem dapat dijelaskan tanpa diberlakukan. Inti integritas di sini adalah memilah perubahan menurut keabsahannya, lalu menyampaikan semuanya secara terbuka dan tepat waktu. Opsi yang paling tepat adalah B, yaitu mempertahankan dua koreksi, memakai target 90%, dan menjelaskan usulan 80% dalam laporan, karena laporan tetap tepat waktu, hanya memuat angka yang sah, dan perbedaan target di sistem diungkap secara terbuka.
+Alasan opsi salah:
+A. Target 90% dan dua koreksi sudah tepat, tetapi perubahan target di sistem dibiarkan tanpa penjelasan. Pembaca laporan tidak mengetahui adanya arahan yang belum sah, padahal pedoman menyediakan catatan klarifikasi.
+C. Target 80% belum berlaku karena baru berupa arahan lisan, sedangkan pedoman mensyaratkan persetujuan tertulis. Mencatat bahwa persetujuan sedang diproses tidak membuat target itu sah.
+D. Persetujuan tertulis hanya disyaratkan untuk perubahan target. Koreksi salah ketik sudah berbukti dan berjejak audit, sehingga mengembalikannya justru memasukkan lagi kesalahan ke laporan.
+E. Laporan wajib disampaikan sebelum persetujuan diperoleh, dan target 90% masih berlaku. Penundaan melanggar ketentuan waktu meskipun usulan 80% sudah dicatat.
+Cara cepat: Pilah setiap perubahan dalam laporan menurut statusnya, yaitu sudah sah atau belum, lalu bandingkan pilihan berdasarkan ketentuan pedoman, tenggat laporan, dan kewenangan yang diberikan kepada pimpinan.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-ref-04-07 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 7
+      {
+        nomor: 10,
+        tipe: 'pg',
+        pertanyaan: `Panitia penerimaan barang pemerintah memeriksa 50 komputer. Hasil pemeriksaan menunjukkan 46 unit memenuhi spesifikasi kontrak, sedangkan empat unit memiliki kapasitas memori lebih rendah.
+Kontrak memperbolehkan penerimaan bertahap dan pembayaran hanya atas unit yang telah sah diterima. Penyedia menyatakan akan mengganti empat unit dalam 14 hari.
+Panitia harus menyusun dokumen penerimaan yang dapat dipertanggungjawabkan tanpa menunda penggunaan barang yang telah memenuhi persyaratan.
+Keputusan yang paling tepat adalah ....`,
+        opsi: [
+          { label: 'A', teks: `Menerima 46 unit dan mencatat empat ketidaksesuaian` },
+          { label: 'B', teks: `Mencatat 50 unit tiba dan membayar 46 unit tanpa berita acara penerimaan` },
+          { label: 'C', teks: `Menerima 46 unit dan menyerahkan status sisanya` },
+          { label: 'D', teks: `Menerima 46 unit, menunda laporan sisanya` },
+          { label: 'E', teks: `Menunda seluruh penerimaan hingga penggantian` },
+        ],
+        kunci: 'A',
+        pembahasan: `Konsep yang digunakan adalah kejujuran, tanggung jawab, dan akuntabilitas. Sebanyak 46 komputer telah memenuhi persyaratan, sedangkan empat unit belum sesuai. Karena kontrak mengizinkan penerimaan bertahap, panitia tidak perlu menunda seluruh proses. Opsi yang paling tepat adalah A, karena memproses barang yang sesuai sekaligus mendokumentasikan ketidaksesuaian empat unit untuk ditindaklanjuti. Dengan demikian, dokumen penerimaan mencerminkan kondisi sebenarnya.
+Alasan opsi salah:
+B. Pencatatan kedatangan 50 unit memang benar sebagai informasi logistik, tetapi pembayaran harus didasarkan pada penerimaan sah. Opsi ini justru melewatkan berita acara penerimaan dan pencatatan ketidaksesuaian empat unit.
+C. Koordinasi dengan pejabat pengadaan dapat dilakukan, tetapi panitia tetap perlu mencatat status keempat unit secara jelas, bukan hanya menyerahkan penentuannya.
+D. Penerimaan 46 unit tepat, tetapi hasil pemeriksaan empat unit lainnya harus dicatat segera, bukan menunggu penggantian selesai.
+E. Penundaan seluruh penerimaan mengabaikan mekanisme penerimaan bertahap yang diperbolehkan.
+Cara cepat: Identifikasi barang yang memenuhi kontrak, kemudian periksa apakah hasil pemeriksaan dan penerimaan dicatat secara benar. Jangan menunda pencatatan ketidaksesuaian hanya karena penyedia berjanji melakukan penggantian.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-ref-05-07 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 7
       {
         nomor: 11,
         tipe: 'pg',
-        pertanyaan: `Seorang pejabat pengadaan mengetahui bahwa penyedia barang telah mengirimkan peralatan sesuai jadwal, tetapi beberapa unit tidak memenuhi spesifikasi teknis dalam kontrak. Penyedia menawarkan penggantian unit dalam waktu dekat dan meminta agar berita acara penerimaan tetap ditandatangani untuk menghindari keterlambatan pembayaran.
-Keputusan yang paling mencerminkan integritas pejabat pengadaan adalah ….`,
+        pertanyaan: `Seorang kepala daerah mengetahui bahwa perusahaan milik kerabat dekatnya mengikuti tender pembangunan fasilitas kesehatan. Perusahaan tersebut memenuhi seluruh persyaratan dan menawarkan harga yang kompetitif. Kepala daerah tidak pernah memberikan instruksi untuk memenangkan perusahaan tersebut, tetapi masih memiliki kewenangan dalam pengawasan proyek.
+Tindakan yang paling mencerminkan integritas pejabat publik adalah ….`,
         opsi: [
-          { label: 'A', teks: `Meminta penyedia menandatangani komitmen penggantian barang sebelum menyetujui pembayaran sesuai tahapan kontrak.` },
-          { label: 'B', teks: `Mencatat ketidaksesuaian secara resmi dan menunda persetujuan penerimaan atas unit yang belum memenuhi spesifikasi hingga diperbaiki sesuai ketentuan.` },
-          { label: 'C', teks: `Melakukan pemeriksaan tambahan bersama tim teknis dan memberikan waktu kepada penyedia untuk menyelesaikan penggantian barang.` },
-          { label: 'D', teks: `Meminta penyedia menyampaikan jadwal penggantian tertulis untuk menjadi dasar evaluasi penyelesaian pekerjaan.` },
-          { label: 'E', teks: `Menyampaikan ketidaksesuaian kepada pimpinan dan meminta arahan mengenai kelanjutan proses administrasi penerimaan.` },
+          { label: 'A', teks: `Memastikan seluruh peserta tender memperoleh informasi dan kesempatan yang sama sejak awal.` },
+          { label: 'B', teks: `Menugaskan panitia independen menilai penawaran sambil tetap mengawasi langsung proses tender.` },
+          { label: 'C', teks: `Meminta auditor internal meninjau seluruh dokumen tender sebelum pemenang diumumkan.` },
+          { label: 'D', teks: `Mengungkapkan konflik kepentingan secara resmi dan menarik diri dari proses tender.` },
+          { label: 'E', teks: `Mewajibkan publikasi hasil penilaian seluruh peserta tender melalui laman resmi daerah.` },
         ],
-        kunci: 'B',
-        pembahasan: `Integritas dalam pengadaan pemerintah mengharuskan pejabat menjalankan kewenangan berdasarkan fakta dan ketentuan kontrak.
-Berita acara penerimaan harus mencerminkan kondisi sebenarnya. Permintaan penyedia agar dokumen ditandatangani sebelum barang memenuhi spesifikasi dapat menimbulkan catatan administrasi yang tidak sesuai dengan keadaan nyata.
-Opsi B paling tepat karena menggabungkan pencatatan ketidaksesuaian, pengendalian administrasi, dan kewajiban memenuhi spesifikasi sebelum penerimaan disetujui.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Komitmen penggantian merupakan bentuk tanggung jawab penyedia, tetapi janji perbaikan tidak otomatis membuktikan bahwa barang telah memenuhi persyaratan.
-Opsi C salah: Pemeriksaan tambahan merupakan tindakan relevan, tetapi belum menegaskan bahwa penerimaan atas barang yang tidak sesuai tidak boleh disahkan terlebih dahulu.
-Opsi D salah: Jadwal penggantian membantu pengawasan, tetapi tidak cukup untuk memastikan keabsahan proses penerimaan.
-Opsi E salah: Konsultasi kepada pimpinan dapat dilakukan, tetapi tanggung jawab pejabat untuk mencatat kondisi sebenarnya tetap harus dijalankan.
-
-Cara cepat: Apabila terdapat perbedaan antara kondisi aktual dan dokumen resmi, integritas mengharuskan dokumen mencerminkan fakta, bukan janji perbaikan.`,
+        kunci: 'D',
+        pembahasan: `Konsep dalam soal ini menekankan penanganan konflik kepentingan sebagai inti integritas pejabat publik. Konflik kepentingan sudah ada walaupun belum terjadi kecurangan: hubungan keluarga dengan peserta tender dan kewenangan pengawasan yang masih dipegang cukup untuk menimbulkan keraguan atas objektivitas. Undang-Undang Nomor 30 Tahun 2014 tentang Administrasi Pemerintahan melarang pejabat yang berpotensi memiliki konflik kepentingan menetapkan atau melakukan keputusan, dan pedoman penanganan benturan kepentingan (Permenpan-RB Nomor 37 Tahun 2012) menuntut pengungkapan serta penarikan diri. Opsi yang paling tepat adalah D, yaitu mengungkapkan konflik kepentingan secara resmi dan menarik diri dari proses tender, karena hanya langkah ini yang menghapus pengaruh hubungan keluarga dari pengawasan dan keputusan, bukan sekadar menambah lapisan pemeriksaan.
+Alasan opsi salah:
+A. Kesetaraan informasi adalah prinsip pengadaan yang baik, tetapi kepala daerah tetap memegang kewenangan atas tender yang diikuti perusahaan kerabatnya.
+B. Panitia independen membantu objektivitas penilaian, tetapi pengawasan langsung oleh kepala daerah justru mempertahankan keterlibatan pihak yang berkonflik.
+C. Pemeriksaan auditor internal menambah kontrol, tetapi tidak mengubah posisi kepala daerah yang masih berwenang atas proses tender.
+E. Publikasi hasil penilaian meningkatkan transparansi, tetapi tidak menghilangkan kewenangan kepala daerah atas tender yang diikuti kerabatnya.
+Cara cepat: Pisahkan tiga hal dalam kasus, yaitu hubungan pribadi, kewenangan yang masih dimiliki, dan tahap proses, lalu nilai apakah setiap pilihan menghapus pengaruh hubungan itu atau sekadar menambah lapisan pemeriksaan.`,
         tingkat: 'sulit',
         status: 'draft',
       },
-      // tryout-ref-04-08 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 8
+      // tryout-ref-05-12 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 12
       {
         nomor: 12,
         tipe: 'pg',
-        pertanyaan: `Tim seleksi beasiswa pemerintah telah menyelesaikan penilaian administratif. Seorang anggota tim kemudian mengetahui bahwa salah satu peserta merupakan rekan bisnisnya dalam usaha yang masih aktif.
-Peserta memenuhi seluruh persyaratan. Anggota tim tersebut belum memberikan skor substansi, tetapi telah ikut memeriksa kelengkapan administrasi peserta bersama petugas lain.
-Pedoman seleksi mewajibkan pengungkapan konflik kepentingan, mengizinkan pemeriksaan ulang bila diperlukan, dan menyediakan penilai pengganti.
-Tindakan yang paling tepat adalah ....`,
+        pertanyaan: `Seorang ketua panitia seleksi menemukan kesalahan pencatatan skor peserta yang berpotensi mengubah peringkat akhir. Hasil seleksi belum diumumkan, tetapi sebagian anggota panitia mengusulkan agar koreksi dilakukan tanpa dokumentasi tambahan karena kesalahan tersebut dianggap hanya persoalan teknis.
+Keputusan yang paling mencerminkan integritas dalam proses seleksi adalah ….`,
         opsi: [
-          { label: 'A', teks: `Ungkap konflik dan minta persetujuan peserta` },
-          { label: 'B', teks: `Alihkan skor tetapi pertahankan tugas administrasi` },
-          { label: 'C', teks: `Lakukan pengesahan kolektif dan lanjutkan penilaian` },
-          { label: 'D', teks: `Ungkap konflik, tinjau administrasi, alihkan penilaian` },
-          { label: 'E', teks: `Gunakan rubrik terbuka dan lanjutkan penilaian` },
+          { label: 'A', teks: `Mengoreksi skor sesuai lembar jawaban dan menyimpan daftar skor terbaru dalam arsip resmi panitia.` },
+          { label: 'B', teks: `Mengoreksi skor peserta di sekitar batas kelulusan dan mencatat perubahannya dalam risalah rapat panitia.` },
+          { label: 'C', teks: `Meminta pengawas seleksi memeriksa kesalahan pencatatan dan memastikan tidak ada peserta yang dirugikan.` },
+          { label: 'D', teks: `Membetulkan skor sesuai bukti serta mencatat setiap perubahan dan alasannya dalam arsip panitia.` },
+          { label: 'E', teks: `Menunda pengumuman sampai seluruh anggota panitia menyetujui hasil perhitungan ulang.` },
         ],
         kunci: 'D',
-        pembahasan: `Integritas menuntut penilai mengungkap hubungan bisnis dan memastikan keputusan tidak dipengaruhi kepentingan pribadi.
-Opsi D tepat karena pemeriksaan yang sudah melibatkan penilai terkait ditinjau secara independen, sementara penilaian berikutnya diserahkan kepada penilai yang tidak memiliki konflik.
-Pemeriksaan ulang bukan berarti peserta bersalah atau otomatis didiskualifikasi. Tujuannya memastikan proses berjalan objektif.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Persetujuan peserta tidak menggantikan tanggung jawab institusi mengelola konflik kepentingan.
-Opsi B salah: Penilai masih memiliki peran yang dapat memengaruhi proses administratif.
-Opsi C salah: Pengesahan kolektif tidak menjamin independensi jika penilai terkait tetap terlibat.
-Opsi E salah: Rubrik yang dipublikasikan tidak menghapus hubungan bisnis.
-
-Cara cepat: Pisahkan tiga hal, yaitu kelayakan peserta, konflik kepentingan penilai, dan perlunya pemeriksaan independen terhadap tahapan yang sudah dilakukan.`,
+        pembahasan: `Konsep dalam soal ini menekankan akuntabilitas dan keterlacakan sebagai bagian dari integritas penyelenggara seleksi. Ketua panitia menemukan kesalahan pencatatan skor yang dapat mengubah peringkat, sementara sebagian anggota ingin memperbaikinya tanpa dokumentasi karena dianggap persoalan teknis. Koreksi wajib dilakukan untuk semua skor yang salah karena menyangkut hak peserta, tetapi angka yang benar saja belum cukup: setiap perubahan pada data seleksi harus dapat ditelusuri, yaitu skor mana yang diubah dan berdasarkan bukti apa. Menyimpan daftar skor terbaru, meminta pengawas memeriksa, atau menunggu persetujuan seluruh panitia tidak meninggalkan jejak perubahan semacam itu. Opsi yang paling tepat adalah D, yaitu membetulkan skor sesuai bukti serta mencatat setiap perubahan dan alasannya dalam arsip panitia, karena langkah itu menolak koreksi diam-diam dan membuat hasil seleksi dapat dipertanggungjawabkan bila kelak dipersoalkan.
+Alasan opsi salah:
+A. Skor memang dibetulkan dan daftarnya diarsipkan, tetapi daftar terbaru hanya menimpa angka lama tanpa jejak tentang apa yang diubah dan mengapa; ini sama saja dengan koreksi tanpa dokumentasi yang diusulkan sebagian anggota.
+B. Perubahan memang dicatat, tetapi koreksi yang terbatas pada peserta di sekitar batas kelulusan membiarkan skor peserta lain tetap salah, padahal kesalahan itu dapat mengubah peringkat siapa pun.
+C. Kehadiran pengawas menambah objektivitas, tetapi pemeriksaan itu belum meninggalkan catatan tentang skor yang diubah dan dasar perubahannya.
+E. Persetujuan seluruh panitia tidak menggantikan bukti dan catatan koreksi, dan menunda pengumuman saja tidak membuat perubahan skor dapat ditelusuri.
+Cara cepat: Bedakan hasil akhir yang benar dari proses koreksi yang dapat dipertanggungjawabkan, lalu periksa apakah setiap pilihan memenuhi keduanya untuk semua peserta.`,
         tingkat: 'sulit',
         status: 'draft',
       },
@@ -400,34 +348,9 @@ Cara cepat: Pisahkan tiga hal, yaitu kelayakan peserta, konflik kepentingan peni
   {
     stimulus: { judul: `Bela Negara` },
     soal: [
-      // tryout-ref-03-07 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 7
-      {
-        nomor: 13,
-        tipe: 'pg',
-        pertanyaan: `Seorang mahasiswa di wilayah perbatasan laut diajak bergabung dengan sebuah kelompok daring yang menyebarkan gagasan untuk mengganti dasar negara dengan paham transnasional. Ia menolak ajakan itu, lalu menginisiasi diskusi rutin di organisasi kampusnya tentang kedudukan dasar negara sebagai konsensus final para pendiri bangsa. Nilai dasar bela negara yang paling menonjol dari sikap mahasiswa tersebut adalah ....`,
-        opsi: [
-          { label: 'A', teks: `Cinta tanah air` },
-          { label: 'B', teks: `Sadar berbangsa dan bernegara` },
-          { label: 'C', teks: `Setia pada Pancasila` },
-          { label: 'D', teks: `Rela berkorban` },
-          { label: 'E', teks: `Kemampuan awal bela negara` },
-        ],
-        kunci: 'C',
-        pembahasan: `Konsep dalam soal ini menekankan nilai dasar bela negara sebagaimana dirumuskan dalam UU Nomor 23 Tahun 2019 tentang Pengelolaan Sumber Daya Nasional untuk Pertahanan Negara, yang menjabarkan hak dan kewajiban warga negara untuk ikut serta dalam upaya pembelaan negara menurut Pasal 27 ayat (3) UUD 1945. Dalam stem, mahasiswa menghadapi ancaman nonmiliter berupa ajakan mengganti dasar negara dengan paham transnasional, lalu menolaknya dan menguatkan pemahaman teman-temannya bahwa dasar negara merupakan konsensus final. Inti setia pada Pancasila di sini adalah keteguhan mempertahankan Pancasila sebagai ideologi dan dasar negara dari setiap upaya penggantian. Opsi yang paling tepat adalah C, karena tindakan yang ditonjolkan adalah penolakan terhadap paham pengganti dasar negara sekaligus penguatan keyakinan pada dasar negara yang sah.
-
-Pembahasan Opsi Salah:
-Opsi A salah karena cinta tanah air menekankan rasa memiliki dan menjaga wilayah serta lingkungan Indonesia, bukan pembelaan dasar negara dari paham pengganti.
-Opsi B salah karena sadar berbangsa dan bernegara menekankan kesadaran dan partisipasi sebagai warga negara secara umum, sedangkan stem secara khusus menyoal upaya mengganti dasar negara.
-Opsi D salah karena tidak ada pengorbanan waktu, tenaga, atau harta yang menjadi fokus tindakan mahasiswa tersebut.
-Opsi E salah karena kemampuan awal bela negara menekankan kesiapan fisik, psikis, dan kecerdasan, bukan keteguhan pada ideologi negara.
-
-Cara cepat: Apabila soal menyebut “menolak paham yang ingin mengganti dasar negara”, maka jawabannya mengarah ke “Setia pada Pancasila”.`,
-        tingkat: 'mudah',
-        status: 'draft',
-      },
       // tryout-ref-03-11 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 11
       {
-        nomor: 14,
+        nomor: 13,
         tipe: 'pg',
         pertanyaan: `Dalam sesi pelatihan dasar CPNS, fasilitator menjelaskan bahwa Undang-Undang Nomor 23 Tahun 2019 tentang Pengelolaan Sumber Daya Nasional untuk Pertahanan Negara memuat lima nilai dasar bela negara. Fasilitator kemudian meminta peserta menyebutkan nilai yang menekankan kesiapan fisik, kesiapan psikis, serta keterampilan dasar warga negara untuk ikut serta membela negara. Nilai dasar bela negara yang dimaksud adalah …`,
         opsi: [
@@ -439,20 +362,17 @@ Cara cepat: Apabila soal menyebut “menolak paham yang ingin mengganti dasar ne
         ],
         kunci: 'D',
         pembahasan: `Konsep dalam soal ini menekankan lima nilai dasar bela negara sebagaimana dirumuskan dalam UU Nomor 23 Tahun 2019 tentang PSDN, yaitu cinta tanah air, sadar berbangsa dan bernegara, setia pada Pancasila sebagai ideologi negara, rela berkorban untuk bangsa dan negara, serta kemampuan awal bela negara. Dalam konteks pelatihan dasar CPNS, fasilitator menyoroti nilai yang berkaitan dengan kesiapan diri warga negara, baik secara fisik (sehat, tangkas, bugar) maupun psikis (disiplin, ulet, mampu bekerja keras), ditambah keterampilan dasar yang dibutuhkan untuk ikut serta membela negara. Inti kemampuan awal bela negara di sini adalah modal kesiapan pribadi yang memungkinkan warga negara berkontribusi nyata ketika dibutuhkan negara. Opsi yang paling tepat adalah D, karena hanya nilai kemampuan awal bela negara yang secara khusus memuat unsur kesiapan fisik, kesiapan psikis, dan keterampilan dasar.
-
-Pembahasan Opsi Salah:
-Opsi A salah karena cinta tanah air menekankan rasa memiliki, bangga, dan menjaga wilayah serta kekayaan Indonesia, bukan kesiapan fisik dan psikis.
-Opsi B salah karena sadar berbangsa dan bernegara menekankan pemahaman hak dan kewajiban serta kepatuhan pada hukum, bukan kesiapan diri dan keterampilan dasar.
-Opsi C salah karena setia pada Pancasila menekankan keyakinan terhadap Pancasila sebagai ideologi dan dasar negara, bukan kebugaran ataupun ketangguhan mental.
-Opsi E salah karena rela berkorban menekankan kesediaan menyerahkan waktu, tenaga, dan harta bagi kepentingan bangsa, bukan kesiapan fisik dan psikis yang dimiliki sejak awal.
-
-Cara cepat: Apabila soal menyebut “kesiapan fisik, kesiapan psikis, dan keterampilan dasar”, maka jawabannya mengarah ke “Kemampuan awal bela negara”.`,
+Alasan opsi salah:
+A. Cinta tanah air menekankan rasa memiliki, bangga, dan menjaga wilayah serta kekayaan Indonesia, bukan kesiapan fisik dan psikis.
+B. Sadar berbangsa dan bernegara menekankan pemahaman hak dan kewajiban serta kepatuhan pada hukum, bukan kesiapan diri dan keterampilan dasar.
+C. Setia pada Pancasila menekankan keyakinan terhadap Pancasila sebagai ideologi dan dasar negara, bukan kebugaran ataupun ketangguhan mental.
+E. Rela berkorban menekankan kesediaan menyerahkan waktu, tenaga, dan harta bagi kepentingan bangsa, bukan kesiapan fisik dan psikis yang dimiliki sejak awal.`,
         tingkat: 'mudah',
         status: 'draft',
       },
       // tryout-ref-04-17 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 17
       {
-        nomor: 15,
+        nomor: 14,
         tipe: 'pg',
         pertanyaan: `Sekolah di wilayah rawan bencana menyelenggarakan tiga program pembinaan bela negara.
 Program P memberikan pemahaman mengenai prosedur menghadapi keadaan darurat, dengan 90% peserta lulus tes pengetahuan.
@@ -468,81 +388,66 @@ Keputusan yang paling tepat adalah ....`,
           { label: 'E', teks: `Penguatan teori pada program P` },
         ],
         kunci: 'C',
-        pembahasan: `Konsep yang digunakan adalah kemampuan awal bela negara dan kesiapsiagaan menghadapi ancaman nonmiliter.
-Kemampuan awal bela negara mencakup kesiapan psikis dan fisik. Dalam konteks sekolah di wilayah rawan bencana, keterampilan pertolongan pertama dan evakuasi merupakan contoh kemampuan praktis yang mendukung kesiapsiagaan.
-Hasil evaluasi menunjukkan bahwa hanya 70% peserta program Q mampu memperagakan keterampilan secara mandiri. Artinya, masih terdapat peserta yang membutuhkan penguatan.
-Opsi C tepat karena secara langsung meningkatkan keterampilan yang diperlukan ketika menghadapi keadaan darurat.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Kepedulian sosial penting dalam bela negara, tetapi belum meningkatkan kemampuan melakukan tindakan darurat secara mandiri.
-Opsi B salah: Pengetahuan dan kepedulian saling mendukung, tetapi tidak menggantikan latihan keterampilan.
-Opsi D salah: Ketiga program memang bermanfaat, tetapi prioritas pembinaan perlu didasarkan pada kebutuhan peserta yang ditemukan dalam evaluasi.
-Opsi E salah: Penguatan pengetahuan bermanfaat, tetapi masalah yang diidentifikasi adalah kemampuan praktik.
-
+        pembahasan: `Konsep yang digunakan adalah kemampuan awal bela negara dan kesiapsiagaan menghadapi ancaman nonmiliter. Kemampuan awal bela negara mencakup kesiapan psikis dan fisik. Dalam konteks sekolah di wilayah rawan bencana, keterampilan pertolongan pertama dan evakuasi merupakan contoh kemampuan praktis yang mendukung kesiapsiagaan. Hasil evaluasi menunjukkan bahwa hanya 70% peserta program Q mampu memperagakan keterampilan secara mandiri. Artinya, masih terdapat peserta yang membutuhkan penguatan. Opsi yang paling tepat adalah C, karena secara langsung meningkatkan keterampilan yang diperlukan ketika menghadapi keadaan darurat.
+Alasan opsi salah:
+A. Kepedulian sosial penting dalam bela negara, tetapi belum meningkatkan kemampuan melakukan tindakan darurat secara mandiri.
+B. Pengetahuan dan kepedulian saling mendukung, tetapi tidak menggantikan latihan keterampilan.
+D. Ketiga program memang bermanfaat, tetapi prioritas pembinaan perlu didasarkan pada kebutuhan peserta yang ditemukan dalam evaluasi.
+E. Penguatan pengetahuan bermanfaat, tetapi masalah yang diidentifikasi adalah kemampuan praktik.
 Cara cepat: Tentukan aspek bela negara yang belum dikuasai. Pilih program yang secara langsung mengembangkan aspek tersebut.`,
-        tingkat: 'sedang',
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-05-15 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 15
+      // tryout-ref-03-07 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 7
+      {
+        nomor: 15,
+        tipe: 'pg',
+        pertanyaan: `Seorang mahasiswa di wilayah perbatasan laut diajak bergabung dengan sebuah kelompok daring yang menyebarkan gagasan untuk mengganti dasar negara dengan paham transnasional. Ia menolak ajakan itu, lalu menginisiasi diskusi rutin di organisasi kampusnya tentang kedudukan dasar negara sebagai konsensus final para pendiri bangsa. Nilai dasar bela negara yang paling menonjol dari sikap mahasiswa tersebut adalah ....`,
+        opsi: [
+          { label: 'A', teks: `Cinta tanah air` },
+          { label: 'B', teks: `Sadar berbangsa dan bernegara` },
+          { label: 'C', teks: `Setia pada Pancasila` },
+          { label: 'D', teks: `Rela berkorban` },
+          { label: 'E', teks: `Kemampuan awal bela negara` },
+        ],
+        kunci: 'C',
+        pembahasan: `Konsep dalam soal ini menekankan nilai dasar bela negara sebagaimana dirumuskan dalam UU Nomor 23 Tahun 2019 tentang Pengelolaan Sumber Daya Nasional untuk Pertahanan Negara, yang menjabarkan hak dan kewajiban warga negara untuk ikut serta dalam upaya pembelaan negara menurut Pasal 27 ayat (3) UUD 1945. Dalam stem, mahasiswa menghadapi ancaman nonmiliter berupa ajakan mengganti dasar negara dengan paham transnasional, lalu menolaknya dan menguatkan pemahaman teman-temannya bahwa dasar negara merupakan konsensus final. Inti setia pada Pancasila di sini adalah keteguhan mempertahankan Pancasila sebagai ideologi dan dasar negara dari setiap upaya penggantian. Opsi yang paling tepat adalah C, karena tindakan yang ditonjolkan adalah penolakan terhadap paham pengganti dasar negara sekaligus penguatan keyakinan pada dasar negara yang sah.
+Alasan opsi salah:
+A. Cinta tanah air menekankan rasa memiliki dan menjaga wilayah serta lingkungan Indonesia, bukan pembelaan dasar negara dari paham pengganti.
+B. Sadar berbangsa dan bernegara menekankan kesadaran dan partisipasi sebagai warga negara secara umum, sedangkan stem secara khusus menyoal upaya mengganti dasar negara.
+D. Tidak ada pengorbanan waktu, tenaga, atau harta yang menjadi fokus tindakan mahasiswa tersebut.
+E. Kemampuan awal bela negara menekankan kesiapan fisik, psikis, dan kecerdasan, bukan keteguhan pada ideologi negara.
+Cara cepat: Tentukan apa yang sedang dipertahankan tokoh dalam kasus, lalu cocokkan dengan pengertian tiap nilai dasar bela negara dan bedakan nilai yang mirip dari objek yang dibela.`,
+        tingkat: 'mudah',
+        status: 'draft',
+      },
+      // tryout-ref-05-17 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 17
       {
         nomor: 16,
         tipe: 'pg',
-        pertanyaan: `Warga sebuah kawasan permukiman menghadapi peningkatan gangguan keamanan. Pengurus lingkungan membentuk jadwal ronda secara bergiliran, melibatkan warga sesuai kemampuan, dan menjalin koordinasi dengan aparat keamanan setempat.
-Arti penting bela negara dalam kegiatan tersebut adalah ….`,
+        pertanyaan: `Sebuah kabupaten di wilayah perbatasan mengalami keterbatasan fasilitas kesehatan, pendidikan, dan jaringan komunikasi. Akibatnya, sebagian masyarakat lebih sering memanfaatkan layanan dari negara tetangga. Kondisi tersebut menimbulkan kekhawatiran mengenai melemahnya keterikatan masyarakat terhadap Indonesia.
+Strategi bela negara yang paling tepat untuk mengatasi persoalan tersebut adalah ….`,
         opsi: [
-          { label: 'A', teks: `Menumbuhkan keberanian warga dalam menghadapi gangguan keamanan di lingkungan tempat tinggal.` },
-          { label: 'B', teks: `Meningkatkan kedisiplinan masyarakat dalam menjalankan kegiatan keamanan yang telah disepakati.` },
-          { label: 'C', teks: `Memperkuat hubungan sosial melalui kegiatan bersama yang dilaksanakan secara rutin.` },
-          { label: 'D', teks: `Meningkatkan kesiapsiagaan masyarakat untuk menghadapi kemungkinan gangguan keamanan.` },
-          { label: 'E', teks: `Membangun kesadaran bahwa menjaga keamanan lingkungan merupakan tanggung jawab bersama sesuai peran masing-masing.` },
+          { label: 'A', teks: `Memperkuat pengawasan perbatasan dan membangun koordinasi keamanan dengan aparat setempat.` },
+          { label: 'B', teks: `Memperluas jangkauan layanan publik dasar di kabupaten tersebut secara bertahap dan berkelanjutan.` },
+          { label: 'C', teks: `Mengembangkan program pendidikan wawasan kebangsaan tentang identitas nasional bagi masyarakat setempat.` },
+          { label: 'D', teks: `Mendorong pengembangan usaha lokal dan perluasan peluang ekonomi bagi masyarakat perbatasan.` },
+          { label: 'E', teks: `Menjalin kerja sama lintas batas dengan negara tetangga dalam pemanfaatan fasilitas layanan yang sudah ada.` },
         ],
-        kunci: 'E',
-        pembahasan: `Salah satu bentuk bela negara dalam kehidupan masyarakat adalah kesadaran untuk ikut menjaga keamanan dan ketertiban sesuai kemampuan dan tanggung jawab masing-masing.
-Dalam kasus ini, warga melaksanakan ronda secara teratur dan berkoordinasi dengan aparat. Kegiatan tersebut menunjukkan bahwa menjaga keamanan bukan hanya tanggung jawab aparat, melainkan juga memerlukan partisipasi warga.
-Opsi E paling tepat karena menekankan kesadaran tanggung jawab bersama sebagai inti bela negara dalam kehidupan sehari-hari.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Keberanian dapat berkembang melalui kegiatan keamanan, tetapi tidak menjadi aspek utama yang digambarkan.
-Opsi B salah: Kedisiplinan merupakan bagian dari pelaksanaan ronda, tetapi fokus soal adalah keterlibatan warga menjaga keamanan bersama.
-Opsi C salah: Hubungan sosial dapat meningkat, tetapi kegiatan tersebut memiliki tujuan utama menjaga keamanan lingkungan.
-Opsi D salah: Kesiapsiagaan merupakan manfaat penting, tetapi belum menekankan kesadaran warga untuk berkontribusi sesuai perannya.
-
-Cara cepat: Jika stimulus memuat ronda, partisipasi warga, dan koordinasi dengan aparat, fokus pada kesadaran bela negara dan tanggung jawab bersama menjaga keamanan.`,
+        kunci: 'B',
+        pembahasan: `Konsep dalam soal ini menekankan bela negara nonmiliter di wilayah perbatasan, yaitu menjaga keterikatan warga pada NKRI dengan menghadirkan negara dalam kebutuhan sehari-hari mereka. Kabupaten dalam kasus kekurangan fasilitas kesehatan, pendidikan, dan jaringan komunikasi, sehingga warga memakai layanan negara tetangga dan keterikatan mereka pada Indonesia dikhawatirkan melemah. Strategi yang tepat harus menyentuh penyebab itu, bukan hanya gejalanya. Opsi yang paling tepat adalah B, yaitu memperluas jangkauan layanan publik dasar secara bertahap dan berkelanjutan, karena langkah itu menghapus alasan warga bergantung pada negara tetangga dan membuat mereka merasakan langsung kehadiran negara.
+Alasan opsi salah:
+A. Pengawasan perbatasan penting bagi kedaulatan, tetapi tidak menjawab penyebab warga beralih ke layanan negara tetangga, yaitu terbatasnya fasilitas dasar.
+C. Pendidikan kebangsaan dapat memperkuat pemahaman identitas, tetapi tidak memenuhi kebutuhan layanan yang membuat warga bergantung pada negara tetangga.
+D. Peluang ekonomi bermanfaat, tetapi tidak menyelesaikan keterbatasan fasilitas kesehatan, pendidikan, dan jaringan komunikasi.
+E. Memanfaatkan fasilitas negara tetangga justru mempertahankan ketergantungan yang menjadi sumber kekhawatiran, bukan memperkuat layanan nasional.
+Cara cepat: Tentukan dahulu penyebab warga beralih ke layanan negara tetangga, lalu periksa apakah setiap strategi menghilangkan penyebab itu atau hanya menangani akibatnya.`,
         tingkat: 'sedang',
-        status: 'draft',
-      },
-      // tryout-ref-05-13 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 13
-      {
-        nomor: 17,
-        tipe: 'pg',
-        pertanyaan: `Sebuah instansi pemerintah mengalami serangan siber yang mengganggu sistem pelayanan administrasi kependudukan. Seorang warga yang memiliki keahlian keamanan informasi menawarkan bantuan kepada tim penanganan insiden. Ia kemudian dilibatkan secara resmi untuk membantu mengidentifikasi kerentanan dan memulihkan sistem.
-Makna bela negara yang paling tepat dari tindakan warga tersebut adalah ….`,
-        opsi: [
-          { label: 'A', teks: `Partisipasi masyarakat dalam mempercepat pemulihan kualitas pelayanan publik melalui pemanfaatan teknologi.` },
-          { label: 'B', teks: `Penggunaan kompetensi profesional warga untuk meningkatkan efektivitas sistem informasi milik pemerintah.` },
-          { label: 'C', teks: `Kontribusi warga sesuai keahlian dalam menghadapi ancaman nonmiliter yang mengganggu kepentingan negara.` },
-          { label: 'D', teks: `Kerja sama masyarakat dan pemerintah dalam mengembangkan sistem administrasi yang lebih aman.` },
-          { label: 'E', teks: `Penerapan tanggung jawab sosial melalui pemberian bantuan teknis kepada lembaga pelayanan masyarakat.` },
-        ],
-        kunci: 'C',
-        pembahasan: `Bela negara merupakan sikap dan tindakan warga negara yang dilandasi kecintaan kepada NKRI serta kesadaran berbangsa dan bernegara.
-Bela negara tidak terbatas pada pertahanan militer, tetapi juga mencakup kontribusi menghadapi ancaman nonmiliter, seperti serangan siber, gangguan ekonomi, bencana, dan ancaman terhadap ketahanan nasional.
-Dalam soal, keahlian keamanan informasi digunakan untuk membantu menghadapi serangan siber terhadap layanan pemerintah.
-Opsi C paling tepat karena menghubungkan kemampuan profesional warga dengan upaya menghadapi ancaman nonmiliter yang mengganggu kepentingan negara.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Pemulihan pelayanan merupakan hasil yang positif, tetapi belum menjelaskan dimensi ancaman terhadap negara.
-Opsi B salah: Kompetensi profesional diperlukan, tetapi fokusnya lebih pada peningkatan efektivitas sistem daripada penanggulangan ancaman nasional.
-Opsi D salah: Kerja sama pemerintah dan masyarakat memang terjadi, tetapi bukan prinsip bela negara yang paling spesifik dalam kasus.
-Opsi E salah: Tanggung jawab sosial merupakan nilai positif, tetapi tidak menunjukkan secara langsung peran keahlian warga dalam menghadapi ancaman nonmiliter.
-
-Cara cepat: Jika warga menggunakan keahlian tertentu untuk mengatasi serangan siber, ancaman pangan, atau gangguan kepentingan nasional, hubungkan dengan bela negara menghadapi ancaman nonmiliter.`,
-        tingkat: 'sulit',
         status: 'draft',
       },
       // tryout-ref-03-10 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 10
       {
-        nomor: 18,
+        nomor: 17,
         tipe: 'pg',
         pertanyaan: `Sebuah kabupaten di perbatasan darat menghadapi tiga kondisi. Pertama, warga lebih banyak membeli kebutuhan pokok dari negara tetangga. Kedua, siaran televisi negara tetangga lebih mudah diakses daripada siaran nasional. Ketiga, sebagian generasi muda mulai asing dengan budaya daerahnya sendiri.
 Hasil evaluasi menunjukkan bahwa ketergantungan ekonomi terjadi karena distribusi produk dalam negeri belum merata. Keterbatasan infrastruktur penyiaran nasional menyebabkan informasi dalam negeri sulit dijangkau, sedangkan berkurangnya kegiatan pendidikan budaya turut melemahkan pengetahuan generasi muda terhadap tradisi daerah.
@@ -556,18 +461,39 @@ Rancangan program yang paling tepat adalah ....`,
           { label: 'E', teks: `Memperbaiki infrastruktur perdagangan, menyediakan informasi melalui media digital, dan mendukung komunitas seni daerah.` },
         ],
         kunci: 'A',
-        pembahasan: `Konsep dalam soal ini menekankan ketahanan nasional berdasarkan Pancagatra, yang mencakup ideologi, politik, ekonomi, sosial budaya, serta pertahanan dan keamanan.
-Ketahanan wilayah perbatasan tidak cukup dibangun melalui penguatan satu bidang. Pemerintah perlu mempertimbangkan hubungan antara ketahanan ekonomi, akses informasi nasional, dan pelestarian budaya masyarakat.
-Stimulus menunjukkan tiga permasalahan yang saling berkaitan. Ketergantungan terhadap kebutuhan pokok dari negara tetangga disebabkan lemahnya distribusi produk dalam negeri. Dominasi siaran asing terjadi karena keterbatasan infrastruktur penyiaran nasional. Sementara itu, melemahnya pengetahuan generasi muda mengenai budaya daerah berkaitan dengan berkurangnya kegiatan pelestarian budaya.
-Opsi A paling tepat karena mengatasi ketiga penyebab tersebut secara langsung. Penguatan distribusi produk lokal meningkatkan akses masyarakat terhadap barang dalam negeri. Perluasan siaran nasional memperbaiki keterjangkauan informasi, sedangkan pendidikan budaya daerah membantu menjaga keberlanjutan identitas budaya antargenerasi.
-
-Pembahasan Opsi Salah:
-Opsi B salah: Subsidi kebutuhan pokok dapat meringankan beban masyarakat, sedangkan layanan informasi dan festival budaya memiliki manfaat positif. Namun, subsidi tidak secara langsung memperbaiki distribusi produk dalam negeri. Festival tahunan juga belum menjamin keberlanjutan pembelajaran budaya bagi generasi muda.
-Opsi C salah: Pembangunan pasar perbatasan dapat meningkatkan kegiatan ekonomi dan literasi media membantu masyarakat menyikapi informasi secara kritis. Namun, pembangunan pasar belum tentu memperbaiki distribusi kebutuhan pokok, sedangkan literasi media tidak secara langsung mengatasi keterbatasan infrastruktur siaran nasional.
-Opsi D salah: Koperasi perdagangan dapat memperkuat posisi pelaku ekonomi lokal dan pertunjukan budaya memperluas apresiasi masyarakat. Namun, siaran kebangsaan belum tentu menjangkau masyarakat apabila keterbatasan infrastruktur penyiaran tidak diperbaiki. Pertunjukan budaya juga belum menjamin adanya proses pewarisan pengetahuan kepada generasi muda.
-Opsi E salah: Infrastruktur perdagangan dapat memperlancar mobilitas barang, sedangkan media digital dan dukungan komunitas seni dapat memberikan manfaat sosial budaya. Namun, penyediaan informasi digital belum tentu menjangkau masyarakat yang mengalami keterbatasan akses siaran, sementara dukungan komunitas seni tidak secara khusus memastikan pendidikan budaya berlangsung secara berkelanjutan.
-
+        pembahasan: `Konsep dalam soal ini menekankan ketahanan nasional berdasarkan Pancagatra, yang mencakup ideologi, politik, ekonomi, sosial budaya, serta pertahanan dan keamanan. Ketahanan wilayah perbatasan tidak cukup dibangun melalui penguatan satu bidang. Pemerintah perlu mempertimbangkan hubungan antara ketahanan ekonomi, akses informasi nasional, dan pelestarian budaya masyarakat. Stimulus menunjukkan tiga permasalahan yang saling berkaitan. Ketergantungan terhadap kebutuhan pokok dari negara tetangga disebabkan lemahnya distribusi produk dalam negeri. Dominasi siaran asing terjadi karena keterbatasan infrastruktur penyiaran nasional. Sementara itu, melemahnya pengetahuan generasi muda mengenai budaya daerah berkaitan dengan berkurangnya kegiatan pelestarian budaya. Opsi yang paling tepat adalah A, karena mengatasi ketiga penyebab tersebut secara langsung. Penguatan distribusi produk lokal meningkatkan akses masyarakat terhadap barang dalam negeri. Perluasan siaran nasional memperbaiki keterjangkauan informasi, sedangkan pendidikan budaya daerah membantu menjaga keberlanjutan identitas budaya antargenerasi.
+Alasan opsi salah:
+B. Subsidi kebutuhan pokok dapat meringankan beban masyarakat, sedangkan layanan informasi dan festival budaya memiliki manfaat positif. Namun, subsidi tidak secara langsung memperbaiki distribusi produk dalam negeri. Festival tahunan juga belum menjamin keberlanjutan pembelajaran budaya bagi generasi muda.
+C. Pembangunan pasar perbatasan dapat meningkatkan kegiatan ekonomi dan literasi media membantu masyarakat menyikapi informasi secara kritis. Namun, pembangunan pasar belum tentu memperbaiki distribusi kebutuhan pokok, sedangkan literasi media tidak secara langsung mengatasi keterbatasan infrastruktur siaran nasional.
+D. Koperasi perdagangan dapat memperkuat posisi pelaku ekonomi lokal dan pertunjukan budaya memperluas apresiasi masyarakat. Namun, siaran kebangsaan belum tentu menjangkau masyarakat apabila keterbatasan infrastruktur penyiaran tidak diperbaiki. Pertunjukan budaya juga belum menjamin adanya proses pewarisan pengetahuan kepada generasi muda.
+E. Infrastruktur perdagangan dapat memperlancar mobilitas barang, sedangkan media digital dan dukungan komunitas seni dapat memberikan manfaat sosial budaya. Namun, penyediaan informasi digital belum tentu menjangkau masyarakat yang mengalami keterbatasan akses siaran, sementara dukungan komunitas seni tidak secara khusus memastikan pendidikan budaya berlangsung secara berkelanjutan.
 Cara cepat: Dalam soal kebijakan terpadu berbasis Pancagatra, identifikasi penyebab setiap masalah, kemudian bandingkan apakah program yang ditawarkan benar-benar mengatasi penyebab tersebut. Jangan hanya memilih opsi karena memuat banyak program positif.`,
+        tingkat: 'sulit',
+        status: 'draft',
+      },
+      // tryout-ref-04-13 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 13
+      {
+        nomor: 18,
+        tipe: 'pg',
+        pertanyaan: `Pemerintah kabupaten perbatasan menyiapkan dana khusus untuk dua program peningkatan ketahanan masyarakat selama enam bulan.
+Hasil evaluasi menunjukkan bahwa persediaan obat esensial di beberapa puskesmas sering terputus sehingga layanan kesehatan terhenti. Selain itu, radio komunikasi antarpos penanggulangan bencana tidak berfungsi dalam dua simulasi terakhir sehingga koordinasi evakuasi terganggu.
+Pemerintah juga mencatat kekurangan guru dan keterbatasan transportasi desa. Namun, kedua masalah tersebut telah memperoleh penanganan melalui program reguler yang sedang berjalan.
+Dengan mempertimbangkan ancaman nonmiliter terhadap keselamatan masyarakat, pasangan program yang paling tepat diprioritaskan adalah ....`,
+        opsi: [
+          { label: 'A', teks: `Distribusi obat dan transportasi kesehatan` },
+          { label: 'B', teks: `Kesiapsiagaan bencana dan fasilitas pendidikan` },
+          { label: 'C', teks: `Fasilitas kesehatan dan transportasi desa` },
+          { label: 'D', teks: `Komunikasi darurat dan latihan evakuasi` },
+          { label: 'E', teks: `Rantai pasok obat dan komunikasi darurat` },
+        ],
+        kunci: 'E',
+        pembahasan: `Konsep yang digunakan adalah ketahanan masyarakat terhadap ancaman nonmiliter. Gangguan kesehatan dan komunikasi darurat dapat menghambat perlindungan masyarakat, terutama ketika terjadi bencana. Opsi yang paling tepat adalah E, karena menyelesaikan dua penyebab gangguan yang telah terbukti, yaitu terputusnya persediaan obat dan tidak berfungsinya komunikasi darurat.
+Alasan opsi salah:
+A. Transportasi kesehatan dapat membantu pelayanan, tetapi tidak menyelesaikan kegagalan radio komunikasi.
+B. Kesiapsiagaan penting, tetapi fasilitas pendidikan bukan penyebab gangguan mendesak yang disebutkan.
+C. Fasilitas kesehatan dapat mendukung layanan, tetapi tidak secara khusus memperbaiki rantai pasok obat maupun komunikasi darurat. Transportasi juga sudah mendapat penanganan reguler.
+D. Pelatihan evakuasi bermanfaat, tetapi belum memperbaiki kekosongan obat.
+Cara cepat: Bedakan gangguan utama dari program pendukung. Pilih dua tindakan yang langsung memperbaiki penyebab gangguan terhadap keselamatan masyarakat.`,
         tingkat: 'sulit',
         status: 'draft',
       },
@@ -583,173 +509,144 @@ Cara cepat: Dalam soal kebijakan terpadu berbasis Pancagatra, identifikasi penye
         pertanyaan: `Pemerintah daerah memiliki anggaran terbatas untuk memberikan bantuan pendidikan. Hasil pendataan menunjukkan bahwa wilayah A memiliki lebih banyak siswa yang kesulitan mengakses sekolah akibat jarak dan biaya transportasi, sedangkan wilayah B memiliki jumlah siswa lebih sedikit dan akses pendidikan yang relatif memadai.
 Kebijakan yang paling sesuai dengan prinsip keadilan sosial Pancasila adalah ….`,
         opsi: [
-          { label: 'A', teks: `Membagi tambahan anggaran secara sama kepada kedua wilayah agar setiap daerah memperoleh dukungan yang setara.` },
-          { label: 'B', teks: `Menetapkan bantuan berdasarkan jumlah sekolah agar lembaga pendidikan memperoleh dukungan yang proporsional.` },
-          { label: 'C', teks: `Memprioritaskan sekolah dengan pencapaian akademik tinggi agar tambahan anggaran memberikan hasil yang mudah diukur.` },
-          { label: 'D', teks: `Memberikan alokasi tambahan berdasarkan usulan pemerintah daerah setelah mempertimbangkan prioritas pembangunan masing-masing.` },
-          { label: 'E', teks: `Mengalokasikan bantuan berdasarkan kebutuhan siswa dan hambatan akses yang terverifikasi dengan mekanisme evaluasi yang transparan.` },
+          { label: 'A', teks: `Membagi anggaran bantuan dengan jumlah yang sama besar kepada kedua wilayah tersebut.` },
+          { label: 'B', teks: `Menetapkan besaran bantuan setiap wilayah berdasarkan jumlah sekolah yang ada di wilayah itu.` },
+          { label: 'C', teks: `Memprioritaskan bantuan bagi sekolah dengan pencapaian akademik tinggi di kedua wilayah.` },
+          { label: 'D', teks: `Mengalokasikan bantuan berdasarkan usulan pimpinan tiap wilayah sesuai prioritas pembangunan masing-masing.` },
+          { label: 'E', teks: `Mengalokasikan bantuan berdasarkan tingkat kebutuhan dan hambatan siswa yang terverifikasi.` },
         ],
         kunci: 'E',
-        pembahasan: `Sila kelima Pancasila, Keadilan Sosial bagi Seluruh Rakyat Indonesia, menekankan perlakuan yang adil dan kesempatan yang layak bagi seluruh masyarakat.
-Keadilan sosial tidak selalu berarti memberikan jumlah bantuan yang sama kepada setiap wilayah. Perbedaan kondisi dan kebutuhan masyarakat harus menjadi pertimbangan kebijakan.
-Dalam stimulus, wilayah A memiliki hambatan pendidikan yang lebih besar. Oleh karena itu, alokasi tambahan seharusnya mempertimbangkan kebutuhan siswa, keterbatasan akses, dan penggunaan dana yang dapat dipertanggungjawabkan.
-Opsi E paling tepat karena menerapkan keadilan berdasarkan kebutuhan nyata serta memastikan transparansi evaluasi.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Pembagian dana sama besar mencerminkan kesamaan nominal, tetapi belum tentu menghasilkan kesempatan pendidikan yang setara.
-Opsi B salah: Jumlah sekolah dapat menjadi indikator kebutuhan, tetapi tidak secara langsung menggambarkan hambatan akses siswa.
-Opsi C salah: Prestasi akademik merupakan indikator hasil pembelajaran, tetapi bukan dasar utama ketika tujuan bantuan adalah mengatasi kesenjangan akses pendidikan.
-Opsi D salah: Usulan pemerintah daerah penting dalam perencanaan, tetapi masih membutuhkan dasar kebutuhan yang objektif dan terverifikasi.
-
-Cara cepat: Dalam soal sila kelima, bedakan pemerataan jumlah bantuan dengan keadilan berdasarkan kebutuhan. Jika kondisi masyarakat tidak sama, alokasi yang adil dapat berbeda.`,
+        pembahasan: `Konsep dalam soal ini menekankan sila kelima Pancasila, “Keadilan sosial bagi seluruh rakyat Indonesia”, yang tidak selalu berarti membagi sama rata. Anggaran pemerintah daerah terbatas. Data menunjukkan wilayah A memiliki lebih banyak siswa yang terhambat jarak dan biaya transportasi, sementara akses pendidikan di wilayah B relatif memadai. Adil dalam keadaan ini berarti memberi dukungan sesuai kebutuhan agar setiap siswa memperoleh kesempatan pendidikan yang layak. Opsi yang paling tepat adalah E, yaitu mengalokasikan bantuan berdasarkan tingkat kebutuhan dan hambatan siswa yang terverifikasi, karena dasar alokasi itu sejalan dengan tujuan bantuan dan data yang tersedia, sekaligus dapat dipertanggungjawabkan.
+Alasan opsi salah:
+A. Pembagian sama besar mencerminkan kesamaan nominal, tetapi mengabaikan perbedaan kondisi kedua wilayah sehingga siswa yang paling terhambat tidak mendapat dukungan memadai.
+B. Jumlah sekolah tidak menggambarkan hambatan jarak dan biaya transportasi yang dialami siswa.
+C. Prestasi akademik adalah ukuran hasil belajar, bukan dasar yang tepat ketika tujuan bantuan adalah mengatasi kesenjangan akses.
+D. Usulan tiap wilayah berguna untuk perencanaan, tetapi tanpa data kebutuhan yang terverifikasi, alokasinya belum tentu menyasar siswa yang paling membutuhkan.
+Cara cepat: Bandingkan dahulu kondisi kedua wilayah dalam data, lalu uji setiap pilihan: dasar pembagian apa yang dipakai dan apakah dasar itu sesuai dengan tujuan bantuan.`,
         tingkat: 'sedang',
-        status: 'draft',
-      },
-      // tryout-ref-04-21 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 21
-      {
-        nomor: 20,
-        tipe: 'pg',
-        pertanyaan: `Sejumlah warga menilai ketentuan dalam undang-undang baru membatasi hak yang dijamin UUD 1945. Pemerintah berpendapat bahwa pembatasan tersebut diperlukan untuk mencapai tujuan kebijakan publik.
-Dalam waktu bersamaan, terdapat perkara di pengadilan yang berkaitan dengan penerapan undang-undang tersebut. Sebagian pihak berpendapat bahwa pengujian konstitusionalitas undang-undang harus menunggu putusan perkara konkret, sedangkan pihak lain mengusulkan pengujian melalui lembaga yang berwenang.
-Penilaian yang paling tepat berdasarkan sistem ketatanegaraan Indonesia adalah ....`,
-        opsi: [
-          { label: 'A', teks: `KY menilai dugaan pelanggaran hak, pengadilan menunggu hasilnya` },
-          { label: 'B', teks: `Pengadilan menuntaskan perkara sebelum permohonan uji UU ke MK` },
-          { label: 'C', teks: `MA menguji norma UU, pengadilan menerapkan putusannya` },
-          { label: 'D', teks: `DPR merevisi UU terlebih dahulu, pengadilan melanjutkan perkara` },
-          { label: 'E', teks: `MK menguji undang-undang, pengadilan mengadili perkara` },
-        ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan adalah pembagian kewenangan lembaga negara dalam pengujian peraturan perundang-undangan.
-Pasal 24C ayat (1) UUD 1945 memberikan kewenangan kepada Mahkamah Konstitusi untuk menguji undang-undang terhadap UUD 1945.
-Sementara itu, Mahkamah Agung berwenang menguji peraturan perundang-undangan di bawah undang-undang.
-Opsi E tepat karena membedakan pengujian konstitusionalitas norma undang-undang dari penyelesaian perkara konkret yang berkaitan dengan penerapannya.
-
-Pembahasan Opsi Salah:
-Opsi A salah: KY memiliki fungsi terkait kehormatan, keluhuran martabat, dan perilaku hakim, bukan pengujian undang-undang terhadap UUD.
-Opsi B salah: Tidak terdapat syarat umum bahwa seluruh perkara konkret harus selesai sebelum permohonan pengujian undang-undang diajukan ke MK.
-Opsi C salah: MA memiliki kewenangan pengujian peraturan di bawah undang-undang, bukan pengujian undang-undang terhadap UUD 1945.
-Opsi D salah: DPR dan Presiden berperan dalam pembentukan undang-undang, tetapi tidak menjadi pemutus pengujian konstitusionalitas yang merupakan kewenangan MK.
-
-Cara cepat: Identifikasi objek dan batu uji. Jika undang-undang diuji terhadap UUD 1945, kewenangannya berada pada Mahkamah Konstitusi.`,
-        tingkat: 'sedang',
-        status: 'draft',
-      },
-      // tryout-ref-04-20 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 20
-      {
-        nomor: 21,
-        tipe: 'pg',
-        pertanyaan: `Panitia kegiatan bersih sungai di suatu kecamatan melibatkan warga dari berbagai daerah yang telah lama tinggal di lingkungan tersebut.
-Salah satu koordinator mengusulkan agar seluruh tugas lapangan diberikan kepada warga kelahiran setempat, sedangkan warga pendatang hanya menangani administrasi karena dianggap kurang memahami kondisi sungai.
-Padahal, beberapa warga pendatang berpengalaman dalam pengelolaan lingkungan, sementara sebagian warga setempat baru pertama kali mengikuti kegiatan. Panitia ingin membagi tugas secara adil dan tetap menjaga kerja sama.
-Berdasarkan prinsip Bhinneka Tunggal Ika, pembagian tugas yang paling tepat adalah ....`,
-        opsi: [
-          { label: 'A', teks: `Membagi tugas menurut asal kelompok agar koordinasi lebih mudah` },
-          { label: 'B', teks: `Menunjuk warga setempat sebagai penanggung jawab seluruh pekerjaan lapangan` },
-          { label: 'C', teks: `Mengundi seluruh posisi agar setiap warga mendapat kesempatan yang sama` },
-          { label: 'D', teks: `Menyerahkan penugasan kepada perwakilan setiap komunitas tanpa meninjau pengalaman peserta` },
-          { label: 'E', teks: `Menentukan tugas berdasarkan kemampuan dan kebutuhan bersama tanpa membedakan asal warga` },
-        ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan adalah Bhinneka Tunggal Ika, yaitu persatuan dalam keberagaman dengan penghargaan setara terhadap kontribusi setiap warga.
-Keberagaman daerah asal tidak menentukan kemampuan seseorang untuk berkontribusi. Penugasan sebaiknya memperhatikan pengalaman, keselamatan, dan kebutuhan kegiatan.
-Warga setempat dan pendatang sama-sama dapat berpartisipasi. Membatasi tugas hanya berdasarkan asal daerah justru mengabaikan kecakapan yang relevan.
-Opsi E tepat karena menjadikan kemampuan dan tujuan bersama sebagai dasar pembagian kerja tanpa mendiskriminasi peserta menurut daerah asalnya.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Pengelompokan berdasarkan daerah asal mungkin terlihat mudah, tetapi mempertahankan pemisahan dan mengabaikan kemampuan masing-masing warga.
-Opsi B salah: Pengetahuan warga setempat dapat membantu pelaksanaan, tetapi status kelahiran bukan jaminan kecakapan memimpin seluruh pekerjaan lapangan.
-Opsi C salah: Pengundian memberi peluang yang sama secara formal, tetapi tidak mempertimbangkan keterampilan yang diperlukan untuk keamanan dan efektivitas tugas.
-Opsi D salah: Perwakilan komunitas dapat membantu koordinasi, tetapi pembagian tugas masih tidak didasarkan pada kemampuan peserta dan kebutuhan lapangan.
-
-Cara cepat: Prinsip Bhinneka Tunggal Ika menekankan kerja sama tanpa membedakan asal. Pilih pembagian tugas berdasarkan kemampuan dan tujuan bersama, bukan identitas kelompok.`,
-        tingkat: 'sedang',
-        status: 'draft',
-      },
-      // tryout-ref-03-24 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 24
-      {
-        nomor: 22,
-        tipe: 'pg',
-        pertanyaan: `Dalam sebuah forum perencanaan pembangunan, seorang peserta berpendapat bahwa perairan di antara pulau-pulau Indonesia merupakan pemisah antarwilayah. Karena itu, menurutnya, pembangunan cukup dipusatkan pada pulau-pulau besar. Berdasarkan Wawasan Nusantara sebagai cara pandang yang dikukuhkan dalam Pasal 25A UUD 1945, penilaian yang paling tepat terhadap pendapat tersebut adalah …`,
-        opsi: [
-          { label: 'A', teks: `Pendapat tersebut sesuai dengan Pasal 25A yang menempatkan pulau-pulau besar sebagai pusat wilayah negara.` },
-          { label: 'B', teks: `Pendapat tersebut sesuai dengan prinsip otonomi daerah yang memberi setiap pulau kewenangan mengelola perairannya sendiri.` },
-          { label: 'C', teks: `Pendapat tersebut bertentangan dengan pandangan bahwa laut antarpulau merupakan penghubung yang menyatukan wilayah negara.` },
-          { label: 'D', teks: `Pendapat tersebut baru bertentangan dengan Wawasan Nusantara apabila pembangunan di pulau-pulau kecil dihentikan sama sekali.` },
-          { label: 'E', teks: `Pendapat tersebut berada di luar cakupan Wawasan Nusantara yang hanya mengatur batas wilayah daratan negara.` },
-        ],
-        kunci: 'C',
-        pembahasan: `Konsep dalam soal ini menekankan Wawasan Nusantara sebagai cara pandang bangsa Indonesia yang mengutamakan persatuan dan kesatuan wilayah serta bangsa. Sejak Deklarasi Djuanda 13 Desember 1957, laut di antara pulau-pulau dipandang sebagai bagian wilayah Indonesia. Prinsip negara kepulauan ini kemudian diakui dalam UNCLOS 1982 dan dikukuhkan dalam Pasal 25A UUD 1945, yang menyatakan Indonesia sebagai negara kepulauan berciri Nusantara. Inti Wawasan Nusantara di sini adalah keutuhan Nusantara: daratan dan perairan merupakan satu kesatuan politik, ekonomi, sosial budaya, dan pertahanan keamanan, sehingga laut berfungsi menghubungkan, bukan memisahkan. Opsi yang paling tepat adalah C, karena pendapat peserta forum bertumpu pada anggapan laut sebagai pemisah, dan anggapan itulah yang ditolak oleh Wawasan Nusantara.
-
-Pembahasan Opsi Salah:
-Opsi A salah karena Pasal 25A tidak menempatkan pulau besar sebagai pusat wilayah, melainkan menegaskan Indonesia sebagai negara kepulauan berciri Nusantara yang utuh.
-Opsi B salah karena otonomi daerah adalah pembagian kewenangan pemerintahan dalam kerangka Pasal 18, bukan dasar untuk memandang perairan sebagai milik terpisah setiap pulau.
-Opsi D salah karena pertentangan dengan Wawasan Nusantara sudah terjadi sejak laut dipandang sebagai pemisah, tidak bergantung pada dihentikannya pembangunan di pulau kecil.
-Opsi E salah karena Wawasan Nusantara justru menegaskan perairan di antara pulau sebagai bagian wilayah negara, sehingga cakupannya tidak terbatas pada daratan.
-
-Cara cepat: Apabila soal menyebut “perairan antarpulau sebagai pemisah wilayah”, maka jawabannya mengarah ke “bertentangan dengan Wawasan Nusantara, laut adalah penghubung dan pemersatu”.`,
-        tingkat: 'sulit',
-        status: 'draft',
-      },
-      // tryout-ref-04-23 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 23
-      {
-        nomor: 23,
-        tipe: 'pg',
-        pertanyaan: `Pemerintah sebuah provinsi berencana menjalin kerja sama promosi pariwisata dengan pemerintah daerah di negara lain.
-Rencana kerja sama mencakup promosi destinasi, pertukaran informasi pariwisata, dan pengembangan kapasitas pelaku usaha lokal.
-Dalam pembahasan, sebagian anggota DPRD mengusulkan agar gubernur sekaligus menandatangani perjanjian diplomatik yang mengatur hubungan resmi antara Indonesia dan negara mitra. Mereka berpendapat bahwa kerja sama tersebut merupakan bagian dari otonomi daerah sehingga dapat dilaksanakan secara mandiri.
-Pemerintah provinsi ingin tetap mengembangkan kerja sama internasional tanpa melampaui kewenangannya.
-Penilaian yang paling tepat berdasarkan prinsip NKRI adalah ....`,
-        opsi: [
-          { label: 'A', teks: `Kesepakatan diplomatik daerah dapat dilakukan khusus untuk sektor pariwisata` },
-          { label: 'B', teks: `Otonomi daerah mencakup pengaturan sendiri hubungan resmi antarnegara` },
-          { label: 'C', teks: `Kerja sama pariwisata daerah mengikuti ketentuan pusat, diplomasi tetap urusan pusat` },
-          { label: 'D', teks: `Kerja sama pariwisata dan diplomasi berjalan dengan persetujuan DPRD` },
-          { label: 'E', teks: `Semua kegiatan promosi luar negeri dilaksanakan langsung pemerintah pusat` },
-        ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan adalah NKRI, otonomi daerah, dan pembagian kewenangan pemerintahan.
-Indonesia merupakan negara kesatuan. Pemerintah daerah mempunyai kewenangan mengelola urusan pemerintahan sesuai ketentuan otonomi daerah, tetapi tidak memiliki kewenangan diplomatik yang berdiri sendiri seperti negara berdaulat.
-Dalam UU Nomor 23 Tahun 2014 tentang Pemerintahan Daerah, politik luar negeri termasuk urusan pemerintahan absolut yang menjadi kewenangan pemerintah pusat.
-Namun, pemerintah daerah dapat melakukan kerja sama dengan lembaga atau pemerintah daerah di luar negeri dalam bidang tertentu, termasuk promosi potensi daerah, dengan mengikuti persyaratan yang berlaku dan memperoleh persetujuan pemerintah pusat.
-Opsi C tepat karena membedakan kerja sama daerah yang diperbolehkan dan kewenangan hubungan diplomatik formal.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Tujuan pariwisata tidak memberikan kewenangan kepada pemerintah daerah untuk membuat perjanjian diplomatik antarnegara secara mandiri.
-Opsi B salah: Otonomi daerah bukan kewenangan menjalankan politik luar negeri secara independen; kewenangan diplomatik berada pada pemerintah pusat.
-Opsi D salah: Persetujuan DPRD tidak menggantikan ketentuan kewenangan pemerintah pusat dalam hubungan luar negeri.
-Opsi E salah: Tidak seluruh promosi wisata di luar negeri harus dilaksanakan langsung oleh pemerintah pusat. Kerja sama daerah tertentu diperbolehkan sesuai ketentuan.
-
-Cara cepat: Bedakan kewenangan kerja sama daerah dengan kewenangan diplomatik negara. Otonomi daerah tidak berarti pemerintah daerah mempunyai kedaulatan internasional sendiri.`,
-        tingkat: 'sulit',
         status: 'draft',
       },
       // tryout-ref-05-23 · Tri_Paket 3 TWK SKD 2027_Done Input.docx, soal 23
       {
-        nomor: 24,
+        nomor: 20,
         tipe: 'pg',
         pertanyaan: `Sebuah komunitas pendidikan memberikan bantuan belajar kepada anak-anak dari keluarga kurang mampu. Salah satu pengurus mengusulkan agar seluruh penerima bantuan mengikuti kegiatan keagamaan tertentu sebagai bagian dari pembinaan karakter.
 Pengurus lain menilai bahwa pembinaan karakter tetap penting, tetapi pemberian bantuan tidak seharusnya membatasi kebebasan agama penerima.
 Keputusan yang paling sesuai dengan sila pertama Pancasila adalah ….`,
         opsi: [
-          { label: 'A', teks: `Menyelenggarakan pembinaan karakter dengan menyediakan materi keagamaan yang disesuaikan dengan kelompok penerima bantuan.` },
-          { label: 'B', teks: `Memberikan bantuan pendidikan tanpa syarat keikutsertaan dalam kegiatan agama tertentu serta menyediakan kegiatan pembinaan keagamaan secara sukarela sesuai keyakinan masing-masing.` },
-          { label: 'C', teks: `Meminta persetujuan keluarga sebelum menetapkan kegiatan pembinaan agama yang menjadi bagian dari program bantuan.` },
-          { label: 'D', teks: `Membentuk program pembinaan kerohanian bersama yang menekankan nilai moral universal untuk seluruh penerima bantuan.` },
-          { label: 'E', teks: `Memberikan pilihan kegiatan pembinaan karakter dengan mempertimbangkan ketersediaan pembimbing keagamaan di lingkungan komunitas.` },
+          { label: 'A', teks: `Mewajibkan penerima bantuan mengikuti pembinaan kerohanian lintas agama yang menekankan nilai moral universal.` },
+          { label: 'B', teks: `Memisahkan hak atas bantuan dari kegiatan agama dan membuka pembinaan keagamaan bagi penerima yang berminat.` },
+          { label: 'C', teks: `Meminta persetujuan keluarga sebelum menetapkan kegiatan keagamaan tertentu sebagai bagian program bantuan.` },
+          { label: 'D', teks: `Menjadikan kegiatan keagamaan tertentu bersifat sukarela, tetapi mendahulukan bantuan bagi anak yang mengikutinya.` },
+          { label: 'E', teks: `Mengganti kegiatan keagamaan tertentu dengan doa bersama menurut satu tata cara sebelum setiap sesi belajar.` },
         ],
         kunci: 'B',
-        pembahasan: `Sila pertama Pancasila, Ketuhanan Yang Maha Esa, menekankan kehidupan berketuhanan yang disertai penghormatan terhadap kebebasan beragama dan berkeyakinan.
-Dalam kasus ini, bantuan pendidikan diberikan kepada keluarga kurang mampu. Kebutuhan pendidikan tidak seharusnya dijadikan dasar untuk memaksakan keikutsertaan dalam kegiatan keagamaan tertentu.
-Opsi B paling tepat karena memisahkan hak memperoleh bantuan pendidikan dari kewajiban mengikuti kegiatan agama tertentu, sekaligus tetap menyediakan kesempatan pembinaan keagamaan yang bersifat sukarela.
-
-Pembahasan Opsi Salah:
-Opsi A salah: Penyesuaian materi agama dapat menghormati keragaman, tetapi belum menjamin kegiatan tersebut bersifat sukarela dan tidak menjadi syarat bantuan.
-Opsi C salah: Persetujuan keluarga merupakan hal penting, tetapi tidak otomatis menjadikan syarat keagamaan dalam pemberian bantuan sesuai dengan prinsip kebebasan beragama.
-Opsi D salah: Pembinaan nilai moral universal dapat memberikan manfaat, tetapi belum secara tegas menyelesaikan persoalan kewajiban kegiatan keagamaan.
-Opsi E salah: Penyediaan pilihan kegiatan merupakan tindakan positif, tetapi keputusan masih bergantung pada ketersediaan pembimbing dan belum memastikan bahwa kegiatan tidak menjadi syarat pemberian bantuan.
-
-Cara cepat: Jika soal menggabungkan bantuan publik dengan kegiatan agama, periksa apakah kebijakan menghormati kebebasan beragama, kesetaraan, dan prinsip tanpa paksaan.`,
+        pembahasan: `Konsep dalam soal ini menekankan sila pertama Pancasila, Ketuhanan Yang Maha Esa, yang mencakup penghormatan terhadap kebebasan menjalankan ibadah sesuai agama dan kepercayaan masing-masing serta sikap tidak memaksakan suatu agama kepada orang lain. Jaminan konstitusionalnya ada dalam Pasal 29 ayat (2) UUD 1945, tetapi soal ini meminta sudut pandang nilai sila pertama. Komunitas memberi bantuan belajar kepada anak dari keluarga kurang mampu, lalu muncul usulan agar semua penerima wajib mengikuti kegiatan keagamaan tertentu. Mengaitkan bantuan dengan kegiatan agama, baik sebagai kewajiban, syarat persetujuan, prioritas, maupun tata cara ibadah yang diseragamkan, menjadikan kebutuhan ekonomi alat tekanan, meskipun tujuannya pembinaan karakter. Opsi yang paling tepat adalah B, yaitu memisahkan hak atas bantuan dari kegiatan agama dan membuka pembinaan keagamaan bagi penerima yang berminat, karena bantuan tetap diterima tanpa memandang keyakinan, sementara tujuan pembinaan tercapai bagi yang bersedia.
+Alasan opsi salah:
+A. Pembinaan lintas agama tampak inklusif, tetapi tetap diwajibkan bagi penerima bantuan, jadi kegiatan kerohanian masih menjadi syarat memperoleh bantuan.
+C. Persetujuan keluarga tidak sepenuhnya bebas ketika anak bergantung pada bantuan, dan kegiatan keagamaan tertentu tetap menjadi bagian program bantuan.
+D. Sebutan sukarela kehilangan maknanya jika anak yang ikut didahulukan menerima bantuan; keterkaitan itu tetap menekan keluarga yang berbeda keyakinan.
+E. Doa bersama dengan satu tata cara tetap memaksakan bentuk ibadah tertentu kepada penerima yang berbeda agama, padahal sila pertama menghormati cara beribadah masing-masing.
+Cara cepat: Tentukan dahulu hal yang diperselisihkan para pengurus, lalu periksa apakah setiap pilihan benar-benar menyelesaikan persoalan itu atau hanya mengubah bentuk kegiatannya.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-ref-03-21 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 21
+      {
+        nomor: 21,
+        tipe: 'pg',
+        pertanyaan: `Salah satu butir pengamalan sila ke-4 Pancasila berbunyi “menerima dan melaksanakan hasil musyawarah dengan iktikad baik dan rasa tanggung jawab”. Sikap yang paling tepat mencerminkan butir tersebut adalah …`,
+        opsi: [
+          { label: 'A', teks: `Sinta menggalang donasi bagi korban gempa di negara lain melalui lembaga kemanusiaan.` },
+          { label: 'B', teks: `Bu Ratna mengajak tetangga yang berbeda agama bekerja sama membersihkan lingkungan rumah ibadah.` },
+          { label: 'C', teks: `Rudi mengajari tetangganya membuat kerajinan anyaman hingga mampu membuka usaha sendiri.` },
+          { label: 'D', teks: `Andi mengajak pemuda dari berbagai suku di kampungnya mendirikan sanggar yang menampilkan seni daerah.` },
+          { label: 'E', teks: `Pak Darto tetap membayar iuran jalan yang disepakati rapat warga meski usulannya ditolak.` },
+        ],
+        kunci: 'E',
+        pembahasan: `Konsep dalam soal ini menekankan penerapan butir pengamalan sila ke-4, Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan, khususnya sikap setelah keputusan bersama diambil. Butir yang dikutip menuntut setiap peserta musyawarah tetap menjalankan keputusan bersama dengan iktikad baik, termasuk ketika pendapat pribadinya tidak diterima. Inti nilai kerakyatan di sini adalah kesediaan melaksanakan kesepakatan bersama secara bertanggung jawab tanpa memaksakan pendapat sendiri. Opsi yang paling tepat adalah E, karena Pak Darto tetap membayar iuran sesuai kesepakatan rapat warga walaupun usulannya ditolak.
+Alasan opsi salah:
+A. Menggalang donasi bagi korban bencana di negara lain mencerminkan sila ke-2, yaitu gemar melakukan kegiatan kemanusiaan dan merasa bagian dari seluruh umat manusia.
+B. Bekerja sama dengan pemeluk agama lain mencerminkan butir sila ke-1 tentang hormat-menghormati dan bekerja sama antarpemeluk agama.
+C. Mengajari keterampilan hingga orang lain mampu berusaha sendiri mencerminkan butir sila ke-5, yaitu suka menolong orang lain agar dapat berdiri sendiri.
+D. Menghimpun pemuda lintas suku dalam kegiatan seni mencerminkan butir sila ke-3 tentang mengembangkan persatuan atas dasar Bhinneka Tunggal Ika.
+Cara cepat: Ubah butir pengamalan dalam soal menjadi perilaku konkret, lalu cari tindakan yang benar-benar menjalankan butir itu, bukan tindakan baik lain yang bersumber dari sila yang berbeda.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-ref-04-19 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 19
+      {
+        nomor: 22,
+        tipe: 'pg',
+        pertanyaan: `Sebuah museum pendidikan menyiapkan pameran tentang pembentukan Pancasila sebagai dasar negara.
+Tim kurator mengumpulkan dokumen pidato 1 Juni 1945, Piagam Jakarta 22 Juni 1945, hasil pembahasan BPUPKI, dan keputusan PPKI 18 Agustus 1945.
+Dalam rapat, sebagian anggota ingin memberikan penjelasan yang sama terhadap seluruh dokumen karena semuanya berkontribusi terhadap pembentukan dasar negara. Anggota lain menilai bahwa perbedaan fungsi dokumen justru perlu dijelaskan agar pengunjung memahami proses musyawarah dan pengesahan.
+Keputusan tim yang paling mencerminkan penerapan nilai Pancasila adalah ....`,
+        opsi: [
+          { label: 'A', teks: `Menyusun alur akhir pengesahan dengan pusat perhatian pada keputusan PPKI` },
+          { label: 'B', teks: `Menguraikan kesepakatan Piagam Jakarta sebagai puncak seluruh perumusan` },
+          { label: 'C', teks: `Menempatkan semua dokumen pada fungsi historis yang dianggap sama` },
+          { label: 'D', teks: `Menguraikan fungsi historis tiap dokumen dan kompromi perumusannya` },
+          { label: 'E', teks: `Mengadakan dialog mengenai tokoh utama dan pengaruhnya pada keputusan` },
+        ],
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan adalah penerapan nilai musyawarah dan persatuan dalam proses perumusan Pancasila. Setiap dokumen mempunyai peran historis yang penting, tetapi statusnya berbeda. Penyampaian gagasan, perumusan kompromi, pembahasan rancangan, dan pengesahan konstitusi merupakan bagian yang saling berkaitan. Opsi yang paling tepat adalah D, karena tidak menyamakan kedudukan dokumen, tetapi tetap menghargai kontribusi seluruh proses sebagai hasil musyawarah dan kompromi.
+Alasan opsi salah:
+A. Penekanan pada keputusan PPKI memang menjelaskan pengesahan, tetapi kurang menggambarkan proses perumusan dan kompromi sebelumnya.
+B. Piagam Jakarta menunjukkan proses kesepakatan penting, tetapi tidak dapat diperlakukan sebagai satu-satunya puncak tanpa menjelaskan pengesahan 18 Agustus 1945.
+C. Menyeragamkan penjelasan seluruh dokumen memang dapat membuat pameran sederhana, tetapi mengaburkan perbedaan fungsi historis dokumen dan proses pengesahan.
+E. Diskusi tentang tokoh membantu memahami kontribusi individu, tetapi belum menjamin pengunjung memahami fungsi masing-masing dokumen dan proses musyawarah.
+Cara cepat: Pilih tindakan yang menjaga ketepatan sejarah sekaligus menunjukkan penerapan nilai musyawarah dan persatuan.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-ref-04-22 · Tri_Paket 2 TWK SKD 2027_Done Input.docx, soal 22
+      {
+        nomor: 23,
+        tipe: 'pg',
+        pertanyaan: `Dua komunitas budaya mengajukan penggunaan aula kecamatan pada waktu yang sama.
+Komunitas A akan menyelenggarakan ritual budaya yang pelaksanaannya terikat pada hari tertentu dan membutuhkan waktu tiga jam. Komunitas B akan mengadakan lokakarya kebudayaan selama tiga jam dengan menghadirkan narasumber yang masih dapat menyesuaikan jadwal satu hari.
+Waktu penggunaan aula pada hari tersebut hanya cukup bagi salah satu kegiatan. Kecamatan memiliki aula alternatif dengan kapasitas dan fasilitas setara pada hari berikutnya, dan komunitas B menyatakan dapat memindahkan kegiatan jika keputusan disepakati bersama. Kedua komunitas memiliki hak yang sama untuk mengakses fasilitas publik.
+Pemerintah kecamatan harus menentukan penggunaan aula dengan tetap menghormati kebutuhan setiap komunitas.
+Kebijakan yang paling mencerminkan prinsip Bhinneka Tunggal Ika adalah ....`,
+        opsi: [
+          { label: 'A', teks: `Pemindahan ritual ke aula setara esok hari atas mufakat` },
+          { label: 'B', teks: `Pemindahan lokakarya ke aula setara esok hari atas keputusan camat` },
+          { label: 'C', teks: `Pembagian waktu aula secara sama bagi ritual dan lokakarya atas mufakat` },
+          { label: 'D', teks: `Pemindahan lokakarya ke aula setara esok hari atas mufakat` },
+          { label: 'E', teks: `Undian penggunaan aula antara ritual dan lokakarya atas mufakat` },
+        ],
+        kunci: 'D',
+        pembahasan: `Konsep dalam soal ini menekankan Bhinneka Tunggal Ika, semboyan pada lambang negara (Pasal 36A UUD 1945), dalam layanan publik: menghormati perbedaan kebutuhan setiap kelompok budaya sambil menjamin hak yang sama atas fasilitas negara. Ritual komunitas A terikat pada hari tertentu, sedangkan lokakarya komunitas B dapat bergeser satu hari. Waktu aula hanya cukup untuk satu kegiatan, aula pengganti dengan fasilitas setara tersedia esok hari, dan komunitas B bersedia pindah bila keputusan disepakati bersama. Perlakuan yang adil di sini bukan membagi waktu secara identik atau menyerahkannya pada undian, melainkan menyesuaikan solusi dengan sifat kebutuhan masing-masing melalui kesepakatan. Opsi yang paling tepat adalah D, yaitu pemindahan lokakarya ke aula setara esok hari atas mufakat, karena kedua kegiatan tetap terlaksana dengan fasilitas setara, syarat kesediaan komunitas B dipenuhi, dan tidak ada komunitas yang dikorbankan.
+Alasan opsi salah:
+A. Kesepakatan dan aula setara sudah ada, tetapi yang dipindahkan justru ritual yang pelaksanaannya terikat pada hari tertentu. Memindahkannya berarti mengabaikan kebutuhan khas komunitas A.
+B. Lokakarya memang kegiatan yang dapat bergeser, tetapi keputusan camat secara sepihak mengabaikan syarat komunitas B, yang hanya bersedia pindah bila keputusan disepakati bersama.
+C. Pembagian waktu yang sama tampak adil, tetapi waktu aula pada hari itu hanya cukup untuk satu kegiatan tiga jam, sehingga tidak ada kegiatan yang dapat terlaksana utuh.
+E. Undian tampak netral, tetapi memperlakukan dua kebutuhan yang berbeda seolah-olah sama. Ritual bisa kehilangan harinya, padahal tersedia aula pengganti yang memungkinkan kedua kegiatan berlangsung.
+Cara cepat: Catat dahulu fakta pembatas dalam kasus, yaitu kegiatan mana yang terikat waktu, mana yang dapat bergeser, fasilitas apa yang tersedia, dan syarat apa yang diajukan komunitas, lalu periksa apakah setiap pilihan sesuai dengan semua fakta itu.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-ref-03-22 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 22
+      {
+        nomor: 24,
+        tipe: 'pg',
+        pertanyaan: `Dalam pembahasan rancangan APBD, sebuah DPRD kabupaten menerima usulan agar porsi belanja pendidikan diturunkan hingga di bawah 20 persen. Alasan usulan itu adalah pemerintah pusat telah menyediakan dana pendidikan yang besar melalui APBN. Berdasarkan Pasal 31 UUD 1945, penilaian yang paling tepat terhadap usulan tersebut adalah …`,
+        opsi: [
+          { label: 'A', teks: `Usulan itu dapat diterima selama anggaran pendidikan dalam APBN sudah memenuhi batas minimal.` },
+          { label: 'B', teks: `Usulan itu dapat diterima apabila disetujui gubernur sebagai wakil pemerintah pusat.` },
+          { label: 'C', teks: `Usulan itu sah apabila ditetapkan bersama dalam peraturan daerah tentang APBD.` },
+          { label: 'D', teks: `Usulan itu tidak sejalan dengan batas minimal yang juga mengikat penyusunan APBD.` },
+          { label: 'E', teks: `Usulan itu cukup diputuskan melalui musyawarah antara DPRD dan kepala daerah.` },
+        ],
+        kunci: 'D',
+        pembahasan: `Konsep dalam soal ini menekankan kedudukan Pasal 31 ayat (4) UUD 1945 sebagai norma konstitusi yang mengikat penyusunan anggaran negara dan daerah. Pasal 31 ayat (4) menyatakan bahwa negara memprioritaskan anggaran pendidikan sekurang-kurangnya dua puluh persen dari APBN serta dari APBD untuk memenuhi kebutuhan penyelenggaraan pendidikan nasional. Inti ketentuan konstitusi di sini adalah kewajiban batas minimal anggaran pendidikan melekat pada masing-masing anggaran, yaitu APBN dan APBD, sehingga tidak dapat dialihkan dari satu tingkat pemerintahan ke tingkat lainnya. Opsi yang paling tepat adalah D, karena besarnya dana pendidikan dalam APBN tidak menghapus kewajiban daerah memenuhi batas minimal dua puluh persen dalam APBD.
+Alasan opsi salah:
+A. Pasal 31 ayat (4) menyebut APBN serta APBD, sehingga pemenuhan batas minimal di APBN tidak menggugurkan kewajiban yang sama dalam APBD.
+B. Persetujuan gubernur sebagai wakil pemerintah pusat tidak dapat mengesampingkan ketentuan UUD.
+C. Perda tentang APBD berada di bawah UUD dalam hierarki peraturan perundang-undangan dan tidak boleh bertentangan dengannya.
+E. Musyawarah merupakan cara mengambil keputusan, bukan dasar untuk menyimpangi batas minimal yang ditetapkan konstitusi.
+Cara cepat: Pastikan lebih dahulu pihak yang diikat oleh ketentuan pasal itu, lalu uji alasan yang ditawarkan setiap pilihan terhadap bunyi ketentuannya.`,
         tingkat: 'sulit',
         status: 'draft',
       },
@@ -758,29 +655,27 @@ Cara cepat: Jika soal menggabungkan bantuan publik dengan kegiatan agama, periks
   {
     stimulus: { judul: `Bahasa Negara > Ide pokok atau gagasan utama` },
     soal: [
-      // tryout-ref-03-25 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 25
+      // tryout-ref-02-01 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 1
       {
         nomor: 25,
         tipe: 'pg',
-        pertanyaan: `(1) Diversifikasi pangan berbasis bahan lokal dapat memperkuat ketahanan pangan keluarga di daerah yang bergantung pada beras. (2) Sagu, jagung, dan umbi-umbian tumbuh baik di banyak wilayah sehingga keluarga dapat memperolehnya tanpa harus membeli dari luar daerah. (3) Ketika harga beras naik, keluarga yang terbiasa mengolah pangan lokal tidak terlalu terbebani karena memiliki pilihan makanan pokok lain. (4) Selain itu, kandungan serat pada umbi-umbian dan jagung membantu keluarga memenuhi kebutuhan gizi yang lebih beragam setiap hari.
-Ide pokok paragraf tersebut adalah …`,
+        pertanyaan: `Pemerintah kota memperluas layanan administrasi melalui aplikasi digital. Namun, sebagian warga lanjut usia belum terbiasa mengunggah dokumen dan memantau permohonan secara daring. Untuk membantu mereka, pemerintah menyediakan petugas pendamping di kantor kelurahan. Warga tetap mengajukan permohonan melalui sistem yang sama, tetapi memperoleh bantuan sesuai kebutuhan. Dengan demikian, perluasan layanan digital disertai dukungan agar kelompok yang mengalami kesulitan tetap dapat mengakses pelayanan.
+Ide pokok paragraf tersebut adalah ....`,
         opsi: [
-          { label: 'A', teks: `Sagu, jagung, dan umbi-umbian mudah diperoleh keluarga tanpa membeli dari luar daerah.` },
-          { label: 'B', teks: `Keluarga yang terbiasa mengolah pangan lokal tidak terlalu terbebani kenaikan harga beras.` },
-          { label: 'C', teks: `Pangan lokal berperan memperkuat ketahanan pangan keluarga yang bergantung pada beras.` },
-          { label: 'D', teks: `Kandungan serat umbi-umbian dan jagung membantu keluarga memenuhi kebutuhan gizi beragam.` },
-          { label: 'E', teks: `Pangan lokal dapat sepenuhnya menggantikan beras sebagai makanan pokok di semua daerah.` },
+          { label: 'A', teks: `Keterbatasan keterampilan digital warga lanjut usia memengaruhi kecepatan pengurusan dokumen.` },
+          { label: 'B', teks: `Kantor kelurahan menjadi tempat pendampingan warga dalam mengunggah dokumen administrasi.` },
+          { label: 'C', teks: `Kesamaan sistem pengajuan diperlukan untuk menyeragamkan pelayanan administrasi masyarakat.` },
+          { label: 'D', teks: `Perluasan layanan digital disertai pendampingan untuk menjaga keterjangkauan pelayanan.` },
+          { label: 'E', teks: `Petugas pendamping membantu pemerintah memantau permohonan administrasi secara daring.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep dalam soal ini menekankan identifikasi kalimat utama pada paragraf deduktif, yaitu paragraf yang kalimat utamanya berada di awal lalu dijelaskan oleh kalimat sesudahnya. Kalimat (1) menyatakan bahwa diversifikasi pangan lokal dapat memperkuat ketahanan pangan keluarga. Kalimat (2) sampai (4) memberi rincian berupa ketersediaan bahan, ketahanan terhadap kenaikan harga beras, dan manfaat gizi. Inti ide pokok di sini adalah pernyataan umum pada kalimat (1) yang didukung oleh semua kalimat penjelas. Opsi yang paling tepat adalah C, karena opsi itu memparafrasekan kalimat (1) tanpa menambah atau mengurangi cakupannya.
-
-Pembahasan Opsi Salah:
-Opsi A salah karena hanya merangkum kalimat (2), yaitu rincian tentang ketersediaan bahan pangan lokal.
-Opsi B salah karena hanya merangkum kalimat (3), yaitu contoh manfaat ketika harga beras naik.
-Opsi D salah karena hanya merangkum kalimat (4), yaitu rincian tambahan tentang manfaat gizi.
-Opsi E salah karena melampaui teks; paragraf tidak menyatakan bahwa pangan lokal menggantikan beras sepenuhnya di semua daerah.
-
-Cara cepat: Apabila soal menyebut “ide pokok” dan kalimat pertama paling umum sementara kalimat berikutnya berisi rincian, contoh, atau penanda “Selain itu”, maka jawabannya mengarah ke “parafrase kalimat pertama”.`,
+        kunci: 'D',
+        pembahasan: `Paragraf membahas perluasan layanan digital yang disertai pendampingan bagi warga yang kesulitan menggunakannya. Kalimat tentang warga lanjut usia, petugas pendamping, dan bantuan pengajuan merupakan penjelas gagasan tersebut. Opsi yang paling tepat adalah D.
+Alasan opsi salah:
+A. Hanya mengambil bagian tertentu dari paragraf.
+B. Hanya mengambil bagian tertentu dari paragraf.
+C. Menekankan penyeragaman sistem, padahal fokusnya adalah keterjangkauan pelayanan.
+E. Menggeser fungsi pendamping dari membantu warga menjadi membantu pemerintah memantau permohonan.
+Cara cepat: Tentukan gagasan yang mencakup keseluruhan paragraf, bukan hanya kelompok warga atau satu tindakan pendampingan.`,
         tingkat: 'sedang',
         status: 'draft',
       },
@@ -789,30 +684,28 @@ Cara cepat: Apabila soal menyebut “ide pokok” dan kalimat pertama paling umu
   {
     stimulus: { judul: `Bahasa Negara > Simpulan paragraf` },
     soal: [
-      // tryout-ref-03-28 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 28
+      // tryout-ref-02-04 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 4
       {
         nomor: 26,
         tipe: 'pg',
-        pertanyaan: `(1) Nelayan di sebuah desa pesisir dahulu menjual hasil tangkapan langsung kepada tengkulak dengan harga yang ditentukan sepihak. (2) Setelah membentuk koperasi, mereka menyimpan ikan di ruang pendingin bersama dan menjual hasil tangkapan secara berkelompok. (3) Ikan yang tetap segar selama beberapa hari memungkinkan koperasi menunggu harga yang lebih baik di pasar kota. (4) Pendapatan sebagian besar anggota koperasi meningkat, tetapi nelayan yang belum bergabung masih bergantung pada tengkulak.
-Simpulan yang paling dapat dipertanggungjawabkan berdasarkan paragraf tersebut adalah …`,
+        pertanyaan: `Sebuah kantor mengganti formulir permohonan dengan versi yang lebih singkat. Setelah satu bulan, rata-rata waktu pengisian berkurang dari dua belas menit menjadi delapan menit. Meskipun demikian, jumlah formulir yang harus dikembalikan untuk diperbaiki tidak banyak berubah. Pemeriksaan petugas menunjukkan bahwa kesalahan masih sering terjadi pada bagian persyaratan yang menggunakan istilah teknis tanpa penjelasan.
+Simpulan yang paling tepat adalah ....`,
         opsi: [
-          { label: 'A', teks: `Pengelolaan hasil tangkapan melalui koperasi dapat membantu nelayan memperoleh harga jual lebih baik.` },
-          { label: 'B', teks: `Seluruh nelayan di desa pesisir itu pasti memperoleh pendapatan lebih tinggi setelah koperasi didirikan.` },
-          { label: 'C', teks: `Koperasi nelayan mampu menghapus ketergantungan warga desa pesisir pada tengkulak.` },
-          { label: 'D', teks: `Ruang pendingin bersama perlu dibangun di setiap desa pesisir di seluruh Indonesia.` },
-          { label: 'E', teks: `Ikan yang disimpan di ruang pendingin tetap segar selama beberapa hari.` },
+          { label: 'A', teks: `Penggunaan istilah teknis merupakan penyebab berkurangnya waktu pengisian formulir permohonan.` },
+          { label: 'B', teks: `Penyederhanaan formulir mempercepat pengisian, tetapi belum banyak mengurangi kebutuhan perbaikan.` },
+          { label: 'C', teks: `Pemangkasan jumlah pertanyaan meningkatkan kecepatan sekaligus ketepatan pengisian formulir.` },
+          { label: 'D', teks: `Formulir yang lebih singkat membuat pemohon mengabaikan bagian persyaratan yang harus dilengkapi.` },
+          { label: 'E', teks: `Penambahan penjelasan istilah teknis telah mengurangi kesalahan pengisian formulir permohonan.` },
         ],
-        kunci: 'A',
-        pembahasan: `Konsep dalam soal ini menekankan penilaian terhadap simpulan berpola sebab-akibat yang tidak memakai penanda simpulan. Paragraf menyajikan rangkaian: harga semula ditentukan sepihak oleh tengkulak (kalimat 1), nelayan lalu menyimpan dan menjual ikan bersama melalui koperasi (kalimat 2), ikan yang tetap segar memberi kesempatan menunggu harga lebih baik (kalimat 3), dan pendapatan sebagian besar anggota meningkat (kalimat 4). Inti kaidah di sini adalah bahwa simpulan harus mengintegrasikan seluruh isi paragraf dengan cakupan dan kepastian yang sama dengan teks, tanpa melampauinya. Opsi yang paling tepat adalah A, karena opsi itu merangkum hubungan antara koperasi dan perbaikan harga dengan modalitas “dapat” yang sesuai dengan data “sebagian besar anggota”.
-
-Pembahasan Opsi Salah:
-Opsi B salah karena teks hanya menyebut “sebagian besar anggota” dan menyatakan nelayan nonanggota masih bergantung pada tengkulak, sehingga “seluruh” dan “pasti” tidak didukung.
-Opsi C salah karena kalimat (4) justru menyatakan bahwa nelayan yang belum bergabung masih bergantung pada tengkulak.
-Opsi D salah karena teks hanya membahas satu desa dan tidak memuat saran pembangunan di seluruh Indonesia.
-Opsi E salah karena hanya mengulang rincian kalimat (3) dan tidak mengintegrasikan isi paragraf secara utuh.
-
-Cara cepat: Apabila soal menyebut “simpulan yang paling dapat dipertanggungjawabkan”, maka jawabannya mengarah ke “pernyataan yang merangkum seluruh rangkaian sebab-akibat dengan kuantor dan modalitas sehalus teks”.`,
-        tingkat: 'sulit',
+        kunci: 'B',
+        pembahasan: `Dua hasil utama evaluasi adalah waktu pengisian berkurang dan jumlah formulir yang memerlukan perbaikan relatif tetap. Opsi B merangkum keduanya tanpa menambahkan informasi. Opsi yang paling tepat adalah B.
+Alasan opsi salah:
+A. Menghubungkan istilah teknis dengan penurunan waktu tanpa dasar.
+C. Bertentangan dengan hasil pemeriksaan kesalahan.
+D. Mengasumsikan perilaku mengabaikan persyaratan.
+E. Menyatakan tindakan dan hasil yang belum terjadi dalam teks.
+Cara cepat: Bandingkan dua hasil evaluasi, yakni waktu pengisian dan kesalahan formulir. Hindari simpulan yang mengabaikan salah satunya.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -820,29 +713,29 @@ Cara cepat: Apabila soal menyebut “simpulan yang paling dapat dipertanggungjaw
   {
     stimulus: { judul: `Bahasa Negara > Kalimat efektif dan tidak efektif` },
     soal: [
-      // tryout-ref-02-06 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 6
+      // tryout-ref-03-30 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 30
       {
         nomor: 27,
         tipe: 'pg',
-        pertanyaan: `Dalam laporan evaluasi tertulis kalimat berikut.
-Evaluasi dilakukan untuk mengidentifikasi hambatan, pengukuran waktu pelayanan, dan merumuskan perbaikan.
-Penyunting diminta memperbaiki kesejajaran bentuk pada perincian tujuan evaluasi.
-Perbaikan yang paling tepat adalah ....`,
+        pertanyaan: `Perhatikan kalimat berikut.
+“Kegiatan posyandu bulan ini meliputi penimbangan balita, memberikan imunisasi, dan penyuluhan gizi bagi para ibu-ibu.”
+Perbaikan yang paling tepat untuk kalimat tersebut adalah …`,
         opsi: [
-          { label: 'A', teks: `Evaluasi dilakukan untuk identifikasi hambatan, mengukur waktu pelayanan, dan perumusan perbaikan.` },
-          { label: 'B', teks: `Evaluasi dilakukan untuk mengidentifikasi hambatan, waktu pelayanan diukur, dan merumuskan perbaikan.` },
-          { label: 'C', teks: `Evaluasi dilakukan untuk mengidentifikasi hambatan, pengukuran waktu pelayanan, dan perumusan perbaikan.` },
-          { label: 'D', teks: `Evaluasi dilakukan untuk identifikasi hambatan, pengukuran waktu pelayanan, dan merumuskan perbaikan.` },
-          { label: 'E', teks: `Evaluasi dilakukan untuk mengidentifikasi hambatan, mengukur waktu pelayanan, dan merumuskan perbaikan.` },
+          { label: 'A', teks: `Kegiatan posyandu bulan ini meliputi penimbangan balita, pemberian imunisasi, dan penyuluhan gizi bagi para ibu-ibu.` },
+          { label: 'B', teks: `Kegiatan posyandu bulan ini meliputi: penimbangan balita, pemberian imunisasi, dan penyuluhan gizi bagi para ibu.` },
+          { label: 'C', teks: `Kegiatan posyandu bulan ini meliputi penimbangan balita, pemberian imunisasi, dan penyuluhan gizi bagi para ibu.` },
+          { label: 'D', teks: `Kegiatan posyandu bulan ini meliputi menimbang balita, pemberian imunisasi, dan penyuluhan gizi bagi para ibu.` },
+          { label: 'E', teks: `Kegiatan daripada posyandu bulan ini meliputi penimbangan balita, pemberian imunisasi, dan penyuluhan gizi bagi para ibu.` },
         ],
-        kunci: 'E',
-        pembahasan: `Opsi E menggunakan tiga verba aktif yang sejajar, yaitu mengidentifikasi, mengukur, dan merumuskan. Ketiganya menyatakan tujuan evaluasi dengan struktur yang konsisten.
-
-Pembahasan Opsi Salah:
-Opsi A, C, dan D mencampurkan verba dengan nomina seperti identifikasi, pengukuran, dan perumusan. Opsi B mencampurkan verba aktif dengan klausa pasif waktu pelayanan diukur. Ketidaksejajaran tersebut membuat susunan perincian kurang efektif.
-
-Cara cepat: Pada perincian tujuan dengan kata untuk, pastikan bentuk unsur-unsurnya sejajar, misalnya sama-sama verba aktif.`,
-        tingkat: 'mudah',
+        kunci: 'C',
+        pembahasan: `Konsep dalam soal ini menekankan dua ciri kalimat efektif sekaligus, yaitu kesejajaran dan kehematan. Kalimat asli memuat perincian yang tidak sejajar karena “memberikan” berbentuk verba di antara nomina “penimbangan” dan “penyuluhan”. Kalimat itu juga memuat pleonasme karena “para” sudah menyatakan jamak sehingga bentuk ulang “ibu-ibu” mubazir. Inti kaidah di sini adalah bahwa unsur perincian harus berbentuk sama dan penanda jamak tidak boleh dinyatakan dua kali (TBBI, kesejajaran dan kehematan). Opsi yang paling tepat adalah C, karena opsi itu mengubah “memberikan” menjadi “pemberian” dan “para ibu-ibu” menjadi “para ibu” tanpa menimbulkan kesalahan baru.
+Alasan opsi salah:
+A. Kesejajaran sudah diperbaiki, tetapi pleonasme “para ibu-ibu” masih tersisa.
+B. Tanda titik dua dipakai sesudah verba “meliputi”, padahal perincian itu merupakan bagian kalimat (EYD V, Penggunaan Tanda Baca, tanda titik dua).
+D. “menimbang” berbentuk verba sehingga perincian menjadi tidak sejajar dengan “pemberian” dan “penyuluhan”.
+E. Kata “daripada” disisipkan di antara “kegiatan” dan “posyandu”, padahal kedua kata itu cukup dirangkai langsung.
+Cara cepat: Periksa kesejajaran bentuk unsur perincian dan kehematan kata, lalu pastikan perbaikan yang dipilih tidak menimbulkan kesalahan baru di bagian lain kalimat.`,
+        tingkat: 'sulit',
         status: 'draft',
       },
     ],
@@ -850,28 +743,29 @@ Cara cepat: Pada perincian tujuan dengan kata untuk, pastikan bentuk unsur-unsur
   {
     stimulus: { judul: `Bahasa Negara > Kata baku dan tidak baku` },
     soal: [
-      // tryout-ref-02-07 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 7
+      // tryout-ref-02-08 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 8
       {
         nomor: 28,
         tipe: 'pg',
-        pertanyaan: `Seorang pegawai menyiapkan laporan kegiatan berikut.
-Tim melakukan analisa terhadap aktifitas pelayanan untuk memperkirakan resiko keterlambatan.
-Penyunting hanya diminta mengganti kata tidak baku tanpa mengubah susunan kalimat.
+        pertanyaan: `Pengelola layanan kesehatan akan memasang pengumuman berikut.
+Petugas menghimbau warga agar antri dengan tertib di depan apotik.
+Pengumuman itu perlu disunting agar seluruh katanya menggunakan bentuk baku.
 Hasil penyuntingan yang tepat adalah ....`,
         opsi: [
-          { label: 'A', teks: `Tim melakukan analisis terhadap aktifitas pelayanan untuk memperkirakan risiko keterlambatan.` },
-          { label: 'B', teks: `Tim melakukan analisa terhadap aktivitas pelayanan untuk memperkirakan risiko keterlambatan.` },
-          { label: 'C', teks: `Tim melakukan analisis terhadap aktivitas pelayanan untuk memperkirakan resiko keterlambatan.` },
-          { label: 'D', teks: `Tim melakukan analisis terhadap aktivitas pelayanan untuk memperkirakan risiko keterlambatan.` },
-          { label: 'E', teks: `Tim melakukan analisa terhadap aktifitas pelayanan untuk memperkirakan risiko keterlambatan.` },
+          { label: 'A', teks: `Petugas mengimbau warga agar antre dengan tertib di depan apotik.` },
+          { label: 'B', teks: `Petugas mengimbau warga agar antre dengan tertib di depan apotek.` },
+          { label: 'C', teks: `Petugas menghimbau warga agar antre dengan tertib di depan apotek.` },
+          { label: 'D', teks: `Petugas mengimbau warga agar antri dengan tertib di depan apotek.` },
+          { label: 'E', teks: `Petugas menghimbau warga agar antri dengan tertib di depan apotek.` },
         ],
-        kunci: 'D',
-        pembahasan: `Bentuk baku ketiga kata tersebut adalah analisis, aktivitas, dan risiko. Opsi D menggunakan seluruh bentuk baku itu.
-
-Pembahasan Opsi Salah:
-Opsi A masih menggunakan aktifitas, opsi B menggunakan analisa, dan opsi C menggunakan resiko. Opsi E masih memuat dua bentuk tidak baku, yaitu analisa dan aktifitas.
-
-Cara cepat: Periksa semua kata yang diuji dan pilih opsi yang membakukan ketiganya sekaligus.`,
+        kunci: 'B',
+        pembahasan: `Bentuk baku yang diperlukan adalah mengimbau, antre, dan apotek. Kata mengimbau dibentuk dari kata dasar imbau, bukan himbau. Opsi yang paling tepat adalah B.
+Alasan opsi salah:
+A. Masih menggunakan apotik.
+C. Masih menggunakan menghimbau.
+D. Menggunakan antri.
+E. Mengandung dua bentuk tidak baku, yaitu menghimbau dan antri.
+Cara cepat: Perhatikan bentuk baku mengimbau, antre, dan apotek. Satu bentuk tidak baku saja membuat opsi tidak tepat.`,
         tingkat: 'mudah',
         status: 'draft',
       },
@@ -894,14 +788,12 @@ Kalimat yang memenuhi ketentuan tersebut adalah ....`,
           { label: 'E', teks: `Pemohon menyiapkan tiga dokumen, kartu identitas, surat pengantar, dan formulir pendaftaran: petugas memeriksa kelengkapannya setelah dokumen diterima.` },
         ],
         kunci: 'A',
-        pembahasan: `Pada opsi A, “Pemohon menyiapkan tiga dokumen” merupakan pernyataan lengkap yang diikuti perincian sehingga tepat menggunakan titik dua. Titik koma memisahkan klausa tentang pemohon dan klausa tentang petugas yang berkedudukan setara.
-
-Pembahasan Opsi Salah:
-Opsi B salah: memisahkan verba menyiapkan dari objeknya dengan titik dua.
-Opsi C salah: menukar penggunaan titik dua dan titik koma.
-Opsi D salah: tidak tepat dalam menandai perincian sederhana dan batas antarklausa.
-Opsi E salah: menempatkan titik dua sebelum klausa yang bukan perincian dari bagian sebelumnya.
-
+        pembahasan: `Pada opsi A, “Pemohon menyiapkan tiga dokumen” merupakan pernyataan lengkap yang diikuti perincian sehingga tepat menggunakan titik dua. Titik koma memisahkan klausa tentang pemohon dan klausa tentang petugas yang berkedudukan setara. Opsi yang paling tepat adalah A.
+Alasan opsi salah:
+B. Memisahkan verba menyiapkan dari objeknya dengan titik dua.
+C. Menukar penggunaan titik dua dan titik koma.
+D. Tidak tepat dalam menandai perincian sederhana dan batas antarklausa.
+E. Menempatkan titik dua sebelum klausa yang bukan perincian dari bagian sebelumnya.
 Cara cepat: Titik dua memperkenalkan perincian setelah pernyataan lengkap, sedangkan titik koma dapat memisahkan klausa setara.`,
         tingkat: 'sedang',
         status: 'draft',
@@ -911,82 +803,74 @@ Cara cepat: Titik dua memperkenalkan perincian setelah pernyataan lengkap, sedan
   {
     stimulus: { judul: `Bahasa Negara > Penulisan Ejaan Bahasa Indonesia yang Disempurnakan (EYD)` },
     soal: [
-      // tryout-ref-02-11 · Dhea_TWK (Bahasa Negara)_Done Input.docx, soal 11
+      // tryout-ref-03-27 · Nynda_Paket 1 TWK SKD 2027_Done Input.docx, soal 27
       {
         nomor: 30,
         tipe: 'pg',
-        pertanyaan: `Seorang petugas mencatat bahwa dokumen telah melalui pemeriksaan di ruang administrasi sebelum dipindahkan menuju kantor pusat. Catatan tersebut akan dimasukkan ke dalam laporan resmi.
-Kalimat yang tepat dalam membedakan penulisan kata depan dan imbuhan adalah ....`,
+        pertanyaan: `(1) Desa itu memasang panel surya di balai warga, sekolah, dan pos kesehatan pada awal tahun ini. (2) Listrik dari panel tersebut dipakai untuk kegiatan siang hari, sedangkan sisanya disimpan dalam baterai cadangan milik desa. (3) Kepala desa menyebutkan bahwa biaya listrik bulanan balai warga kini turun hampir separuh dibandingkan tahun lalu. (4) Oleh karena itu pemerintah desa berencana menambah panel surya di rumah warga yang belum terjangkau jaringan listrik. (5) Jika cuaca mendung selama beberapa hari, petugas mengatur pemakaian listrik agar layanan kesehatan tetap berjalan.
+Penggunaan tanda baca yang keliru terdapat pada kalimat nomor …`,
         opsi: [
-          { label: 'A', teks: `Dokumen diperiksa diruang administrasi sebelum dikirim ke kantor pusat.` },
-          { label: 'B', teks: `Dokumen di periksa di ruang administrasi sebelum dikirim ke kantor pusat.` },
-          { label: 'C', teks: `Dokumen diperiksa di ruang administrasi sebelum di kirim ke kantor pusat.` },
-          { label: 'D', teks: `Dokumen diperiksa di ruang administrasi sebelum dikirim kekantor pusat.` },
-          { label: 'E', teks: `Dokumen diperiksa di ruang administrasi sebelum dikirim ke kantor pusat.` },
+          { label: 'A', teks: `(1)` },
+          { label: 'B', teks: `(2)` },
+          { label: 'C', teks: `(3)` },
+          { label: 'D', teks: `(4)` },
+          { label: 'E', teks: `(5)` },
         ],
-        kunci: 'E',
-        pembahasan: `Pada diperiksa dan dikirim, di- merupakan imbuhan pembentuk verba pasif sehingga ditulis serangkai. Pada di ruang dan ke kantor, di dan ke menunjukkan tempat atau arah sehingga ditulis terpisah sebagai kata depan.
-
-Pembahasan Opsi Salah:
-Opsi A salah: keliru menulis diruang.
-Opsi B salah: memisahkan imbuhan pada di periksa.
-Opsi C salah: memisahkan imbuhan pada di kirim.
-Opsi D salah: merangkaikan kata depan dengan kata berikutnya menjadi kekantor.
-
-Cara cepat: Bedakan di- sebagai imbuhan verba pasif yang dirangkai dan di atau ke sebagai kata depan yang dipisah.`,
-        tingkat: 'mudah',
+        kunci: 'D',
+        pembahasan: `Konsep dalam soal ini menekankan penerapan kaidah tanda koma pada EYD V, Penggunaan Tanda Baca, tanda koma. Kalimat (4) diawali ungkapan penghubung antarkalimat “Oleh karena itu”, yang menurut EYD V harus diikuti tanda koma. Inti kaidah di sini adalah membedakan ungkapan penghubung antarkalimat, yang selalu diikuti koma, dari konjungsi lain yang penggunaan komanya diatur tersendiri. Opsi yang paling tepat adalah D, karena kalimat (4) seharusnya ditulis “Oleh karena itu, pemerintah desa berencana …”.
+Alasan opsi salah:
+A. Koma pada perincian “balai warga, sekolah, dan pos kesehatan” sesuai dengan contoh perincian tiga unsur dalam EYD V.
+B. Koma memang dipakai sebelum konjungsi “sedangkan” dalam kalimat majemuk setara.
+C. Koma tidak dipakai di antara predikat “menyebutkan” dan klausa “bahwa” yang menjadi bagian kalimat.
+E. Koma memang dipakai sesudah anak kalimat “Jika cuaca mendung selama beberapa hari” yang mendahului induk kalimat.
+Cara cepat: Periksa tiap kalimat terhadap kaidah tanda baca EYD V, terutama pada awal kalimat, di antara klausa, dan pada perincian, lalu tentukan kalimat yang melanggar kaidah.`,
+        tingkat: 'sulit',
         status: 'draft',
       },
     ],
   },
 ];
 
-/** 35 soal TIU: verbal 11, numerik 16, dan figural 8 (bergambar). */
+/** 35 soal TIU. */
 export const contohGeneratorTiu: Kelompok[] = [
   {
     stimulus: { judul: `Verbal > Silogisme > 3 Premis` },
     soal: [
-      // tryout-ref-09-13 · Andika - Verbal Silogisme SKD 2027_Ready to Input.docx, soal 13
+      // tryout-pattern-map-13-0-0-0 · Variasi baru dari pola tryout diterima; Mapping SKD 2027.xlsx, baris 13
       {
         nomor: 1,
         tipe: 'pg',
-        pertanyaan: `Kelulusan unit pompa dalam uji ketahanan menjamin perolehan izin penggunaan operasional. Perolehan izin penggunaan operasional membebaskan unit pompa dari kewajiban pengujian ulang. Unit pompa K lolos uji ketahanan.
-Kesimpulan yang pasti benar berdasarkan ketiga pernyataan tersebut adalah ....`,
+        pertanyaan: `Pesanan Wulan yang dikemas dengan bahan pelindung memiliki pembayaran terverifikasi. Pesanan Wulan yang berada dalam antrean proses dikemas dengan bahan pelindung. Pesanan Wulan tidak masuk antrean proses.
+Apa yang dapat disimpulkan mengenai kebenaran pernyataan bahwa pesanan Wulan memiliki pembayaran terverifikasi?`,
         opsi: [
-          { label: 'A', teks: `Kewajiban mengikuti pengujian ulang masih berlaku bagi unit pompa K.` },
-          { label: 'B', teks: `Izin penggunaan operasional tidak diperoleh oleh unit pompa K.` },
-          { label: 'C', teks: `Pengujian ulang bukan merupakan kewajiban yang harus dijalani unit pompa K.` },
-          { label: 'D', teks: `Meskipun memperoleh izin operasional, unit pompa K tetap wajib menjalani pengujian ulang.` },
-          { label: 'E', teks: `Kelulusan dalam uji ketahanan tidak terpenuhi pada unit pompa K.` },
+          { label: 'A', teks: `Tidak dapat disimpulkan berdasarkan ketiga premis tersebut.` },
+          { label: 'B', teks: `Pesanan Wulan tidak memiliki pembayaran terverifikasi dan tidak masuk antrean proses.` },
+          { label: 'C', teks: `Pesanan Wulan memiliki pembayaran terverifikasi.` },
+          { label: 'D', teks: `Pesanan Wulan tidak memiliki pembayaran terverifikasi.` },
+          { label: 'E', teks: `Pesanan Wulan yang berada di luar antrean proses memiliki pembayaran terverifikasi.` },
         ],
-        kunci: 'C',
-        pembahasan: `Premis 1: Kelulusan unit pompa dalam uji ketahanan menjamin perolehan izin penggunaan operasional.
-Premis 2: Perolehan izin penggunaan operasional membebaskan unit pompa dari kewajiban pengujian ulang.
-Premis 3: Unit pompa K lolos uji ketahanan.
-Aturan pada dua pernyataan pertama diterapkan pada unit pompa K. Semua variabel berikut merujuk pada unit tersebut.
-p: Unit pompa K lolos uji ketahanan.
-q: Unit pompa K memperoleh izin penggunaan operasional.
-r: Unit pompa K wajib mengikuti pengujian ulang.
-Pembebasan dari kewajiban pengujian ulang berarti ¬r. Pernyataan tersebut tidak menyatakan bahwa pengujian ulang dilarang atau bahwa pengujian ulang tidak pernah dilakukan.
-• Langkah 1 (Premis 1 + 3):
-Premis 1: p → q
-Premis 3: p
-Gunakan Modus Ponens.
-Kesimpulan (Premis 4): q
-• Langkah 2 (Premis 2 + 4):
-Premis 2: q → ¬r
-Premis 4: q
-Gunakan Modus Ponens.
-Kesimpulan: ¬r
-Jawaban: Pengujian ulang bukan merupakan kewajiban yang harus dijalani unit pompa K.
+        kunci: 'A',
+        pembahasan: `Premis 1: Pesanan Wulan yang dikemas dengan bahan pelindung memiliki pembayaran terverifikasi.
+Premis 2: Pesanan Wulan yang berada dalam antrean proses dikemas dengan bahan pelindung.
+Premis 3: Pesanan Wulan tidak masuk antrean proses.
 
-Pembahasan Setiap Opsi:
-Opsi A: r. Opsi ini menyatakan adanya kewajiban, sedangkan hasil penalaran menyatakan pembebasan dari kewajiban tersebut. (bukan kesimpulan yang dicari)
-Opsi B: ¬q. Premis 1 dan Premis 3 menghasilkan q, sehingga penyangkalan izin operasional bertentangan dengan hasil langkah pertama. (bukan kesimpulan yang dicari)
-Opsi C: ¬r. Tidak memiliki kewajiban pengujian ulang bermakna sama dengan dibebaskan dari kewajiban tersebut, sesuai hasil dua penerapan Modus Ponens. (kesimpulan yang dicari)
-Opsi D: q ∧ r. Bagian q benar, tetapi bagian r bertentangan dengan ¬r. Kata “tetapi” tetap menghubungkan dua proposisi yang keduanya harus benar. (bukan kesimpulan yang dicari)
-Opsi E: ¬p. Pernyataan ini menyangkal kelulusan unit pompa K yang telah dinyatakan pada Premis 3. (bukan kesimpulan yang dicari)`,
-        tingkat: 'sulit',
+\\(p\\): Pesanan Wulan masuk antrean proses
+\\(q\\): Pesanan Wulan dikemas dengan bahan pelindung
+\\(r\\): Pesanan Wulan memiliki pembayaran terverifikasi
+
+Langkah 1 (Premis 2 + 1):
+Premis 2: \\(p \\to q\\)
+Premis 1: \\(q \\to r\\)
+Gunakan hukum Silogisme
+Kesimpulan (Premis 4): \\(p \\to r\\)
+
+Langkah 2 (Premis 4 + 3):
+Premis 4: \\(p \\to r\\)
+Premis 3: \\(\\neg p\\)
+Premis 4 dan 3 tidak masuk ke rumus silogisme manapun sehingga tidak dapat disimpulkan.
+Kesimpulan: Tidak dapat disimpulkan
+Jawaban: Tidak dapat disimpulkan`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -994,72 +878,96 @@ Opsi E: ¬p. Pernyataan ini menyangkal kelulusan unit pompa K yang telah dinyata
   {
     stimulus: { judul: `Verbal > Silogisme > 2 Premis - Narasi` },
     soal: [
-      // tryout-ref-09-03 · Andika - Verbal Silogisme SKD 2027_Ready to Input.docx, soal 3
+      // tryout-pattern-map-14-0-0-0 · Contoh 57 (N2-03) pada Blueprint Silogisme Tanpa Logika Kuantor, Bagian B (tulisan tim akademik).
       {
         nomor: 2,
         tipe: 'pg',
-        pertanyaan: `Pada usaha pengolahan pangan, petugas menata persediaan yang menunggu pengiriman kepada pelanggan dengan menempatkan di gudang kering setiap olahan yang tidak memerlukan penyimpanan dingin, sesuai pengaturan tempat penyimpanan bagi kelompok olahan tersebut. Dalam pengemasan persediaan yang disimpan pada tempat itu, petugas menggunakan kemasan berlapis penghalang uap air untuk setiap olahan yang ditempatkan di gudang kering, sebagai bentuk pengemasan yang diterapkan usaha tersebut pada produk dalam kelompok penyimpanan itu.
-Berdasarkan narasi tersebut, kesimpulan yang pasti benar adalah ....`,
+        pertanyaan: `Pemeriksaan daftar persetujuan penelaah untuk katalog pameran memperlihatkan naskah milik Hana tidak tercantum di dalamnya pada pengajuan katalog yang dibahas. Naskah katalog pameran milik Hana dengan status siap dicetak tercakup dalam daftar persetujuan penelaah untuk katalog yang akan digunakan pada pameran tersebut.
+Simpulan yang pasti benar berdasarkan ketentuan tersebut adalah ….`,
         opsi: [
-          { label: 'A', teks: `Penggunaan kemasan berlapis penghalang uap air menjamin olahan tersebut tidak memerlukan penyimpanan dingin.` },
-          { label: 'B', teks: `Penempatan olahan di gudang kering menunjukkan bahwa penyimpanan dingin tidak diperlukan untuk olahan tersebut.` },
-          { label: 'C', teks: `Kebutuhan penyimpanan dingin menjamin olahan tersebut tidak menggunakan kemasan berlapis penghalang uap air.` },
-          { label: 'D', teks: `Kemasan berlapis penghalang uap air hanya digunakan oleh olahan yang ditempatkan di gudang kering.` },
-          { label: 'E', teks: `Olahan tanpa kebutuhan penyimpanan dingin dipastikan menggunakan kemasan berlapis penghalang uap air.` },
+          { label: 'A', teks: `Naskah Hana siap dicetak dan tidak tercantum dalam daftar persetujuan penelaah.` },
+          { label: 'B', teks: `Naskah katalog pameran milik Hana tidak memiliki status siap dicetak.` },
+          { label: 'C', teks: `Status siap dicetak melekat pada naskah katalog pameran milik Hana.` },
+          { label: 'D', teks: `Nama naskah katalog milik Hana tercantum dalam daftar persetujuan penelaah.` },
+          { label: 'E', teks: `Proses pencetakan naskah katalog pameran milik Hana sudah dimulai.` },
         ],
-        kunci: 'E',
-        pembahasan: `Premis 1: Pada usaha pengolahan pangan, petugas menata persediaan yang menunggu pengiriman kepada pelanggan dengan menempatkan di gudang kering setiap olahan yang tidak memerlukan penyimpanan dingin, sesuai pengaturan tempat penyimpanan bagi kelompok olahan tersebut.
-Premis 2: Dalam pengemasan persediaan yang disimpan pada tempat itu, petugas menggunakan kemasan berlapis penghalang uap air untuk setiap olahan yang ditempatkan di gudang kering, sebagai bentuk pengemasan yang diterapkan usaha tersebut pada produk dalam kelompok penyimpanan itu.
-p: Olahan pangan tidak memerlukan penyimpanan dingin.
-q: Olahan pangan ditempatkan di gudang kering.
-r: Olahan pangan menggunakan kemasan berlapis penghalang uap air.
-Premis 1: p → q
-Premis 2: q → r
-Gunakan hukum Silogisme. Terpenuhinya p menjamin q, sedangkan q menjamin r; hubungan ini berlaku untuk subjek yang sama.
-Kesimpulan: p → r
-Jawaban: Olahan tanpa kebutuhan penyimpanan dingin dipastikan menggunakan kemasan berlapis penghalang uap air.
+        kunci: 'B',
+        pembahasan: `Premis 1: Pemeriksaan daftar persetujuan penelaah untuk katalog pameran memperlihatkan naskah milik Hana tidak tercantum di dalamnya pada pengajuan katalog yang dibahas.
+Premis 2: Naskah katalog pameran milik Hana dengan status siap dicetak tercakup dalam daftar persetujuan penelaah untuk katalog yang akan digunakan pada pameran tersebut.
 
-Pembahasan Setiap Opsi:
-Opsi A: r → p. Hubungan r → p membalik arah hasil silogisme; terpenuhinya r tidak membuktikan p. (bukan kesimpulan yang dicari)
-Opsi B: q → p. Hubungan q → p membalik Premis 1. Terpenuhinya q tidak membuktikan p. (bukan kesimpulan yang dicari)
-Opsi C: ¬p → ¬r. Hubungan ¬p → ¬r menolak anteseden. Tanpa p, r tetap mungkin terpenuhi melalui keadaan lain. (bukan kesimpulan yang dicari)
-Opsi D: r → q. Hubungan r → q membalik Premis 2. Terpenuhinya r tidak membuktikan q. (bukan kesimpulan yang dicari)
-Opsi E: p → r. Hubungan ini diperoleh melalui kedua premis yang relevan. (kesimpulan yang dicari)`,
-        tingkat: 'sulit',
+\\(p\\): Naskah katalog pameran milik Hana berstatus siap dicetak
+\\(q\\): Naskah katalog pameran milik Hana tercantum dalam daftar persetujuan penelaah
+
+Premis 1: \\(\\neg q\\)
+Premis 2: \\(p \\to q\\)
+Gunakan Modus Tollens
+Kesimpulan: \\(\\neg p\\)
+Jawaban: Naskah katalog pameran milik Hana tidak memiliki status siap dicetak
+
+Analisis setiap opsi
+\\(r\\): Proses pencetakan naskah katalog pameran milik Hana sudah dimulai
+Notasi tambahan ini hanya memetakan isi opsi dan tidak menjadi premis soal.
+A. Naskah Hana siap dicetak dan tidak tercantum dalam daftar persetujuan penelaah.
+→ \\(p \\land \\neg q\\) — Opsi menggabungkan dua keadaan tetapi sedikitnya satu bagiannya bertentangan dengan hasil penalaran. Gabungan itu tidak dapat menjadi kesimpulan. (bukan kesimpulan yang dicari)
+
+B. Naskah katalog pameran milik Hana tidak memiliki status siap dicetak.
+→ \\(\\neg p\\) — Maknanya sama dengan hasil penalaran langsung. Ketiadaan naskah dalam daftar menolak status siap dicetak. Keadaan proses pencetakan tidak diberikan. (kesimpulan yang dicari)
+
+C. Status siap dicetak melekat pada naskah katalog pameran milik Hana.
+→ \\(p\\) — Pernyataan ini berlawanan dengan keadaan yang dipastikan oleh premis dan hasil penerapan modus. (bukan kesimpulan yang dicari)
+
+D. Nama naskah katalog milik Hana tercantum dalam daftar persetujuan penelaah.
+→ \\(q\\) — Pernyataan ini berlawanan dengan keadaan yang dipastikan oleh premis dan hasil penerapan modus. (bukan kesimpulan yang dicari)
+
+E. Proses pencetakan naskah katalog pameran milik Hana sudah dimulai.
+→ \\(r\\) — Opsi menyatakan keadaan tambahan yang berbeda dari status atau hak dalam premis. Keadaan tambahan tersebut belum diketahui dari bacaan. (bukan kesimpulan yang dicari)`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-09-01 · Andika - Verbal Silogisme SKD 2027_Ready to Input.docx, soal 1
+      // tryout-pattern-map-14-0-1-0 · Contoh 60 (N2-06) pada Blueprint Silogisme Tanpa Logika Kuantor, Bagian B (tulisan tim akademik).
       {
         nomor: 3,
         tipe: 'pg',
-        pertanyaan: `Untuk menyusun penawaran keramik kepada pembeli luar negeri, pengelola bengkel memasukkan ke dalam katalog ekspor setiap produk yang telah lolos pemeriksaan ketahanan, sebagai bagian dari pendataan produk yang ditawarkan melalui layanan penjualan ekspor bengkel tersebut. Petugas pengelola pesanan kemudian memberikan kode pelacakan khusus kepada setiap produk yang masuk katalog ekspor, agar pencatatan produk dalam penawaran kepada pembeli luar negeri dapat dilakukan dengan menggunakan pengenal produk pada sistem pesanan bengkel.
-Berdasarkan narasi tersebut, kesimpulan yang pasti benar adalah ....`,
+        pertanyaan: `Catatan pendaftaran Lala untuk kegiatan praktik komunitas menunjukkan dirinya tidak mengikuti kelas fotografi pada kegiatan praktik komunitas yang dibahas. Dalam kegiatan praktik komunitas yang sedang dijadwalkan Lala mengikuti kelas fotografi atau tidak menggunakan tripod miliknya pada kegiatan praktik yang dibahas tersebut.
+Simpulan yang pasti benar berdasarkan ketentuan tersebut adalah ….`,
         opsi: [
-          { label: 'A', teks: `Kepemilikan kode pelacakan khusus menjamin produk keramik telah lolos pemeriksaan ketahanan.` },
-          { label: 'B', teks: `Tidak lolosnya produk keramik dalam pemeriksaan ketahanan menjamin produk tersebut tidak memperoleh kode pelacakan khusus.` },
-          { label: 'C', teks: `Kelulusan produk keramik dalam pemeriksaan ketahanan menjamin perolehan kode pelacakan khusus.` },
-          { label: 'D', teks: `Masuknya produk keramik ke katalog ekspor menunjukkan bahwa produk tersebut telah lolos pemeriksaan ketahanan.` },
-          { label: 'E', teks: `Pemberian kode pelacakan khusus menjamin produk keramik telah dimasukkan ke dalam katalog ekspor.` },
+          { label: 'A', teks: `Lala membawa tripod miliknya ke tempat kegiatan praktik komunitas tersebut.` },
+          { label: 'B', teks: `Kelas fotografi merupakan kegiatan praktik komunitas yang diikuti Lala.` },
+          { label: 'C', teks: `Tripod milik Lala digunakan dalam kegiatan praktik komunitas yang dibahas.` },
+          { label: 'D', teks: `Lala tidak mengikuti kelas fotografi dan menggunakan tripodnya dalam kegiatan tersebut.` },
+          { label: 'E', teks: `Penggunaan tripod milik Lala tidak berlangsung dalam kegiatan praktik komunitas tersebut.` },
         ],
-        kunci: 'C',
-        pembahasan: `Premis 1: Untuk menyusun penawaran keramik kepada pembeli luar negeri, pengelola bengkel memasukkan ke dalam katalog ekspor setiap produk yang telah lolos pemeriksaan ketahanan, sebagai bagian dari pendataan produk yang ditawarkan melalui layanan penjualan ekspor bengkel tersebut.
-Premis 2: Petugas pengelola pesanan kemudian memberikan kode pelacakan khusus kepada setiap produk yang masuk katalog ekspor, agar pencatatan produk dalam penawaran kepada pembeli luar negeri dapat dilakukan dengan menggunakan pengenal produk pada sistem pesanan bengkel.
-p: Produk keramik lolos pemeriksaan ketahanan.
-q: Produk keramik masuk katalog ekspor.
-r: Produk keramik memperoleh kode pelacakan khusus.
-Premis 1: p → q
-Premis 2: q → r
-Gunakan hukum Silogisme. Terpenuhinya p menjamin q, sedangkan q menjamin r; hubungan ini berlaku untuk subjek yang sama.
-Kesimpulan: p → r
-Jawaban: Kelulusan produk keramik dalam pemeriksaan ketahanan menjamin perolehan kode pelacakan khusus.
+        kunci: 'E',
+        pembahasan: `Premis 1: Catatan pendaftaran Lala untuk kegiatan praktik komunitas menunjukkan dirinya tidak mengikuti kelas fotografi pada kegiatan praktik komunitas yang dibahas.
+Premis 2: Dalam kegiatan praktik komunitas yang sedang dijadwalkan Lala mengikuti kelas fotografi atau tidak menggunakan tripod miliknya pada kegiatan praktik yang dibahas tersebut.
 
-Pembahasan Setiap Opsi:
-Opsi A: r → p. Hubungan r → p membalik arah hasil silogisme; terpenuhinya r tidak membuktikan p. (bukan kesimpulan yang dicari)
-Opsi B: ¬p → ¬r. Hubungan ¬p → ¬r menolak anteseden. Tanpa p, r tetap mungkin terpenuhi melalui keadaan lain. (bukan kesimpulan yang dicari)
-Opsi C: p → r. Hubungan ini diperoleh melalui kedua premis yang relevan. (kesimpulan yang dicari)
-Opsi D: q → p. Hubungan q → p membalik Premis 1. Terpenuhinya q tidak membuktikan p. (bukan kesimpulan yang dicari)
-Opsi E: r → q. Hubungan r → q membalik Premis 2. Terpenuhinya r tidak membuktikan q. (bukan kesimpulan yang dicari)`,
-        tingkat: 'sulit',
+\\(p\\): Lala mengikuti kelas fotografi dalam kegiatan praktik komunitas
+\\(q\\): Lala menggunakan tripod miliknya dalam kegiatan praktik komunitas
+
+Premis 1: \\(\\neg p\\)
+Premis 2: \\(p \\lor \\neg q\\)
+Gunakan Silogisme Disjungtif
+Kesimpulan: \\(\\neg q\\)
+Jawaban: Penggunaan tripod milik Lala tidak berlangsung dalam kegiatan praktik komunitas tersebut
+
+Analisis setiap opsi
+\\(r\\): Lala membawa tripod miliknya ke tempat kegiatan praktik komunitas tersebut
+Notasi tambahan ini hanya memetakan isi opsi dan tidak menjadi premis soal.
+A. Lala membawa tripod miliknya ke tempat kegiatan praktik komunitas tersebut.
+→ \\(r\\) — Opsi menyatakan keadaan tambahan yang berbeda dari status atau hak dalam premis. Keadaan tambahan tersebut belum diketahui dari bacaan. (bukan kesimpulan yang dicari)
+
+B. Kelas fotografi merupakan kegiatan praktik komunitas yang diikuti Lala.
+→ \\(p\\) — Pernyataan ini berlawanan dengan keadaan yang dipastikan oleh premis dan hasil penerapan modus. (bukan kesimpulan yang dicari)
+
+C. Tripod milik Lala digunakan dalam kegiatan praktik komunitas yang dibahas.
+→ \\(q\\) — Pernyataan ini berlawanan dengan keadaan yang dipastikan oleh premis dan hasil penerapan modus. (bukan kesimpulan yang dicari)
+
+D. Lala tidak mengikuti kelas fotografi dan menggunakan tripodnya dalam kegiatan tersebut.
+→ \\(\\neg p \\land q\\) — Opsi menggabungkan dua keadaan tetapi sedikitnya satu bagiannya bertentangan dengan hasil penalaran. Gabungan itu tidak dapat menjadi kesimpulan. (bukan kesimpulan yang dicari)
+
+E. Penggunaan tripod milik Lala tidak berlangsung dalam kegiatan praktik komunitas tersebut.
+→ \\(\\neg q\\) — Maknanya sama dengan hasil penalaran langsung. Atau dibaca inklusif. Membawa tripod berbeda dari menggunakan tripod dan tidak dapat dijadikan kesimpulan. (kesimpulan yang dicari)`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -1067,89 +975,113 @@ Opsi E: r → q. Hubungan r → q membalik Premis 2. Terpenuhinya r tidak membuk
   {
     stimulus: { judul: `Verbal > Silogisme > 3 Premis - Narasi` },
     soal: [
-      // tryout-ref-09-10 · Andika - Verbal Silogisme SKD 2027_Ready to Input.docx, soal 10
+      // tryout-pattern-map-15-0-0-0 · Contoh 63 (N3-01) pada Blueprint Silogisme Tanpa Logika Kuantor, Bagian B (tulisan tim akademik).
       {
         nomor: 4,
         tipe: 'pg',
-        pertanyaan: `Dalam menyiapkan pendataan karya untuk pameran seni, pengelola memasukkan ke dalam daftar pameran setiap karya yang lolos seleksi kuratorial, sebagai bagian dari pencatatan karya yang digunakan dalam pengelolaan penyelenggaraan pameran seni tersebut. Meja pembagian panduan pengunjung ditempatkan di dekat pintu masuk ruang pamer. Untuk menyusun katalog karya pada pameran itu, pengelola memberikan nomor katalog kepada setiap karya yang masuk daftar pameran, sehingga karya dalam daftar tersebut mendapatkan nomor identitas pada pencatatan katalog yang digunakan dalam penyelenggaraan pameran. Pada penyusunan bahan bacaan untuk pengunjung, pengelola mencantumkan dalam panduan pengunjung setiap karya yang mendapat nomor katalog, sehingga karya dengan nomor tersebut dimuat dalam panduan yang digunakan pengunjung selama mengikuti pameran seni.
-Berdasarkan narasi tersebut, kesimpulan yang pasti benar adalah ....`,
+        pertanyaan: `Kirana dengan pendaftaran yang disahkan oleh pengelola memiliki hak membuka kalender sesi praktik pada akun pelatihan kerajinan untuk kegiatan yang sedang dibahas dalam ketentuan pendaftaran tersebut. Kirana dalam kedudukannya sebagai pemilik hak membuka kalender sesi praktik tercakup dalam pemilik hak memilih satu sesi praktik pada kalender akun pelatihan tersebut. Pendaftaran pelatihan kerajinan milik Kirana untuk kegiatan yang sedang dibahas telah disahkan oleh pengelola dalam catatan pendaftaran kegiatan tersebut.
+Simpulan yang pasti benar berdasarkan ketentuan tersebut adalah ….`,
         opsi: [
-          { label: 'A', teks: `Panduan pengunjung hanya mencantumkan karya yang dinyatakan lolos seleksi kuratorial.` },
-          { label: 'B', teks: `Ketidaklulusan dalam seleksi kuratorial menjamin karya tidak dicantumkan dalam panduan pengunjung.` },
-          { label: 'C', teks: `Keberhasilan karya melewati seleksi kuratorial menjamin pencantumannya dalam panduan pengunjung.` },
-          { label: 'D', teks: `Daftar pameran hanya memuat karya yang telah dinyatakan lolos seleksi kuratorial.` },
-          { label: 'E', teks: `Nomor katalog dipastikan dimiliki oleh karya yang dicantumkan dalam panduan pengunjung.` },
+          { label: 'A', teks: `Kirana tidak berhak memilih satu sesi praktik dalam kalender akun pelatihan tersebut.` },
+          { label: 'B', teks: `Kirana telah menetapkan satu sesi praktik melalui kalender dalam akun pelatihan tersebut.` },
+          { label: 'C', teks: `Pemilihan satu sesi praktik dalam kalender akun pelatihan termasuk hak Kirana.` },
+          { label: 'D', teks: `Hak membuka kalender sesi praktik pada akun pelatihan tidak dimiliki Kirana.` },
+          { label: 'E', teks: `Pendaftaran pelatihan kerajinan milik Kirana tidak disahkan oleh pengelola kegiatan.` },
         ],
         kunci: 'C',
-        pembahasan: `Premis 1: Dalam menyiapkan pendataan karya untuk pameran seni, pengelola memasukkan ke dalam daftar pameran setiap karya yang lolos seleksi kuratorial, sebagai bagian dari pencatatan karya yang digunakan dalam pengelolaan penyelenggaraan pameran seni tersebut.
-Premis 2: Untuk menyusun katalog karya pada pameran itu, pengelola memberikan nomor katalog kepada setiap karya yang masuk daftar pameran, sehingga karya dalam daftar tersebut mendapatkan nomor identitas pada pencatatan katalog yang digunakan dalam penyelenggaraan pameran.
-Premis 3: Pada penyusunan bahan bacaan untuk pengunjung, pengelola mencantumkan dalam panduan pengunjung setiap karya yang mendapat nomor katalog, sehingga karya dengan nomor tersebut dimuat dalam panduan yang digunakan pengunjung selama mengikuti pameran seni.
-Kalimat “Meja pembagian panduan pengunjung ditempatkan di dekat pintu masuk ruang pamer.” merupakan informasi pengecoh karena letak meja pembagian tidak menentukan seleksi, pendataan, atau pencantuman karya dalam panduan. Kalimat ini tidak dijadikan variabel logis dan tidak digunakan dalam penarikan kesimpulan.
-p: Karya lolos seleksi kuratorial.
-q: Karya masuk daftar pameran.
-r: Karya mendapat nomor katalog.
-s: Karya dicantumkan dalam panduan pengunjung.
-• Langkah 1 (Premis 1 + 2):
-Premis 1: p → q
-Premis 2: q → r
-Gunakan hukum Silogisme.
-Kesimpulan (Premis 4): p → r
-• Langkah 2 (Premis 4 + 3):
-Premis 4: p → r
-Premis 3: r → s
-Gunakan hukum Silogisme. Terpenuhinya p menjamin r, sedangkan r menjamin s.
-Kesimpulan: p → s
-Jawaban: Keberhasilan karya melewati seleksi kuratorial menjamin pencantumannya dalam panduan pengunjung.
+        pembahasan: `Premis 1: Kirana dengan pendaftaran yang disahkan oleh pengelola memiliki hak membuka kalender sesi praktik pada akun pelatihan kerajinan untuk kegiatan yang sedang dibahas dalam ketentuan pendaftaran tersebut.
+Premis 2: Kirana dalam kedudukannya sebagai pemilik hak membuka kalender sesi praktik tercakup dalam pemilik hak memilih satu sesi praktik pada kalender akun pelatihan tersebut.
+Premis 3: Pendaftaran pelatihan kerajinan milik Kirana untuk kegiatan yang sedang dibahas telah disahkan oleh pengelola dalam catatan pendaftaran kegiatan tersebut.
 
-Pembahasan Setiap Opsi:
-Opsi A: s → p. Hubungan s → p membalik arah rangkaian implikasi. Terpenuhinya s tidak membuktikan p. (bukan kesimpulan yang dicari)
-Opsi B: ¬p → ¬s. Hubungan ¬p → ¬s menolak anteseden. Ketiadaan p tidak mengharuskan ketiadaan s. (bukan kesimpulan yang dicari)
-Opsi C: p → s. Hasil ini diperoleh melalui dua langkah penalaran di atas. (kesimpulan yang dicari)
-Opsi D: q → p. Hubungan q → p membalik Premis 1. Terpenuhinya q tidak membuktikan p. (bukan kesimpulan yang dicari)
-Opsi E: s → r. Hubungan s → r membalik Premis 3. Terpenuhinya s tidak membuktikan r. (bukan kesimpulan yang dicari)`,
-        tingkat: 'sulit',
+\\(p\\): Pendaftaran pelatihan kerajinan milik Kirana disahkan oleh pengelola
+\\(q\\): Kirana memiliki hak membuka kalender sesi praktik pada akun pelatihan
+\\(r\\): Kirana berhak memilih satu sesi praktik dalam kalender akun pelatihan
+
+Langkah 1 (Premis 1 + 3):
+Premis 1: \\(p \\to q\\)
+Premis 3: \\(p\\)
+Gunakan Modus Ponens
+Kesimpulan (Premis 4): \\(q\\)
+
+Langkah 2 (Premis 2 + 4):
+Premis 2: \\(q \\to r\\)
+Premis 4: \\(q\\)
+Gunakan Modus Ponens
+Kesimpulan: \\(r\\)
+Jawaban: Pemilihan satu sesi praktik dalam kalender akun pelatihan termasuk hak Kirana
+
+Analisis setiap opsi
+\\(s\\): Kirana telah menetapkan satu sesi praktik melalui kalender dalam akun pelatihan tersebut
+Notasi tambahan ini hanya memetakan isi opsi dan tidak menjadi premis soal.
+A. Kirana tidak berhak memilih satu sesi praktik dalam kalender akun pelatihan tersebut.
+→ \\(\\neg r\\) — Pernyataan ini berlawanan dengan keadaan yang dipastikan oleh premis dan hasil penerapan modus. (bukan kesimpulan yang dicari)
+
+B. Kirana telah menetapkan satu sesi praktik melalui kalender dalam akun pelatihan tersebut.
+→ \\(s\\) — Opsi menyatakan keadaan tambahan yang berbeda dari status atau hak dalam premis. Keadaan tambahan tersebut belum diketahui dari bacaan. (bukan kesimpulan yang dicari)
+
+C. Pemilihan satu sesi praktik dalam kalender akun pelatihan termasuk hak Kirana.
+→ \\(r\\) — Maknanya sama dengan hasil penalaran langsung. Dua hak yang berbeda menjadi \\(q\\) dan \\(r\\). Memilih sesi secara aktual tidak menjadi salah satu akibat yang dinyatakan. (kesimpulan yang dicari)
+
+D. Hak membuka kalender sesi praktik pada akun pelatihan tidak dimiliki Kirana.
+→ \\(\\neg q\\) — Pernyataan ini berlawanan dengan keadaan yang dipastikan oleh premis dan hasil penerapan modus. (bukan kesimpulan yang dicari)
+
+E. Pendaftaran pelatihan kerajinan milik Kirana tidak disahkan oleh pengelola kegiatan.
+→ \\(\\neg p\\) — Pernyataan ini berlawanan dengan keadaan yang dipastikan oleh premis dan hasil penerapan modus. (bukan kesimpulan yang dicari)`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-09-07 · Andika - Verbal Silogisme SKD 2027_Ready to Input.docx, soal 7
+      // tryout-pattern-map-15-0-1-0 · Contoh 65 (N3-03) pada Blueprint Silogisme Tanpa Logika Kuantor, Bagian B (tulisan tim akademik).
       {
         nomor: 5,
         tipe: 'pg',
-        pertanyaan: `Dalam mengatur pemakaian taman bersama untuk acara komunitas, pengurus mencantumkan dalam agenda kawasan setiap kegiatan yang memperoleh persetujuan penggunaan taman, sebagai bagian dari pencatatan kegiatan komunitas yang diselenggarakan melalui layanan penggunaan taman tersebut. Pada pengaturan pemakaian panggung untuk acara komunitas, pengurus memberikan jadwal penggunaan panggung kepada setiap kegiatan yang masuk agenda kawasan, sehingga kegiatan dalam agenda itu mendapatkan alokasi jadwal pemakaian panggung pada pengelolaan fasilitas taman. Untuk pengelolaan fasilitas listrik pada pelaksanaan acara, pengurus menyediakan akses listrik panggung bagi setiap kegiatan yang mendapat jadwal penggunaan panggung, sebagai akses pemakaian listrik yang diberikan melalui layanan fasilitas panggung di taman bersama tersebut.
-Berdasarkan narasi tersebut, kesimpulan yang pasti benar adalah ....`,
+        pertanyaan: `Berkas usulan program P18 yang diterima dalam penelaahan administrasi berada dalam cakupan daftar penelaahan isi untuk usulan program pada periode pengajuan yang dibahas. Berkas usulan program P18 yang tercantum dalam daftar penelaahan isi pada periode pengajuan tersebut memiliki nomor agenda penelaahan menurut ketentuan penelaahan usulan. Berkas usulan program P18 bernomor agenda penelaahan merupakan bagian dari arsip penelaahan program untuk periode pengajuan yang menjadi pokok pembahasan dalam pengelolaan berkas tersebut.
+Hubungan yang pasti mengikuti ketentuan tersebut adalah ….`,
         opsi: [
-          { label: 'A', teks: `Akses listrik panggung hanya diperoleh oleh kegiatan yang mendapat persetujuan penggunaan taman.` },
-          { label: 'B', teks: `Ketiadaan persetujuan penggunaan taman menjamin kegiatan tersebut tidak memperoleh akses listrik panggung.` },
-          { label: 'C', teks: `Pencantuman kegiatan dalam agenda kawasan menunjukkan bahwa persetujuan penggunaan taman telah diperoleh.` },
-          { label: 'D', teks: `Persetujuan penggunaan taman yang diperoleh kegiatan menjamin perolehan akses listrik panggung bagi kegiatan tersebut.` },
-          { label: 'E', teks: `Perolehan akses listrik panggung menunjukkan bahwa kegiatan telah mendapat jadwal penggunaan panggung.` },
+          { label: 'A', teks: `Berkas P18 yang diterima dalam penelaahan administrasi tercakup dalam arsip penelaahan program pada periode yang dibahas.` },
+          { label: 'B', teks: `Berkas P18 dalam arsip penelaahan program termasuk berkas yang diterima dalam penelaahan administrasi pada periode yang dibahas.` },
+          { label: 'C', teks: `Berkas P18 yang diterima dalam penelaahan administrasi berada di luar arsip penelaahan program pada periode yang dibahas.` },
+          { label: 'D', teks: `Berkas P18 yang tidak diterima dalam penelaahan administrasi berada di luar arsip penelaahan program pada periode yang dibahas.` },
+          { label: 'E', teks: `Berkas P18 bernomor agenda penelaahan termasuk berkas yang diterima dalam penelaahan administrasi pada periode yang dibahas.` },
         ],
-        kunci: 'D',
-        pembahasan: `Premis 1: Dalam mengatur pemakaian taman bersama untuk acara komunitas, pengurus mencantumkan dalam agenda kawasan setiap kegiatan yang memperoleh persetujuan penggunaan taman, sebagai bagian dari pencatatan kegiatan komunitas yang diselenggarakan melalui layanan penggunaan taman tersebut.
-Premis 2: Pada pengaturan pemakaian panggung untuk acara komunitas, pengurus memberikan jadwal penggunaan panggung kepada setiap kegiatan yang masuk agenda kawasan, sehingga kegiatan dalam agenda itu mendapatkan alokasi jadwal pemakaian panggung pada pengelolaan fasilitas taman.
-Premis 3: Untuk pengelolaan fasilitas listrik pada pelaksanaan acara, pengurus menyediakan akses listrik panggung bagi setiap kegiatan yang mendapat jadwal penggunaan panggung, sebagai akses pemakaian listrik yang diberikan melalui layanan fasilitas panggung di taman bersama tersebut.
-p: Kegiatan komunitas memperoleh persetujuan penggunaan taman.
-q: Kegiatan komunitas masuk agenda kawasan.
-r: Kegiatan komunitas mendapat jadwal penggunaan panggung.
-s: Kegiatan komunitas memperoleh akses listrik panggung.
-• Langkah 1 (Premis 1 + 2):
-Premis 1: p → q
-Premis 2: q → r
-Gunakan hukum Silogisme.
-Kesimpulan (Premis 4): p → r
-• Langkah 2 (Premis 4 + 3):
-Premis 4: p → r
-Premis 3: r → s
-Gunakan hukum Silogisme. Terpenuhinya p menjamin r, sedangkan r menjamin s.
-Kesimpulan: p → s
-Jawaban: Persetujuan penggunaan taman yang diperoleh kegiatan menjamin perolehan akses listrik panggung bagi kegiatan tersebut.
+        kunci: 'A',
+        pembahasan: `Premis 1: Berkas usulan program P18 yang diterima dalam penelaahan administrasi berada dalam cakupan daftar penelaahan isi untuk usulan program pada periode pengajuan yang dibahas.
+Premis 2: Berkas usulan program P18 yang tercantum dalam daftar penelaahan isi pada periode pengajuan tersebut memiliki nomor agenda penelaahan menurut ketentuan penelaahan usulan.
+Premis 3: Berkas usulan program P18 bernomor agenda penelaahan merupakan bagian dari arsip penelaahan program untuk periode pengajuan yang menjadi pokok pembahasan dalam pengelolaan berkas tersebut.
 
-Pembahasan Setiap Opsi:
-Opsi A: s → p. Hubungan s → p membalik arah rangkaian implikasi. Terpenuhinya s tidak membuktikan p. (bukan kesimpulan yang dicari)
-Opsi B: ¬p → ¬s. Hubungan ¬p → ¬s menolak anteseden. Ketiadaan p tidak mengharuskan ketiadaan s. (bukan kesimpulan yang dicari)
-Opsi C: q → p. Hubungan q → p membalik Premis 1. Terpenuhinya q tidak membuktikan p. (bukan kesimpulan yang dicari)
-Opsi D: p → s. Hasil ini diperoleh melalui dua langkah penalaran di atas. (kesimpulan yang dicari)
-Opsi E: s → r. Hubungan s → r membalik Premis 3. Terpenuhinya s tidak membuktikan r. (bukan kesimpulan yang dicari)`,
-        tingkat: 'sulit',
+\\(p\\): Berkas usulan program P18 diterima dalam penelaahan administrasi
+\\(q\\): Berkas usulan program P18 tercantum dalam daftar penelaahan isi
+\\(r\\): Berkas usulan program P18 memperoleh nomor agenda penelaahan
+\\(s\\): Berkas usulan program P18 tercakup dalam arsip penelaahan program
+
+Langkah 1 (Premis 1 + 2):
+Premis 1: \\(p \\to q\\)
+Premis 2: \\(q \\to r\\)
+Gunakan hukum Silogisme
+Kesimpulan (Premis 4): \\(p \\to r\\)
+
+Langkah 2 (Premis 4 + 3):
+Premis 4: \\(p \\to r\\)
+Premis 3: \\(r \\to s\\)
+Gunakan hukum Silogisme
+Kesimpulan: \\(p \\to s\\)
+Jawaban: Berkas P18 yang diterima dalam penelaahan administrasi tercakup dalam arsip penelaahan program pada periode yang dibahas
+
+Analisis setiap opsi
+A. Berkas P18 yang diterima dalam penelaahan administrasi tercakup dalam arsip penelaahan program pada periode yang dibahas.
+→ \\(p \\to s\\) — Maknanya sama dengan hasil penalaran langsung. Kunci tetap \\(p\\) menuju \\(s\\). Tidak ada konversi kunci menjadi kontraposisi atau disjungsi. (kesimpulan yang dicari)
+
+B. Berkas P18 dalam arsip penelaahan program termasuk berkas yang diterima dalam penelaahan administrasi pada periode yang dibahas.
+→ \\(s \\to p\\) — Arah hubungan dibalik. Ketentuan dari keadaan awal menuju hasil akhir tidak membuktikan hubungan sebaliknya. (bukan kesimpulan yang dicari)
+
+C. Berkas P18 yang diterima dalam penelaahan administrasi berada di luar arsip penelaahan program pada periode yang dibahas.
+→ \\(p \\to \\neg s\\) — Hubungan yang ditawarkan memakai kondisi atau hasil yang tidak dijamin oleh rangkaian premis. Pernyataan ini masih dapat salah saat seluruh premis benar. (bukan kesimpulan yang dicari)
+
+D. Berkas P18 yang tidak diterima dalam penelaahan administrasi berada di luar arsip penelaahan program pada periode yang dibahas.
+→ \\(\\neg p \\to \\neg s\\) — Opsi menyangkal keadaan awal lalu ikut menyangkal hasil akhir. Penyangkalan anteseden tidak membenarkan penyangkalan konsekuen. (bukan kesimpulan yang dicari)
+
+E. Berkas P18 bernomor agenda penelaahan termasuk berkas yang diterima dalam penelaahan administrasi pada periode yang dibahas.
+→ \\(r \\to p\\) — Hubungan yang ditawarkan memakai kondisi atau hasil yang tidak dijamin oleh rangkaian premis. Pernyataan ini masih dapat salah saat seluruh premis benar. (bukan kesimpulan yang dicari)`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -1157,102 +1089,92 @@ Opsi E: s → r. Hubungan s → r membalik Premis 3. Terpenuhinya s tidak membuk
   {
     stimulus: { judul: `Verbal > Analogi > 2 Kata` },
     soal: [
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Analogi 2 kata; tidak ada di tryout generator
+      // tryout-pattern-map-16-0-0-0 · Variasi terhitung mengikuti mapping 2 Kata; acuan: Mapping SKD 2027.xlsx (contoh analogi dua kata belum disertakan)
       {
         nomor: 6,
         tipe: 'pg',
-        pertanyaan: `Cepat : Lambat = ... : ...`,
+        pertanyaan: `Uang : Bank = … : …`,
         opsi: [
-          { label: 'A', teks: `Awal : Akhir` },
-          { label: 'B', teks: `Keras : Batu` },
-          { label: 'C', teks: `Panjang : Jalan` },
-          { label: 'D', teks: `Tinggi : Gedung` },
-          { label: 'E', teks: `Manis : Gula` },
+          { label: 'A', teks: `Indah : Elok` },
+          { label: 'B', teks: `Jati : Pohon` },
+          { label: 'C', teks: `Buku : Perpustakaan` },
+          { label: 'D', teks: `Es : Beku` },
+          { label: 'E', teks: `Hujan deras : Banjir` },
         ],
-        kunci: 'A',
-        pembahasan: `Kata "cepat" dan "lambat" memiliki hubungan antonim atau berlawanan makna. Pola yang sama terdapat pada opsi A, yaitu "awal" dan "akhir" yang juga merupakan pasangan kata berlawanan makna.`,
-        status: 'direview',
+        kunci: 'C',
+        pembahasan: `Kata "uang" dan "bank" memiliki hubungan benda dan tempat penyimpanannya: uang disimpan atau berada di bank.
+Pola yang sama terdapat pada opsi C, yaitu "buku" dan "perpustakaan": buku disimpan atau berada di perpustakaan, dengan arah hubungan yang sama (benda → tempat).
+
+A: Indah : Elok: hubungan sinonim (sama makna), saling bersamaan makna; tidak sepadan, karena indah bersamaan makna dengan elok, jadi hubungannya bukan benda dan tempat penyimpanannya.
+B: Jati : Pohon: hubungan anggota dan kategorinya, anggota → kategori; tidak sepadan, karena jati termasuk jenis pohon, jadi hubungannya bukan benda dan tempat penyimpanannya.
+C: Buku : Perpustakaan: hubungan benda dan tempat penyimpanannya, benda → tempat; sepadan, karena buku disimpan atau berada di perpustakaan, sama seperti pada soal (uang disimpan atau berada di bank).
+D: Es : Beku: hubungan benda dan sifatnya, benda → sifat; tidak sepadan, karena es memiliki sifat beku, jadi hubungannya bukan benda dan tempat penyimpanannya.
+E: Hujan deras : Banjir: hubungan sebab dan akibat, sebab → akibat; tidak sepadan, karena hujan deras menyebabkan banjir, jadi hubungannya bukan benda dan tempat penyimpanannya.`,
+        tingkat: 'mudah',
+        status: 'draft',
       },
     ],
   },
   {
     stimulus: { judul: `Verbal > Analitis > Memperkuat/Memperlemah Argumen` },
     soal: [
-      // tryout-ref-10-06 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 6
+      // tryout-ref-10-01 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 1
       {
         nomor: 7,
         tipe: 'pg',
-        pertanyaan: `Pengelola kantin mengganti wadah makan sekali pakai dengan kotak yang dapat digunakan berulang kali. Ia memperkirakan perubahan ini akan mengurangi jumlah kemasan sekali pakai yang dibuang setiap hari, karena makanan tidak lagi disajikan langsung dalam wadah sekali pakai.
-Kondisi manakah yang paling MEMPERLEMAH perkiraan tersebut?`,
+        pertanyaan: `Perpustakaan kelurahan memasang label warna yang sama pada punggung buku dan rak sesuai jenis bacaannya. Pengelola berpendapat bahwa label tersebut membantu pengunjung mengembalikan buku ke rak yang tepat. Dengan demikian, waktu yang dibutuhkan petugas untuk menata ulang buku akan berkurang.
+Temuan manakah yang paling MEMPERKUAT pendapat pengelola?`,
         opsi: [
-          { label: 'A', teks: `Setiap kotak tetap diberi pelapis sekali pakai; jumlah pelapis yang dibuang sama dengan jumlah wadah sekali pakai sebelumnya.` },
-          { label: 'B', teks: `Sebagian pengunjung membawa makanan pulang, tetapi mereka menggunakan kotak baru yang dapat dikembalikan dan tidak diberi kemasan tambahan oleh petugas kantin.` },
-          { label: 'C', teks: `Pencucian kotak meningkatkan pemakaian air kantin karena petugas harus membersihkan seluruh kotak setiap selesai digunakan pengunjung.` },
-          { label: 'D', teks: `Biaya membeli kotak baru melebihi biaya wadah lama pada bulan pertama, tetapi kotak tersebut masih digunakan kembali pada bulan-bulan sesudahnya.` },
-          { label: 'E', teks: `Jumlah pembeli bertambah setelah pergantian wadah, tetapi petugas memastikan bahwa setiap pembeli tetap menerima makanan dalam kotak yang dapat dipakai ulang.` },
+          { label: 'A', teks: `Petugas tetap menata ulang rak setiap sore, termasuk memeriksa urutan buku dan merapikan buku yang dipinjam pengunjung.` },
+          { label: 'B', teks: `Jumlah buku yang salah rak menurun setelah pelabelan, sedangkan jumlah pengunjung dan buku yang dikembalikan relatif tetap.` },
+          { label: 'C', teks: `Pengunjung lebih mudah mengenali jenis bacaan melalui warna label, tetapi belum diketahui apakah mereka mengembalikan buku ke rak yang sesuai.` },
+          { label: 'D', teks: `Buku yang dikembalikan kini dicatat lebih rinci sehingga petugas mengetahui peminjamnya, meskipun tempat pengembalian buku tidak tercantum dalam catatan tersebut.` },
+          { label: 'E', teks: `Pengunjung menilai susunan rak lebih menarik setelah diberi label, tetapi penilaian itu tidak mencakup ketepatan pengembalian atau waktu penataan buku.` },
         ],
-        kunci: 'A',
-        pembahasan: `Kesimpulan menyangkut jumlah kemasan sekali pakai yang dibuang, bukan sekadar jenis wadah luar yang dipakai. Opsi A menunjukkan bahwa fungsi kemasan sekali pakai tetap dipertahankan dalam bentuk pelapis. Karena jumlah pelapis yang dibuang sama dengan jumlah wadah sebelumnya, penggantian kotak tidak menghasilkan pengurangan jumlah kemasan sekali pakai sebagaimana diperkirakan. Hal ini menyerang hubungan antara tindakan dan hasil yang diklaim. Informasi tersebut tidak harus membuktikan bahwa semua manfaat kotak baru hilang.
+        kunci: 'B',
+        pembahasan: `Alasan pengelola adalah bahwa kecocokan warna memudahkan pengembalian buku. Kesimpulannya, pekerjaan menata ulang akan berkurang. Opsi B memberikan bukti pada penghubung kedua gagasan tersebut: lebih sedikit buku berada di rak yang salah. Jumlah pengunjung dan buku yang relatif tetap membuat penurunan itu tidak sekadar disebabkan berkurangnya aktivitas perpustakaan. Karena buku yang perlu dipindahkan lebih sedikit, perkiraan berkurangnya waktu penataan menjadi lebih masuk akal. Bukti ini memperkuat kesimpulan tanpa harus membuktikan bahwa label merupakan satu-satunya penyebab.
 
-Pembahasan Opsi Salah:
-Opsi B salah: tidak menunjukkan penggunaan kemasan sekali pakai pengganti karena kotak dapat dikembalikan dan tidak diberi kemasan tambahan.
-Opsi C salah: mengungkap dampak pada pemakaian air, sedangkan kesimpulan secara khusus menyangkut jumlah kemasan sekali pakai yang dibuang.
-Opsi D salah: membahas biaya pembelian, bukan jumlah kemasan yang dibuang.
-Opsi E salah: menunjukkan bertambahnya pembeli, tetapi tanpa informasi tentang penggunaan kemasan sekali pakai, dampaknya terhadap kesimpulan belum dapat dipastikan.
-
-Cara cepat: Cocokkan ukuran hasil dalam kesimpulan dengan keadaan sebenarnya. Perubahan bentuk sarana belum tentu mengurangi hal yang ingin dikurangi.`,
+Cara cepat: Cari bukti yang menghubungkan tindakan dengan hasil yang diklaim, bukan informasi yang hanya membahas tempat atau objek yang sama.`,
         tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-10-07 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 7
+      // tryout-ref-10-02 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 2
       {
         nomor: 8,
         tipe: 'pg',
-        pertanyaan: `Pengelola komunitas baca menemukan bahwa anggota yang memakai aplikasi pencatat bacaan membaca lebih sering daripada anggota yang tidak memakainya. Ia menyimpulkan bahwa penggunaan aplikasi tersebut meningkatkan kebiasaan membaca. Berdasarkan kesimpulan itu, ia menganjurkan semua anggota memasang aplikasi agar frekuensi membaca mereka meningkat.
-Temuan manakah yang paling MEMPERLEMAH kesimpulan bahwa aplikasi tersebut menyebabkan peningkatan frekuensi membaca?`,
+        pertanyaan: `Sebuah sanggar menyediakan rekaman pelafalan untuk peserta kelas bahasa daerah. Peserta diminta mendengarkan rekaman, mengucapkan kata yang sama, lalu membandingkan suara mereka dengan contoh. Pengajar memperkirakan latihan ini dapat meningkatkan ketepatan pelafalan karena peserta lebih mudah mengenali dan memperbaiki bunyi yang mereka ucapkan secara keliru.
+Jika benar, informasi tambahan manakah yang paling MEMPERKUAT mekanisme dalam argumen tersebut?`,
         opsi: [
-          { label: 'A', teks: `Aplikasi menyediakan pengingat membaca dan catatan kemajuan, sehingga pengguna dapat menentukan target serta melihat jumlah buku yang telah mereka baca setiap bulan.` },
-          { label: 'B', teks: `Beberapa anggota yang jarang membaca belum tertarik memasang aplikasi, tetapi alasan penolakan mereka dan perubahan frekuensi membacanya belum ditelusuri oleh pengelola.` },
-          { label: 'C', teks: `Pengguna aplikasi memilih jenis bacaan yang berbeda dari nonpengguna; sebagian menyukai novel, sedangkan lainnya lebih sering membaca biografi.` },
-          { label: 'D', teks: `Pengguna sudah lebih sering membaca sebelum memasang aplikasi; frekuensinya tetap setelah pemasangan, dan kebiasaan lama itulah yang mendorong mereka menggunakannya.` },
-          { label: 'E', teks: `Sebagian anggota menggunakan aplikasi hanya untuk mencatat buku selesai dibaca, sementara anggota lainnya juga memakai pengingat dan fitur penentuan target bulanan.` },
+          { label: 'A', teks: `Peserta dapat mengakses rekaman setiap hari, tetapi catatan penggunaan belum membedakan kegiatan mendengarkan contoh dari kegiatan membandingkan ucapan sendiri.` },
+          { label: 'B', teks: `Peserta menghafal lebih banyak kosakata setelah latihan, sedangkan tes yang digunakan hanya menilai arti kata tanpa memeriksa ketepatan pelafalannya.` },
+          { label: 'C', teks: `Peserta menganggap suara pada rekaman mudah didengar, tetapi sebagian tetap tidak mengetahui bagian ucapan mereka yang berbeda dari contoh.` },
+          { label: 'D', teks: `Peserta mengenali perbedaan bunyi dengan contoh dan mengurangi kesalahan yang sama pada percobaan berikutnya tanpa koreksi langsung dari pengajar.` },
+          { label: 'E', teks: `Pengajar menilai rekaman sesuai dengan materi kelas, meskipun belum memeriksa apakah peserta mampu menggunakan contoh tersebut untuk memperbaiki pelafalan.` },
         ],
         kunci: 'D',
-        pembahasan: `Kesimpulan menganggap aplikasi menyebabkan kebiasaan membaca meningkat. Namun, perbedaan antara pengguna dan nonpengguna juga dapat muncul karena arah hubungan yang terbalik: anggota yang sudah rajin membaca lebih terdorong memakai aplikasi. Opsi D memberikan bukti langsung bagi kemungkinan tersebut. Perbedaan frekuensi sudah ada sebelum pemasangan, tidak meningkat sesudahnya, dan kebiasaan membaca yang lebih dahulu terbentuk mendorong penggunaan aplikasi. Dengan demikian, perbedaan yang diamati pengelola tidak cukup untuk menyimpulkan bahwa aplikasi menyebabkan peningkatan. Temuan ini melemahkan kesimpulan kausal tanpa menyatakan bahwa aplikasi mustahil bermanfaat bagi siapa pun.
+        pembahasan: `Argumen tidak sekadar menyatakan bahwa rekaman tersedia, tetapi menjelaskan proses perbaikannya: mendengar contoh, mengenali kesalahan, lalu memperbaiki ucapan. Opsi D menunjukkan bahwa dua tahap penting itu benar-benar berlangsung. Peserta dapat membedakan bunyi dan menggunakan perbedaan tersebut untuk memperbaiki percobaan selanjutnya. Informasi ini mendukung mekanisme yang dipakai pengajar untuk memperkirakan peningkatan ketepatan pelafalan.
 
-Pembahasan Opsi Salah:
-Opsi A salah: menjelaskan fitur yang mungkin membantu kebiasaan membaca, sehingga tidak melemahkan arah hubungan yang diklaim.
-Opsi B salah: memberi petunjuk tentang perbedaan minat antarkelompok, tetapi belum menunjukkan urutan waktu atau penyebab perbedaan frekuensi membaca.
-Opsi C salah: menyebut perbedaan jenis bacaan tanpa membuktikan pengaruhnya terhadap ukuran hasil yang digunakan.
-Opsi E salah: menjelaskan variasi pemakaian fitur, tetapi belum menunjukkan apakah frekuensi membaca meningkat akibat aplikasi.
-
-Cara cepat: Periksa urutan waktunya: apakah tindakan menghasilkan kebiasaan, atau kebiasaan yang sudah ada justru mendorong seseorang melakukan tindakan?`,
+Cara cepat: Untuk argumen yang menjelaskan suatu proses, cari informasi yang membuktikan bahwa tahap penghubung menuju hasil memang bekerja.`,
         tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-10-04 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 4
+      // tryout-ref-10-09 · Andika_Verbal Analitis - Memperkuat_Memperlemah_Ready to Input.docx, soal 9
       {
         nomor: 9,
         tipe: 'pg',
-        pertanyaan: `Dalam uji coba di Desa Lestari, petani menerima pesan singkat tentang waktu penyiraman yang disesuaikan dengan kelembapan tanah. Penggunaan air menurun tanpa penurunan hasil panen. Dinas pertanian ingin menerapkan program serupa di Desa Harapan dan memperkirakan manfaat yang sama. Perkiraan itu didasarkan pada keberhasilan uji coba di Desa Lestari.
-Informasi manakah yang paling MEMPERKUAT kesimpulan bahwa manfaat uji coba dapat diterapkan di desa sasaran?`,
+        pertanyaan: `Sebuah kantor perizinan melaporkan bahwa rata-rata waktu dari berkas dinyatakan lengkap hingga izin diterbitkan turun dari 18 hari menjadi 10 hari setelah prosedur baru diterapkan. Kepala kantor menggunakan data itu untuk menyimpulkan bahwa rata-rata seluruh waktu yang dihabiskan pemohon sejak pertama menyerahkan berkas hingga menerima izin kini lebih singkat.
+Informasi manakah yang paling MEMPERLEMAH kesimpulan kepala kantor tentang waktu keseluruhan yang dihabiskan pemohon?`,
         opsi: [
-          { label: 'A', teks: `Hasil panen awal kedua desa hampir sama, tetapi komoditas dan kemampuan tanah menahan air berbeda, sehingga kebutuhan penyiramannya belum tentu sebanding.` },
-          { label: 'B', teks: `Petani Desa Harapan terbiasa membaca pesan dinas, tetapi belum diketahui apakah mereka dapat mengubah penyiraman pada waktu yang dianjurkan.` },
-          { label: 'C', teks: `Tanah kedua desa memiliki kelembapan serupa saat diperiksa, tetapi pemeriksaan itu hanya sekali dan jenis tanaman yang dibudidayakan tidak dibandingkan.` },
-          { label: 'D', teks: `Sistem irigasi kedua desa sama-sama dapat diatur, tetapi pasokan air Desa Harapan sering terputus pada waktu yang dianjurkan untuk penyiraman.` },
-          { label: 'E', teks: `Tanaman, sifat tanah, dan pengaturan irigasi kedua desa sebanding; petani desa sasaran dapat menerima serta menjalankan anjuran penyiraman pada waktu yang ditentukan.` },
+          { label: 'A', teks: `Catatan waktu sesudah berkas lengkap dihasilkan sistem otomatis, sehingga penurunan durasi tahap itu tidak bergantung pada perkiraan petugas atau ingatan pemohon.` },
+          { label: 'B', teks: `Sebagian besar izin diterbitkan paling lama 10 hari setelah berkas lengkap, dan petugas memeriksa pencapaian batas waktu itu setiap bulan.` },
+          { label: 'C', teks: `Jumlah izin yang diterbitkan setiap bulan bertambah setelah prosedur baru diberlakukan, sementara jumlah petugas pada tahap penerbitan izin tetap sama.` },
+          { label: 'D', teks: `Petugas menyelesaikan pemeriksaan akhir lebih cepat setelah dokumen pendukung dipindai, sehingga rata-rata waktu pada tahap tersebut turun dibandingkan prosedur sebelumnya.` },
+          { label: 'E', teks: `Pada kelompok pemohon yang sama di setiap periode, waktu sejak penyerahan pertama hingga berkas dinyatakan lengkap rata-rata naik dari 2 menjadi 12 hari.` },
         ],
         kunci: 'E',
-        pembahasan: `Kesimpulan menggunakan analogi: keberhasilan di satu lokasi diperkirakan dapat terjadi di lokasi lain. Kekuatan analogi bergantung pada kesamaan faktor yang menentukan keberhasilan, bukan pada sembarang kemiripan. Opsi E mencakup kondisi pertanian yang memengaruhi kebutuhan air serta kemampuan petani menjalankan anjuran. Kesamaan tersebut mengurangi risiko bahwa hasil uji coba hanya berlaku karena keadaan khusus Desa Lestari. Karena faktor penting dan cara penerapannya sebanding, perkiraan manfaat di Desa Harapan menjadi lebih kuat.
+        pembahasan: `Data yang dikutip kepala kantor hanya mengukur tahap setelah berkas lengkap, sedangkan kesimpulannya menyangkut seluruh waktu sejak penyerahan pertama. Opsi E melengkapi tahap yang tidak dihitung. Sebelumnya, rata-rata waktu keseluruhan adalah 2 + 18 = 20 hari. Pada prosedur baru, rata-ratanya menjadi 12 + 10 = 22 hari. Karena rata-rata kedua tahap dihitung pada kelompok pemohon yang sama dalam setiap periode, rata-rata waktu total dapat diperoleh dengan menjumlahkan rata-rata kedua tahap tersebut. Tahap penerbitan memang lebih cepat, tetapi tambahan waktu pada tahap kelengkapan berkas lebih besar daripada penghematannya. Dengan demikian, kesimpulan bahwa seluruh waktu pemohon lebih singkat justru bertentangan dengan informasi lengkap.
 
-Pembahasan Opsi Salah:
-Opsi A salah: memakai kesamaan hasil panen sebagai dasar analogi, padahal kebutuhan air dapat berbeda karena tanaman dan tanahnya berbeda.
-Opsi B salah: mendukung penerimaan informasi saja dan belum memastikan bahwa anjuran dapat dilaksanakan.
-Opsi C salah: hanya memberikan kesamaan kondisi sesaat tanpa membandingkan faktor kebutuhan air secara memadai.
-Opsi D salah: menunjukkan kesamaan sarana, tetapi gangguan pasokan air dapat menghambat pelaksanaan anjuran.
-
-Cara cepat: Uji analogi melalui kesamaan faktor penyebab dan syarat pelaksanaannya. Kemiripan lokasi atau kegiatan saja belum cukup.`,
+Cara cepat: Periksa apakah data mengukur seluruh hal yang disebut dalam kesimpulan. Perbaikan satu tahap dapat tertutup oleh memburuknya tahap lain.`,
         tingkat: 'sulit',
         status: 'draft',
       },
@@ -1265,8 +1187,8 @@ Cara cepat: Uji analogi melalui kesamaan faktor penyebab dan syarat pelaksanaann
       {
         nomor: 10,
         tipe: 'pg',
-        pertanyaan: `Enam berkas milik Ardi, Beni, Caca, Dini, Ega, dan Fina disusun berjajar pada rak bernomor 1 sampai 6 dari kiri ke kanan. Caca berada di posisi keempat. Beni berada tepat di sebelah kiri Caca. Fina berada tepat di sebelah kanan Caca. Ardi berada di sebelah kiri Beni. Dini berada tepat di sebelah kanan Ardi. Ega berada di sebelah kanan Fina.
-Siapakah yang berada pada posisi kedua?`,
+        pertanyaan: `Enam berkas milik Ardi, Beni, Caca, Dini, Ega, dan Fina disusun berjajar pada rak bernomor 1 sampai 6 dari kiri ke kanan. Berkas Caca berada di posisi keempat. Berkas Beni berada tepat di sebelah kiri berkas Caca. Berkas Fina berada tepat di sebelah kanan berkas Caca. Berkas Ardi berada di sebelah kiri berkas Beni. Berkas Dini berada tepat di sebelah kanan berkas Ardi. Berkas Ega berada di sebelah kanan berkas Fina.
+Berkas siapa yang berada pada posisi kedua?`,
         opsi: [
           { label: 'A', teks: `Ardi` },
           { label: 'B', teks: `Beni` },
@@ -1275,11 +1197,11 @@ Siapakah yang berada pada posisi kedua?`,
           { label: 'E', teks: `Ega` },
         ],
         kunci: 'C',
-        pembahasan: `Caca diketahui berada di posisi keempat dari kiri. Informasi ini menjadi patokan karena posisi Caca sudah pasti dan tidak bergantung pada berkas lain. Beni berada tepat di sebelah kiri Caca. Kata “tepat” berarti tidak ada berkas di antara keduanya, sehingga Beni harus menempati posisi ketiga. Dengan alasan yang sama, Fina yang tepat di sebelah kanan Caca harus berada di posisi kelima.
-Ega berada di sebelah kanan Fina. Karena Fina sudah menempati posisi kelima dan rak hanya memiliki enam tempat, satu-satunya tempat di sebelah kanan Fina adalah posisi keenam. Maka posisi keenam ditempati Ega.
-Empat tempat terakhir yang sudah terisi adalah Beni pada posisi ketiga, Caca pada posisi keempat, Fina pada posisi kelima, dan Ega pada posisi keenam. Posisi yang tersisa adalah posisi pertama dan kedua untuk Ardi dan Dini. Diketahui Ardi berada di sebelah kiri Beni dan Dini tepat di sebelah kanan Ardi. Jika Ardi ditempatkan di posisi kedua, Dini harus berada di posisi ketiga yang sudah diisi Beni. Karena itu Ardi harus berada di posisi pertama dan Dini di posisi kedua.
-Susunan lengkap dari kiri ke kanan adalah Ardi, Dini, Beni, Caca, Fina, dan Ega. Dengan demikian, berkas yang menempati posisi kedua adalah Dini.
-\\(\\def\\arraystretch{1.4}\\begin{array}{|l|l|l|l|l|l|} \\hline \\textbf{Posisi 1} & \\textbf{Posisi 2} & \\textbf{Posisi 3} & \\textbf{Posisi 4} & \\textbf{Posisi 5} & \\textbf{Posisi 6} \\\\ \\hline \\text{Ardi} & \\text{Dini} & \\text{Beni} & \\text{Caca} & \\text{Fina} & \\text{Ega} \\\\ \\hline \\end{array}\\)
+        pembahasan: `Berkas Caca berada di posisi keempat dari kiri. Informasi ini menjadi patokan karena posisinya sudah pasti dan tidak bergantung pada berkas lain. Berkas Beni berada tepat di sebelah kiri berkas Caca. Kata “tepat” berarti tidak ada berkas lain di antara keduanya, sehingga berkas Beni menempati posisi ketiga. Dengan alasan yang sama, berkas Fina yang tepat di sebelah kanan berkas Caca berada di posisi kelima.
+Berkas Ega berada di sebelah kanan berkas Fina. Karena berkas Fina sudah menempati posisi kelima dan rak hanya memiliki enam tempat, satu-satunya tempat di sebelah kanannya adalah posisi keenam. Maka posisi keenam ditempati berkas Ega.
+Posisi ketiga sampai keenam sudah terisi berkas Beni, Caca, Fina, dan Ega. Posisi yang tersisa adalah posisi pertama dan kedua untuk berkas Ardi dan berkas Dini. Berkas Ardi berada di sebelah kiri berkas Beni, dan berkas Dini tepat di sebelah kanan berkas Ardi. Jika berkas Ardi ditempatkan di posisi kedua, berkas Dini harus berada di posisi ketiga yang sudah diisi berkas Beni. Karena itu, berkas Ardi berada di posisi pertama dan berkas Dini di posisi kedua.
+Susunan berkas dari kiri ke kanan adalah berkas Ardi, Dini, Beni, Caca, Fina, dan Ega. Dengan demikian, berkas yang berada pada posisi kedua adalah berkas Dini.
+\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|c|c|c|} \\hline \\textbf{Posisi 1} & \\textbf{Posisi 2} & \\textbf{Posisi 3} & \\textbf{Posisi 4} & \\textbf{Posisi 5} & \\textbf{Posisi 6} \\\\ \\hline \\text{Ardi} & \\text{Dini} & \\text{Beni} & \\text{Caca} & \\text{Fina} & \\text{Ega} \\\\ \\hline \\end{array}\\)
 Jadi, jawaban yang benar adalah C.`,
         tingkat: 'sulit',
         status: 'draft',
@@ -1303,7 +1225,9 @@ Intan duduk tepat di belakang Gani. Artinya, Intan berada di baris kedua pada ko
 Kila dan Luki duduk bersama di baris ketiga. Karena terdapat tepat dua kursi dalam setiap baris, baris ketiga diisi oleh Kila dan Luki tanpa menyisakan kursi kosong.
 Mira tidak duduk pada baris pertama, kedua, maupun ketiga. Dari empat baris yang tersedia, pilihan satu-satunya bagi Mira adalah baris keempat. Peserta yang telah ditempatkan adalah Gani, Hira, Intan, Joko, Kila, Luki, dan Mira. Satu-satunya peserta yang belum ditempatkan adalah Nando. Kursi kedua di baris keempat harus ditempati Nando.
 Susunan tersebut juga memenuhi jumlah keseluruhan delapan peserta dalam empat baris. Jadi, orang yang pasti satu baris dengan Mira adalah Nando.
-\\(\\def\\arraystretch{1.4}\\begin{array}{|c|l|l|} \\hline \\textbf{Baris} & \\textbf{Kiri} & \\textbf{Kanan} \\\\ \\hline 1 & \\text{Gani} & \\text{Hira} \\\\ \\hline 2 & \\text{Intan} & \\text{Joko} \\\\ \\hline 3 & \\text{Kila} & \\text{Luki} \\\\ \\hline 4 & \\text{Mira} & \\text{Nando} \\\\ \\hline \\end{array}\\)
+Salah satu susunan yang memenuhi syarat
+\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline \\textbf{Baris} & \\textbf{Kiri} & \\textbf{Kanan} \\\\ \\hline 1 & \\text{Gani} & \\text{Hira} \\\\ \\hline 2 & \\text{Intan} & \\text{Joko} \\\\ \\hline 3 & \\text{Kila} & \\text{Luki} \\\\ \\hline 4 & \\text{Mira} & \\text{Nando} \\\\ \\hline \\end{array}\\)
+Yang pasti hanya baris setiap peserta. Kursi kiri dan kanan pada setiap baris dapat bertukar: Gani dan Hira (Intan ikut berpindah karena selalu tepat di belakang Gani, sehingga Intan dan Joko juga bertukar), Kila dan Luki, serta Mira dan Nando.
 Jadi, jawaban yang benar adalah E.`,
         tingkat: 'sulit',
         status: 'draft',
@@ -1313,7 +1237,7 @@ Jadi, jawaban yang benar adalah E.`,
   {
     stimulus: { judul: `Numerik > Berhitung > Operasi Hitung - Dasar` },
     soal: [
-      // tryout-ref-00-01 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 1
+      // tryout-ref-00-01 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 1 · subtopik sumber: Operasi Hitung - Pecahan Sederhana (diterima di baris mapping Operasi Hitung - Dasar)
       {
         nomor: 12,
         tipe: 'pg',
@@ -1331,7 +1255,7 @@ Jadi, jawaban yang benar adalah E.`,
 \\(=\\frac{15}{40}+\\frac{5}{40}-\\frac{12}{40}\\)
 \\(=\\frac{8}{40}\\)
 \\(=\\frac{1}{5}\\)
-\\(=0,2\\)`,
+=0,2`,
         tingkat: 'mudah',
         status: 'draft',
       },
@@ -1340,46 +1264,60 @@ Jadi, jawaban yang benar adalah E.`,
   {
     stimulus: { judul: `Numerik > Berhitung > Perkalian Setara` },
     soal: [
-      // tryout-ref-00-04 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 4
+      // tryout-ref-00-05 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 5
       {
         nomor: 13,
         tipe: 'pg',
-        pertanyaan: `Penyedia katering membandingkan jumlah kotak dan banyaknya porsi makanan per kotak. Pasangan susunan yang menghasilkan jumlah porsi keseluruhan yang sama adalah …`,
+        pertanyaan: `Pengelola gudang menyusun dua rencana pengemasan. Jumlah barang pada setiap rencana dihitung dari banyaknya paket dikalikan isi setiap paket. Manakah pasangan rencana yang memuat jumlah barang yang sama?`,
         opsi: [
-          { label: 'A', teks: `24×730 sama dengan 35×460` },
-          { label: 'B', teks: `27×540 sama dengan 36×410` },
-          { label: 'C', teks: `28×600 sama dengan 24×700` },
-          { label: 'D', teks: `32×450 sama dengan 36×430` },
-          { label: 'E', teks: `44×360 sama dengan 48×340` },
+          { label: 'A', teks: `36×1200 dibandingkan dengan 48×1400` },
+          { label: 'B', teks: `28×1350 dibandingkan dengan 35×1260` },
+          { label: 'C', teks: `44×1230 dibandingkan dengan 33×1630` },
+          { label: 'D', teks: `42×1600 dibandingkan dengan 56×1170` },
+          { label: 'E', teks: `32×1470 dibandingkan dengan 42×1120` },
         ],
-        kunci: 'C',
+        kunci: 'E',
         pembahasan: `Eliminasi 0 secara berseberangan di setiap opsi:
 Yang dimaksud dengan “berseberangan” adalah pada dua hasil perkalian yang sedang dibandingkan. Hilangkan satu nol di akhir salah satu faktor pada sisi kiri dan satu nol di akhir salah satu faktor pada sisi kanan secara berpasangan. Secara matematis, langkah ini membagi kedua hasil perkalian dengan 10, sehingga kesetaraan keduanya tetap terjaga. Untuk dua pasang nol, kedua hasil dibagi dengan 100. Hanya nol di akhir bilangan yang boleh dihilangkan, dengan jumlah yang sama pada kedua sisi.
-Contoh: 28 × 600 dibandingkan dengan 24 × 700 dapat disederhanakan menjadi 28 × 6 dibandingkan dengan 24 × 7 dengan membagi kedua hasil perkalian dengan 100.
+Contoh: 32 × 1470 dibandingkan dengan 42 × 1120 dapat disederhanakan menjadi 32 × 147 dibandingkan dengan 42 × 112 dengan membagi kedua hasil perkalian dengan 10.
 Penyederhanaan setiap opsi:
-A. \\(24\\times 73\\cancel{0}\\text{ sama dengan }35\\times 46\\cancel{0}\\to 24\\times 73\\text{ sama dengan }35\\times 46\\)
-B. \\(27\\times 54\\cancel{0}\\text{ sama dengan }36\\times 41\\cancel{0}\\to 27\\times 54\\text{ sama dengan }36\\times 41\\)
-C. \\(28\\times 6\\cancel{0}\\cancel{0}\\text{ sama dengan }24\\times 7\\cancel{0}\\cancel{0}\\to 28\\times 6\\text{ sama dengan }24\\times 7\\)
-D. \\(32\\times 45\\cancel{0}\\text{ sama dengan }36\\times 43\\cancel{0}\\to 32\\times 45\\text{ sama dengan }36\\times 43\\)
-E. \\(44\\times 36\\cancel{0}\\text{ sama dengan }48\\times 34\\cancel{0}\\to 44\\times 36\\text{ sama dengan }48\\times 34\\)
+A. 36×1200 dibandingkan dengan 48×1400→36×12 dibandingkan dengan 48×14
+B. 28×1350 dibandingkan dengan 35×1260→28×135 dibandingkan dengan 35×126
+C. 44×1230 dibandingkan dengan 33×1630→44×123 dibandingkan dengan 33×163
+D. 42×1600 dibandingkan dengan 56×1170→42×160 dibandingkan dengan 56×117
+E. 32×1470 dibandingkan dengan 42×1120→32×147 dibandingkan dengan 42×112
 Periksa digit terakhir dari perkalian digit terakhir.
-Jika hasil digit terakhirnya sama, maka lanjutkan pengerjaan. Jika tidak sama, maka lanjutkan ke opsi berikutnya.
-A. 24×73 sama dengan 35×46
-24×73→4×3=12 (Digit terakhir adalah 2)
-35×46→5×6=30 (Digit terakhir adalah 0)
-Karena digit terakhirnya berbeda, maka lanjutkan ke opsi selanjutnya.
-B. 27×54 sama dengan 36×41
-27×54→7×4=28 (Digit terakhir adalah 8)
-36×41→6×1=6 (Digit terakhir adalah 6)
-Karena digit terakhirnya berbeda, maka lanjutkan ke opsi selanjutnya.
-C. 28×6 sama dengan 24×7
-28×6→8×6=48 (Digit terakhir adalah 8)
-24×7→4×7=28 (Digit terakhir adalah 8)
-Karena digit terakhirnya sama, maka lakukan perkalian penuhnya.
-28×6=168
-24×7=168
-Hasilnya sama. Jadi, jawabannya adalah C.`,
-        tingkat: 'sedang',
+Digit terakhir hanya menyaring. Jika digit terakhir kedua hasil kali berbeda, kedua hasil kali pasti tidak sama. Jika digit terakhirnya sama, kesamaan belum terbukti, sehingga perkalian penuh tetap harus dihitung.
+A. 36×12 dibandingkan dengan 48×14
+36×12→6×2=12 (Digit terakhir adalah 2)
+48×14→8×4=32 (Digit terakhir adalah 2)
+Digit terakhirnya sama, tetapi kesamaan belum terbukti. Lakukan perkalian penuh.
+36×12=432
+48×14=672
+Hasil berbeda: 432 ≠ 672. Lanjutkan ke opsi selanjutnya.
+B. 28×135 dibandingkan dengan 35×126
+28×135→8×5=40 (Digit terakhir adalah 0)
+35×126→5×6=30 (Digit terakhir adalah 0)
+Digit terakhirnya sama, tetapi kesamaan belum terbukti. Lakukan perkalian penuh.
+28×135=3780
+35×126=4410
+Hasil berbeda: 3780 ≠ 4410. Lanjutkan ke opsi selanjutnya.
+C. 44×123 dibandingkan dengan 33×163
+44×123→4×3=12 (Digit terakhir adalah 2)
+33×163→3×3=9 (Digit terakhir adalah 9)
+Karena digit terakhirnya berbeda, kedua hasil kali pasti tidak sama: 44×123 ≠ 33×163. Lanjutkan ke opsi selanjutnya.
+D. 42×160 dibandingkan dengan 56×117
+42×160→2×0=0 (Digit terakhir adalah 0)
+56×117→6×7=42 (Digit terakhir adalah 2)
+Karena digit terakhirnya berbeda, kedua hasil kali pasti tidak sama: 42×160 ≠ 56×117. Lanjutkan ke opsi selanjutnya.
+E. 32×147 dibandingkan dengan 42×112
+32×147→2×7=14 (Digit terakhir adalah 4)
+42×112→2×2=4 (Digit terakhir adalah 4)
+Digit terakhirnya sama, tetapi kesamaan belum terbukti. Lakukan perkalian penuh.
+32×147=4704
+42×112=4704
+Hasilnya sama: 4704 = 4704. Jadi, jawabannya adalah E.`,
+        tingkat: 'sulit',
         status: 'draft',
       },
     ],
@@ -1393,57 +1331,57 @@ Hasilnya sama. Jadi, jawabannya adalah C.`,
         tipe: 'pg',
         pertanyaan: `Dari lima pasangan operasi di bawah ini, tentukan pasangan yang kedua hasil pembagiannya bernilai sama.`,
         opsi: [
-          { label: 'A', teks: `2430÷35 sama dengan 1680÷25` },
-          { label: 'B', teks: `1800÷45 sama dengan 1200÷30` },
-          { label: 'C', teks: `1540÷28 sama dengan 2340÷39` },
-          { label: 'D', teks: `1890÷42 sama dengan 1740÷36` },
-          { label: 'E', teks: `2160÷54 sama dengan 2730÷63` },
+          { label: 'A', teks: `2430÷35 dibandingkan dengan 1680÷25` },
+          { label: 'B', teks: `1800÷45 dibandingkan dengan 1200÷30` },
+          { label: 'C', teks: `1540÷28 dibandingkan dengan 2340÷39` },
+          { label: 'D', teks: `1890÷42 dibandingkan dengan 1740÷36` },
+          { label: 'E', teks: `2160÷54 dibandingkan dengan 2730÷63` },
         ],
         kunci: 'B',
         pembahasan: `Ubah setiap pembagian menjadi perkalian setara dengan perkalian silang:
-A. 2430÷35 sama dengan 1680÷25
-\\(\\frac{2430}{35}=\\frac{1680}{25}\\)
-\\(\\Leftrightarrow 2430\\times 25=1680\\times 35\\)
-\\(\\to 2430\\times 25\\text{ sama dengan }1680\\times 35\\)
-B. 1800÷45 sama dengan 1200÷30
-\\(\\frac{1800}{45}=\\frac{1200}{30}\\)
-\\(\\Leftrightarrow 1800\\times 30=1200\\times 45\\)
-\\(\\to 1800\\times 30\\text{ sama dengan }1200\\times 45\\)
-C. 1540÷28 sama dengan 2340÷39
-\\(\\frac{1540}{28}=\\frac{2340}{39}\\)
-\\(\\Leftrightarrow 1540\\times 39=2340\\times 28\\)
-\\(\\to 1540\\times 39\\text{ sama dengan }2340\\times 28\\)
-D. 1890÷42 sama dengan 1740÷36
-\\(\\frac{1890}{42}=\\frac{1740}{36}\\)
-\\(\\Leftrightarrow 1890\\times 36=1740\\times 42\\)
-\\(\\to 1890\\times 36\\text{ sama dengan }1740\\times 42\\)
-E. 2160÷54 sama dengan 2730÷63
-\\(\\frac{2160}{54}=\\frac{2730}{63}\\)
-\\(\\Leftrightarrow 2160\\times 63=2730\\times 54\\)
-\\(\\to 2160\\times 63\\text{ sama dengan }2730\\times 54\\)
+A. 2430÷35 dibandingkan dengan 1680÷25
+Uji apakah \\(\\frac{2430}{35}=\\frac{1680}{25}\\):
+⇔2430×25=1680×35
+→2430×25 dibandingkan dengan 1680×35
+B. 1800÷45 dibandingkan dengan 1200÷30
+Uji apakah \\(\\frac{1800}{45}=\\frac{1200}{30}\\):
+⇔1800×30=1200×45
+→1800×30 dibandingkan dengan 1200×45
+C. 1540÷28 dibandingkan dengan 2340÷39
+Uji apakah \\(\\frac{1540}{28}=\\frac{2340}{39}\\):
+⇔1540×39=2340×28
+→1540×39 dibandingkan dengan 2340×28
+D. 1890÷42 dibandingkan dengan 1740÷36
+Uji apakah \\(\\frac{1890}{42}=\\frac{1740}{36}\\):
+⇔1890×36=1740×42
+→1890×36 dibandingkan dengan 1740×42
+E. 2160÷54 dibandingkan dengan 2730÷63
+Uji apakah \\(\\frac{2160}{54}=\\frac{2730}{63}\\):
+⇔2160×63=2730×54
+→2160×63 dibandingkan dengan 2730×54
 Eliminasi 0 secara berseberangan di setiap opsi:
 Yang dimaksud dengan “berseberangan” adalah pada dua hasil perkalian yang sedang dibandingkan. Hilangkan satu nol di akhir salah satu faktor pada sisi kiri dan satu nol di akhir salah satu faktor pada sisi kanan secara berpasangan. Secara matematis, langkah ini membagi kedua hasil perkalian dengan 10, sehingga kesetaraan keduanya tetap terjaga. Untuk dua pasang nol, kedua hasil dibagi dengan 100. Hanya nol di akhir bilangan yang boleh dihilangkan, dengan jumlah yang sama pada kedua sisi.
 Contoh setelah perkalian silang: 1800 × 30 dibandingkan dengan 1200 × 45 menjadi 18 × 30 dibandingkan dengan 12 × 45; kedua hasil perkalian dibagi dengan 100.
 Pada soal pembagian, penyederhanaan ini dilakukan terhadap hasil perkalian silang yang sudah dibentuk di atas.
 Penyederhanaan setiap opsi:
-A. \\(243\\cancel{0}\\times 25\\text{ sama dengan }168\\cancel{0}\\times 35\\to 243\\times 25\\text{ sama dengan }168\\times 35\\)
-B. \\(18\\cancel{0}\\cancel{0}\\times 30\\text{ sama dengan }12\\cancel{0}\\cancel{0}\\times 45\\to 18\\times 30\\text{ sama dengan }12\\times 45\\)
-C. \\(154\\cancel{0}\\times 39\\text{ sama dengan }234\\cancel{0}\\times 28\\to 154\\times 39\\text{ sama dengan }234\\times 28\\)
-D. \\(189\\cancel{0}\\times 36\\text{ sama dengan }174\\cancel{0}\\times 42\\to 189\\times 36\\text{ sama dengan }174\\times 42\\)
-E. \\(216\\cancel{0}\\times 63\\text{ sama dengan }273\\cancel{0}\\times 54\\to 216\\times 63\\text{ sama dengan }273\\times 54\\)
+A. 2430×25 dibandingkan dengan 1680×35→243×25 dibandingkan dengan 168×35
+B. 1800×30 dibandingkan dengan 1200×45→18×30 dibandingkan dengan 12×45
+C. 1540×39 dibandingkan dengan 2340×28→154×39 dibandingkan dengan 234×28
+D. 1890×36 dibandingkan dengan 1740×42→189×36 dibandingkan dengan 174×42
+E. 2160×63 dibandingkan dengan 2730×54→216×63 dibandingkan dengan 273×54
 Periksa digit terakhir dari perkalian digit terakhir.
-Jika hasil digit terakhirnya sama, maka lanjutkan pengerjaan. Jika tidak sama, maka lanjutkan ke opsi berikutnya.
-A. 243×25 sama dengan 168×35
+Digit terakhir hanya menyaring. Jika digit terakhir kedua hasil kali berbeda, kedua hasil kali pasti tidak sama. Jika digit terakhirnya sama, kesamaan belum terbukti, sehingga perkalian penuh tetap harus dihitung.
+A. 243×25 dibandingkan dengan 168×35
 243×25→3×5=15 (Digit terakhir adalah 5)
 168×35→8×5=40 (Digit terakhir adalah 0)
-Karena digit terakhirnya berbeda, maka lanjutkan ke opsi selanjutnya.
-B. 18×30 sama dengan 12×45
+Karena digit terakhirnya berbeda, kedua hasil kali pasti tidak sama: 243×25 ≠ 168×35. Lanjutkan ke opsi selanjutnya.
+B. 18×30 dibandingkan dengan 12×45
 18×30→8×0=0 (Digit terakhir adalah 0)
 12×45→2×5=10 (Digit terakhir adalah 0)
-Karena digit terakhirnya sama, maka lakukan perkalian penuhnya.
+Digit terakhirnya sama, tetapi kesamaan belum terbukti. Lakukan perkalian penuh.
 18×30=540
 12×45=540
-Hasilnya sama. Jadi, jawabannya adalah B.`,
+Hasilnya sama: 540 = 540. Jadi, jawabannya adalah B.`,
         tingkat: 'sedang',
         status: 'draft',
       },
@@ -1484,18 +1422,13 @@ Jadi, jawaban yang benar adalah B.`,
         tingkat: 'mudah',
         status: 'draft',
       },
-    ],
-  },
-  {
-    stimulus: { judul: `Numerik > Kecukupan Data > Aljabar - Persamaan` },
-    soal: [
-      // tryout-ref-00-13 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 13
+      // tryout-ref-00-12 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 12 · subtopik sumber: Aljabar - Persamaan (diterima di baris mapping Aljabar - Operasi Aljabar)
       {
         nomor: 16,
         tipe: 'pg',
-        pertanyaan: `Diketahui x merupakan bilangan real. Tentukan nilai x!
-(1) \\(x^{2}=64\\).
-(2) x<0.
+        pertanyaan: `Diketahui x merupakan bilangan real. Berapakah nilai x?
+(1) 5x−8=47.
+(2) x^(2)=121.
 Pilihlah informasi yang cukup untuk menjawab pertanyaan tersebut.`,
         opsi: [
           { label: 'A', teks: `Pernyataan (1) SAJA cukup untuk menjawab pertanyaan, tetapi (2) saja tidak cukup.` },
@@ -1504,20 +1437,18 @@ Pilihlah informasi yang cukup untuk menjawab pertanyaan tersebut.`,
           { label: 'D', teks: `Pernyataan (1) SAJA cukup untuk menjawab pertanyaan dan (2) SAJA cukup.` },
           { label: 'E', teks: `Pernyataan (1) dan (2) TIDAK CUKUP untuk menjawab pertanyaan.` },
         ],
-        kunci: 'C',
+        kunci: 'A',
         pembahasan: `Pernyataan (1):
-\\(x^{2}=64\\)
-x=±8
-Terdapat dua kemungkinan nilai x, yaitu 8 atau −8, sehingga pernyataan (1) SAJA tidak cukup.
+5x−8=47
+5x=55
+x=11
+Pernyataan (1) menghasilkan satu nilai x yang unik. Pernyataan (1) SAJA cukup.
 Pernyataan (2):
-x<0
-Pernyataan ini hanya menunjukkan bahwa x negatif. Nilai x dapat berupa −8, −3, atau bilangan negatif lainnya. Pernyataan (2) SAJA tidak cukup.
-Pernyataan (1) dan (2) bersama-sama:
-x=±8
-x<0
-x=−8
-Kedua informasi menghasilkan satu nilai x yang unik. Jadi, kedua pernyataan BERSAMA-SAMA cukup, tetapi masing-masing pernyataan SAJA tidak cukup. Jawaban yang benar adalah C.`,
-        tingkat: 'sedang',
+x^(2)=121
+x=±11
+Masih terdapat dua kemungkinan nilai x, yaitu 11 atau −11. Pernyataan (2) SAJA tidak cukup.
+Jadi, jawaban yang benar adalah A.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
     ],
@@ -1554,15 +1485,15 @@ Jadi, jawaban yang benar adalah B.`,
     ],
   },
   {
-    stimulus: { judul: `Numerik > Kecukupan Data > Soal Cerita - Geometri` },
+    stimulus: { judul: `Numerik > Kecukupan Data > Soal Cerita - Aljabar` },
     soal: [
-      // tryout-ref-00-22 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 22
+      // tryout-ref-00-21 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 21 · subtopik sumber: Soal Cerita - Geometri (diterima di baris mapping Soal Cerita - Aljabar)
       {
         nomor: 18,
         tipe: 'pg',
-        pertanyaan: `Sebuah taman berbentuk persegi panjang memiliki panjang lebih besar daripada lebarnya. Berapakah luas taman tersebut?
-(1) Keliling taman adalah 64 meter.
-(2) Panjang taman 8 meter lebih besar daripada lebarnya.
+        pertanyaan: `Sebuah ruang pamer berbentuk persegi akan dipasangi karpet. Berapakah luas lantai ruang pamer tersebut?
+(1) Panjang salah satu sisi ruang pamer adalah 14 meter.
+(2) Lebar ruang pamer tersebut adalah 14 meter.
 Pilihlah informasi yang cukup untuk menjawab pertanyaan tersebut.`,
         opsi: [
           { label: 'A', teks: `Pernyataan (1) SAJA cukup untuk menjawab pertanyaan, tetapi (2) saja tidak cukup.` },
@@ -1571,35 +1502,29 @@ Pilihlah informasi yang cukup untuk menjawab pertanyaan tersebut.`,
           { label: 'D', teks: `Pernyataan (1) SAJA cukup untuk menjawab pertanyaan dan (2) SAJA cukup.` },
           { label: 'E', teks: `Pernyataan (1) dan (2) TIDAK CUKUP untuk menjawab pertanyaan.` },
         ],
-        kunci: 'C',
-        pembahasan: `Misalkan panjang taman p dan lebarnya l, dengan p>l>0. Luas taman adalah L=p×l.
+        kunci: 'D',
+        pembahasan: `Diketahui ruang pamer berbentuk persegi. Luas persegi dihitung dengan rumus:
+L=s×s
+dengan s merupakan panjang sisi persegi.
 Pernyataan (1):
-2(p+l)=64
-p+l=32
-Pasangan p=20, l=12 menghasilkan luas 240 m², sedangkan p=18, l=14 menghasilkan luas 252 m². Keduanya memiliki keliling 64 meter.
-Pernyataan (1) SAJA tidak cukup.
+Panjang salah satu sisi ruang pamer adalah 14 meter.
+s=14
+L=s×s
+L=14×14
+L=196 m²
+Pernyataan (1) SAJA cukup.
 Pernyataan (2):
-p−l=8
-Pasangan p=20, l=12 menghasilkan luas 240 m², sedangkan p=16, l=8 menghasilkan luas 128 m². Keduanya memiliki selisih panjang dan lebar sebesar 8 meter.
-Pernyataan (2) SAJA tidak cukup.
-Pernyataan (1) dan (2) bersama-sama:
-p+l=32
-p−l=8
-Jumlahkan kedua persamaan:
-2p=40
-p=20
-l=32−20=12
-L=20×12=240 m²
-Luas taman diketahui secara tunggal. Jadi, kedua pernyataan BERSAMA-SAMA cukup, tetapi masing-masing pernyataan SAJA tidak cukup. Jawaban yang benar adalah C.`,
-        tingkat: 'sedang',
+Lebar ruang pamer adalah 14 meter. Pada persegi, seluruh sisinya sama panjang, sehingga:
+s=14
+L=s×s
+L=14×14
+L=196 m²
+Pernyataan (2) SAJA cukup.
+Masing-masing pernyataan secara terpisah cukup. Jadi, jawaban yang benar adalah D.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-    ],
-  },
-  {
-    stimulus: { judul: `Numerik > Kecukupan Data > Soal Cerita - Perbandingan Senilai dan Berbalik` },
-    soal: [
-      // tryout-ref-00-25 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 25
+      // tryout-ref-00-25 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 25 · subtopik sumber: Soal Cerita - Perbandingan Senilai dan Berbalik (diterima di baris mapping Soal Cerita - Aljabar)
       {
         nomor: 19,
         tipe: 'pg',
@@ -1634,17 +1559,12 @@ Karena 10≤10, kelompok mesin B dapat menyelesaikan target dalam waktu maksimal
         tingkat: 'sedang',
         status: 'draft',
       },
-    ],
-  },
-  {
-    stimulus: { judul: `Numerik > Kecukupan Data > Soal Cerita - Aljabar` },
-    soal: [
       // tryout-ref-00-19 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 19
       {
         nomor: 20,
         tipe: 'pg',
         pertanyaan: `Sebuah pusat pelatihan menyediakan dua jenis layanan, yaitu Kelas Tatap Muka dan Kelas Daring. Setiap tiket berlaku untuk satu peserta. Perhatikan tabel berikut.
-\\(\\def\\arraystretch{1.4}\\begin{array}{|l|l|c|} \\hline \\textbf{Jenis Peserta} & \\textbf{Harga/Tiket} & \\textbf{Jumlah Tiket Terjual} \\\\ \\hline \\text{Kelas Tatap Muka} & \\text{Rp120.000} & \\text{m} \\\\ \\hline \\text{Kelas Daring} & \\text{Rp60.000} & \\text{n} \\\\ \\hline \\end{array}\\)
+\\(\\def\\arraystretch{1.4}\\begin{array}{|l|l|l|} \\hline \\textbf{Jenis Peserta} & \\textbf{Harga/Tiket} & \\textbf{Jumlah Tiket Terjual} \\\\ \\hline \\text{Kelas Tatap Muka} & \\text{Rp120.000} & \\text{m} \\\\ \\hline \\text{Kelas Daring} & \\text{Rp60.000} & \\text{n} \\\\ \\hline \\end{array}\\)
 Berapakah total pendapatan dari pendaftaran seluruh peserta pelatihan?
 (1) Jumlah peserta kelas tatap muka dan kelas daring adalah 220 peserta.
 (2) Jumlah peserta kelas daring 60 peserta lebih banyak daripada peserta kelas tatap muka.
@@ -1662,10 +1582,12 @@ Total pendapatan: P=120.000m+60.000n.
 Pernyataan (1):
 m+n=220
 Pernyataan ini belum cukup karena terdapat banyak kemungkinan jumlah peserta pada setiap jenis layanan. Harga kedua layanan berbeda, sehingga total pendapatan juga dapat berbeda.
+Contoh: m=100 dan n=120 memberi P=120.000(100)+60.000(120)=19.200.000, sedangkan m=80 dan n=140 memberi P=120.000(80)+60.000(140)=18.000.000. Keduanya memenuhi m+n=220, tetapi pendapatannya berbeda.
 Pernyataan (1) SAJA tidak cukup.
 Pernyataan (2):
 n=m+60
 Selisih jumlah peserta diketahui, tetapi jumlah peserta masing-masing layanan belum diketahui secara pasti.
+Contoh: m=20 dan n=80 memberi P=120.000(20)+60.000(80)=7.200.000, sedangkan m=80 dan n=140 memberi P=18.000.000. Keduanya memenuhi n=m+60, tetapi pendapatannya berbeda.
 Pernyataan (2) SAJA tidak cukup.
 Pernyataan (1) dan (2) bersama-sama:
 m+n=220
@@ -1690,80 +1612,82 @@ Jadi, kedua pernyataan bersama-sama cukup untuk menentukan total pendapatan sebe
   {
     stimulus: { judul: `Numerik > Deret Bilangan > Deret Angka - 1 Towew` },
     soal: [
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Deret Angka - 1 Towew; tidak ada di tryout generator
+      // tryout-ref-00-30 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 30 · subtopik sumber: Deret Angka - 3 Towew (diterima di baris mapping Deret Angka - 1 Towew)
       {
         nomor: 21,
         tipe: 'pg',
-        pertanyaan: `2, 4, 6, 8, 10, ...`,
+        pertanyaan: `6,9,8,6,12,9,6,15,10,…`,
         opsi: [
-          { label: 'A', teks: `11` },
-          { label: 'B', teks: `12` },
-          { label: 'C', teks: `13` },
-          { label: 'D', teks: `14` },
-          { label: 'E', teks: `16` },
+          { label: 'A', teks: `5` },
+          { label: 'B', teks: `9` },
+          { label: 'C', teks: `12` },
+          { label: 'D', teks: `18` },
+          { label: 'E', teks: `6` },
         ],
-        kunci: 'B',
-        pembahasan: `⟦gambar:gambar/jadiasn/cpns2027-tiu-deret-angka-1-towew-s01-pembahasan-1.png⟧
-
-\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\uparrow \\uparrow \\uparrow \\text{ atau }\\downarrow \\downarrow \\downarrow  & \\text{1 Towew} \\\\ \\hline \\uparrow \\downarrow \\uparrow \\text{ atau }\\downarrow \\uparrow \\downarrow  & \\text{2 Towew} \\\\ \\hline \\uparrow \\uparrow \\downarrow \\text{ atau }\\downarrow \\downarrow \\uparrow  & \\text{3 Towew} \\\\ \\hline \\end{array}\\)
-
-↑ ↑ ↑ artinya 1 towew
-
+        kunci: 'E',
+        pembahasan: `⟦gambar:gambar/jadiasn/cpns2027-tiu-deret-angka-3-towew-s01-acuan-1.png⟧
+↓ ↓ ↑ artinya 3 towew
+3 towew berarti deret tersusun atas 3 larik berselang: suku ke-1, 4, 7, … membentuk larik ke-1; suku ke-2, 5, 8, … membentuk larik ke-2; suku ke-3, 6, 9, … membentuk larik ke-3.
 Pola yang terlihat:
-⟦gambar:gambar/jadiasn/cpns2027-tiu-deret-angka-1-towew-s01-pembahasan-2.png⟧
+⟦gambar:gambar/jadiasn/cpns2027-tiu-deret-angka-3-towew-s01-acuan-2.png⟧
 
-Pola tambahannya tetap, yaitu +2. Maka suku berikutnya adalah 10 + 2 = 12.
-Jadi, jawaban yang benar adalah B.`,
-        status: 'direview',
+Suku yang ditanyakan berada pada larik ke-1. Larik ke-1 memiliki pola tetap, yaitu 6, 6, 6, sehingga suku berikutnya adalah 6.
+Jadi, jawaban yang benar adalah E.`,
+        tingkat: 'mudah',
+        status: 'draft',
       },
     ],
   },
   {
     stimulus: { judul: `Numerik > Deret Bilangan > Matriks Deret` },
     soal: [
-      // tryout-ref-00-31 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 31
+      // tryout-ref-00-32 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 32
       {
         nomor: 22,
         tipe: 'pg',
-        pertanyaan: `Tentukan nilai x yang melengkapi pola bilangan pada tabel berikut.
-\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline 7 & 18 & 31 \\\\ \\hline 12 & 25 & 40 \\\\ \\hline 17 & 32 & \\text{x} \\\\ \\hline \\end{array}\\)`,
+        pertanyaan: `Bilangan berapakah yang tepat untuk menggantikan x pada tabel berikut?
+\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline -18 & 9 & 28 \\\\ \\hline -11 & 5 & 22 \\\\ \\hline -4 & \\text{x} & 16 \\\\ \\hline \\end{array}\\)`,
         opsi: [
-          { label: 'A', teks: `45` },
-          { label: 'B', teks: `47` },
-          { label: 'C', teks: `49` },
-          { label: 'D', teks: `51` },
-          { label: 'E', teks: `53` },
-        ],
-        kunci: 'C',
-        pembahasan: `Perhatikan bilangan pada tabel, bilangan tersebut memiliki pola sebagai berikut.
-Bilangan pada setiap kolom bertambah dengan selisih tetap dari atas ke bawah.
-Kolom pertama: 7+5=12;12+5=17.
-Kolom kedua: 18+7=25;25+7=32.
-Kolom ketiga: 31+9=40;40+9=x.
-Maka, diperoleh x=40+9=49.`,
-        tingkat: 'mudah',
-        status: 'draft',
-      },
-      // tryout-ref-00-36 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 36
-      {
-        nomor: 23,
-        tipe: 'pg',
-        pertanyaan: `Angka pada setiap baris memiliki hubungan yang sama. Berapakah nilai yang harus mengisi x?
-\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline 5 & 9 & 16 \\\\ \\hline 8 & 21 & 43 \\\\ \\hline 7 & \\text{x} & 31 \\\\ \\hline \\end{array}\\)`,
-        opsi: [
-          { label: 'A', teks: `18` },
-          { label: 'B', teks: `16` },
-          { label: 'C', teks: `17` },
-          { label: 'D', teks: `20` },
-          { label: 'E', teks: `22` },
+          { label: 'A', teks: `1` },
+          { label: 'B', teks: `−1` },
+          { label: 'C', teks: `3` },
+          { label: 'D', teks: `5` },
+          { label: 'E', teks: `9` },
         ],
         kunci: 'A',
         pembahasan: `Perhatikan bilangan pada tabel, bilangan tersebut memiliki pola sebagai berikut.
-Bilangan ketiga diperoleh dari kuadrat bilangan pertama, kemudian dikurangi bilangan kedua pada baris yang sama.
-Baris pertama: \\(5^{2}-9=25-9=16\\).
-Baris kedua: \\(8^{2}-21=64-21=43\\).
-Baris ketiga: \\(7^{2}-x=31\\).
-Maka, diperoleh 49−x=31;x=49−31=18.`,
+Setiap kolom mengikuti perubahan yang tetap dari atas ke bawah: bertambah pada kolom pertama dan berkurang pada dua kolom lainnya.
+Periksa aturan itu pada dua kolom yang lengkap lebih dahulu:
+Kolom pertama: −18+7=−11;−11+7=−4 (sesuai dengan tabel).
+Kolom ketiga: 28−6=22;22−6=16 (sesuai dengan tabel).
+Aturan itu berlaku pada kedua kolom contoh, sehingga dapat diterapkan pada kolom yang memuat x:
+Kolom kedua: 9−4=5;5−4=x.
+Maka, diperoleh x=5−4=1.`,
+        tingkat: 'mudah',
+        status: 'draft',
+      },
+      // tryout-ref-00-35 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 35
+      {
+        nomor: 23,
+        tipe: 'pg',
+        pertanyaan: `Dengan menerapkan pola yang konsisten pada setiap baris, tentukan nilai x dalam tabel berikut.
+\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline 7 & 16 & 33 \\\\ \\hline 9 & 23 & 58 \\\\ \\hline 8 & 19 & \\text{x} \\\\ \\hline \\end{array}\\)`,
+        opsi: [
+          { label: 'A', teks: `41` },
+          { label: 'B', teks: `43` },
+          { label: 'C', teks: `44` },
+          { label: 'D', teks: `45` },
+          { label: 'E', teks: `47` },
+        ],
+        kunci: 'D',
+        pembahasan: `Perhatikan bilangan pada tabel, bilangan tersebut memiliki pola sebagai berikut.
+Pada setiap baris, bilangan ketiga merupakan kuadrat bilangan pertama dikurangi bilangan kedua.
+Periksa aturan itu pada dua baris yang lengkap lebih dahulu:
+Baris pertama: 7^(2)−16=49−16=33 (sesuai dengan tabel).
+Baris kedua: 9^(2)−23=81−23=58 (sesuai dengan tabel).
+Aturan itu berlaku pada kedua baris contoh, sehingga dapat diterapkan pada baris yang memuat x:
+Baris ketiga: 8^(2)−19=64−19=x.
+Maka, diperoleh x=64−19=45.`,
         tingkat: 'sulit',
         status: 'draft',
       },
@@ -1772,60 +1696,60 @@ Maka, diperoleh 49−x=31;x=49−31=18.`,
   {
     stimulus: { judul: `Numerik > Deret Bilangan > Pola Bilangan Tabel` },
     soal: [
-      // tryout-ref-00-37 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 37
+      // tryout-ref-00-42 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 42
       {
         nomor: 24,
         tipe: 'pg',
         pertanyaan: `Perhatikan tabel berikut!
-\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\textbf{Urutan ke-} & \\textbf{Nilai} \\\\ \\hline 1 & 2 \\\\ \\hline 4 & 14 \\\\ \\hline 9 & 34 \\\\ \\hline 17 & \\text{?} \\\\ \\hline 23 & 90 \\\\ \\hline \\end{array}\\)
-Perubahan nilai mengikuti pola yang sama. Nilai pada urutan ke-17 adalah ....`,
+\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\textbf{Urutan ke-} & \\textbf{Nilai} \\\\ \\hline 1 & 2 \\\\ \\hline 2 & 6 \\\\ \\hline 4 & 54 \\\\ \\hline 6 & \\text{?} \\\\ \\hline 7 & 1458 \\\\ \\hline \\end{array}\\)
+Bilangan manakah yang melengkapi nilai pada urutan ke-6 sesuai pola hubungan dalam tabel?`,
         opsi: [
-          { label: 'A', teks: `62` },
-          { label: 'B', teks: `64` },
-          { label: 'C', teks: `68` },
-          { label: 'D', teks: `66` },
-          { label: 'E', teks: `70` },
+          { label: 'A', teks: `162` },
+          { label: 'B', teks: `324` },
+          { label: 'C', teks: `432` },
+          { label: 'D', teks: `486` },
+          { label: 'E', teks: `1458` },
         ],
         kunci: 'D',
-        pembahasan: `Misalkan \\(U_{n}\\) adalah nilai pada urutan ke-n, dengan n menyatakan nomor urutan.
+        pembahasan: `Misalkan \\(U_{n}\\) adalah nilai pada urutan ke-\\(n\\), dengan \\(n\\) menyatakan nomor urutan.
 Perhatikan hubungan antara urutan dan nilainya.
-• \\(U_{1}=4(1)-2=4-2=2\\)
-• \\(U_{4}=4(4)-2=16-2=14\\)
-• \\(U_{9}=4(9)-2=36-2=34\\)
-• \\(U_{23}=4(23)-2=92-2=90\\)
+• \\(U_{1}=2\\times 3^{1-1}=2\\times 1=2\\)
+• \\(U_{2}=2\\times 3^{2-1}=2\\times 3=6\\)
+• \\(U_{4}=2\\times 3^{4-1}=2\\times 27=54\\)
+• \\(U_{7}=2\\times 3^{7-1}=2\\times 729=1458\\)
 Maka pola yang digunakan adalah:
-\\(U_{n}=4\\times n-2\\)
-\\(U_{17}=4(17)-2=68-2=66\\)
-Jadi, \\(U_{17}=66\\).`,
-        tingkat: 'mudah',
+\\(U_{n}=2\\times 3^{n-1}\\)
+\\(U_{6}=2\\times 3^{6-1}=2\\times 243=486\\)
+Jadi, \\(U_{6}=486\\).`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-00-41 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 41
+      // tryout-ref-00-40 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 40
       {
         nomor: 25,
         tipe: 'pg',
         pertanyaan: `Perhatikan tabel berikut!
-\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\textbf{Urutan ke-} & \\textbf{Nilai} \\\\ \\hline 1 & 3 \\\\ \\hline 3 & 12 \\\\ \\hline 5 & 48 \\\\ \\hline 8 & \\text{?} \\\\ \\hline 10 & 1536 \\\\ \\hline \\end{array}\\)
-Dengan mempertahankan pola perubahan yang sama, nilai yang diperoleh pada urutan ke-8 adalah ....`,
+\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\textbf{Urutan ke-} & \\textbf{Nilai} \\\\ \\hline 2 & 2 \\\\ \\hline 5 & 20 \\\\ \\hline 9 & 72 \\\\ \\hline 15 & \\text{?} \\\\ \\hline 21 & 420 \\\\ \\hline \\end{array}\\)
+Tanda tanya pada urutan ke-15 harus diganti dengan bilangan ....`,
         opsi: [
-          { label: 'A', teks: `384` },
-          { label: 'B', teks: `192` },
-          { label: 'C', teks: `256` },
-          { label: 'D', teks: `512` },
-          { label: 'E', teks: `768` },
+          { label: 'A', teks: `196` },
+          { label: 'B', teks: `200` },
+          { label: 'C', teks: `210` },
+          { label: 'D', teks: `225` },
+          { label: 'E', teks: `240` },
         ],
-        kunci: 'A',
-        pembahasan: `Misalkan \\(U_{n}\\) adalah nilai pada urutan ke-n, dengan n menyatakan nomor urutan.
+        kunci: 'C',
+        pembahasan: `Misalkan \\(U_{n}\\) adalah nilai pada urutan ke-\\(n\\), dengan \\(n\\) menyatakan nomor urutan.
 Perhatikan hubungan antara urutan dan nilainya.
-• \\(U_{1}=3\\times 2^{1-1}=3\\times 1=3\\)
-• \\(U_{3}=3\\times 2^{3-1}=3\\times 4=12\\)
-• \\(U_{5}=3\\times 2^{5-1}=3\\times 16=48\\)
-• \\(U_{10}=3\\times 2^{10-1}=3\\times 512=1536\\)
+• \\(U_{2}=2^{2}-2=4-2=2\\)
+• \\(U_{5}=5^{2}-5=25-5=20\\)
+• \\(U_{9}=9^{2}-9=81-9=72\\)
+• \\(U_{21}=21^{2}-21=441-21=420\\)
 Maka pola yang digunakan adalah:
-\\(U_{n}=3\\times 2^{n-1}\\)
-\\(U_{8}=3\\times 2^{8-1}=3\\times 128=384\\)
-Jadi, \\(U_{8}=384\\).`,
-        tingkat: 'sulit',
+\\(U_{n}=n^{2}-n\\)
+\\(U_{15}=15^{2}-15=225-15=210\\)
+Jadi, \\(U_{15}=210\\).`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -1833,34 +1757,39 @@ Jadi, \\(U_{8}=384\\).`,
   {
     stimulus: { judul: `Numerik > Soal Cerita > Tabel Pernyataan - Kombinasi Pernyataan` },
     soal: [
-      // tryout-ref-00-44 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 44
+      // tryout-ref-00-43 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 43
       {
         nomor: 26,
         tipe: 'pg',
-        pertanyaan: `Data peserta kegiatan lingkungan di tiga RW tercatat pada tabel berikut. Setiap peserta hanya terdaftar pada satu kegiatan.
-\\(\\def\\arraystretch{1.4}\\begin{array}{|l|c|c|c|} \\hline \\textbf{Kegiatan} & \\textbf{RW 01} & \\textbf{RW 02} & \\textbf{RW 03} \\\\ \\hline \\text{Bank sampah} & 18 & 15 & 12 \\\\ \\hline \\text{Kebun warga} & 9 & 12 & 14 \\\\ \\hline \\text{Daur ulang} & 11 & 8 & 9 \\\\ \\hline \\text{Kerajinan} & 7 & 10 & 9 \\\\ \\hline \\end{array}\\)
+        pertanyaan: `Daftar harga satuan menu di sebuah kedai adalah sebagai berikut. Seluruh pembelian dikenai harga sesuai tabel tanpa biaya tambahan.
+\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|} \\hline \\textbf{Menu} & \\textbf{Harga} \\\\ \\hline \\text{Teh} & \\text{Rp8.000} \\\\ \\hline \\text{Kopi} & \\text{Rp12.000} \\\\ \\hline \\text{Roti} & \\text{Rp10.000} \\\\ \\hline \\text{Puding} & \\text{Rp7.000} \\\\ \\hline \\end{array}\\)
 Pernyataan:
-(1) Total peserta RW 01 sama dengan total peserta RW 02.
-(2) Jumlah peserta daur ulang dari ketiga RW adalah 28 orang.
-(3) RW 03 memiliki peserta kebun warga terbanyak.
-(4) Selisih total peserta RW 02 dan RW 03 adalah 2 orang.
+(1) Nara membeli 2 teh dan 1 roti dengan total harga Rp26.000.
+(2) Aldi membeli 1 kopi dan 2 puding dengan total harga Rp25.000.
+(3) Mira membeli 2 roti dan 1 puding dengan total harga Rp27.000.
+(4) Danu membeli 3 teh dan 1 kopi dengan total harga Rp35.000.
 Kombinasi yang memuat seluruh pernyataan benar adalah ....`,
         opsi: [
           { label: 'A', teks: `1 dan 2` },
-          { label: 'B', teks: `1, 2, dan 3` },
-          { label: 'C', teks: `2, 3, dan 4` },
-          { label: 'D', teks: `1, 3, dan 4` },
-          { label: 'E', teks: `1, 2, 3, dan 4` },
+          { label: 'B', teks: `2 dan 3` },
+          { label: 'C', teks: `1 dan 4` },
+          { label: 'D', teks: `1 dan 3` },
+          { label: 'E', teks: `1, 3, dan 4` },
         ],
-        kunci: 'B',
-        pembahasan: `(1) RW 01: 18+9+11+7=45 orang.
-RW 02: 15+12+8+10=45 orang. Kedua total sama, benar.
-(2) Daur ulang: 11+8+9=28 orang, benar.
-(3) Kebun warga: 14>12>9; RW 03 terbanyak, benar.
-(4) RW 03: 12+14+9+9=44 orang.
-Selisih: 45−44=1≠2 orang, salah; coret C, D, dan E.
-Benar: 1, 2, dan 3. Opsi A tidak memuat pernyataan (3), sehingga kombinasi lengkap terdapat pada opsi B.`,
-        tingkat: 'sedang',
+        kunci: 'D',
+        pembahasan: `Harga satuan pada tabel berlaku untuk semua pembelian tanpa biaya tambahan. Periksa setiap pernyataan dengan menjumlahkan banyak barang × harga satuannya. Tabel berikut menunjukkan nilai yang seharusnya, bukan hanya status benar/salah.
+\\(\\def\\arraystretch{1.4}\\begin{array}{|l|l|l|l|} \\hline \\textbf{No.} & \\textbf{Hitungan (rupiah)} & \\textbf{Klaim} & \\textbf{Status} \\\\ \\hline (1) & 2 \\times  8.000 + 10.000 = 26.000 & \\text{Rp26.000} & \\textbf{Benar} \\\\ \\hline (2) & 12.000 + 2 \\times  7.000 = 26.000 & \\text{Rp25.000} & \\text{Salah} \\\\ \\hline (3) & 2 \\times  10.000 + 7.000 = 27.000 & \\text{Rp27.000} & \\textbf{Benar} \\\\ \\hline (4) & 3 \\times  8.000 + 12.000 = 36.000 & \\text{Rp35.000} & \\text{Salah} \\\\ \\hline \\end{array}\\)
+Pernyataan (1) benar karena 2 × 8.000 + 10.000 = 26.000 rupiah. Pernyataan (2) salah karena 12.000 + 2 × 7.000 = 26.000 rupiah, selisih Rp1.000 lebih tinggi daripada klaim. Pernyataan (3) benar karena 2 × 10.000 + 7.000 = 27.000 rupiah. Pernyataan (4) salah karena 3 × 8.000 + 12.000 = 36.000 rupiah, selisih Rp1.000 lebih tinggi daripada klaim.
+Eliminasi opsi:
+A memuat (2) yang salah dan belum memuat (3).
+B memuat (2) yang salah dan belum memuat (1).
+C memuat (4) yang salah dan belum memuat (3).
+D memuat tepat seluruh pernyataan benar, yaitu (1) dan (3).
+E memuat tambahan (4) yang salah.
+Jadi, jawaban yang benar adalah D.
+
+Cara cepat: Uji pernyataan yang paling membedakan pilihan untuk eliminasi awal, lalu pastikan opsi akhir memuat seluruh pernyataan benar tanpa tambahan pernyataan salah.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
     ],
@@ -1868,45 +1797,41 @@ Benar: 1, 2, dan 3. Opsi A tidak memuat pernyataan (3), sehingga kombinasi lengk
   {
     stimulus: { judul: `Numerik > Soal Cerita > Tabel Pernyataan - Kombinasi Optimal` },
     soal: [
-      // tryout-ref-00-46 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 46
+      // tryout-ref-00-48 · Andika - Numerik SKD 2027_Ready to Input.docx, soal 48
       {
         nomor: 27,
         tipe: 'pg',
-        pertanyaan: `Sebanyak 264 peserta akan mengikuti kunjungan edukasi. Panitia dapat menggunakan lebih dari satu bus untuk setiap jenis berikut.
-\\(\\def\\arraystretch{1.4}\\begin{array}{|l|l|} \\hline \\textbf{Jenis Bus} & \\textbf{Kapasitas} \\\\ \\hline \\text{Bus A} & \\text{32 orang} \\\\ \\hline \\text{Bus B} & \\text{44 orang} \\\\ \\hline \\text{Bus C} & \\text{60 orang} \\\\ \\hline \\end{array}\\)
+        pertanyaan: `Sebuah persemaian akan membeli baki untuk menempatkan bibit. Tersedia tiga jenis baki dengan kapasitas dan harga berikut.
+\\(\\def\\arraystretch{1.4}\\begin{array}{|c|c|c|} \\hline \\textbf{Jenis Baki} & \\textbf{Kapasitas} & \\textbf{Biaya} \\\\ \\hline \\text{A} & \\text{12 bibit} & \\text{Rp7.000} \\\\ \\hline \\text{B} & \\text{20 bibit} & \\text{Rp11.000} \\\\ \\hline \\text{C} & \\text{30 bibit} & \\text{Rp16.000} \\\\ \\hline \\end{array}\\)
 Dengan ketentuan:
-(1) Seluruh peserta memperoleh tempat duduk.
-(2) Jumlah kursi kosong dari seluruh bus yang digunakan tidak lebih dari 12 kursi.
-Kombinasi bus yang memenuhi kedua ketentuan tersebut adalah ....`,
+(1) Total biaya pembelian tidak melebihi Rp70.000.
+(2) Jumlah baki yang dibeli paling banyak 6 buah.
+(3) Baki C tersedia paling banyak 2 buah; baki A dan B tersedia sesuai kebutuhan.
+Di antara pilihan berikut, kombinasi yang menampung bibit terbanyak dan memenuhi seluruh ketentuan adalah ....`,
         opsi: [
-          { label: 'A', teks: `2 bus A dan 3 bus C` },
-          { label: 'B', teks: `3 bus A dan 3 bus C` },
-          { label: 'C', teks: `3 bus A, 2 bus B, dan 2 bus C` },
-          { label: 'D', teks: `3 bus A, 1 bus B, dan 2 bus C` },
-          { label: 'E', teks: `2 bus A, 1 bus B, dan 3 bus C` },
+          { label: 'A', teks: `6 baki B` },
+          { label: 'B', teks: `1 baki A, 4 baki B, dan 1 baki C` },
+          { label: 'C', teks: `2 baki A, 2 baki B, dan 2 baki C` },
+          { label: 'D', teks: `1 baki A, 3 baki B, dan 2 baki C` },
+          { label: 'E', teks: `3 baki A dan 3 baki C` },
         ],
-        kunci: 'B',
-        pembahasan: `Periksa total kapasitas setiap pilihan.
-A. 2(32)+3(60)=244 kursi.
-Kapasitas tidak cukup untuk 264 peserta.
-B. 3(32)+3(60)=276 kursi.
-Kursi kosong: 276−264=12 kursi. Memenuhi batas 12 kursi kosong.
-C. 3(32)+2(44)+2(60)=304 kursi.
-Kursi kosong: 304−264=40 kursi. Melebihi batas 12 kursi kosong.
-D. 3(32)+1(44)+2(60)=260 kursi.
-Kapasitas tidak cukup untuk 264 peserta.
-E. 2(32)+1(44)+3(60)=288 kursi.
-Kursi kosong: 288−264=24 kursi. Melebihi batas 12 kursi kosong.
-Jadi, kombinasi yang memenuhi seluruh ketentuan adalah 3 bus A dan 3 bus C pada opsi B.`,
-        tingkat: 'sedang',
+        kunci: 'C',
+        pembahasan: `Tiga ketentuan harus dipenuhi sekaligus: biaya paling banyak Rp70.000, jumlah baki paling banyak 6, dan baki C paling banyak 2 buah. Di antara opsi yang memenuhi semuanya, dipilih kapasitas terbesar.
+\\(\\def\\arraystretch{1.4}\\begin{array}{|l|l|l|l|l|} \\hline \\textbf{Opsi} & \\textbf{Kombinasi baki} & \\textbf{Kapasitas (bibit)} & \\textbf{Biaya (rupiah)} & \\textbf{Kelayakan} \\\\ \\hline \\text{A} & \\text{6 baki B} & 6 \\times  20 = 120 & 6 \\times  11.000 = 66.000 & \\text{Layak} \\\\ \\hline \\text{B} & \\text{1 baki A, 4 baki B, dan 1 baki C} & 12 + 4 \\times  20 + 30 = 122 & 7.000 + 4 \\times  11.000 + 16.000 = 67.000 & \\text{Layak} \\\\ \\hline \\text{C} & \\text{2 baki A, 2 baki B, dan 2 baki C} & 2 \\times  12 + 2 \\times  20 + 2 \\times  30 = 124 & 2 \\times  7.000 + 2 \\times  11.000 + 2 \\times  16.000 = 68.000 & \\textbf{Layak; kapasitas terbesar} \\\\ \\hline \\text{D} & \\text{1 baki A, 3 baki B, dan 2 baki C} & 12 + 3 \\times  20 + 2 \\times  30 = 132 & 7.000 + 3 \\times  11.000 + 2 \\times  16.000 = 72.000 & \\text{Melebihi anggaran} \\\\ \\hline \\text{E} & \\text{3 baki A dan 3 baki C} & 3 \\times  12 + 3 \\times  30 = 126 & 3 \\times  7.000 + 3 \\times  16.000 = 69.000 & \\text{Baki C lebih dari 2} \\\\ \\hline \\end{array}\\)
+Semua opsi memakai 6 baki. D dan E menampung lebih banyak bibit daripada C, tetapi melanggar ketentuan: D memerlukan biaya Rp72.000, melebihi anggaran Rp70.000, dan E memerlukan 3 baki C, padahal hanya tersedia 2. Di antara opsi yang layak (A, B, dan C), kapasitas terbesar adalah 124 bibit pada C.
+Biaya per bibit (A sekitar Rp583, B Rp550, C sekitar Rp533) membantu melihat efisiensi, tetapi bukan dasar jawaban karena jumlah baki dan stok baki C dibatasi.
+Jadi, jawaban yang benar adalah C.
+
+Cara cepat: Coret opsi yang melanggar salah satu ketentuan (anggaran, jumlah baki, atau stok baki C), lalu pilih kapasitas terbesar di antara opsi yang tersisa. Jangan memilih hanya dari kapasitas terbesar atau biaya per bibit.`,
+        tingkat: 'sulit',
         status: 'draft',
       },
     ],
   },
   {
-    stimulus: { judul: `Figural > Figural Analogi` },
+    stimulus: { judul: `Figural > Bangun Datar > Figural Analogi` },
     soal: [
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Figural analogi; tidak ada di tryout generator
+      // tryout-pattern-map-50-0-0-0 · Variasi terhitung mengikuti mapping Figural Analogi; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 28,
         tipe: 'pg',
@@ -1919,68 +1844,106 @@ Jadi, kombinasi yang memenuhi seluruh ketentuan adalah 3 bus A dan 3 bus C pada 
           { label: 'D', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s01-opsi-d.png⟧` },
           { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s01-opsi-e.png⟧` },
         ],
-        kunci: 'D',
+        kunci: 'A',
         pembahasan: `Berdasarkan pasangan gambar yang diketahui, didapatkan hubungan sebagai berikut:
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s01-pembahasan-1.png⟧
 
+Hubungan yang berlaku: seluruh gambar diputar 45° berlawanan arah jarum jam.
+
 Dengan mengaplikasikan hubungan yang sama, didapatkan:
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s01-pembahasan-2.png⟧`,
-        status: 'direview',
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s01-pembahasan-2.png⟧
+
+Gambar yang dihasilkan memiliki bangun pembingkai (lingkaran), bangun di tengah (segi lima runcing) runcing ke kiri berwarna putih, bangun kecil di bawah (lingkaran) berwarna abu-abu, dan panah kecil di atas (panah) menunjuk ke atas berwarna hitam.
+Jadi, jawaban yang benar adalah A.`,
+        tingkat: 'sedang',
+        status: 'draft',
       },
-    ],
-  },
-  {
-    stimulus: { judul: `Figural > Figural Ketidaksamaan` },
-    soal: [
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Figural ketidaksamaan; tidak ada di tryout generator
+      // tryout-pattern-map-50-0-1-0 · Variasi terhitung mengikuti mapping Figural Analogi; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 29,
         tipe: 'pg',
-        pertanyaan: `Manakah gambar yang memiliki prinsip, pola, atau karakteristik yang berbeda dibandingkan gambar lainnya?
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-soal.png⟧`,
+        pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?", sehingga kedua pasangan gambar di bawah ini memiliki hubungan yang serupa.
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-soal.png⟧`,
         opsi: [
-          { label: 'A', teks: `A` },
-          { label: 'B', teks: `B` },
-          { label: 'C', teks: `C` },
-          { label: 'D', teks: `D` },
-          { label: 'E', teks: `E` },
+          { label: 'A', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-opsi-a.png⟧` },
+          { label: 'B', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-opsi-b.png⟧` },
+          { label: 'C', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-opsi-c.png⟧` },
+          { label: 'D', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-opsi-d.png⟧` },
+          { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-opsi-e.png⟧` },
         ],
-        kunci: 'C',
-        pembahasan: `Kita perhatikan keseluruhan gambar. Perhatikan:
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-pembahasan-1.png⟧
+        kunci: 'D',
+        pembahasan: `Berdasarkan pasangan gambar yang diketahui, didapatkan hubungan sebagai berikut:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-pembahasan-1.png⟧
 
-Objek diputar-putar dan urutan objek-objek sama. Bisa lihat urutan objek searah jarum jam yaitu kotak, bulan, lingkaran, segitiga. Maka yang berbeda adalah
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-pembahasan-2.png⟧`,
-        status: 'direview',
-      },
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Figural ketidaksamaan; tidak ada di tryout generator
-      {
-        nomor: 30,
-        tipe: 'pg',
-        pertanyaan: `Manakah gambar yang memiliki prinsip, pola, atau karakteristik yang berbeda dibandingkan gambar lainnya?
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s04-soal.png⟧`,
-        opsi: [
-          { label: 'A', teks: `A` },
-          { label: 'B', teks: `B` },
-          { label: 'C', teks: `C` },
-          { label: 'D', teks: `D` },
-          { label: 'E', teks: `E` },
-        ],
-        kunci: 'E',
-        pembahasan: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s04-pembahasan-1.png⟧
+Hubungan yang berlaku terdiri atas 2 aturan:
+1. Seluruh gambar diputar 90° searah jarum jam.
+2. Bangun kecil di kiri (lingkaran) dihilangkan.
 
-Berdasarkan jumlah sisinya, gambar A berpasangan dengan gambar C dan gambar B berpasangan dengan gambar D. Sedangkan gambar E tidak berpasangan.
-Jadi yang berbeda adalah gambar E.`,
-        status: 'direview',
+Dengan mengaplikasikan hubungan yang sama, didapatkan:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-analogi-s02-pembahasan-2.png⟧
+
+Gambar yang dihasilkan memiliki bangun pembingkai (persegi), bangun di tengah (panah) menunjuk ke kiri berwarna hitam, dan panah kecil di bawah (panah) menunjuk ke bawah berwarna hitam.
+Jadi, jawaban yang benar adalah D.`,
+        tingkat: 'sedang',
+        status: 'draft',
       },
     ],
   },
   {
-    stimulus: { judul: `Figural > Figural Serial` },
+    stimulus: { judul: `Figural > Bangun Datar > Figural Ketidaksamaan` },
     soal: [
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Figural serial; tidak ada di tryout generator
+      // tryout-pattern-map-51-0-0-0 · Variasi terhitung mengikuti mapping Figural Ketidaksamaan; acuan: mesin figural proyek dan mapping 2027
+      {
+        nomor: 30,
+        tipe: 'pg',
+        pertanyaan: `Manakah gambar yang memiliki prinsip, pola, atau karakteristik yang berbeda dibandingkan gambar lainnya?`,
+        opsi: [
+          { label: 'A', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-opsi-a.png⟧` },
+          { label: 'B', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-opsi-b.png⟧` },
+          { label: 'C', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-opsi-c.png⟧` },
+          { label: 'D', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-opsi-d.png⟧` },
+          { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-opsi-e.png⟧` },
+        ],
+        kunci: 'E',
+        pembahasan: `Hitung banyaknya bangun berwarna hitam pada setiap gambar:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s01-pembahasan-1.png⟧
+
+Empat gambar memuat jumlah bangun hitam genap (2, 4, 6, 8), sedangkan satu gambar memuat 5 bangun hitam, yaitu jumlah ganjil. Banyaknya bangun putih atau abu-abu dan susunan letaknya berbeda-beda pada tiap gambar dan tidak menentukan kelompok.
+Jadi, gambar yang berbeda adalah gambar dengan jumlah bangun hitam ganjil.
+Jadi, jawaban yang benar adalah E.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+      // tryout-pattern-map-51-0-1-0 · Variasi terhitung mengikuti mapping Figural Ketidaksamaan; acuan: mesin figural proyek dan mapping 2027
       {
         nomor: 31,
+        tipe: 'pg',
+        pertanyaan: `Manakah gambar yang memiliki prinsip, pola, atau karakteristik yang berbeda dibandingkan gambar lainnya?`,
+        opsi: [
+          { label: 'A', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s02-opsi-a.png⟧` },
+          { label: 'B', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s02-opsi-b.png⟧` },
+          { label: 'C', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s02-opsi-c.png⟧` },
+          { label: 'D', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s02-opsi-d.png⟧` },
+          { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s02-opsi-e.png⟧` },
+        ],
+        kunci: 'B',
+        pembahasan: `Hitung banyaknya bangun berwarna hitam pada setiap gambar:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-ketidaksamaan-s02-pembahasan-1.png⟧
+
+Empat gambar memuat jumlah bangun hitam ganjil (1, 3, 7, 9), sedangkan satu gambar memuat 2 bangun hitam, yaitu jumlah genap. Banyaknya bangun putih atau abu-abu dan susunan letaknya berbeda-beda pada tiap gambar dan tidak menentukan kelompok.
+Jadi, gambar yang berbeda adalah gambar dengan jumlah bangun hitam genap.
+Jadi, jawaban yang benar adalah B.`,
+        tingkat: 'sedang',
+        status: 'draft',
+      },
+    ],
+  },
+  {
+    stimulus: { judul: `Figural > Bangun Datar > Figural Serial` },
+    soal: [
+      // tryout-pattern-map-52-0-0-0 · Variasi terhitung mengikuti mapping Figural Serial; acuan: mesin figural proyek dan mapping 2027
+      {
+        nomor: 32,
         tipe: 'pg',
         pertanyaan: `Tentukanlah gambar berikutnya dari seri gambar di bawah ini!
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s01-soal.png⟧`,
@@ -1991,23 +1954,24 @@ Jadi yang berbeda adalah gambar E.`,
           { label: 'D', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s01-opsi-d.png⟧` },
           { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s01-opsi-e.png⟧` },
         ],
-        kunci: 'A',
-        pembahasan: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s01-soal.png⟧
+        kunci: 'C',
+        pembahasan: `Berlaku pola sebagai berikut:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s01-pembahasan-1.png⟧
 
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s01-pembahasan-2.png⟧
-1. Berputar 90 derajat searah jarum jam
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s01-pembahasan-3.png⟧
-2. Berputar 90 derajat berlawanan arah jarum jam
-3. Objek lingkaran dan objek lingkaran berubah warna dari putih ke hitam, dari hitam ke putih
-
-Maka jawabannya A`,
-        status: 'direview',
+Terdapat 3 aturan yang berjalan bersamaan dari kotak ke kotak:
+1. Bangun di tengah berputar 90° berlawanan arah jarum jam pada setiap kotak.
+2. Warna bangun di tengah bergeser maju satu langkah pada siklus putih, abu-abu, hitam pada setiap kotak.
+3. Bangun kecil di tepi berpindah 45° searah jarum jam mengelilingi pusat gambar pada setiap kotak.
+Meneruskan semua aturan itu ke kotak berikutnya (kotak ke-6): bangun di tengah (segi lima runcing) runcing ke kanan atas, bangun di tengah (segi lima runcing) berwarna hitam dan bangun kecil di tepi (bulan sabit) berada di kiri atas dan terbuka ke kiri bawah. Bagian lain tidak berubah.
+Jadi, jawaban yang benar adalah C.`,
+        tingkat: 'sulit',
+        status: 'draft',
       },
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Figural serial; tidak ada di tryout generator
+      // tryout-pattern-map-52-0-1-0 · Variasi terhitung mengikuti mapping Figural Serial; acuan: mesin figural proyek dan mapping 2027
       {
-        nomor: 32,
+        nomor: 33,
         tipe: 'pg',
-        pertanyaan: `Tentukanlah gambar berikutnya dari seri gambar di bawah ini!
+        pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?" pada seri gambar di bawah ini!
 ⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s02-soal.png⟧`,
         opsi: [
           { label: 'A', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s02-opsi-a.png⟧` },
@@ -2016,24 +1980,32 @@ Maka jawabannya A`,
           { label: 'D', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s02-opsi-d.png⟧` },
           { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s02-opsi-e.png⟧` },
         ],
-        kunci: 'A',
-        pembahasan: `Terdapat dua pola jumlah objek yang berjalan secara bersamaan.
-Jumlah bintang berkurang satu pada setiap kotak: 4, 3, 2, 1, sehingga kotak kelima tidak memiliki bintang.
-Jumlah bulan sabit bertambah dua pada setiap kotak: 0, 2, 4, 6, sehingga kotak kelima memiliki 8 bulan sabit.
+        kunci: 'E',
+        pembahasan: `Berlaku pola sebagai berikut:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-serial-s02-pembahasan-1.png⟧
 
-Opsi A menampilkan 8 bulan sabit tanpa bintang. Jadi, jawaban yang benar adalah A.`,
-        status: 'direview',
+Terdapat 4 aturan yang berjalan bersamaan dari kotak ke kotak:
+1. Bangun di tengah berputar 45° searah jarum jam pada setiap kotak.
+2. Warna bangun di tengah berganti-ganti antara putih dan hitam.
+3. Batang yang melintang di tengah berputar 90° berlawanan arah jarum jam pada setiap kotak.
+4. Warna bulatan kecil di sudut bergeser maju satu langkah pada siklus putih, abu-abu, hitam pada setiap kotak.
+Batang tidak berarah, sehingga kedudukan yang berselisih 180° tampak sama: putaran 90° berlawanan arah jarum jam tampak sama dengan putaran 90° searah jarum jam. Pembahasan ini memakai arah putaran pada aturan.
+Meneruskan semua aturan itu ke kotak bertanda tanya (kotak ke-4): bangun di tengah (trapesium) sisi pendek ke kiri atas, bangun di tengah (trapesium) berwarna hitam, batang yang melintang di tengah terputar 3 × 90° = 270° berlawanan arah jarum jam dari kedudukannya pada kotak pertama, sehingga batang tampak miring dari kiri atas ke kanan bawah, dan bulatan kecil di sudut (lingkaran) berwarna putih. Bagian lain tidak berubah.
+Jadi, jawaban yang benar adalah E.`,
+        tingkat: 'sulit',
+        status: 'draft',
       },
     ],
   },
   {
-    stimulus: { judul: `Figural > Figural Matriks (Kotak 3x3)` },
+    stimulus: { judul: `Figural > Bangun Datar > Figural Matriks (Kotak 3x3)` },
     soal: [
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Figural matriks; tidak ada di tryout generator
+      // tryout-pattern-map-53-0-0-0 · Variasi terhitung mengikuti mapping Figural Matriks (Kotak 3x3); acuan: mesin figural proyek dan mapping 2027
       {
-        nomor: 33,
+        nomor: 34,
         tipe: 'pg',
-        pertanyaan: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-soal.png⟧`,
+        pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?" pada susunan gambar di bawah ini!
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-soal.png⟧`,
         opsi: [
           { label: 'A', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-opsi-a.png⟧` },
           { label: 'B', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-opsi-b.png⟧` },
@@ -2042,15 +2014,28 @@ Opsi A menampilkan 8 bulan sabit tanpa bintang. Jadi, jawaban yang benar adalah 
           { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-opsi-e.png⟧` },
         ],
         kunci: 'B',
-        pembahasan: `Setiap baris dan kolom memiliki bangun datar bintang, lingkaran besar, lingkaran kecil, segitiga, dan persegi panjang. Masing-masing bangun datar bergesar searah jarum jam. Bangun datar yang berwarna hitam pada masing-masing kotak mengikuti pola berikut:
-Lingkaran kecil → Segitiga → Persegi panjang → Bintang → Lingkaran besar`,
-        status: 'direview',
+        pembahasan: `Perhatikan bangun di tengah pada masing-masing kotak (yang dilingkari merah). Aturannya:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-pembahasan-1.png⟧
+• Bangun di tengah berputar 45° searah jarum jam pada setiap kolom dan 90° berlawanan arah jarum jam pada setiap baris.
+• Warna bangun di tengah sama pada setiap baris.
+
+Sekarang perhatikan bangun kecil di sudut pada masing-masing kotak (yang dilingkari merah). Aturannya:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-pembahasan-2.png⟧
+• Warna bangun kecil di sudut sama pada setiap kolom.
+
+Dengan menggabungkan seluruh aturan, kotak yang hilang memuat bangun di tengah (bulan sabit) terbuka ke kiri berwarna putih dan bangun kecil di sudut (bintang bersudut empat) berwarna putih.
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s01-pembahasan-3.png⟧
+
+Jadi, jawaban yang benar adalah B.`,
+        tingkat: 'sedang',
+        status: 'draft',
       },
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Figural matriks; tidak ada di tryout generator
+      // tryout-pattern-map-53-0-1-0 · Variasi terhitung mengikuti mapping Figural Matriks (Kotak 3x3); acuan: mesin figural proyek dan mapping 2027
       {
-        nomor: 34,
+        nomor: 35,
         tipe: 'pg',
-        pertanyaan: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-soal.png⟧`,
+        pertanyaan: `Tentukanlah gambar yang tepat untuk menggantikan tanda tanya "?" pada susunan gambar di bawah ini!
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-soal.png⟧`,
         opsi: [
           { label: 'A', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-opsi-a.png⟧` },
           { label: 'B', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-opsi-b.png⟧` },
@@ -2058,269 +2043,236 @@ Lingkaran kecil → Segitiga → Persegi panjang → Bintang → Lingkaran besar
           { label: 'D', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-opsi-d.png⟧` },
           { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-opsi-e.png⟧` },
         ],
-        kunci: 'A',
-        pembahasan: `Perhatikan bahwa jumlah unsur merupakan bilangan-bilangan prima berurutan, sebagai berikut:
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-pembahasan-1.png⟧`,
-        status: 'direview',
-      },
-      // contoh TIU riset CPNS 2027 ("Contoh Soal TIU SKD 2027"), dipertahankan dari angkatan sebelumnya: Figural matriks; tidak ada di tryout generator
-      {
-        nomor: 35,
-        tipe: 'pg',
-        pertanyaan: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-soal.png⟧`,
-        opsi: [
-          { label: 'A', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-opsi-a.png⟧` },
-          { label: 'B', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-opsi-b.png⟧` },
-          { label: 'C', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-opsi-c.png⟧` },
-          { label: 'D', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-opsi-d.png⟧` },
-          { label: 'E', teks: `⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-opsi-e.png⟧` },
-        ],
         kunci: 'D',
-        pembahasan: `Perhatikan baris pertama:
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-pembahasan-1.png⟧
+        pembahasan: `Perhatikan bangun di tengah pada masing-masing kotak (yang dilingkari merah). Aturannya:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-pembahasan-1.png⟧
+• Setiap baris dan setiap kolom memuat ketiga bentuk bangun di tengah (segitiga, belah ketupat, dan persegi) tepat satu kali.
+• Setiap baris dan setiap kolom memuat ketiga warna bangun di tengah (putih, abu-abu, dan hitam) tepat satu kali.
 
-Perhatikan baris kedua:
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-pembahasan-2.png⟧
+Sekarang perhatikan bangun kecil di sudut pada masing-masing kotak (yang dilingkari merah). Aturannya:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-pembahasan-2.png⟧
+• Setiap baris dan setiap kolom memuat ketiga bentuk bangun kecil di sudut (lingkaran, belah ketupat, dan segienam) tepat satu kali.
+• Warna bangun kecil di sudut sama pada setiap kolom.
 
-Maka baris ketiga:
-⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s04-pembahasan-3.png⟧`,
-        status: 'direview',
+Sekarang perhatikan batang di kanan pada masing-masing kotak (yang dilingkari merah). Aturannya:
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-pembahasan-3.png⟧
+• Warna batang di kanan sama pada setiap baris.
+• Batang di kanan berputar 45° searah jarum jam pada setiap kolom.
+
+Dengan menggabungkan seluruh aturan, kotak yang hilang memuat bangun di tengah (belah ketupat) berwarna putih, bangun kecil di sudut (segienam) berwarna putih, dan batang di kanan berwarna abu-abu.
+⟦gambar:gambar/jadiasn/cpns2027-tiu-figural-matriks-s02-pembahasan-4.png⟧
+
+Jadi, jawaban yang benar adalah D.`,
+        tingkat: 'sulit',
+        status: 'draft',
       },
     ],
   },
 ];
 
-/** 45 soal TKP berskala: Pelayanan Publik, Jejaring Kerja, Sosial Budaya (8 soal), TIK, Profesionalisme, Anti Radikalisme (7 soal). */
+/** 45 soal TKP berskala. */
 export const contohGeneratorTkp: Kelompok[] = [
   {
     stimulus: { judul: `Pelayanan Publik` },
     soal: [
-      // tryout-ref-08-05 · Wil - TKP 2_Done Input.docx, soal 5
+      // tkp-kasus-pp-08 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 1,
         tipe: 'skala',
-        pertanyaan: `Warga datang ke loket kependudukan dengan brosur persyaratan lama. Papan layanan sudah diperbarui, tetapi brosur di meja dan laman daring masih memuat aturan sebelumnya. Warga khawatir harus datang kembali. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda anggota tim penerima permohonan bantuan usaha mikro. Batas penerimaan berkas ditutup kemarin pukul 16.00 dan berlaku sama bagi setiap pemohon. Pagi ini seorang pemilik warung datang dengan berkas lengkap, mengaku lupa tanggalnya, dan memohon berkasnya diterima karena modalnya menipis. Tidak ada gangguan layanan pada hari batas itu. Anda tidak berwenang memperpanjang tenggat, sedangkan gelombang penerimaan berikutnya dibuka bulan depan. Sikap Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Mengirim syarat terbaru kepada pengurus lingkungan agar diteruskan kepada warga, sementara pemohon yang datang diminta mengikuti informasi di papan.` },
-          { label: 'B', teks: `Mengganti selebaran di meja serta menjelaskan syarat terbaru kepada pemohon, lalu menyerahkan pembaruan laman kepada pengelola tanpa mengecek hasilnya.` },
-          { label: 'C', teks: `Menunjuk papan layanan sebagai rujukan utama dan menyediakan bantuan petugas bagi pengunjung yang masih ragu terhadap berkas yang perlu dibawa.` },
-          { label: 'D', teks: `Menyamakan informasi pada brosur, papan, dan laman layanan dengan ketentuan berlaku, sambil membantu warga yang telah menerima versi lama.` },
-          { label: 'E', teks: `Menerima berkas berdasarkan selebaran lama lebih dahulu untuk mempercepat antrean, kemudian meminta pelengkapan setelah petugas melakukan pemeriksaan.` },
+          { label: 'A', teks: `Meminta pemohon datang kembali besok pagi, lalu memberi tahu rekan bahwa tenggat kemungkinan masih dilonggarkan.` },
+          { label: 'B', teks: `Menjelaskan bahwa berkas melewati tenggat dan ditolak, lalu mencatat nama pemohon untuk gelombang penerimaan berikutnya.` },
+          { label: 'C', teks: `Mengubah tanggal terima berkas pada daftar penerimaan menjadi kemarin, lalu meneruskannya ke seleksi bantuan usaha.` },
+          { label: 'D', teks: `Menjelaskan bahwa tenggat berlaku sama, lalu menyampaikan jadwal gelombang berikutnya beserta kelengkapannya.` },
+          { label: 'E', teks: `Menyarankan pemohon mengajukan surat keberatan kepada pimpinan, lalu menyampaikan bahwa hasilnya belum dapat dipastikan.` },
         ],
         kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Kepastian pelayanan, konsistensi informasi publik, dan orientasi kebutuhan pengguna.
-Kata kunci: Persyaratan lama, informasi berbeda, pembaruan kanal, kepastian pelayanan.
-Opsi D (5 poin) paling tepat karena mengatasi perbedaan informasi yang menjadi sumber kebingungan masyarakat. Penyelarasan brosur, papan pengumuman, dan laman daring membuat pengguna memperoleh persyaratan yang sama melalui berbagai saluran. Bantuan kepada warga yang telah menerima informasi lama juga mencegah mereka dirugikan oleh kesalahan komunikasi instansi.
-
-Pembahasan setiap opsi:
-A (2 poin) karena memperluas penyampaian informasi melalui pengurus lingkungan, tetapi perbedaan antara saluran resmi masih dibiarkan dan warga yang datang harus menentukan sendiri informasi yang digunakan.
-B (4 poin) karena memperbaiki informasi di meja layanan dan membantu pemohon secara langsung, tetapi tidak memastikan pembaruan laman daring telah selesai sehingga potensi kesalahpahaman belum seluruhnya teratasi.
-C (3 poin) karena menyediakan sumber informasi yang benar dan bantuan petugas, tetapi selebaran lama serta informasi daring yang tidak sesuai masih berpotensi digunakan masyarakat.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (1 poin) karena berusaha mempercepat penerimaan berkas, tetapi penggunaan persyaratan yang diketahui sudah tidak berlaku berisiko menimbulkan ketidakpastian proses dan pekerjaan ulang bagi pemohon.
-
-Cara cepat: Apabila informasi pelayanan berbeda antarsaluran, perbaiki sumber informasinya secara konsisten. Memberikan penjelasan kepada satu pemohon belum cukup jika informasi yang keliru masih tersedia.`,
-        tingkat: 'sedang',
+        pembahasan: `Konsep yang digunakan: Kesetaraan perlakuan dan kepastian standar layanan.
+Kata kunci: tenggat berlaku sama, berkas lengkap, lupa tanggal, tanpa gangguan layanan, gelombang berikutnya.
+Opsi D (5 poin) paling tepat karena penjelasan bahwa tenggat berlaku sama menjaga keadilan bagi pemohon yang tepat waktu, dan informasi jadwal gelombang berikutnya memberi pemilik warung jalan keluar yang sah. Ia dapat menyiapkan diri tanpa harapan keliru.
+Pembahasan opsi lain:
+A (2 poin) meminta pemohon datang besok sambil menyebut tenggat kemungkinan masih dilonggarkan menumbuhkan harapan tanpa dasar, padahal Anda tidak berwenang memperpanjang tenggat. Pemohon dapat menyiapkan diri dengan perkiraan yang keliru.
+B (4 poin) penolakan yang jelas dan pencatatan nama menunjukkan kepedulian. Namun pemohon belum diberi tahu jadwal gelombang berikutnya maupun kelengkapan yang perlu disiapkan, sehingga ia belum mendapat jalan keluar yang konkret.
+C (1 poin) mengubah tanggal terima memalsukan daftar penerimaan dan melanggar batas yang berlaku sama bagi setiap pemohon. Pemohon lain yang tepat waktu dirugikan, dan Anda menanggung akibat pemalsuan catatan itu.
+E (3 poin) surat keberatan memang dapat diajukan dan Anda sudah menyampaikan bahwa hasilnya belum pasti. Namun tidak ada gangguan layanan pada hari batas yang mendukungnya, sehingga langkah ini mengarahkan pemohon pada pengecualian yang tidak punya dasar.
+Cara cepat: Tanyakan apakah ada keadaan yang membenarkan pengecualian, dan siapa lagi yang terdampak jika pengecualian itu diberikan.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-07-04 · Wil - TKP 1_Done Input.docx, soal 4
+      // tkp-kasus-pp-21 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 2,
         tipe: 'skala',
-        pertanyaan: `Seusai forum kekeringan, warga meminta kepastian tentang usulan titik distribusi air bersih. Notulen tersedia, tetapi laporan dinas hanya memuat jumlah peserta dan topik diskusi. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda melayani pendaftaran bantuan pangan di stan layanan yang dibuka di balai warga. Seorang bapak datang dengan suara tinggi karena namanya tidak ada dalam daftar penerima, padahal tetangganya terdaftar. Setelah Anda periksa, namanya belum masuk karena pendataan di kelurahannya belum diperbarui. Ia mengancam akan mengunggah kemarahannya di media sosial, dan beberapa warga mulai memperhatikan. Anda berwenang menerima pengajuan sanggah untuk diteruskan ke kelurahan. Sikap Anda adalah ...`,
         opsi: [
-          { label: 'A', teks: `Mengirim usulan ke unit yang disebut dalam forum dan memberikan kontak unit tersebut sehingga setiap warga dapat meminta penjelasan sendiri.` },
-          { label: 'B', teks: `Merangkum keputusan awal forum dan menerbitkannya melalui kanal resmi, lalu memberi penjelasan lanjutan saat pembahasan berikutnya selesai.` },
-          { label: 'C', teks: `Menyusun daftar seluruh usulan untuk diteruskan kepada pimpinan dan mengumumkan bahwa masukan telah dicatat sebagai bahan keputusan.` },
-          { label: 'D', teks: `Mengarsipkan usulan berdasarkan topik serta memasukkannya ke laporan capaian sehingga pelaksanaan dialog tercatat dalam evaluasi tahunan.` },
-          { label: 'E', teks: `Memetakan usulan ke unit berwenang dan menyampaikan keputusan, alasan, serta cara memantau perkembangan kepada warga melalui kanal resmi.` },
+          { label: 'A', teks: `Meminta bapak itu menenangkan diri dahulu, lalu melayani warga berikutnya sampai ia siap berbicara lagi.` },
+          { label: 'B', teks: `Menjelaskan hasil pemeriksaan data kepadanya secara rinci, lalu menerima pengajuan sanggahnya untuk diteruskan ke kelurahan.` },
+          { label: 'C', teks: `Memasukkan namanya ke daftar penerima di stan, lalu memperbaiki datanya di kelurahan setelah acara selesai.` },
+          { label: 'D', teks: `Meminta maaf atas ketidaknyamanan, lalu mencatat keluhan bapak itu untuk disampaikan ke kelurahan akhir pekan ini.` },
+          { label: 'E', teks: `Menerima pengajuan sanggah untuk diteruskan ke kelurahan, lalu menyampaikan bahwa unggahan di media sosial tidak mempercepat proses.` },
         ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Partisipasi masyarakat, akuntabilitas pengaduan, dan keterbukaan tindak lanjut
-Kata kunci: Forum dialog, aspirasi warga, tindak lanjut, kepastian
-Opsi E (5 poin) paling tepat karena usulan masyarakat bukan sekadar angka kehadiran atau lampiran laporan. Respons paling baik menghubungkan aspirasi dengan unit yang mampu mengambil keputusan serta membuka informasi hasil dan status pelaksanaannya. Warga memperoleh alasan, kanal pemantauan, dan kepastian tanpa harus mengulang pengaduan kepada banyak unit.
-
-Pembahasan setiap opsi:
-A (2 poin) karena usulan sampai kepada unit terkait, tetapi tanggung jawab mencari tanggapan justru dipindahkan kembali kepada warga.
-B (4 poin) karena putusan awal diumumkan secara terbuka, tetapi akses pemantauan belum tersedia sehingga warga masih harus menunggu forum berikutnya.
-C (3 poin) karena usulan dicatat dan diteruskan, tetapi konfirmasi penerimaan belum menjelaskan keputusan ataupun perkembangan penanganannya.
-D (1 poin) karena dokumentasi kegiatan terpenuhi, tetapi kebutuhan masyarakat akan respons nyata tidak tertangani.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Pilih tindak lanjut yang menghubungkan aspirasi dengan keputusan dan menyediakan cara memantau hasil, bukan sekadar mencatat partisipasi.`,
-        tingkat: 'sedang',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Pelayanan prima terhadap pengguna yang marah, yaitu empati yang disertai penyelesaian dalam kewenangan.
+Kata kunci: daftar penerima, pendataan kelurahan belum diperbarui, suara tinggi, ancaman media sosial, pengajuan sanggah.
+Opsi B (5 poin) paling tepat karena penjelasan hasil pemeriksaan tentang pendataan kelurahan yang belum diperbarui menjawab pertanyaan bapak itu, dan penerimaan sanggah yang Anda berwenang teruskan membuat haknya diproses. Ancaman unggahan tidak menggeser prosedur.
+Pembahasan opsi lain:
+A (2 poin) menyuruh bapak itu menenangkan diri menunda penerimaan sanggah dan menempatkan kemarahannya sebagai kesalahan warga. Haknya tetap dapat diproses nanti, tetapi tidak ada langkah yang menjawab kebutuhannya saat ini.
+C (1 poin) memasukkan nama ke daftar penerima sebelum data diverifikasi melanggar aturan pendataan dan memberi insentif bagi ancaman unggahan. Penerima lain yang terdata sesuai prosedur dirugikan oleh data yang belum diperiksa.
+D (3 poin) permintaan maaf meredakan suasana dan keluhannya dicatat. Namun sanggah yang Anda berwenang terima tidak diajukan, dan keluhan baru sampai ke kelurahan akhir pekan ini sehingga proses haknya tertunda.
+E (4 poin) sanggah diterima dan diteruskan sehingga haknya diproses, tetapi jawaban tentang unggahan terdengar defensif dan tidak mengakui kekecewaannya. Hasil pemeriksaan data juga belum dijelaskan kepadanya.
+Cara cepat: Dengarkan keluhan pengguna lebih dulu, lalu lihat bagian mana dari masalahnya yang dapat Anda selesaikan di tempat.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-08-06 · Wil - TKP 2_Done Input.docx, soal 6
+      // tkp-kasus-pp-06 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 3,
         tipe: 'skala',
-        pertanyaan: `Seorang warga dengan hambatan pendengaran tiba di layanan pajak. Layar antrean tidak menampilkan nomor, sedangkan panggilan hanya melalui pengeras suara. Ia ingin menunggu sesuai giliran secara mandiri tanpa pendamping. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda pegawai baru yang bertugas bersama tim layanan keliling di balai desa. Rekan senior yang biasa menangani verifikasi data kependudukan mendadak sakit dan pulang, sedangkan pelatihan yang baru Anda ikuti hanya mencakup penerimaan berkas. Seorang warga meminta pembaruan data keluarga yang harus diverifikasi petugas bersertifikat. Berkas yang sudah dicatat langsung masuk antrean verifikasi. Kepala tim dapat dihubungi lewat telepon dan dapat menunjuk petugas dari kantor yang tiba dalam satu jam. Apa yang sebaiknya Anda lakukan?`,
         opsi: [
-          { label: 'A', teks: `Menuliskan nomor dan perkiraan giliran warga pada kertas, lalu menawarkan bantuan petugas untuk memanggilnya secara pribadi saat nomornya mendekat.` },
-          { label: 'B', teks: `Memasang informasi panggilan visual pada loket dan mengecek tampilan nomor pada layar antrean, sehingga warga dapat mengikuti nomor gilirannya tanpa pendamping.` },
-          { label: 'C', teks: `Mengarahkan warga duduk di dekat loket dan memperhatikan petugas yang memanggil secara lisan agar ia tetap dapat mengikuti antrean sesuai urutan.` },
-          { label: 'D', teks: `Memberikan prioritas langsung kepada warga untuk menghindari kesulitan mengikuti panggilan suara, tanpa memeriksa pengaturan antrean yang tersedia.` },
-          { label: 'E', teks: `Menyediakan pendamping khusus bagi warga selama menunggu agar tidak terlewat panggilan, meskipun warga sebelumnya menyampaikan ingin mandiri.` },
+          { label: 'A', teks: `Meminta kepala tim mengirim petugas verifikasi pengganti, lalu mempersilakan warga duduk sampai petugas tiba.` },
+          { label: 'B', teks: `Memberi tahu warga bahwa Anda baru bertugas pada penerimaan berkas, lalu melayani warga lain yang siap.` },
+          { label: 'C', teks: `Menerima dan mencatat berkas tersebut, lalu meminta kepala tim mengirim petugas bersertifikat untuk memeriksanya.` },
+          { label: 'D', teks: `Memverifikasi data memakai panduan yang pernah Anda baca, lalu mencatat pembaruan data keluarga itu sebagai berkas selesai.` },
+          { label: 'E', teks: `Menyarankan warga membawa berkas ke kantor kecamatan terdekat, lalu memberi tahu kepala tim tentang kendala di lapangan.` },
         ],
-        kunci: 'B',
-        pembahasan: `Konsep yang digunakan: Pelayanan inklusif, akses yang setara, akomodasi layak, dan penghormatan martabat.
-Kata kunci: Hambatan pendengaran, antrean suara, akses mandiri, informasi visual.
-Opsi B (5 poin) paling tepat karena menyediakan akses setara melalui perubahan cara informasi disampaikan kepada pengguna. Warga menyampaikan keinginan mengikuti antrean secara mandiri, sehingga bantuan perlu menjaga otonominya. Perbaikan tampilan visual juga bermanfaat untuk pengguna lain tanpa mengubah keadilan urutan antrean.
-
-Pembahasan setiap opsi:
-A (4 poin) karena memberi solusi praktis yang menghormati urutan, tetapi masih bergantung pada pemanggilan khusus dan belum memperbaiki akses umum.
-B (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-C (3 poin) karena berusaha mempertahankan antrean reguler, tetapi panggilan lisan tetap tidak dapat diakses warga tersebut.
-D (1 poin) karena membantu warga mendapat layanan segera, tetapi menerapkan prioritas tanpa kebutuhan yang diverifikasi serta tidak memperbaiki hambatan informasi.
-E (2 poin) karena menawarkan dukungan langsung, tetapi tidak menghormati kebutuhan untuk mandiri dan tidak memperbaiki sistem panggilan.
-
-Cara cepat: Akomodasi yang baik menyelesaikan hambatan akses sambil menghormati pilihan dan kemandirian pengguna.`,
-        tingkat: 'sedang',
+        kunci: 'C',
+        pembahasan: `Konsep yang digunakan: Kompetensi dan batas kewenangan dalam pelayanan, yaitu mengerjakan yang sesuai pelatihan dan menghubungkan pengguna dengan pihak yang tepat.
+Kata kunci: pegawai baru, pelatihan penerimaan berkas, petugas bersertifikat, antrean verifikasi, kepala tim.
+Opsi C (5 poin) paling tepat karena berkas yang diterima dan dicatat sekarang langsung masuk antrean verifikasi, sedangkan verifikasinya diserahkan kepada petugas bersertifikat yang dapat tiba dalam satu jam. Pekerjaan sesuai pelatihan Anda dikerjakan, sedangkan yang di luar kompetensi tidak Anda ambil sendiri.
+Pembahasan opsi lain:
+A (4 poin) meminta pengganti ke kepala tim sudah tepat karena verifikasi harus oleh petugas bersertifikat. Namun berkas warga belum dicatat sehingga belum masuk antrean verifikasi, dan satu jam sebelum pengganti tiba tidak dipakai untuk memprosesnya.
+B (2 poin) melayani warga lain memang memanfaatkan waktu, tetapi kebutuhan warga yang meminta pembaruan tidak diteruskan kepada petugas verifikasi mana pun. Berkasnya tidak dicatat, sehingga tidak ada langkah yang menjawab kebutuhannya.
+D (1 poin) memverifikasi data tanpa sertifikasi melampaui pelatihan Anda yang hanya mencakup penerimaan berkas. Kesalahan pada data keluarga dapat merugikan warga dalam pengurusan dokumen berikutnya.
+E (3 poin) mengirim warga ke kantor kecamatan menjaga ketentuan verifikasi dan kepala tim diberi tahu. Namun petugas pengganti dapat tiba dalam satu jam, sehingga warga menanggung perjalanan dan berkasnya belum dicatat.
+Cara cepat: Ukur kemampuan dan kewenangan Anda lebih dulu, lalu cari langkah yang tetap memajukan kebutuhan warga di dalam batas itu.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-06-07 · Nynda - TKP 1_Done Input.docx, soal 7
+      // tkp-kasus-pp-09 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 4,
         tipe: 'skala',
-        pertanyaan: `Ketika antrean padat, seorang tokoh masyarakat meminta kerabatnya didahulukan karena harus segera menghadiri rapat desa. Kerabat tersebut tidak termasuk kelompok prioritas dan beberapa warga telah menunggu cukup lama. Tokoh itu dikenal sering membantu kegiatan instansi. Sikap Anda yang paling tepat adalah ...`,
+        pertanyaan: `Lift di kantor layanan perizinan rusak sejak pagi dan baru selesai diperbaiki sore hari. Seorang pengguna kursi roda datang untuk mengambil izin yang sudah selesai di loket lantai dua. Anda koordinator loket yang berwenang mengatur lokasi layanan di unit Anda, dan prosedur membolehkan penyerahan dokumen di meja informasi lantai satu setelah identitas pemohon diperiksa. Rekan Anda di lantai dua sedang melayani antrean. Apa langkah Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Menanyakan persetujuan warga yang sedang antre sebelum memutuskan apakah kerabat tokoh dapat memperoleh giliran lebih awal.` },
-          { label: 'B', teks: `Meminta penanggung jawab loket menangani permintaan tokoh agar keputusan memiliki dasar kewenangan yang lebih tinggi.` },
-          { label: 'C', teks: `Menjelaskan kriteria prioritas dan mengarahkan kerabat tokoh mengikuti urutan yang berlaku tanpa menawarkan pilihan layanan lainnya.` },
-          { label: 'D', teks: `Mendahulukan kerabat tokoh tersebut sebagai bentuk penghargaan, lalu menjelaskan kepada warga lain bahwa ia memiliki agenda desa.` },
-          { label: 'E', teks: `Menjelaskan bahwa agenda rapat bukan kriteria prioritas dan menawarkan kanal layanan lain tanpa mengubah urutan antrean.` },
+          { label: 'A', teks: `Meminta pengguna kembali setelah lift diperbaiki sore ini, lalu menyiapkan dokumennya agar langsung diserahkan.` },
+          { label: 'B', teks: `Membawa dokumen izin ke meja informasi lantai satu, lalu menyerahkannya setelah identitas pengguna cocok dengan berkas.` },
+          { label: 'C', teks: `Meminta dua pengunjung mengangkat kursi roda menaiki tangga, lalu melayani pengguna di loket lantai dua.` },
+          { label: 'D', teks: `Meminta rekan di lantai dua mengantar dokumen ke meja informasi, lalu meminta petugas meja itu menyerahkannya.` },
+          { label: 'E', teks: `Menyarankan pengguna membuat surat kuasa kepada keluarganya, lalu menyerahkan dokumen setelah kuasa itu diverifikasi.` },
         ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Kesetaraan layanan dengan menolak favoritisme secara santun dan menawarkan solusi yang berlaku bagi semua pengguna
-Kata kunci: tokoh masyarakat, kerabat, antrean, kelompok prioritas, kesetaraan, alternatif layanan
-Opsi E (5 Poin) paling tepat karena urutan dan kriteria prioritas tetap diberlakukan secara konsisten. Penjelasan santun menjaga hubungan, sedangkan pilihan layanan lain membantu kebutuhan waktu tanpa mengambil hak warga yang lebih dahulu antre.
-Kontribusi sosial seseorang tidak dapat dijadikan dasar memperoleh perlakuan khusus dalam pelayanan publik.
-
-Pembahasan setiap opsi:
-A (2 poin): Meminta persetujuan warga terlihat demokratis, tetapi menempatkan mereka dalam tekanan sosial dan tetap menyimpang dari aturan prioritas.
-B (3 poin): Melibatkan penanggung jawab menunjukkan kehati-hatian, tetapi aturan sudah jelas sehingga eskalasi hanya menunda antrean.
-C (4 poin): Menjelaskan kriteria dan mempertahankan antrean merupakan tindakan yang benar, tetapi belum membantu kebutuhan waktu melalui alternatif yang tersedia.
-D (1 poin): Menghargai kontribusi tokoh tampak menjaga hubungan, tetapi mendahulukan kerabatnya merupakan favoritisme dan merugikan warga lain.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Tolak perlakuan khusus berdasarkan kedekatan, jelaskan aturan, dan tawarkan alternatif yang tersedia bagi semua warga.`,
-        tingkat: 'sulit',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Akses layanan bagi penyandang disabilitas saat fasilitas terganggu.
+Kata kunci: lift rusak, pengguna kursi roda, loket lantai dua, meja informasi lantai satu, lokasi layanan, identitas pemohon.
+Opsi B (5 poin) paling tepat karena menurunkan layanan ke lantai satu sesuai prosedur menyelesaikan kebutuhan pengguna kursi roda hari ini tanpa mengubah syarat identitas. Hambatan lift diatasi oleh petugas, bukan dipindahkan kepada pengguna.
+Pembahasan opsi lain:
+A (3 poin) menyiapkan dokumen agar langsung diserahkan membantu, tetapi pengguna kursi roda tetap harus kembali setelah lift diperbaiki. Padahal prosedur membolehkan penyerahan dokumen di lantai satu sekarang.
+C (1 poin) mengangkat kursi roda menaiki tangga membahayakan keselamatan dan martabat pengguna serta melibatkan pengunjung yang tidak terlatih. Hambatan lift tidak diatasi, hanya diganti menjadi risiko cedera, padahal penyerahan dokumen di lantai satu diizinkan prosedur.
+D (4 poin) meja informasi lantai satu memang boleh menyerahkan dokumen dan koordinator berwenang mengatur lokasi, tetapi dokumen berpindah melalui dua orang dan rekan yang sedang melayani antrean harus meninggalkan loketnya. Layanan menjadi lebih lambat dan rantai penyerahan lebih panjang daripada koordinator yang membawa sendiri.
+E (2 poin) surat kuasa membebani pengguna dan keluarga dengan pengurusan baru karena kerusakan lift yang bukan kesalahan mereka. Cara ini tidak membahayakan pengguna, tetapi menambah langkah penyerahan dokumen yang sebenarnya tidak diperlukan.
+Cara cepat: Cari tahu bagian layanan mana yang terhambat dan siapa yang sebaiknya menanggung hambatan itu.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-06-03 · Nynda - TKP 1_Done Input.docx, soal 3
+      // tkp-kasus-pp-13 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 5,
         tipe: 'skala',
-        pertanyaan: `Menjelang loket tutup, seorang lansia dari desa terpencil datang mengurus dokumen bantuan. Satu surat pendukung belum tercetak, tetapi datanya tersedia pada sistem instansi dan petugas berwenang masih berada di kantor. Pemohon mengatakan sulit kembali dalam waktu dekat. Sikap Anda adalah ...`,
+        pertanyaan: `Anda koordinator layanan perizinan daring. Setelah Anda menambah dua petugas penjawab telepon, jumlah panggilan yang menanyakan status permohonan tetap tinggi pada setiap awal pekan. Catatan panggilan menunjukkan sebagian besar penelepon tidak menerima pemberitahuan status karena pesan hanya dikirim lewat SMS ke nomor yang diisi saat mendaftar, dan banyak nomor itu sudah tidak aktif. Aplikasi sudah punya halaman cek status mandiri yang jarang dipakai, dan surel pemohon juga tercatat saat mendaftar. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Meminta petugas yang menguasai data memverifikasi surat tersebut dan mencetaknya agar permohonan dapat dituntaskan hari itu.` },
-          { label: 'B', teks: `Mencatat permohonan, memeriksa data bersama petugas terkait, dan memberikan layanan prioritas ketika lansia itu datang pada hari kerja berikutnya.` },
-          { label: 'C', teks: `Meminta pemohon mencari tempat pencetakan terdekat sebelum loket tutup agar petugas tidak mengakses data di luar tugasnya.` },
-          { label: 'D', teks: `Memberikan nomor antrean prioritas untuk hari berikutnya serta menjelaskan bahwa kelengkapan berkas tetap menjadi tanggung jawab pemohon.` },
-          { label: 'E', teks: `Menerima berkas yang ada dan meminta lansia mengirimkan surat pendukung melalui pesan pribadi setelah kembali ke desanya.` },
+          { label: 'A', teks: `Mengirim pemberitahuan status lewat surel kepada penelepon pekan ini, lalu memantau jumlah panggilan pekan depan.` },
+          { label: 'B', teks: `Menambah satu petugas lagi pada jalur telepon, lalu memantau jumlah panggilan pada setiap awal pekan.` },
+          { label: 'C', teks: `Meminta petugas menyatakan pesan sudah terkirim dan nomor adalah urusan pemohon, lalu mengakhiri panggilan telepon.` },
+          { label: 'D', teks: `Menambah pemberitahuan lewat surel yang tercatat saat mendaftar, lalu meminta pemohon memperbarui nomor saat masuk akun.` },
+          { label: 'E', teks: `Mengumumkan halaman cek status di laman utama, lalu meminta petugas telepon mengarahkan penelepon ke halaman itu.` },
         ],
-        kunci: 'A',
-        pembahasan: `Konsep yang digunakan: Akomodasi yang wajar bagi kelompok rentan tanpa mengurangi kelengkapan dan kewenangan verifikasi
-Kata kunci: lansia, desa terpencil, berkas kurang, data internal, petugas berwenang, SOP
-Opsi A (5 Poin) paling tepat karena hambatan pemohon diatasi menggunakan data dan petugas yang sah, sementara persyaratan tetap dipenuhi. Bantuan pencetakan merupakan akomodasi yang wajar, bukan penghapusan syarat atau perlakuan istimewa yang melanggar aturan.
-Tindakan tersebut mempertimbangkan jarak, usia, dan waktu tanpa mengorbankan akurasi dokumen.
-
-Pembahasan setiap opsi:
-A (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-B (4 poin): Verifikasi melalui petugas berwenang sudah tepat, tetapi penundaan pencetakan tidak diperlukan karena sumber daya masih tersedia.
-C (1 poin): Meminta pencetakan di luar menjaga batas tugas secara kaku, tetapi memindahkan beban kepada lansia dan mengabaikan akses internal yang sah.
-D (3 poin): Antrean prioritas mengurangi waktu tunggu berikutnya, tetapi pemohon tetap harus menempuh perjalanan lagi padahal solusi sah tersedia saat itu.
-E (2 poin): Menerima pengiriman melalui pesan pribadi tampak memudahkan, tetapi berisiko pada keamanan data dan tidak mengikuti kanal resmi.
-
-Cara cepat: Berikan akomodasi yang wajar kepada kelompok rentan tanpa menghapus persyaratan atau melampaui kewenangan.`,
-        tingkat: 'sulit',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Perbaikan layanan berkelanjutan yang menyentuh penyebab masalah.
+Kata kunci: penambahan petugas telepon, pemberitahuan SMS, nomor tidak aktif, surel pemohon, cek status mandiri.
+Opsi D (5 poin) paling tepat karena penyebab panggilan adalah pemberitahuan yang hanya lewat SMS ke nomor lama, sehingga pemberitahuan lewat surel yang tercatat dan pembaruan nomor langsung mengubah cara pemberitahuan sampai ke pemohon. Perbaikan menyasar akar masalah, bukan kapasitas telepon.
+Pembahasan opsi lain:
+A (3 poin) surel kepada penelepon pekan ini menjawab mereka yang sudah menanyakan status, memakai surel yang memang tercatat. Namun pemohon lain tetap menerima SMS ke nomor lama dan nomor itu belum diperbarui, sehingga panggilan awal pekan akan berulang.
+B (2 poin) menambah petugas telepon mengulang perbaikan yang sebelumnya sudah dicoba dan tidak menurunkan panggilan. Catatan panggilan menunjuk penyebab pada pemberitahuan SMS, bukan pada jumlah penjawab.
+C (1 poin) menyatakan pesan sudah terkirim dan menyerahkan pemeriksaan nomor kepada pemohon memindahkan beban kegagalan layanan kepada pengguna. Penelepon yang tidak mendapat pemberitahuan ditinggalkan tanpa bantuan.
+E (4 poin) halaman cek status yang sudah ada membuat pemohon dapat memeriksa sendiri dan mengurangi panggilan. Namun pemberitahuan tetap hanya lewat SMS ke nomor lama, sehingga pemohon yang tidak membuka halaman itu tetap tidak menerima kabar.
+Cara cepat: Telusuri penyebab masalah dari catatan yang tersedia, lalu bandingkan setiap usulan dengan penyebab itu.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-06 · Nynda - TKP 1_Done Input.docx, soal 6
+      // tkp-kasus-pp-11 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 6,
         tipe: 'skala',
-        pertanyaan: `Listrik padam ketika antrean sedang padat sehingga layar nomor dan komputer loket tidak berfungsi. Formulir kertas serta daftar antrean cadangan tersedia, sementara transaksi yang memerlukan verifikasi pusat tidak dapat diselesaikan. Sejumlah warga mulai mempertanyakan kepastian layanan. Langkah Anda adalah ...`,
+        pertanyaan: `Anda penghubung perusahaan jasa pengiriman yang bermitra dengan dinas perizinan untuk mengantar izin usaha. Pagi ini kurir Anda melapor bahwa izin milik Bu Rahma diserahkan kepada pemilik toko di sebelahnya yang namanya mirip, dan toko itu sudah membukanya. Kontrak kemitraan mengharuskan penghubung perusahaan melapor kepada penghubung dinas pada hari yang sama bila dokumen salah antar, sedangkan dinas yang menerbitkan ulang izin. Kurir masih berada di sekitar toko dan harus berangkat ke alamat berikutnya setengah jam lagi. Bagaimana Anda menanganinya?`,
         opsi: [
-          { label: 'A', teks: `Membagikan formulir kertas kepada seluruh warga agar mereka tetap memiliki kegiatan sambil menunggu pasokan listrik kembali normal.` },
-          { label: 'B', teks: `Menutup sementara loket untuk mencegah kesalahan pencatatan dan meminta warga memantau pengumuman pembukaan melalui media sosial.` },
-          { label: 'C', teks: `Mengaktifkan antrean manual dan memproses layanan yang aman dilakukan, disertai pencatatan untuk verifikasi lanjutan.` },
-          { label: 'D', teks: `Memprioritaskan warga yang urusannya tidak membutuhkan pembayaran, lalu meminta warga lain mengambil nomor antrean baru setelah listrik menyala.` },
-          { label: 'E', teks: `Mengumumkan gangguan, memanggil antrean secara manual, memeriksa seluruh berkas, dan menyimpan hasilnya sampai sistem dapat digunakan kembali.` },
+          { label: 'A', teks: `Melapor kepada penghubung dinas beserta kronologi, lalu meminta dinas menentukan cara menarik dokumen itu.` },
+          { label: 'B', teks: `Meminta pemilik toko mengantar dokumen itu ke rumah Bu Rahma, lalu melapor kepada penghubung dinas pada sore hari.` },
+          { label: 'C', teks: `Meminta kurir menarik kembali dokumen itu dengan berita acara, lalu melapor kepada penghubung dinas beserta kronologi.` },
+          { label: 'D', teks: `Mencatat kejadian sebagai insiden internal perusahaan, lalu memberi tahu dinas hanya bila Bu Rahma mengeluh.` },
+          { label: 'E', teks: `Meminta kurir menarik kembali dokumen itu dengan berita acara, lalu meminta kurir tersebut menelepon petugas jaga dinas.` },
         ],
         kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Keandalan layanan saat infrastruktur terganggu melalui komunikasi, antrean cadangan, pemilahan proses, dan pencatatan tindak lanjut
-Kata kunci: listrik padam, antrean manual, layanan dasar, verifikasi pusat, pencatatan
-Opsi C (5 Poin) paling tepat karena layanan yang tidak bergantung pada listrik tetap berjalan, sedangkan proses yang tertunda dicatat agar dapat dilanjutkan dengan tertib. Pengumuman kondisi dan penggunaan antrean manual menjaga kepastian serta urutan warga.
-Petugas tidak memaksakan transaksi yang membutuhkan verifikasi pusat dan tidak menghentikan seluruh layanan hanya karena sebagian sistem tidak tersedia.
-
-Pembahasan setiap opsi:
-A (2 poin): Formulir kertas memanfaatkan waktu tunggu, tetapi tanpa pengaturan antrean dan pemilahan proses belum menjamin layanan berjalan.
-B (1 poin): Penutupan mencegah kesalahan, tetapi terlalu luas karena sejumlah layanan masih dapat dilakukan secara manual.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (3 poin): Memilah layanan yang tidak membutuhkan pembayaran cukup membantu, tetapi nomor antrean baru dapat menghilangkan urutan dan membebani warga.
-E (4 poin): Antrean manual dan pemeriksaan berkas merupakan langkah baik, tetapi menahan semua hasil mengurangi manfaat prosedur cadangan.
-
-Cara cepat: Saat fasilitas utama gagal, jalankan fungsi yang masih aman, jaga urutan, dan catat proses yang harus ditindaklanjuti.`,
-        tingkat: 'sulit',
+        pembahasan: `Konsep yang digunakan: Pemulihan layanan atas kesalahan yang sudah berdampak kepada pihak ketiga dalam kemitraan.
+Kata kunci: salah antar, izin sudah dibuka, kontrak kemitraan, laporan hari yang sama, penghubung dinas.
+Opsi C (5 poin) paling tepat karena dokumen yang sudah dibuka perlu segera ditarik dengan berita acara selama kurir masih di sekitar toko, sedangkan laporan beserta kronologi kepada dinas dibuat sekarang sesuai kontrak agar dinas dapat menilai perlunya penerbitan ulang. Kedua hal itu dapat Anda kerjakan sendiri.
+Pembahasan opsi lain:
+A (3 poin) laporan kepada dinas dibuat pada hari yang sama sesuai kontrak, tetapi dokumen yang sudah dibuka tetap berada di toko ketika kurir harus berangkat setengah jam lagi. Cara menariknya baru ditentukan dinas, sehingga peluang menarik dokumen itu ikut menyempit.
+B (2 poin) laporan kepada dinas tetap dibuat pada hari yang sama dan dokumen akan sampai ke pemiliknya. Namun dokumen yang sudah dibuka berpindah lagi lewat orang yang tidak berkepentingan, sehingga perusahaan tidak mengendalikan pengantarannya dan kurir yang berada di lokasi tidak dipakai.
+D (1 poin) mencatat sebagai insiden internal menunda laporan hingga ada keluhan, padahal kontrak mengharuskan laporan pada hari yang sama. Dokumen yang sudah dibuka juga tidak ditarik, dan dinas tidak dapat menilai perlunya penerbitan ulang.
+E (4 poin) kurir yang menarik dokumen mengetahui kejadiannya, dan telepon kepada petugas jaga dapat dilakukan sebelum ia berangkat. Namun kontrak menunjuk penghubung perusahaan sebagai pelapor kepada penghubung dinas, sehingga laporan kurir kepada petugas jaga tidak melalui saluran yang disepakati dan kronologi dari sisi perusahaan dapat tidak lengkap.
+Cara cepat: Pisahkan apa yang dapat Anda lakukan sendiri sekarang dari apa yang menjadi kewajiban kepada pihak lain, lalu urutkan.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-05 · Nynda - TKP 1_Done Input.docx, soal 5
+      // tkp-kasus-pp-14 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 7,
         tipe: 'skala',
-        pertanyaan: `Saat Anda sedang menjelaskan koreksi berkas kepada seorang warga, atasan menelepon dan meminta laporan penting segera dibawa ke ruangannya. Di loket sebelah terdapat rekan yang dapat melanjutkan pelayanan, tetapi ia juga sedang menyelesaikan satu permohonan. Tindakan Anda adalah ...`,
+        pertanyaan: `Dalam rapat unit, Anda sebagai kepala unit layanan memaparkan rencana mengganti nomor antrean kertas dengan pendaftaran lewat aplikasi mulai bulan depan. Petugas senior yang lama melayani lansia keberatan karena banyak lansia belum memiliki ponsel pintar. Sepertiga pengguna loket berusia di atas enam puluh tahun, tetapi belum ada data berapa yang benar-benar tidak dapat mendaftar, sebab sebagian datang bersama keluarga. Unit hanya punya tiga loket, tidak cukup untuk dua jalur antrean tetap. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Meminta izin kepada warga, memberi tahu perkiraan waktu, menyelesaikan urusan atasan, dan kembali melanjutkan layanan tanpa pergantian petugas.` },
-          { label: 'B', teks: `Mengabaikan panggilan sementara sampai pelayanan warga selesai agar urutan komunikasi tidak terputus oleh urusan kedinasan lain.` },
-          { label: 'C', teks: `Mengirim pesan kepada atasan bahwa laporan akan diserahkan setelah antrean selesai, tanpa menanyakan batas waktu yang sebenarnya dibutuhkan.` },
-          { label: 'D', teks: `Memastikan urgensi panggilan, menuntaskan bagian kritis penjelasan, dan menyerahkan layanan kepada rekan dengan informasi utuh.` },
-          { label: 'E', teks: `Mengakhiri penjelasan kepada warga dan segera menemui atasan, kemudian kembali ke loket untuk melanjutkan pelayanan dari awal.` },
+          { label: 'A', teks: `Meminta petugas senior menyiapkan pengguna lansia memakai aplikasi, lalu menerapkan rencana sesuai jadwal bulan depan.` },
+          { label: 'B', teks: `Meminta petugas senior memetakan hambatan lansia, lalu menguji aplikasi dalam percobaan berpendampingan.` },
+          { label: 'C', teks: `Menghentikan nomor antrean kertas mulai bulan depan, lalu meminta keberatan petugas senior dicatat sebagai masukan.` },
+          { label: 'D', teks: `Membatalkan rencana aplikasi untuk tahun ini, lalu meninjau ulang kebutuhan lansia pada rapat tahun depan.` },
+          { label: 'E', teks: `Menerapkan aplikasi bagi pengguna yang siap, lalu mempertahankan nomor kertas bagi lansia pada jalur terpisah.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Menjaga kesinambungan pelayanan ketika muncul tugas kedinasan mendesak melalui klarifikasi dan serah terima yang akuntabel
-Kata kunci: panggilan atasan, warga sedang dilayani, urgensi, bagian kritis, serah terima
-Opsi D (5 Poin) paling tepat karena petugas memastikan tingkat urgensi perintah, tidak memutus penjelasan pada bagian yang dapat menimbulkan kesalahan, dan melakukan serah terima yang jelas. Kepentingan atasan ditangani tanpa membiarkan warga mengulang proses.
-Koordinasi dengan rekan dilakukan setelah permohonan yang sedang ditanganinya selesai atau pada titik yang aman, sehingga tidak memindahkan gangguan kepada pemohon lain.
-
-Pembahasan setiap opsi:
-A (4 poin): Meminta izin dan menjaga satu petugas menangani kasus merupakan langkah baik, tetapi membuat warga menunggu walaupun serah terima dapat dilakukan.
-B (3 poin): Menyelesaikan pelayanan menjaga fokus kepada warga, tetapi mengabaikan panggilan tanpa memastikan urgensinya dapat menghambat tugas penting.
-C (1 poin): Memberi kabar kepada atasan lebih baik daripada diam, tetapi menetapkan penundaan tanpa klarifikasi urgensi tidak cukup akuntabel.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (2 poin): Segera memenuhi panggilan menunjukkan kepatuhan, tetapi memutus pelayanan dan membuat warga mengulang proses tanpa kepastian.
-
-Cara cepat: Klarifikasi urgensi, tuntaskan bagian kritis, dan lakukan serah terima lengkap agar kedua tugas tetap berjalan.`,
-        tingkat: 'sulit',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Pelayanan inklusif dalam perubahan, yaitu menguji perubahan bersama pihak yang paling terdampak.
+Kata kunci: pendaftaran lewat aplikasi, keberatan petugas senior, ponsel pintar, sepertiga pengguna lansia, belum ada data, tiga loket.
+Opsi B (5 poin) paling tepat karena keberatan petugas senior didasari pengalaman melayani lansia yang mencakup sepertiga pengguna, sedangkan data berapa yang benar-benar tidak dapat mendaftar belum ada. Pemetaan hambatan dan percobaan berpendampingan menjawab ketidakpastian itu sebelum akses lansia ditutup.
+Pembahasan opsi lain:
+A (4 poin) persiapan pengguna lansia membantu dan petugas senior dilibatkan. Namun rencana tetap berjalan bulan depan sebelum diketahui berapa lansia yang benar-benar tidak dapat mendaftar, sehingga hambatan mereka belum dipetakan.
+C (1 poin) menghentikan nomor kertas menutup akses lansia yang belum memiliki ponsel pintar, padahal mereka sepertiga pengguna loket. Keberatan petugas senior hanya dicatat sebagai masukan dan tidak mengubah rencana.
+D (2 poin) membatalkan rencana untuk tahun ini mengabaikan arah layanan digital dan peluang memperbaiki antrean. Lansia tidak dirugikan sekarang, tetapi kebutuhan mereka baru ditinjau setahun kemudian.
+E (3 poin) nomor kertas menjaga akses lansia dan aplikasi tetap berjalan bagi pengguna yang siap. Namun unit hanya punya tiga loket sehingga dua jalur tidak dapat dijaga, dan jalur terpisah dibuat sebelum diketahui berapa lansia yang membutuhkannya.
+Cara cepat: Perlakukan keberatan sebagai informasi yang perlu diuji, lalu lihat kapasitas unit yang tersedia untuk setiap usulan.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-07-02 · Wil - TKP 1_Done Input.docx, soal 2
+      // tkp-kasus-pp-10 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 8,
         tipe: 'skala',
-        pertanyaan: `Seorang wali murid mengeluhkan petugas puskesmas yang membacakan data kesehatan anak dengan suara keras saat pendaftaran imunisasi campak. Orang lain di antrean mendengarnya dan warga meminta kejadian itu tidak terulang, tetapi tetap berharap dilayani hari ini. Sebagai petugas penerima keluhan, respons Anda adalah ...`,
+        pertanyaan: `Seorang pemohon izin usaha menerima dua perkiraan waktu: pusat panggilan dinas menyebut tiga hari kerja, sedangkan petugas loket menyebut tujuh hari kerja. Ia menghubungi Anda, anggota tim informasi layanan, karena akan menyerahkan izin itu kepada bank akhir pekan depan. Status berkasnya dalam verifikasi dan dinyatakan lengkap kemarin, sedangkan maklumat pelayanan menetapkan standar lima hari kerja sejak berkas lengkap. Anda dapat melihat status berkas, tetapi tidak dapat mempercepatnya. Sikap Anda adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menempatkan rekan sebagai pengganti petugas pendaftaran dan memberikan nomor pengaduan agar warga bisa memantau respons layanan.` },
-          { label: 'B', teks: `Mengajak warga berbicara di tempat yang lebih tenang dan meneruskan pendaftarannya, lalu mengingatkan rekan secara pribadi tentang kerahasiaan.` },
-          { label: 'C', teks: `Memindahkan percakapan ke area privat, memastikan pendaftaran dilanjutkan dan menyalurkan keluhan melalui mekanisme yang menjaga kerahasiaan.` },
-          { label: 'D', teks: `Mengarahkan warga mengisi formulir pengaduan resmi dan memberi tahu bahwa tanggapan akan tersedia setelah petugas penanggung jawab memeriksanya.` },
-          { label: 'E', teks: `Meminta warga mengulangi data yang sebelumnya disebutkan di depan antrean sehingga kesalahan petugas lain dapat dibandingkan dengan berkas.` },
+          { label: 'A', teks: `Menghubungi petugas loket untuk memastikan lama proses lima hari kerja itu, lalu menyampaikan hasilnya kepada pemohon.` },
+          { label: 'B', teks: `Menyampaikan perkiraan tiga hari kerja dari pusat panggilan, lalu menyarankan pemohon menghubungi dinas lagi pekan depan.` },
+          { label: 'C', teks: `Meminta maaf atas informasi yang berbeda, lalu menyampaikan bahwa penyelesaian mengacu pada maklumat lima hari kerja.` },
+          { label: 'D', teks: `Menyarankan pemohon menemui petugas verifikasi di luar jam layanan, lalu meminta berkas didahulukan.` },
+          { label: 'E', teks: `Menyampaikan batas lima hari kerja beserta tanggalnya, lalu menunjukkan kanal untuk memantau statusnya.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Pelayanan prima, perlindungan privasi, pemulihan kepercayaan, penanganan keluhan
-Kata kunci: Data pribadi terdengar, keluhan, privasi, pemulihan layanan
-Opsi C (5 poin) paling tepat karena petugas perlu melindungi warga dari paparan lanjutan, melanjutkan kebutuhan pendaftaran, dan memastikan keluhan masuk alur penanganan yang bertanggung jawab. Dengan demikian, hak warga dipulihkan saat itu juga dan unit mempunyai dasar untuk mencegah pengulangan.
-
-Pembahasan setiap opsi:
-A (3 poin) karena jalur keluhan tersedia dan petugas berganti, namun kekhawatiran tentang paparan data pribadi belum ditangani secara langsung.
-B (4 poin) karena privasi warga dan kelanjutan layanan telah diperhatikan, tetapi teguran informal belum menjamin unit mengevaluasi kesalahan yang terjadi.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (2 poin) karena pengaduan diarahkan ke prosedur resmi, tetapi kebutuhan warga yang sedang dilayani tidak mendapatkan solusi saat itu.
-E (1 poin) karena pemeriksaan peristiwa diupayakan, tetapi meminta data pribadi diulangi di ruang terbuka memperluas paparan yang dikeluhkan.
-
-Cara cepat: Pada keluhan kerahasiaan, amankan situasi sekarang, tetap layani kebutuhan warga, dan catat tindak lanjut unit.`,
-        tingkat: 'sulit',
+        kunci: 'E',
+        pembahasan: `Konsep yang digunakan: Keterbukaan dan kepastian waktu layanan saat informasi bertentangan.
+Kata kunci: dua perkiraan waktu, maklumat pelayanan, lima hari kerja, berkas lengkap kemarin, status berkas.
+Opsi E (5 poin) paling tepat karena standar lima hari kerja sejak berkas dinyatakan lengkap kemarin menghasilkan tanggal yang dapat dipertanggungjawabkan, dan kanal pemantauan memberi pemohon cara memeriksa sendiri sebelum menyerahkan izin kepada bank. Perbedaan informasi ditutup dengan data yang sama.
+Pembahasan opsi lain:
+A (3 poin) memastikan ke loket sebelum menjawab terasa hati-hati, tetapi maklumat lima hari kerja dan status berkas yang dapat Anda lihat sudah cukup untuk menjawab sekarang. Pemohon menanti jawaban dan berisiko menerima angka tujuh hari yang tidak sesuai maklumat.
+B (2 poin) perkiraan tiga hari kerja dari pusat panggilan tidak sesuai maklumat yang menetapkan lima hari kerja sejak berkas lengkap. Pemohon dapat salah merencanakan penyerahan izin kepada bank akhir pekan depan, dan baru diminta menghubungi dinas lagi ketika tenggat itu dekat.
+C (4 poin) permintaan maaf dan rujukan pada maklumat lima hari kerja sudah memberi acuan yang benar. Namun pemohon yang akan menyerahkan izin kepada bank akhir pekan depan belum diberi tanggal dan kanal pemantauan, sehingga ia masih harus menghitung dan memeriksa sendiri.
+D (1 poin) meminta berkas didahulukan lewat petugas verifikasi memberi keistimewaan di luar antrean yang berlaku dan merugikan pemohon lain. Pertemuan di luar jam layanan juga mengaburkan akuntabilitas proses verifikasi dan tidak mengubah standar lima hari kerja.
+Cara cepat: Periksa lebih dulu informasi tertulis dan data yang dapat Anda lihat sendiri sebelum memilih angka mana yang disampaikan.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -2328,230 +2280,204 @@ Cara cepat: Pada keluhan kerahasiaan, amankan situasi sekarang, tetap layani keb
   {
     stimulus: { judul: `Jejaring Kerja` },
     soal: [
-      // tryout-ref-08-11 · Wil - TKP 2_Done Input.docx, soal 11
+      // tkp-kasus-jk-22 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 9,
         tipe: 'skala',
-        pertanyaan: `Puskesmas dan kelurahan mendata warga lanjut usia, tetapi belum membagi tugas pembaruan alamat. Akibatnya satu warga tercatat di dua wilayah. Anda menjadi penghubung kedua instansi. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda warga yang aktif di karang taruna dan mengenal seorang kepala seksi di dinas pekerjaan umum karena pernah sekelas. Ketua RT meminta Anda menitipkan proposal perbaikan jalan kampung langsung kepada kenalan itu agar didahulukan. Dinas hanya menerima proposal lewat loket dan menelaahnya menurut urutan masuk, dan proposal itu belum ditandatangani lurah. Anda tidak punya wewenang atas telaah proposal. Sikap Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menunjuk puskesmas menjadi pemegang data utama karena paling sering bertemu lansia, sementara kelurahan diminta menyampaikan informasi pendukung.` },
-          { label: 'B', teks: `Membiarkan kedua unit menggunakan daftar masing-masing dan menyatukannya menjelang laporan akhir agar tidak menambah rapat koordinasi.` },
-          { label: 'C', teks: `Menawarkan diri memperbarui semua perubahan alamat untuk sementara agar kedua unit dapat menjalankan tugas utamanya tanpa menambah koordinasi.` },
-          { label: 'D', teks: `Mengirim ringkasan tujuan program kepada kedua unit dan meminta masing-masing menyampaikan perubahan alamat ketika ditemukan dalam pekerjaannya.` },
-          { label: 'E', teks: `Mengajak wakil dua unit menetapkan pembagian peran, jadwal pembaruan, dan cara konfirmasi perubahan alamat yang dapat diakses penanggung jawab.` },
+          { label: 'A', teks: `Mengantar proposal ke loket dinas bersama ketua RT sambil menanyakan kelengkapan berkas kepada petugas loket.` },
+          { label: 'B', teks: `Menjelaskan kepada ketua RT bahwa proposal masuk lewat loket sambil membantu melengkapi tanda tangan lurah.` },
+          { label: 'C', teks: `Menyampaikan kepada ketua RT bahwa proposal harus lewat loket sambil menyarankannya bertanya kepada petugas loket.` },
+          { label: 'D', teks: `Menanyakan syarat proposal jalan kepada kenalan di dinas sambil mencatat jawabannya untuk ketua RT.` },
+          { label: 'E', teks: `Menitipkan proposal langsung kepada kenalan di dinas pekerjaan umum sambil meminta ia mendahulukan proposal kampung.` },
         ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Prinsip jejaring kerja, integritas kemitraan, dan tujuan bersama.
-Kata kunci: Puskesmas, kelurahan, pembagian peran, perubahan alamat, tanggung jawab.
-Opsi E (5 poin) paling tepat karena membangun hubungan kerja berdasarkan tujuan bersama dan tanggung jawab yang jelas. Menyepakati siapa melakukan pembaruan dan bagaimana konfirmasi dilakukan mencegah data berbeda antarlembaga. Kerja sama tidak cukup hanya dilandasi niat baik tanpa mekanisme pelaksanaan.
-
-Pembahasan setiap opsi:
-A (2 poin) karena memperjelas penanggung jawab tunggal, tetapi keputusan dibuat sepihak tanpa menyepakati kebutuhan kedua lembaga.
-B (1 poin) karena mengurangi pertemuan, tetapi membiarkan perbedaan data berkembang sampai pelaporan akhir.
-C (3 poin) karena menunjukkan inisiatif membantu, tetapi menjadikan satu orang titik ketergantungan dan menghilangkan pembagian tugas antarlembaga.
-D (4 poin) karena menyatukan pemahaman mengenai tujuan, tetapi tanggung jawab pemutakhiran tetap tidak jelas.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Hubungan kerja produktif membutuhkan tujuan, pembagian peran, dan mekanisme informasi yang disepakati.`,
-        tingkat: 'sedang',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Menolak penggunaan relasi untuk mendahului proposal lain sambil membantu lewat jalur resmi.
+Kata kunci: titipan kepada kenalan, kepala seksi, penerimaan lewat loket, urutan masuk, belum ditandatangani lurah.
+Opsi B (5 poin) paling tepat karena dinas hanya menerima proposal lewat loket menurut urutan masuk, sehingga menitipkan kepada kenalan tidak sesuai jalur. Melengkapi tanda tangan lurah tanpa menunggu diminta petugas menjawab kebutuhan kampung tanpa mendahului proposal lain.
+Pembahasan opsi lain:
+A (4 poin) proposal masuk lewat loket sesuai urutan masuk, sehingga tidak ada pengusul lain yang dirugikan. Kelengkapan baru ditanyakan di loket tanpa inisiatif menyiapkannya lebih dulu, sehingga kekurangan tanda tangan lurah baru ketahuan di sana dan ketua RT harus bolak-balik.
+C (3 poin) penyampaian itu benar dan tidak memakai kedekatan. Proposal yang belum ditandatangani lurah tidak dibantu dilengkapi, padahal Anda dapat membantu sebelum proposal masuk ke loket.
+D (2 poin) syarat proposal diperoleh cepat lewat kedekatan, tetapi dinas hanya menerima proposal lewat loket. Petugas loket tetap menjadi jalur yang berlaku, sehingga cara ini menyelesaikan di luar prosedur walau tidak merugikan pengusul lain.
+E (1 poin) dinas menelaah proposal menurut urutan masuk, sehingga meminta kenalan mendahulukan proposal kampung melanggar urutan dan merugikan pengusul lain. Kedekatan teman sekelas menjadi jalur istimewa yang tidak dimiliki warga lain.
+Cara cepat: Bedakan menolong lewat jalur yang berlaku dari memakai kedekatan, lalu lihat apa yang masih dapat Anda sumbangkan.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-08-15 · Wil - TKP 2_Done Input.docx, soal 15
+      // tkp-kasus-jk-02 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 10,
         tipe: 'skala',
-        pertanyaan: `Oki baru bertugas dalam tim lintas kabupaten. Notulen memakai singkatan yang berbeda dari istilah unit asalnya, sehingga tugas lapangan terlihat tumpang tindih. Rekan menyarankan mengikuti istilah yang paling sering dipakai. Langkah Oki adalah ...`,
+        pertanyaan: `Anda pelaksana yang menggabungkan data penerima bantuan dari dua unit dalam satu lembar kerja bersama. Unit pertama menulis nama kecamatan secara lengkap, sedangkan unit kedua memakai kode singkatan, sehingga penjumlahan per kecamatan terpecah menjadi dua baris. Pedoman data dinas menetapkan penulisan nama kecamatan secara lengkap. Kedua unit akan memakai lembar kerja itu bulan depan. Apa keputusan Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Mengerjakan seluruh tugas yang tampak tercantum pada namanya agar tidak ada pekerjaan tertinggal meski sebagian kemungkinan telah menjadi tanggung jawab rekan lain.` },
-          { label: 'B', teks: `Meminta klarifikasi arti singkatan dan pembagian tugas melalui komunikasi tim, lalu membagikan ringkasan agar pekerjaan tidak tumpang tindih.` },
-          { label: 'C', teks: `Memilih tugas yang paling mirip dengan pekerjaan rutin di unit asal dan menyampaikan pilihan tersebut agar rekan lain dapat menyesuaikan.` },
-          { label: 'D', teks: `Menandai bagian notulen yang membingungkan dan menunggu koordinator selesai rapat sebelum mengambil tugas yang berpotensi ganda.` },
-          { label: 'E', teks: `Menghubungi satu rekan yang paling berpengalaman untuk menafsirkan notulen dan mulai mengerjakan tugas sesuai penjelasan yang diperoleh.` },
+          { label: 'A', teks: `Mengubah kode singkatan menjadi nama lengkap pada baris yang sudah terpecah, lalu menjumlahkan ulang data per kecamatan.` },
+          { label: 'B', teks: `Menyeragamkan penulisan kecamatan sesuai pedoman pada data kedua unit, lalu memasang daftar pilihan nama baku di lembar kerja.` },
+          { label: 'C', teks: `Meminta kepala kedua unit bertemu untuk memilih format penulisan kecamatan, lalu menggabungkan data sesuai keputusan bersama itu.` },
+          { label: 'D', teks: `Menggabungkan data sesuai tulisan masing-masing unit, lalu memberi catatan bahwa jumlah per kecamatan mungkin ganda.` },
+          { label: 'E', teks: `Mengubah angka satu kecamatan agar jumlah total sama dengan laporan bulan lalu, lalu menandai data sebagai sudah selesai.` },
         ],
         kunci: 'B',
-        pembahasan: `Konsep yang digunakan: Koordinasi dan berbagi informasi, klarifikasi peran, serta akurasi komunikasi.
-Kata kunci: Notulen berbeda, singkatan, peran ganda, klarifikasi terbuka.
-Opsi B (5 poin) paling tepat karena menempatkan klarifikasi sebagai sarana memastikan tanggung jawab bersama, bukan persoalan pribadi pegawai baru. Ringkasan hasil konfirmasi mengurangi interpretasi berbeda di antara anggota tim. Langkah ini tepat tanpa menunggu seluruh anggota bertemu langsung.
-
-Pembahasan setiap opsi:
-A (1 poin) karena menunjukkan kesediaan bekerja, tetapi dapat menggandakan pekerjaan dan mengaburkan tanggung jawab anggota lain.
-B (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-C (2 poin) karena memberi tahu pilihan tugas, tetapi pembagian ditentukan berdasarkan kebiasaan pribadi bukan kebutuhan tim.
-D (3 poin) karena mencegah tugas tertukar, tetapi menunda pekerjaan yang dapat diperjelas melalui anggota tim lainnya.
-E (4 poin) karena berinisiatif mencari bantuan dari rekan berpengalaman, tetapi hasil penafsiran belum dikonfirmasi dan disebarkan ke seluruh tim.
-
-Cara cepat: Komunikasi efektif menghasilkan pemahaman kolektif yang tercatat, bukan sekadar penafsiran individual.`,
-        tingkat: 'sedang',
+        pembahasan: `Konsep yang digunakan: Menyelaraskan standar data lintas unit berdasarkan pedoman yang berlaku.
+Kata kunci: nama kecamatan lengkap, kode singkatan, penjumlahan terpecah, pedoman data dinas, lembar kerja bersama.
+Opsi B (5 poin) paling tepat karena pedoman data dinas sudah menetapkan penulisan lengkap, sehingga penyeragaman pada data kedua unit menyatukan baris kecamatan yang terpecah. Daftar pilihan nama baku mencegah perbedaan penulisan terulang ketika kedua unit memakai lembar kerja bulan depan.
+Pembahasan opsi lain:
+A (4 poin) perbaikan baris yang terpecah membuat jumlah per kecamatan benar untuk bulan ini. Penulisan pada data kedua unit dan pada lembar kerja tidak diubah, sehingga baris terpecah muncul lagi saat data bulan depan dimasukkan.
+C (3 poin) pertemuan kepala unit memberi kesepakatan, tetapi pedoman data dinas sudah menetapkan penulisan lengkap. Penggabungan data tertahan untuk keputusan yang jawabannya sudah ada.
+D (2 poin) catatan peringatan memberi tahu pembaca tentang masalah penjumlahan. Akan tetapi baris kecamatan tetap terpecah dan pedoman penulisan tidak dipakai, sehingga pembaca harus memperbaiki hitungan sendiri.
+E (1 poin) mengubah angka demi kecocokan total memalsukan data penerima yang sebenarnya. Perbedaan penulisan kecamatan tetap ada dan hasil gabungan menyesatkan siapa pun yang memakainya.
+Cara cepat: Bandingkan standar yang sudah ada dengan cara tiap unit bekerja, lalu lihat siapa yang akan memanfaatkan hasilnya kelak.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-07-09 · Wil - TKP 1_Done Input.docx, soal 9
+      // tkp-kasus-jk-04 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 11,
         tipe: 'skala',
-        pertanyaan: `Dinas kesehatan dan sekolah akan mengadakan penyuluhan keamanan pangan MBG. Poster hanya mencantumkan dinas sehingga orang tua tidak mengetahui peran serta kontak sekolah. Anda menjadi penghubung kedua instansi. Respons Anda adalah ...`,
+        pertanyaan: `Anda koordinator forum lintas unit di sebuah dinas. Unit survei menargetkan hasil akhir survei pada akhir bulan, sedangkan unit kebijakan membutuhkan data survei pada tanggal 15 untuk menyusun rancangan peraturan. Tim survei menyatakan hasil antara dapat dibuka setelah pengumpulan data selesai pada tanggal 12. Forum ini memfasilitasi dan tidak berwenang memerintah salah satu unit. Kedua kepala unit bersedia hadir pada pertemuan minggu ini. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menyebut satu instansi sebagai penyelenggara utama agar pengumuman terlihat sederhana, lalu meminta pihak lain mendukung pelaksanaan.` },
-          { label: 'B', teks: `Meminta sekolah membagikan pengumuman sendiri supaya wali murid memahami perannya, sementara materi awal dinas tetap digunakan.` },
-          { label: 'C', teks: `Menambahkan kedua logo pada poster yang beredar dan mengirim pemberitahuan kepada sekolah bahwa materi promosi sudah diperbaiki.` },
-          { label: 'D', teks: `Mempertahankan poster yang sudah beredar karena informasi jadwalnya benar, kemudian menjelaskan pembagian peran saat kegiatan dimulai.` },
-          { label: 'E', teks: `Menyelaraskan peran dan kontak kedua instansi, lalu menyebarkan informasi kegiatan yang diperbarui melalui saluran masing-masing.` },
+          { label: 'A', teks: `Meminta tim survei membuka hasil antara pada tanggal 12 bagi unit kebijakan, lalu memberi tahu kepala unit kebijakan.` },
+          { label: 'B', teks: `Memerintahkan unit survei menyerahkan hasil akhir pada tanggal 15, lalu melaporkan penolakannya kepada pimpinan.` },
+          { label: 'C', teks: `Menyusun daftar kebutuhan data kedua unit secara tertulis, lalu mengundang kedua kepala unit pada pertemuan bulanan forum.` },
+          { label: 'D', teks: `Mempertemukan kedua kepala unit untuk menyepakati hasil antara dan tanggal serah terima, lalu mencatat penanggung jawab.` },
+          { label: 'E', teks: `Menyampaikan keluhan unit kebijakan kepada unit survei lewat pesan singkat, lalu meminta keduanya menyelesaikannya sendiri.` },
         ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Kesetaraan kemitraan, komunikasi publik, pengakuan peran, tujuan bersama
-Kata kunci: Dinas, sekolah, logo, peran mitra, kontak bantuan
-Opsi E (5 poin) paling tepat karena kemitraan membutuhkan kejelasan tanggung jawab yang dapat dipahami penerima layanan. Menyepakati peran dan kontak sebelum publikasi mencegah kebingungan serta membangun kepercayaan antarinstansi. Bukan jumlah logo semata yang menentukan kualitas komunikasi, melainkan informasi praktis tentang siapa bertanggung jawab.
-
-Pembahasan setiap opsi:
-A (1 poin) karena pengumuman disederhanakan dengan menghilangkan kontribusi mitra, sehingga hubungan kerja kurang adil dan kontak menjadi kabur.
-B (3 poin) karena sekolah diberi ruang berkomunikasi, tetapi informasi terpisah berpotensi berbeda dan membuat warga menentukan sendiri pihak yang tepat.
-C (4 poin) karena kedua instansi sudah terlihat dalam poster, tetapi saluran bantuan dan rincian peran masih belum diperjelas kepada orang tua.
-D (2 poin) karena pelaksanaan kegiatan tidak berubah, tetapi ketidakjelasan informasi dibiarkan sampai peserta hadir di lokasi.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Dalam kerja sama, perjelas peran dan jalur informasi bersama, bukan sekadar menampilkan identitas lembaga.`,
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Menyelaraskan keluaran antarunit yang saling bergantung melalui fasilitasi, bukan perintah.
+Kata kunci: hasil akhir bulan, kebutuhan tanggal 15, hasil antara, pengumpulan data tanggal 12, tidak berwenang memerintah, kedua kepala unit.
+Opsi D (5 poin) paling tepat karena kedua target sah, sehingga pertemuan bersama mencari irisan: hasil antara tersedia tanggal 12 dapat menutup kebutuhan tanggal 15 tanpa memaksa unit survei. Tanggal serah terima dan penanggung jawab yang dicatat mencegah janji tidak jelas.
+Pembahasan opsi lain:
+A (4 poin) hasil antara yang dibuka pada tanggal 12 dapat menutup kebutuhan data unit kebijakan pada tanggal 15, dan kepala unit kebijakan diberi tahu. Namun tanggal serah terima dan penanggung jawab tidak disepakati, sedangkan kepala unit survei tidak diajak bicara.
+B (1 poin) forum ini memfasilitasi dan tidak berwenang memerintah salah satu unit, sehingga perintah menyerahkan hasil akhir pada tanggal 15 melampaui perannya. Pelaporan penolakan memperburuk hubungan sebelum kedua kepala unit sempat dipertemukan, padahal hasil antara tersedia tanggal 12.
+C (3 poin) daftar kebutuhan membuat pembicaraan nanti lebih terarah dan forum tetap bekerja. Pertemuan bulanan menggeser pembicaraan dari minggu ini, padahal kedua kepala unit bersedia hadir sekarang dan tanggal 15 sudah dekat.
+E (2 poin) pesan singkat meneruskan keluhan unit kebijakan, tetapi tidak ada penengah dan tidak ada kesepakatan. Peran forum untuk memfasilitasi kedua unit diserahkan kembali kepada mereka tanpa bantuan.
+Cara cepat: Pikirkan kebutuhan sah masing-masing pihak, dan siapa yang tidak berhak memerintah salah satunya.`,
         tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-14 · Nynda - TKP 1_Done Input.docx, soal 14
+      // tkp-kasus-jk-21 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 12,
         tipe: 'skala',
-        pertanyaan: `Unit Anda memiliki metode analisis otomatis yang mempercepat laporan. Cabang lain meminta modul dan pelatihan, sementara tim Anda sedang menghadapi tenggat rutin. Metode tersebut menggunakan data contoh yang harus disamarkan sebelum dibagikan. Kepala unit mendukung transfer pengetahuan selama pekerjaan utama tidak terganggu. Langkah Anda adalah ...`,
+        pertanyaan: `Anda pegawai baru yang membantu panitia pelatihan internal. Panitia membutuhkan narasumber tentang pengelolaan arsip, dan Anda mengenal seorang pejabat di instansi lain yang menguasainya karena ia kenalan keluarga Anda. Pejabat itu belum mengetahui kebutuhan pelatihan, dan dua calon narasumber lain yang dikenal panitia juga tersedia. Prosedur panitia mengharuskan undangan narasumber dikirim lewat surat resmi dari unit, dan anggaran honor narasumber sudah tersedia. Menetapkan narasumber bukan wewenang Anda. Apa yang paling tepat Anda lakukan?`,
         opsi: [
-          { label: 'A', teks: `Mengirim modul yang sudah ada dan meminta cabang mempelajarinya sendiri, kemudian menjawab pertanyaan jika tim Anda memiliki waktu.` },
-          { label: 'B', teks: `Menolak sementara permintaan pelatihan dan menyarankan cabang mengajukannya kembali setelah periode pelaporan unit Anda selesai.` },
-          { label: 'C', teks: `Membagi penyusunan materi kepada tim sekarang dan menjalankan pelatihan segera agar cabang dapat menikmati manfaat metode lebih cepat.` },
-          { label: 'D', teks: `Memberikan akses rekaman penggunaan metode serta membuka forum pertanyaan tertulis agar cabang dapat belajar tanpa sesi langsung.` },
-          { label: 'E', teks: `Menjadwalkan sesi setelah tenggat, menyiapkan data contoh yang aman, dan menunjuk kontak pendamping untuk tahap penerapan awal.` },
+          { label: 'A', teks: `Mengungkapkan hubungan keluarga Anda dengan pejabat itu kepada panitia, lalu mengusulkan agar unit mengundangnya secara resmi.` },
+          { label: 'B', teks: `Meminta unit mengirim surat undangan resmi kepada pejabat itu, lalu memberi tahu panitia bahwa narasumber sudah diundang.` },
+          { label: 'C', teks: `Meminta panitia mencari narasumber lain yang tidak Anda kenal secara pribadi, lalu mengirim surat undangan resmi.` },
+          { label: 'D', teks: `Mengajak pejabat itu lewat pesan pribadi ke ponselnya, lalu memberi tahu panitia setelah ia menyatakan setuju.` },
+          { label: 'E', teks: `Menetapkan pejabat itu sebagai narasumber atas keputusan Anda sendiri, lalu meminta honornya dibayarkan dari dana panitia.` },
         ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Transfer pengetahuan yang terencana dengan perlindungan data, dukungan penerapan, dan pengelolaan beban kerja
-Kata kunci: modul, pelatihan, tenggat, data samaran, pendampingan
-Opsi E (5 Poin) paling tepat karena pengetahuan dibagikan pada waktu yang tidak mengganggu pekerjaan utama, menggunakan data yang aman, dan disertai pendampingan penerapan. Cabang memperoleh dukungan sampai tahap penggunaan awal, bukan hanya materi pasif.
-Jadwal yang jelas juga lebih kolaboratif daripada menunda tanpa kepastian atau memaksakan pelatihan saat kapasitas tim terbatas.
-
-Pembahasan setiap opsi:
-A (3 poin): Modul memungkinkan belajar mandiri, tetapi dukungan bergantung pada waktu luang dan keamanan data contoh belum dipastikan.
-B (1 poin): Penundaan melindungi tenggat unit, tetapi cabang tidak memperoleh jadwal atau persiapan yang dapat segera dimulai.
-C (2 poin): Pelatihan segera mempercepat manfaat, tetapi berisiko mengganggu tenggat dan membebani tim pada saat yang tidak tepat.
-D (4 poin): Rekaman dan forum tertulis efisien serta cukup membantu, tetapi belum menyediakan pendampingan pada tahap penerapan nyata.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Berbagi pengetahuan harus memiliki jadwal, materi yang aman, dan dukungan penerapan tanpa mengorbankan tugas utama.`,
-        tingkat: 'sulit',
+        kunci: 'A',
+        pembahasan: `Konsep yang digunakan: Memanfaatkan relasi pribadi secara etis dengan mengungkapkan hubungan kepada pihak yang memutuskan dan mengikuti prosedur.
+Kata kunci: kenalan keluarga, pengelolaan arsip, dua calon narasumber lain, surat resmi, bukan wewenang.
+Opsi A (5 poin) paling tepat karena pejabat itu kenalan keluarga Anda dan dua calon narasumber lain juga tersedia, sehingga hubungan itu diungkapkan agar panitia menilainya secara terbuka. Usulan agar unit mengundang secara resmi mengikuti prosedur undangan lewat surat resmi dan tidak memberi jalur istimewa.
+Pembahasan opsi lain:
+B (4 poin) surat undangan resmi dari unit sesuai prosedur panitia dan anggaran honor tersedia. Hubungan keluarga Anda dengan pejabat itu tidak diungkapkan, dan panitia baru mengetahui nama narasumber setelah undangan terkirim, sehingga panitia tidak sempat menimbang dua calon lain.
+C (3 poin) mencari narasumber yang tidak dikenal menghindari konflik kepentingan, dan prosedur undangan resmi dijalankan. Pejabat yang menguasai pengelolaan arsip tetap relevan dan dapat dinilai panitia bila hubungan keluarga diungkapkan, sehingga calon yang layak ikut tersingkir.
+D (2 poin) pesan pribadi menghubungkan Anda dengan pejabat yang menguasai arsip. Sementara itu, undangan narasumber harus lewat surat resmi dari unit, sehingga kesediaan yang diperoleh di luar prosedur dapat tidak diakui panitia.
+E (1 poin) Anda pegawai baru dan tidak berwenang menetapkan narasumber atau membayar honor. Kedekatan keluarga menjadi dasar keputusan, bukan kebutuhan pelatihan dan prosedur undangan resmi dari unit.
+Cara cepat: Siapa yang memutuskan, dan apa yang perlu diketahui orang itu tentang kedekatan Anda dengan calon?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-07-15 · Wil - TKP 1_Done Input.docx, soal 15
+      // tkp-kasus-jk-24 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 13,
         tipe: 'skala',
-        pertanyaan: `Menjelang pelaksanaan pasar murah serentak, unit perhubungan mengirim jadwal pengaturan jalan kepada kecamatan. Aparat pengatur lalu lintas kemudian mengirim revisi rute melalui surat resmi, tetapi versi lama terlanjur tersebar di sejumlah grup relawan. Anda menjadi penghubung informasi. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda koordinator panitia acara penyuluhan sebuah dinas. Dalam rapat panitia yang sedang berlangsung, sponsor swasta menawarkan dana yang menutup kekurangan anggaran, dengan syarat materi acara menyebut produknya dipilih dinas. Lima dari tujuh anggota panitia setuju menerima karena dana kurang, sedangkan seorang anggota keberatan dan merasa pendapatnya diabaikan. Aturan dinas membolehkan sponsor mencantumkan logo, tetapi melarang pernyataan bahwa produk dipilih dinas. Apa yang sebaiknya Anda lakukan sebagai koordinator?`,
         opsi: [
-          { label: 'A', teks: `Menyebarkan surat revisi melalui kanal tim yang biasa digunakan dan meminta koordinator lapangan memperhatikan perubahan rute.` },
-          { label: 'B', teks: `Menunggu rapat koordinasi sore untuk membandingkan dua surat sebelum mengirimkan rute yang dipilih kepada petugas lapangan.` },
-          { label: 'C', teks: `Memastikan revisi sah, menyebarkan satu versi rute yang berlaku, dan meminta tiap koordinator mengonfirmasi penerimaannya.` },
-          { label: 'D', teks: `Membiarkan tiap unit memilih versi yang diterimanya sendiri sehingga perubahan mendadak tidak mengacaukan persiapan tiap petugas.` },
-          { label: 'E', teks: `Mengikuti jadwal awal karena sudah lebih dahulu disebarkan, lalu mencatat perbedaan untuk dibahas dalam laporan kegiatan.` },
+          { label: 'A', teks: `Menerima dana sponsor hanya untuk satu sesi acara, lalu menyampaikan bahwa pernyataan produk dipilih dinas tidak dapat dimuat.` },
+          { label: 'B', teks: `Mengundang perwakilan sponsor ke rapat panitia berikutnya, lalu membahas syarat itu bersama panitia.` },
+          { label: 'C', teks: `Mengakhiri pembicaraan dengan sponsor itu dalam rapat panitia, lalu mencari dana dari pihak lain yang lebih mudah diatur.` },
+          { label: 'D', teks: `Meminta anggota yang keberatan menjelaskan alasannya, lalu mengajukan penawaran balik berisi logo saja kepada sponsor.` },
+          { label: 'E', teks: `Menerima syarat sponsor sesuai suara terbanyak panitia, lalu mencantumkan pernyataan produk dipilih dinas dalam materi.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Komunikasi lintas unit, kendali versi informasi, tanggung jawab koordinasi
-Kata kunci: Jadwal rute, surat revisi, petugas lapangan, konfirmasi
-Opsi C (5 poin) paling tepat karena kendali versi penting ketika perubahan akan memengaruhi tindakan bersama. Sebelum menyiarkan ulang informasi, keabsahan dan waktu berlakunya perlu dipastikan. Konfirmasi penerimaan mengurangi risiko petugas di lapangan memakai petunjuk yang tidak lagi berlaku.
-
-Pembahasan setiap opsi:
-A (4 poin) karena revisi dibagikan ke kanal yang lazim sehingga banyak petugas mengetahuinya, tetapi belum ada kepastian siapa yang sudah menerima perubahan.
-B (3 poin) karena perbandingan surat direncanakan, namun menunggu sampai sore membiarkan informasi yang keliru beredar selama persiapan.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (1 poin) karena otonomi unit tampak mempermudah, tetapi penggunaan rute berbeda dalam satu kegiatan mengacaukan koordinasi bersama.
-E (2 poin) karena jadwal pertama dipertahankan demi stabilitas, padahal informasi resmi terbaru mungkin mengubah pengaturan keselamatan.
-
-Cara cepat: Perubahan lintas instansi membutuhkan satu versi informasi yang sah dan bukti bahwa pelaksana telah menerimanya.`,
-        tingkat: 'sulit',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Menjaga independensi dalam kemitraan dan hak anggota minoritas ketika mayoritas ingin menerima syarat sponsor.
+Kata kunci: sponsor swasta, produk dipilih dinas, kekurangan anggaran, lima dari tujuh anggota, anggota keberatan, logo sponsor.
+Opsi D (5 poin) paling tepat karena anggota yang keberatan didengar sehingga suara minoritas tidak tertutup keputusan lima dari tujuh anggota. Penawaran yang hanya memuat logo sesuai aturan dinas dan masih menutup kebutuhan dana dengan sponsor.
+Pembahasan opsi lain:
+A (4 poin) dana untuk satu sesi mengurangi kekurangan anggaran tanpa menyalahi aturan tentang pernyataan produk. Kekurangan dana pada sesi lain tetap terbuka dan logo yang dibolehkan aturan dinas tidak dimanfaatkan, sehingga hanya sebagian kebutuhan panitia yang tertutup.
+B (3 poin) pembahasan bersama sponsor dan panitia dapat menghasilkan jalan tengah. Rapat berikutnya menunda pembicaraan padahal rapat panitia sedang berlangsung dan aturan dinas sudah menyatakan batas pernyataan produk, sehingga penawaran balik dapat disusun sekarang.
+C (2 poin) penolakan menjaga aturan dinas tentang pernyataan produk. Namun sponsor tidak diajak membicarakan logo yang dibolehkan, dan lima anggota panitia yang membutuhkan dana kehilangan peluang tanpa upaya menegosiasikannya.
+E (1 poin) aturan dinas melarang pernyataan bahwa produk dipilih dinas, sehingga suara terbanyak tidak dapat membenarkannya. Pendapat anggota yang keberatan diabaikan dan independensi dinas terhadap sponsor terlanggar.
+Cara cepat: Suara siapa yang belum didengar, dan apa yang dibolehkan aturan sebelum Anda memutuskan?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-07-14 · Wil - TKP 1_Done Input.docx, soal 14
+      // tkp-kasus-jk-19 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 14,
         tipe: 'skala',
-        pertanyaan: `Pada penyusunan rute evakuasi karhutla, perangkat pemetaan memilih jalan terpendek, sedangkan tim lapangan menemukan beberapa ruas tidak dapat dilalui pengguna kursi roda. Rute harus diumumkan besok dan waktu perjalanan tetap menjadi pertimbangan keselamatan. Tim berbeda pendapat mengenai kriteria yang perlu didahulukan. Keputusan Anda adalah ...`,
+        pertanyaan: `Anda kepala unit analisis yang menerima laporan mingguan dari tim lapangan di bidang lain. Laporan itu terlambat tiga minggu berturut-turut, dan analisis unit Anda ikut tertunda. Setelah bertanya sepintas, Anda tahu satu petugas lapangan menangani dua kecamatan karena rekannya cuti panjang. Petugas di unit Anda ada yang punya waktu luang dan paham data lapangan. Pembagian petugas ditetapkan kepala bidang tim lapangan, dan Anda hanya dapat mengusulkan. Langkah apa yang paling tepat Anda ambil?`,
         opsi: [
-          { label: 'A', teks: `Menggabungkan kedua daftar rute dan menyarankan pengguna memilih sendiri jalur yang dianggap paling sesuai dengan keadaan mereka.` },
-          { label: 'B', teks: `Menyerahkan keputusan rute kepada satu tim sehingga proses lebih cepat, kemudian menampung catatan keberatan tim lainnya pada evaluasi berikutnya.` },
-          { label: 'C', teks: `Menjadikan akses kursi roda syarat utama dan menghitung waktu tempuh ulang hanya untuk jalur yang dapat diakses seluruh kelompok warga yang dievakuasi.` },
-          { label: 'D', teks: `Menguji pilihan rute terhadap waktu tempuh dan aksesibilitas kemudian mencatat dasar penilaian bersama tim.` },
-          { label: 'E', teks: `Menggunakan hasil perhitungan tim pemetaan karena datanya terukur dan meminta petugas lapangan membantu pengguna yang mengalami hambatan.` },
+          { label: 'A', teks: `Meminta kepala bidang menambah petugas baru bagi tim lapangan, lalu memantau pengiriman laporan mingguan.` },
+          { label: 'B', teks: `Mengirim pengingat tenggat laporan kepada petugas lapangan setiap pekan, lalu mencatat keterlambatannya dalam rekap unit.` },
+          { label: 'C', teks: `Menyusun analisis sementara dari data yang masuk, lalu menandai bagian yang belum dilengkapi tim lapangan.` },
+          { label: 'D', teks: `Menanyakan kendala kepada petugas lapangan itu, lalu mengusulkan kepada kepala bidang bantuan petugas unit Anda.` },
+          { label: 'E', teks: `Menyimpulkan petugas lapangan itu kurang disiplin, lalu meminta kepala bidang menggantinya dengan petugas lain.` },
         ],
         kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Kolaborasi multidisipliner, pemilihan kriteria, keselamatan dan aksesibilitas
-Kata kunci: Rute evakuasi, jarak, kursi roda, dua data valid, keputusan tim
-Opsi D (5 poin) paling tepat karena dua sumber data tidak perlu diperlakukan sebagai saling meniadakan. Rute perlu diuji terhadap keselamatan, waktu tempuh, dan aksesibilitas untuk berbagai pengguna. Keputusan terdokumentasi memberi dasar yang jelas mengapa pilihan tertentu diambil serta apa keterbatasan yang masih harus dikelola.
-
-Pembahasan setiap opsi:
-A (3 poin) karena pengguna diberi pilihan luas, namun tanggung jawab menyediakan rute yang layak dan aman justru dilepaskan kepada individu.
-B (1 poin) karena keputusan dipercepat dengan mengabaikan keahlian salah satu tim yang dapat mengubah kelayakan jalur.
-C (4 poin) karena hak pengguna berkebutuhan akses sudah dijaga dalam pemilihan jalur, tetapi keseluruhan pilihan belum diuji menurut kedua kriteria sejak awal.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (2 poin) karena pengukuran jarak dimanfaatkan, tetapi hambatan mobilitas dipindahkan menjadi masalah bantuan lapangan bukan bagian dari desain.
-
-Cara cepat: Saat dua unit membawa bukti yang berbeda, gabungkan kriteria yang relevan lalu uji opsi, bukan memilih siapa yang paling meyakinkan.`,
-        tingkat: 'sulit',
+        pembahasan: `Konsep yang digunakan: Menangani masalah berulang pada pekerjaan lintas tim dengan menelusuri penyebab dan mengusulkan bantuan sesuai wewenang.
+Kata kunci: terlambat tiga minggu, analisis tertunda, dua kecamatan, cuti panjang, waktu luang, kepala bidang.
+Opsi D (5 poin) paling tepat karena keterlambatan tiga minggu berulang karena satu petugas menangani dua kecamatan, sehingga menanyakan kendalanya memastikan penyebab. Usulan bantuan petugas unit Anda kepada kepala bidang menyentuh penyebab dan tetap dalam batas Anda yang hanya mengusulkan.
+Pembahasan opsi lain:
+A (4 poin) penambahan petugas baru menyasar beban dua kecamatan dan pembagian petugas memang ada pada kepala bidang. Di sisi lain, petugas baru perlu waktu belajar dan kendala tim lapangan belum ditanyakan, padahal petugas unit Anda punya waktu luang dan paham data lapangan.
+B (2 poin) pengingat tenggat dan pencatatan keterlambatan menjaga jejak di unit Anda. Penyebab keterlambatan, yaitu satu petugas menangani dua kecamatan, tidak disentuh, sehingga laporan tetap terlambat pada minggu berikutnya.
+C (3 poin) analisis sementara melindungi hasil unit Anda dari tertundanya laporan tim lapangan. Pekerjaan itu hanya menutup sebagian kebutuhan karena penyebab keterlambatan, yaitu beban dua kecamatan pada satu petugas, tidak ditangani.
+E (1 poin) kesimpulan tentang disiplin diambil sebelum penyebab keterlambatan diperiksa, padahal satu petugas menangani dua kecamatan. Penggantian petugas tidak mengurangi beban dua kecamatan dan merugikan petugas yang sudah bekerja.
+Cara cepat: Apa yang membuat keterlambatan itu terus berulang dari sudut pihak yang mengerjakan, dan siapa yang dapat memperbaikinya?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-08-16 · Wil - TKP 2_Done Input.docx, soal 16
+      // tkp-kasus-jk-11 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 15,
         tipe: 'skala',
-        pertanyaan: `Tim kesehatan melatih kader di daerah yang angkutan umumnya terbatas. Unit materi meminta praktik lebih lama, sedangkan peserta harus pulang sebelum kendaraan terakhir. Anggaran tidak tersedia untuk penginapan. Praktik menjadi syarat kompetensi, tetapi sebagian teori bisa dipelajari mandiri. Kedua unit perlu menyepakati rancangan yang aman tanpa menurunkan hasil belajar. Keputusan Anda adalah ...`,
+        pertanyaan: `Anda penghubung instansi dengan pemerintah desa yang baru menjadi mitra kegiatan penyuluhan. Kepala desa terbiasa menyepakati kegiatan lewat telepon dan merasa permintaan surat resmi bernada tidak percaya. Kepala desa menyatakan tidak berkeberatan mengikuti cara kerja lain bila alasannya jelas. Prosedur instansi mensyaratkan setiap kesepakatan kegiatan tertulis agar anggarannya dapat dicairkan. Anda dapat mengusulkan cara kerja yang disepakati kedua pihak, dan kegiatan pertama berlangsung bulan depan. Apa langkah Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Mempertahankan rancangan praktik panjang dan menyediakan surat keterangan untuk peserta yang terlambat pulang agar target pembelajaran tidak berkurang.` },
-          { label: 'B', teks: `Mengutamakan waktu pulang peserta dan mengganti hampir seluruh praktik dengan panduan tertulis untuk mengurangi ketergantungan pada perjalanan.` },
-          { label: 'C', teks: `Menyepakati sesi praktik inti sampai sebelum angkutan terakhir, tetapi belum menentukan cara menguasai kompetensi yang belum terlatih.` },
-          { label: 'D', teks: `Menentukan praktik esensial dengan kedua unit sesuai batas jam angkutan dan menyepakati tindak lanjut agar kompetensi tetap tercapai.` },
-          { label: 'E', teks: `Menyerahkan kepada unit materi penentuan durasi belajar dan memberi unit lapangan kewenangan memulangkan peserta lebih awal sesuai kondisi.` },
+          { label: 'A', teks: `Menelepon kepala desa untuk menyepakati kegiatan, lalu mengirim surat singkat sebagai catatan kesepakatannya.` },
+          { label: 'B', teks: `Mengirim surat resmi berisi rincian kegiatan kepada kepala desa, lalu menjelaskan bahwa prosedur instansi menuntutnya.` },
+          { label: 'C', teks: `Menyepakati kegiatan lewat telepon saja, lalu mengajukan pencairan anggaran dengan catatan lisan.` },
+          { label: 'D', teks: `Menerima kesepakatan lewat telepon dari kepala desa, lalu menyusun sendiri catatan tertulis untuk berkas instansi.` },
+          { label: 'E', teks: `Mengganti mitra kegiatan dengan desa tetangga yang terbiasa memakai surat, lalu mengajukan perubahan itu kepada atasan.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Kolaborasi, pemecahan konflik, dan kesepakatan berdasarkan bukti.
-Kata kunci: Kompetensi wajib, angkutan terakhir, keterbatasan anggaran, kompromi berbasis tujuan.
-Opsi D (5 poin) paling tepat karena tidak membagi waktu secara mekanis, tetapi menilai kebutuhan substantif kedua unit. Praktik inti tetap diselenggarakan saat peserta dapat hadir, sedangkan kegiatan lanjutan dirancang dengan bukti penguasaan. Kesepakatan berbasis tujuan memberi solusi yang dapat dilaksanakan tanpa mengorbankan keselamatan perjalanan.
-
-Pembahasan setiap opsi:
-A (1 poin) karena mempertahankan isi belajar, tetapi surat tidak mengatasi ketiadaan angkutan pulang dan menambah beban peserta.
-B (2 poin) karena melindungi keterjangkauan perjalanan, tetapi menghilangkan latihan praktik yang dibutuhkan peserta.
-C (4 poin) karena telah melindungi kepulangan peserta dan mempertahankan praktik utama, tetapi tidak menyiapkan tindak lanjut untuk kompetensi yang belum cukup dilatih.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (3 poin) karena memberikan ruang kepada kedua unit, tetapi menghasilkan pelaksanaan tidak seragam dan tujuan pelatihan tidak pasti.
-
-Cara cepat: Dalam konflik kepentingan tim, rancang solusi berdasarkan tujuan wajib dan batas nyata, bukan sekadar membagi dua usulan.`,
-        tingkat: 'sulit',
+        kunci: 'A',
+        pembahasan: `Konsep yang digunakan: Menata mekanisme kerja sama dengan mitra baru yang menghormati kebiasaannya sekaligus memenuhi prosedur.
+Kata kunci: kebiasaan lewat telepon, surat resmi, nada tidak percaya, alasan jelas, kesepakatan tertulis, pencairan anggaran.
+Opsi A (5 poin) paling tepat karena percakapan telepon menghormati kebiasaan kepala desa dan menggali kebutuhan kegiatan. Surat singkat setelahnya memenuhi prosedur kesepakatan tertulis, sehingga anggaran dapat dicairkan tanpa surat resmi terasa sebagai tanda tidak percaya.
+Pembahasan opsi lain:
+B (4 poin) surat resmi memenuhi syarat kesepakatan tertulis agar anggaran dapat dicairkan. Namun kepala desa menerimanya sebagai tanda tidak percaya sebelum sempat berbicara, sehingga kesalahpahaman tentang surat tetap tertinggal.
+C (1 poin) prosedur instansi mensyaratkan kesepakatan tertulis, sehingga pencairan anggaran berdasarkan catatan lisan melanggar aturan. Kepala desa pun dapat dirugikan bila kegiatan dipersoalkan kemudian.
+D (3 poin) catatan tertulis di berkas instansi memberi dasar pencairan anggaran, dan telepon menghormati kebiasaan kepala desa. Manfaatnya hanya sampai ke instansi karena kepala desa tidak memegang catatan itu, sehingga kesepakatan belum menjadi pegangan kedua pihak.
+E (2 poin) desa tetangga mungkin cocok dengan prosedur instansi. Akan tetapi Anda menghindari kepala desa tanpa mencoba menyelaraskan cara kerja, padahal anggaran dan kesepakatan tertulis masih dapat dipenuhi bersama desa itu.
+Cara cepat: Cermati kebiasaan mitra dan syarat prosedur, lalu lihat apakah keduanya dapat dipenuhi sekaligus.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-12 · Nynda - TKP 1_Done Input.docx, soal 12
+      // tkp-kasus-jk-23 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 16,
         tipe: 'skala',
-        pertanyaan: `Sebagai ketua tim lintas divisi, Anda melihat seorang anggota dua kali terlambat menyerahkan pekerjaan dan jarang merespons grup. Bagian tugasnya menjadi penghambat pekerjaan anggota lain. Dalam percakapan singkat, ia mengaku belum memahami perangkat analisis yang baru digunakan tim. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda anggota tim yang menyusun kajian bersama seorang rekan dari unit lain untuk dilaporkan kepada pimpinan. Menurut catatan pembagian tugas pada rapat awal, Anda menyusun tiga dari empat bagian kajian. Rekan itu dekat dengan kepala bidang dan menyatakan bahwa namanya akan ditulis sebagai penyusun utama. Urutan nama penyusun ditetapkan kepala bidang, dan Anda hanya dapat mengusulkan. Laporan akan dikirim pekan depan. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Memberi pendampingan dengan target perbaikan terukur sebelum mengevaluasi kebutuhan penyesuaian peran anggota tersebut.` },
-          { label: 'B', teks: `Membahas keterlambatan dalam rapat tim agar anggota lain memahami penyebab hambatan dan dapat menawarkan bantuan sesuai kapasitas.` },
-          { label: 'C', teks: `Memberikan panduan penggunaan perangkat dan meminta anggota tersebut melaporkan kemajuannya langsung kepada Anda setiap hari.` },
-          { label: 'D', teks: `Mengalihkan seluruh tugasnya kepada anggota yang sudah menguasai perangkat dan memberinya pekerjaan administratif sampai proyek selesai.` },
-          { label: 'E', teks: `Menyampaikan catatan kinerjanya kepada atasan divisi agar pembinaan dilakukan oleh pihak yang memiliki kewenangan kepegawaian.` },
+          { label: 'A', teks: `Mengusulkan sesuai catatan kepada kepala bidang tanpa memberi tahu rekan itu, lalu melanjutkan penyusunan kajian.` },
+          { label: 'B', teks: `Menerima urutan nama rekan itu, lalu meminta kepala bidang mencantumkan bagian yang Anda susun sendiri.` },
+          { label: 'C', teks: `Menunjukkan bukti kontribusi kepada rekan itu, lalu mengusulkan urutan nama kepada kepala bidang.` },
+          { label: 'D', teks: `Memendam kekecewaan itu agar hubungan kerja tetap baik, lalu menyerahkan bagian Anda sebagai bahan laporan.` },
+          { label: 'E', teks: `Menulis nama Anda sebagai penyusun utama pada naskah kajian, lalu mengirim naskah itu kepada pimpinan.` },
         ],
-        kunci: 'A',
-        pembahasan: `Konsep yang digunakan: Pembinaan anggota tim melalui target terukur, dukungan kompetensi, pemantauan, dan penyesuaian berbasis hasil
-Kata kunci: anggota pasif, perangkat baru, target perbaikan, pendampingan, pemantauan
-Opsi A (5 Poin) paling tepat karena ketua menangani akar keterlambatan melalui dukungan kompetensi sekaligus menetapkan tanggung jawab yang terukur. Pemantauan memberi bukti untuk menilai apakah peran perlu disesuaikan.
-Anggota memperoleh kesempatan memperbaiki kontribusi tanpa membuat pekerjaan tim terus bergantung pada harapan yang tidak terpantau.
-
-Pembahasan setiap opsi:
-A (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-B (3 poin): Bantuan tim dapat mempercepat pemulihan, tetapi membahas kelemahan individu di forum terbuka berisiko mengurangi rasa aman.
-C (4 poin): Panduan dan laporan harian membantu pembelajaran, tetapi target hasil dan evaluasi penyesuaian peran belum disepakati bersama.
-D (2 poin): Pengalihan tugas melindungi tenggat, tetapi terlalu cepat mengurangi peran anggota dan tidak mengembangkan kemampuan yang dibutuhkan.
-E (1 poin): Atasan divisi memiliki kewenangan pembinaan, tetapi eskalasi dilakukan sebelum ketua mencoba dukungan dan pengelolaan kinerja langsung.
-
-Cara cepat: Hadapi kontribusi yang lemah dengan mencari penyebab, menetapkan target, memberi dukungan, dan menilai hasilnya.`,
-        tingkat: 'sulit',
+        kunci: 'C',
+        pembahasan: `Konsep yang digunakan: Menjaga pengakuan kontribusi secara terbuka dan adil dengan menghormati pihak yang berwenang menetapkan.
+Kata kunci: catatan pembagian tugas, tiga dari empat bagian, penyusun utama, dekat dengan kepala bidang, urutan nama penyusun.
+Opsi C (5 poin) paling tepat karena catatan pembagian tugas menjadi bukti yang terbuka bagi rekan, sehingga perbedaan kontribusi dibicarakan langsung lebih dahulu. Karena urutan nama ditetapkan kepala bidang, usulan kepadanya menjaga pengakuan tanpa Anda mengambil keputusan sendiri.
+Pembahasan opsi lain:
+A (4 poin) usulan sesuai catatan pembagian tugas menjaga pengakuan kontribusi lewat pihak yang menetapkannya. Rekan itu tidak diajak membicarakan catatan lebih dahulu, sehingga ia mengetahui usulan dari kepala bidang dan hubungan kerja menjadi renggang.
+B (3 poin) pencantuman bagian yang Anda susun memberi sedikit pengakuan atas kontribusi. Urutan nama yang menempatkan rekan sebagai penyusun utama tidak dipersoalkan, padahal catatan pembagian tugas menunjukkan tiga dari empat bagian berasal dari Anda.
+D (2 poin) menjaga hubungan kerja memang penting. Namun kontribusi tiga dari empat bagian kajian tidak diakui dan urutan nama yang keliru dibiarkan sampai laporan dikirim.
+E (1 poin) mengubah urutan nama padahal penetapannya ada pada kepala bidang mengambil keputusan yang bukan hak Anda. Perebutan pengakuan berubah menjadi klaim sendiri, dan hubungan dengan rekan serta kepala bidang rusak.
+Cara cepat: Rekam kerja apa yang dapat dilihat bersama, dan siapa yang berhak memutuskan pengakuannya?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -2559,230 +2485,204 @@ Cara cepat: Hadapi kontribusi yang lemah dengan mencari penyebab, menetapkan tar
   {
     stimulus: { judul: `Sosial Budaya` },
     soal: [
-      // tryout-ref-08-23 · Wil - TKP 2_Done Input.docx, soal 23
+      // tkp-kasus-sb-06 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 17,
         tipe: 'skala',
-        pertanyaan: `Ratri melatih warga dari dua dusun. Mereka memakai istilah lokal berbeda untuk arah angin, sehingga beberapa peserta salah mengikuti petunjuk meskipun semua bersedia berlatih bersama. Respons Ratri yang paling tepat adalah ...`,
+        pertanyaan: `Anda warga yang baru pindah ke sebuah kampung. Pada pertemuan warga, Anda menyapa seorang sesepuh dengan sebutan akrab yang biasa Anda pakai kepada kenalan sebaya, lalu beberapa warga terdiam. Seorang tetangga kemudian memberi tahu Anda dengan ramah bahwa di kampung itu sesepuh biasa disapa dengan sebutan yang lebih hormat. Sesepuh tersebut masih berada di balai pertemuan dan tampak tidak marah. Apa tindakan Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Menyelenggarakan penjelasan terpisah untuk masing-masing dusun dengan istilah mereka, lalu menggabungkan peserta kembali saat latihan berakhir.` },
-          { label: 'B', teks: `Mengutamakan istilah dalam panduan dan meminta perwakilan kedua dusun membantu peserta lain yang masih sulit memahaminya selama latihan.` },
-          { label: 'C', teks: `Membagikan daftar arti istilah yang digunakan kedua dusun setelah pelatihan sehingga peserta bisa mempelajarinya tanpa mengubah susunan kegiatan.` },
-          { label: 'D', teks: `Mengajak peserta menyepakati padanan istilah lokal dengan kosakata dalam panduan, lalu memakainya secara konsisten selama latihan bersama.` },
-          { label: 'E', teks: `Meminta beberapa peserta menjelaskan istilah lokal, lalu menyesuaikan penjelasan lisan agar kedua kelompok lebih memahami petunjuk latihan.` },
+          { label: 'A', teks: `Meminta maaf kepada sesepuh di balai sebelum pertemuan bubar, lalu menanyakan sebutan yang pantas untuk menyapa.` },
+          { label: 'B', teks: `Meminta tetangga menyampaikan maaf kepada sesepuh itu hari ini, lalu memakai sebutan yang hormat mulai pertemuan berikutnya.` },
+          { label: 'C', teks: `Memakai sebutan yang hormat mulai sekarang, lalu menyampaikan maaf kepada sesepuh bila bertemu lagi di jalan.` },
+          { label: 'D', teks: `Meninggalkan balai pertemuan lebih awal, lalu menghindari sesepuh itu pada setiap pertemuan berikutnya.` },
+          { label: 'E', teks: `Menanyakan kepada warga di balai mengapa tidak ada yang mengingatkan, lalu menyebut kebiasaan kampung terlalu kaku.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Adaptasi sosial budaya, komunikasi lintas budaya, dan penghargaan terhadap keberagaman.
-Kata kunci: Perbedaan istilah, dua dusun, komunikasi, adaptasi, kesepahaman.
-Opsi D (5 poin) paling tepat karena menghargai penggunaan istilah lokal sekaligus membangun pemahaman bersama. Penyepakatan padanan istilah memungkinkan kedua dusun mengikuti petunjuk latihan yang sama tanpa mengabaikan keragaman bahasa. Penggunaan istilah yang konsisten juga mengurangi kesalahan selama kegiatan berlangsung.
-
-Pembahasan setiap opsi:
-A (1 poin) karena menyesuaikan penjelasan menurut dusun, tetapi membuat koordinasi bersama tetap menggunakan dua acuan yang berbeda.
-B (3 poin) karena menjaga keseragaman istilah dan menyediakan pendamping, tetapi belum membangun kesepahaman dua kelompok.
-C (2 poin) karena memberi bahan belajar, tetapi setelah pelatihan sehingga kesalahan pemahaman saat latihan tidak segera diatasi.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (4 poin) karena melibatkan peserta untuk menjelaskan istilah lokal, tetapi belum menyepakati satu padanan yang konsisten bagi kedua dusun.
-
-Cara cepat: Saat muncul perbedaan bahasa, hormati kebiasaan masing-masing dan bangun kesepahaman yang dapat digunakan bersama.`,
-        tingkat: 'sedang',
+        kunci: 'A',
+        pembahasan: `Konsep yang digunakan: Adaptasi dalam masyarakat majemuk, yaitu mengakui dan memperbaiki kesalahan tata krama kecil secara langsung kepada pihak yang bersangkutan.
+Kata kunci: sesepuh, sebutan akrab, warga terdiam, sebutan yang lebih hormat, balai pertemuan.
+Opsi A (5 poin) paling tepat karena sesepuh masih berada di balai, sehingga permintaan maaf dan pertanyaan tentang sebutan yang pantas dapat disampaikan langsung. Kesalahan kecil itu diperbaiki di hadapan orang yang disapa, bukan melalui orang lain.
+Pembahasan opsi lain:
+B (4 poin) permohonan maaf melalui tetangga sampai kepada sesepuh hari ini, dan Anda memakai sebutan yang benar sesudahnya. Namun sesepuh masih berada di balai, sehingga maaf yang dapat disampaikan sendiri dititipkan kepada orang lain.
+C (3 poin) memakai sebutan yang hormat sudah memperbaiki kebiasaan Anda, dan maaf akan disampaikan. Namun sesepuh masih berada di balai dan dapat ditemui sekarang, sedangkan maaf digantungkan pada pertemuan kebetulan sehingga bisa tidak pernah terucap.
+D (2 poin) menghindar membuat kesalahan sapaan tidak pernah diluruskan, dan sesepuh dapat mengira Anda tidak peduli. Tetangga sudah memberi tahu sebutan yang biasa dipakai warga, tetapi informasi itu tidak dimanfaatkan.
+E (1 poin) menyalahkan warga atas kesalahan sapaan Anda dan menyebut kebiasaan kampung kaku menyudutkan mereka di depan sesepuh. Tetangga yang memberi tahu dengan ramah justru diabaikan, dan hubungan Anda dengan warga memburuk.
+Cara cepat: Siapa yang berhak menerima perbaikan, dan apakah ia masih dapat dijumpai sekarang?`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-07-17 · Wil - TKP 1_Done Input.docx, soal 17
+      // tkp-kasus-sb-10 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 18,
         tipe: 'skala',
-        pertanyaan: `Pameran sejarah pasar tradisional disiapkan bersamaan dengan gerakan pangan murah. Narasi menyebut pedagang berasal dari satu komunitas, tetapi arsip menunjukkan beberapa kelompok turut berperan. Apa tindakan Anda sebagai penyusun pameran?`,
+        pertanyaan: `Anda pegawai baru yang akan ditempatkan di kantor layanan pada wilayah dengan bahasa dan adat yang belum Anda kenal. Sebelum berangkat, Anda mengikuti pelatihan orientasi dua hari. Panitia menyediakan sesi tanya jawab dengan seorang tokoh masyarakat dari wilayah itu dan modul tertulis tentang ungkapan dasar bahasa setempat. Seorang peserta lain pernah bertugas di wilayah itu. Waktu belajar terbatas, dan modul itu tidak membahas kebiasaan sehari-hari warga. Apa langkah Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Mengubah kalimat menjadi pernyataan umum mengenai keberagaman pedagang tanpa menyebut kelompok maupun rincian bukti sejarahnya.` },
-          { label: 'B', teks: `Menyimpan keterangan lama sebagai naskah pembuka dan menambahkan catatan kecil bahwa pedagang juga datang dari kelompok berbeda.` },
-          { label: 'C', teks: `Menjelaskan kontribusi beberapa komunitas sesuai bukti arsip dengan bahasa ringkas, lalu memeriksa pemahaman pengunjung pameran.` },
-          { label: 'D', teks: `Menampilkan satu komunitas dominan dengan menambahkan foto perayaan kelompok lain untuk menghadirkan kesan kebudayaan yang beragam.` },
-          { label: 'E', teks: `Menghapus seluruh uraian asal pedagang dari pameran supaya tidak timbul perdebatan mengenai komunitas yang pernah berkontribusi.` },
+          { label: 'A', teks: `Mempelajari modul ungkapan dasar sampai hafal, lalu mencoba memakainya saat bertemu warga di wilayah penugasan.` },
+          { label: 'B', teks: `Menanyakan kebiasaan warga kepada peserta yang pernah bertugas di wilayah itu, lalu menambahkannya pada catatan modul.` },
+          { label: 'C', teks: `Melewatkan sesi tanya jawab karena akan belajar langsung di lapangan, lalu menyelesaikan tugas pelatihan lainnya.` },
+          { label: 'D', teks: `Menyiapkan pertanyaan seputar kebiasaan warga sehari-hari, lalu menanyakannya kepada tokoh masyarakat pada sesi itu.` },
+          { label: 'E', teks: `Menyimpulkan kebiasaan warga wilayah itu dari cerita yang pernah didengar, lalu menyusun cara bekerja berdasarkan kesimpulan itu.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Keberagaman sosial budaya, representasi adil, ketepatan informasi
-Kata kunci: Sejarah pasar, komunitas pedagang, arsip, narasi inklusif.
-Opsi C (5 poin) paling tepat karena pameran harus menghormati kontribusi berbagai komunitas berdasarkan bukti, bukan membangun narasi tunggal yang mengecualikan pihak lain. Kalimat ringkas dapat tetap akurat, dan uji keterbacaan membantu memastikan pesan dipahami pengunjung.
-
-Pembahasan setiap opsi:
-A (4 poin) karena narasi menjadi lebih netral dan tidak mengistimewakan satu kelompok, tetapi nilai sejarah konkret hilang sehingga pengunjung mendapat informasi terbatas.
-B (3 poin) karena kelompok lain mulai disebut, tetapi penempatan sebagai catatan kecil masih membuat narasi utama kurang seimbang terhadap bukti.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (2 poin) karena foto menampilkan keragaman, tetapi teks pokok tetap menyatakan klaim tunggal yang bertentangan dengan arsip.
-E (1 poin) karena potensi perselisihan dihindari dengan menghapus informasi, padahal bukti memungkinkan penjelasan sejarah yang inklusif.
-
-Cara cepat: Perbedaan sosial budaya sebaiknya direpresentasikan berdasar bukti dan dengan bahasa yang tetap mudah dipahami.`,
-        tingkat: 'sedang',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Adaptasi dalam masyarakat majemuk, yaitu belajar tentang kebiasaan setempat dari sumber yang tepat sebelum bertugas.
+Kata kunci: adat belum dikenal, sesi tanya jawab, tokoh masyarakat, modul ungkapan dasar, kebiasaan sehari-hari, waktu terbatas.
+Opsi D (5 poin) paling tepat karena modul hanya memuat ungkapan dasar, sehingga pertanyaan tentang kebiasaan sehari-hari warga mengisi bagian yang belum dibahas. Tokoh masyarakat tersedia pada sesi itu, dan waktu belajar yang terbatas terpakai pada hal yang paling dibutuhkan.
+Pembahasan opsi lain:
+A (3 poin) ungkapan dasar bermanfaat untuk menyapa warga, dan mencobanya di lapangan melatih keterampilan itu. Namun modul tidak membahas kebiasaan sehari-hari warga, sehingga kebutuhan memahami tata cara belum dijawab.
+B (4 poin) peserta yang pernah bertugas memberi gambaran nyata kebiasaan warga, dan hasilnya menambah catatan modul. Namun informasinya berasal dari pengalaman satu orang, sedangkan tokoh masyarakat dari wilayah itu tersedia pada sesi tanya jawab, sehingga langkahnya kurang langsung.
+C (2 poin) melewatkan sesi berarti melepas kesempatan bertanya kepada tokoh masyarakat sebelum bertugas. Belajar di lapangan dengan bekal seadanya membuat kesalahan tata cara lebih mungkin terjadi, sedangkan modul tidak membahas kebiasaan sehari-hari warga.
+E (1 poin) menyimpulkan kebiasaan dari cerita yang pernah didengar menganggap warga wilayah itu seragam dan dapat menimbulkan salah paham. Tokoh masyarakat yang dapat ditanya langsung dan modul tertulis tidak dimanfaatkan.
+Cara cepat: Bagian mana dari kebutuhan Anda yang belum ditutup bahan yang ada, dan siapa yang paling tepat melengkapinya?`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-08-18 · Wil - TKP 2_Done Input.docx, soal 18
+      // tkp-kasus-sb-08 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 19,
         tipe: 'skala',
-        pertanyaan: `Dua kelompok warga memiliki kegiatan rutin pada hari berbeda. Undangan dialog kelurahan hanya menawarkan satu hari, tetapi keduanya ingin ikut menyampaikan masukan langsung. Sebagai panitia, sikap Anda adalah ...`,
+        pertanyaan: `Anda staf dinas kebudayaan yang menjadi penghubung dengan sebuah sanggar kesenian tradisional. Pengurus sanggar ingin mengiringi pertunjukan dengan alat musik modern agar menarik penonton muda, sedangkan sebagian penabuh muda menolak karena khawatir irama khas pertunjukan itu hilang. Keduanya bersedia bertemu bila diundang, dan pertunjukan berikutnya baru berlangsung dua bulan lagi. Anda hanya berwenang mengusulkan, bukan memutuskan format pertunjukan. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menetapkan hari yang tercantum pada undangan awal, tetapi menyediakan ringkasan hasil dialog bagi warga yang tidak dapat menghadiri pertemuan.` },
-          { label: 'B', teks: `Mengarahkan kelompok yang lebih sedikit anggotanya menyesuaikan jadwal agar forum dapat diikuti mayoritas tanpa perlu perubahan persiapan.` },
-          { label: 'C', teks: `Mengadakan forum hanya dengan peserta yang dapat hadir dan menjadikan kehadiran sebagai tanda bahwa mereka telah mewakili kebutuhan seluruh warga.` },
-          { label: 'D', teks: `Mengirim ulang undangan dengan dua pilihan hari dan meminta kedua kelompok menentukan sendiri perwakilan yang paling mungkin hadir pada salah satu hari.` },
-          { label: 'E', teks: `Mendengarkan kebutuhan waktu kedua kelompok dan menawarkan beberapa pilihan jadwal, kemudian menyepakati hari dialog yang memungkinkan keduanya hadir.` },
+          { label: 'A', teks: `Membiarkan penabuh muda dan pengurus menyelesaikan perbedaannya sendiri, lalu menawarkan bantuan dinas bila diminta.` },
+          { label: 'B', teks: `Menetapkan format pertunjukan gabungan atas nama dinas, lalu meminta sanggar segera melaksanakannya.` },
+          { label: 'C', teks: `Menemui salah seorang penabuh muda untuk menanyakan keberatannya, lalu menyampaikannya kepada pengurus secara terpisah.` },
+          { label: 'D', teks: `Mengundang penabuh muda mendengarkan contoh rekaman iringan modern, lalu bertemu mereka untuk mencatat tanggapannya.` },
+          { label: 'E', teks: `Mempertemukan pengurus dan penabuh muda dalam satu pertemuan, lalu mencatat unsur yang disepakati tetap dipertahankan.` },
         ],
         kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Keberagaman sosial budaya, partisipasi, dan pemahaman fungsi sosial masyarakat.
-Kata kunci: Kebiasaan kelompok, jadwal dialog, kesempatan partisipasi, kesetaraan.
-Opsi E (5 poin) paling tepat karena mengakui bahwa kebiasaan sosial yang berbeda dapat memengaruhi kehadiran warga. Informasi dari kedua kelompok perlu menjadi dasar pemilihan waktu, bukan dugaan penyelenggara. Kesepakatan jadwal membuat kesempatan partisipasi lebih setara.
-
-Pembahasan setiap opsi:
-A (3 poin) karena menyampaikan hasil kepada yang absen, tetapi tidak membuka ruang kontribusi mereka sebelum keputusan dibuat.
-B (2 poin) karena mengutamakan kemudahan mayoritas, tetapi memindahkan beban adaptasi hanya kepada kelompok lebih kecil.
-C (1 poin) karena memudahkan penyelenggaraan, tetapi menyimpulkan keterwakilan berdasarkan kehadiran tanpa memastikan kelompok lain didengar.
-D (4 poin) karena memberi fleksibilitas melalui dua pilihan, tetapi penentuan wakil belum tentu mencerminkan kesempatan warga secara luas.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Saat tradisi atau kebiasaan berbeda, cari pengaturan bersama yang membuka kesempatan berpartisipasi secara setara.`,
+        pembahasan: `Konsep yang digunakan: Pelestarian dan perubahan budaya melalui dialog, yaitu mempertemukan pihak yang berbeda pandangan dan mencatat unsur yang perlu dijaga.
+Kata kunci: sanggar kesenian tradisional, alat musik modern, penabuh muda, irama khas, bersedia bertemu, hanya berwenang mengusulkan.
+Opsi E (5 poin) paling tepat karena pertemuan langsung memberi pengurus dan penabuh muda kesempatan menjelaskan alasan masing-masing, dan keduanya bersedia hadir. Catatan unsur yang dipertahankan, seperti irama khas, menjadi dasar usulan yang dapat Anda teruskan tanpa memutuskan format sendiri.
+Pembahasan opsi lain:
+A (2 poin) menawarkan bantuan hanya bila diminta membiarkan perbedaan antara penabuh muda dan pengurus sanggar membesar, padahal keduanya bersedia bertemu bila diundang. Penonton muda yang menjadi tujuan pengurus juga tidak bertambah.
+B (1 poin) Anda hanya berwenang mengusulkan, sehingga menetapkan format atas nama dinas melampaui peran dan menekan sanggar. Keberatan penabuh muda tentang irama khas tidak didengar.
+C (3 poin) seorang penabuh muda dapat menjelaskan keberatan tentang irama khas, dan keberatannya diteruskan kepada pengurus. Namun penabuh muda lain dan pengurus belum bertemu langsung padahal keduanya bersedia bertemu bila diundang.
+D (4 poin) rekaman memberi penabuh muda gambaran nyata dan pertemuan mencatat tanggapan mereka. Namun pengurus sanggar belum berkesempatan menjelaskan alasan rencananya langsung kepada penabuh muda, sehingga hanya satu pihak yang didengar dan bergerak.
+Cara cepat: Apakah pihak yang berbeda pandangan sudah saling mendengar alasan masing-masing?`,
         tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-19 · Nynda - TKP 1_Done Input.docx, soal 19
+      // tkp-kasus-sb-05 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 20,
         tipe: 'skala',
-        pertanyaan: `Tim Anda menghadapi tenggat laporan pada hari yang sama dengan perayaan keagamaan seorang rekan. Ia telah meminta izin jauh hari, tetapi satu anggota lain mendadak sakit sehingga jadwal piket menjadi kosong. Bagian rekan tersebut sudah selesai dan hanya diperlukan petugas untuk memantau pengiriman laporan. Sikap Anda adalah ...`,
+        pertanyaan: `Anda petugas desa yang mengatur pemakaian balai warga. Pada Kamis malam pukul 19.00, kelompok latihan tari sudah tercatat memakai aula sejak dua minggu lalu. Ketua kelompok pengajian anak datang ke loket dan meminta aula pada jam yang sama karena anggotanya baru pulang bekerja pada waktu itu. Pengajian beranggotakan sekitar dua belas orang, sedangkan ruang pertemuan kecil di balai itu kosong dan cukup untuk jumlah tersebut. Apa yang sebaiknya Anda lakukan?`,
         opsi: [
-          { label: 'A', teks: `Meminta rekan tersebut tetap piket sampai laporan terkirim, kemudian memberinya waktu pengganti untuk menjalankan kegiatan keagamaan lain.` },
-          { label: 'B', teks: `Mengizinkan rekan pergi dan membagi pemantauan kepada seluruh anggota tanpa mengubah pembagian tugas lain yang sudah ditetapkan.` },
-          { label: 'C', teks: `Mengatur pengganti piket secara sukarela dan memastikan panduan pemantauan tersedia agar izin rekan tetap dapat digunakan.` },
-          { label: 'D', teks: `Menyampaikan kondisi tim kepada rekan tersebut dan membiarkannya menentukan sendiri apakah akan membatalkan izin atau tidak.` },
-          { label: 'E', teks: `Meminta atasan menetapkan petugas pengganti agar keputusan tidak menimbulkan keberatan di antara anggota tim lainnya.` },
+          { label: 'A', teks: `Mengajukan pembagian jam aula kepada pengurus balai, lalu mengabarkan hasilnya kepada ketua kelompok tari dan pengajian.` },
+          { label: 'B', teks: `Memberikan aula kepada kelompok pengajian karena ketuanya tetangga Anda, lalu meminta kelompok tari berlatih di ruang pertemuan kecil.` },
+          { label: 'C', teks: `Menyarankan kelompok pengajian mencari tempat lain di luar balai, lalu mencatat permintaan mereka untuk jadwal bulan depan.` },
+          { label: 'D', teks: `Mencocokkan catatan jam pemakaian aula, lalu menawarkan ruang pertemuan kecil kepada pengajian sebelum pukul 19.00.` },
+          { label: 'E', teks: `Menawarkan ruang pertemuan kecil kepada pengajian malam itu, lalu memberi tahu kelompok tari setelah kegiatan selesai.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Penghormatan hak beribadah melalui pengaturan kerja yang sukarela, jelas, dan menjaga kesinambungan tugas
-Kata kunci: hari besar keagamaan, izin, piket kosong, pengganti sukarela, panduan pemantauan
-Opsi C (5 Poin) paling tepat karena izin yang telah direncanakan tetap dihormati dan kebutuhan tim dipenuhi melalui penggantian yang disepakati. Panduan kerja mencegah petugas pengganti kehilangan informasi penting.
-Solusi tidak menempatkan rekan pada tekanan untuk memilih antara keyakinan dan tugas yang sebenarnya dapat dialihkan secara wajar.
-
-Pembahasan setiap opsi:
-A (1 poin): Tugas tetap terjaga, tetapi waktu pengganti tidak selalu setara dengan kesempatan menjalankan perayaan pada hari yang telah ditentukan.
-B (4 poin): Membagi pemantauan menjaga izin rekan, tetapi penambahan tugas tanpa kesepakatan dapat membebani anggota lain secara tidak adil.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (3 poin): Memberi pilihan tampak menghargai rekan, tetapi kondisi tim dapat membuatnya merasa terpaksa membatalkan haknya sendiri.
-E (2 poin): Keputusan atasan memberi dasar formal, tetapi eskalasi dilakukan sebelum tim mencoba pengaturan sukarela yang sederhana.
-
-Cara cepat: Hormati kebutuhan ibadah dengan penggantian yang disepakati dan serah terima yang membuat pekerjaan tetap berjalan.`,
-        tingkat: 'sulit',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Penyelesaian benturan penggunaan fasilitas bersama secara adil, yaitu menghormati hak yang tercatat sambil mencari jalan bagi kebutuhan pihak lain.
+Kata kunci: aula sudah tercatat, kelompok latihan tari, pengajian anak, jam yang sama, ruang pertemuan kecil, dua belas orang.
+Opsi D (5 poin) paling tepat karena catatan menunjukkan kelompok tari lebih dahulu memakai aula sehingga haknya terjaga, sedangkan ruang pertemuan kecil yang kosong dan cukup menjawab kebutuhan pengajian pada jam yang sama. Kedua kelompok terlayani tanpa mengubah jadwal siapa pun.
+Pembahasan opsi lain:
+A (3 poin) pengajuan kepada pengurus balai menjaga keadilan dan hasilnya akan disampaikan kepada kedua kelompok. Namun ruang pertemuan kecil kosong dan cukup untuk pengajian, sehingga kepastian untuk malam itu tertunda sampai pengurus menjawab.
+B (1 poin) mendahulukan pengajian karena kedekatan pribadi membatalkan pemakaian aula yang sudah tercatat bagi kelompok tari sejak dua minggu lalu. Menyuruh kelompok tari pindah ke ruang pertemuan kecil mengorbankan hak mereka yang mencatat lebih dahulu, dan kepercayaan warga pada pengelolaan balai rusak.
+C (2 poin) menyuruh pengajian mencari tempat lain memindahkan beban kepada ketuanya, padahal ruang pertemuan kecil di balai kosong dan cukup. Catatan untuk bulan depan tidak menjawab kebutuhan kelompok yang baru pulang bekerja pada malam itu.
+E (4 poin) ruang pertemuan kecil menjawab kebutuhan pengajian dan aula tetap tersedia bagi kelompok tari. Namun kelompok tari baru diberi tahu sesudah kegiatan selesai dan catatan pemakaian tidak dicocokkan lebih dahulu, sehingga pihak yang tercatat lebih dahulu terlewat dari keputusan yang menyangkut haknya.
+Cara cepat: Hak siapa yang sudah lebih dahulu berlaku, dan siapa yang perlu mengetahui keputusan yang diambil?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-21 · Nynda - TKP 1_Done Input.docx, soal 21
+      // tkp-kasus-sb-19 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 21,
         tipe: 'skala',
-        pertanyaan: `Dalam rapat tim multietnis, tiga anggota beberapa kali menggunakan bahasa daerah saat membahas rincian pekerjaan. Anggota lain tidak memahami percakapan dan melewatkan satu perubahan pembagian tugas. Ketiga anggota tersebut mengaku terbawa kebiasaan, bukan bermaksud menutup informasi. Sebagai moderator, Anda ...`,
+        pertanyaan: `Anda kepala seksi pemberdayaan masyarakat di kecamatan dan memimpin musyawarah perencanaan desa. Musyawarah biasanya dimulai pukul 20.00 di balai desa, dan sebagian besar yang hadir laki-laki. Sejumlah perempuan menyampaikan bahwa mereka sulit hadir malam hari karena mengurus anak, tetapi dapat hadir pukul 16.00. Laki-laki pekerja ladang juga dapat hadir pada jam itu. Balai desa memiliki ruang yang dapat dipakai bermain anak. Keputusan apa yang paling tepat Anda ambil?`,
         opsi: [
-          { label: 'A', teks: `Mengingatkan penggunaan Bahasa Indonesia untuk pembahasan kerja dan mengulang perubahan tugas agar seluruh anggota memberi konfirmasi.` },
-          { label: 'B', teks: `Membahas masalah itu secara pribadi setelah rapat dan mengirim ringkasan tertulis kepada anggota yang tidak memahami bahasa daerah.` },
-          { label: 'C', teks: `Meminta salah satu anggota yang memahami kedua bahasa menjadi penerjemah selama rapat agar percakapan tetap terasa alami.` },
-          { label: 'D', teks: `Meminta mereka menerjemahkan setiap percakapan daerah setelah selesai agar anggota lain dapat mengikuti pembahasan yang telah berlangsung.` },
-          { label: 'E', teks: `Mencatat aturan penggunaan bahasa dalam notulen dan membiarkan rapat berlanjut supaya teguran tidak mengganggu suasana tim.` },
+          { label: 'A', teks: `Mempertahankan musyawarah pada malam hari, lalu mengadakan sesi siang khusus bagi perempuan untuk menampung usul mereka.` },
+          { label: 'B', teks: `Menyediakan ruang bermain anak di balai pada musyawarah malam, lalu membacakan usul tertulis dari kotak usul.` },
+          { label: 'C', teks: `Memindahkan musyawarah ke pukul 16.00, lalu menyediakan ruang bermain anak di balai selama musyawarah berlangsung.` },
+          { label: 'D', teks: `Meminta kepala desa mengajak perempuan hadir malam hari, lalu menilai kehadiran pada musyawarah berikutnya.` },
+          { label: 'E', teks: `Menyimpulkan perempuan kurang tertarik pada urusan desa, lalu menyusun usul program dari peserta yang hadir saja.` },
         ],
-        kunci: 'A',
-        pembahasan: `Konsep yang digunakan: Komunikasi inklusif dalam forum resmi melalui bahasa bersama dan konfirmasi pemahaman seluruh anggota
-Kata kunci: tim multietnis, bahasa daerah, informasi kerja, Bahasa Indonesia, konfirmasi tugas
-Opsi A (5 Poin) paling tepat karena hambatan komunikasi dihentikan pada saat terjadi dan informasi penting diulang untuk memastikan kesamaan pemahaman. Pengingat berlaku pada forum kerja, bukan melarang penggunaan bahasa daerah di luar konteks tersebut.
-Konfirmasi anggota diperlukan karena satu perubahan tugas sudah terlewat, sehingga sekadar mengubah bahasa untuk pembahasan berikutnya belum cukup.
-
-Pembahasan setiap opsi:
-A (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-B (2 poin): Pendekatan pribadi menjaga perasaan anggota, tetapi koreksi setelah rapat terlambat untuk mencegah salah pemahaman saat keputusan dibuat.
-C (3 poin): Penerjemah membuat isi dapat dipahami, tetapi menciptakan ketergantungan padahal seluruh anggota dapat memakai bahasa bersama.
-D (4 poin): Terjemahan membantu anggota lain, tetapi informasi baru diterima setelah percakapan berlangsung dan partisipasi tetap tidak setara.
-E (1 poin): Pencatatan aturan memberi rujukan, tetapi membiarkan rapat berjalan mempertahankan hambatan yang sudah menimbulkan kesalahan informasi.
-
-Cara cepat: Dalam forum resmi, gunakan bahasa yang dipahami semua pihak dan ulangi keputusan bila ada anggota yang sempat tertinggal.`,
-        tingkat: 'sulit',
+        kunci: 'C',
+        pembahasan: `Konsep yang digunakan: Partisipasi setara dan perlindungan kelompok yang tersisih akibat mekanisme rapat, dengan menilai beberapa cara yang sama-sama membuka ruang.
+Kata kunci: musyawarah pukul 20.00, perempuan mengurus anak, hadir pukul 16.00, pekerja ladang, ruang bermain anak.
+Opsi C (5 poin) paling tepat karena pukul 16.00 dapat dihadiri perempuan maupun laki-laki pekerja ladang, dan ruang bermain anak mengurangi hambatan mengurus anak. Perempuan ikut berbicara dan memutuskan dalam musyawarah yang sama tanpa membuat forum terpisah.
+Pembahasan opsi lain:
+A (4 poin) sesi siang memberi perempuan ruang menyampaikan usul dan dukungan terhadap kebutuhan mereka nyata. Namun usul itu dibicarakan terpisah dari musyawarah malam yang memutuskan, sehingga mereka tetap tidak ikut menentukan hasil perencanaan desa.
+B (3 poin) ruang bermain anak membantu sebagian perempuan hadir malam hari, dan kotak usul menampung usul yang tidak dapat disampaikan langsung. Namun pukul 20.00 tetap menyulitkan mereka mengurus anak, sedangkan pukul 16.00 yang memungkinkan mereka hadir tidak dimanfaatkan.
+D (2 poin) ajakan kepada perempuan tidak mengubah penyebab mereka tidak hadir, yaitu mengurus anak pada pukul 20.00. Sebagai pemimpin musyawarah Anda dapat menetapkan waktunya, tetapi hal itu diserahkan kepada kepala desa dan hasilnya baru dinilai pada musyawarah berikutnya.
+E (1 poin) menyimpulkan perempuan kurang tertarik memperlakukan mereka sebagai kelompok seragam padahal mereka menyampaikan hambatan nyata. Usul program disusun dari peserta yang hadir, sehingga kebutuhan perempuan tidak masuk perencanaan desa.
+Cara cepat: Apakah cara yang dipakai membuat pihak yang terhambat ikut memutuskan, atau hanya didengar?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-07-20 · Wil - TKP 1_Done Input.docx, soal 20
+      // tkp-kasus-sb-14 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 22,
         tipe: 'skala',
-        pertanyaan: `Unit pelatihan kerja membuka kelas pemulihan ekonomi pascakekeringan bagi pemuda penyandang disabilitas dan peserta lain. Beberapa instruktur mengusulkan pemisahan seluruh praktik karena memperkirakan ritme belajar berbeda, meski kebutuhan individu dan alat belum diperiksa. Kelas harus dimulai minggu depan. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda staf dinas yang menjadi penghubung antara tim survei dan sebuah desa adat. Tim dijadwalkan mengambil data di kawasan hutan desa pada Senin, padahal menurut pemangku adat kawasan itu tertutup bagi orang luar sampai Rabu selama masa larangan adat. Pemangku adat bersedia mengantar tim ke sisi desa yang tidak dilarang. Laporan akhir bulan harus memuat data hutan dan sisi desa, dan ketua tim ingin jadwal tidak berubah. Anda hanya berwenang mengusulkan kepada ketua tim. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Memberikan pilihan pembelajaran bersama atau mandiri tanpa pemeriksaan kebutuhan alat, sehingga seluruh peserta menentukan bentuk yang mereka inginkan.` },
-          { label: 'B', teks: `Mengadakan pembelajaran bersama dengan penyesuaian alat dan dukungan sesuai kebutuhan individu, sambil memantau capaian keterampilan secara setara.` },
-          { label: 'C', teks: `Menetapkan satu metode dan alat yang sama bagi semua peserta supaya penilaian terlihat konsisten dan waktu kegiatan tidak bertambah.` },
-          { label: 'D', teks: `Meminta peserta yang memerlukan penyesuaian mengikuti kelas berikutnya setelah alat khusus tersedia lengkap, sementara kelas sekarang berjalan.` },
-          { label: 'E', teks: `Menggabungkan peserta pada bagian teori, lalu menyiapkan praktik terpisah untuk kelompok disabilitas agar instruktur dapat mengatur kecepatan.` },
+          { label: 'A', teks: `Mengusulkan survei diundur sampai masa larangan berakhir, lalu menyampaikan alasannya kepada ketua tim survei.` },
+          { label: 'B', teks: `Mengusulkan tim memakai Senin sampai Rabu untuk sisi desa, lalu meminta ketua tim menghubungi pemangku adat soal hutan.` },
+          { label: 'C', teks: `Memastikan sisi desa yang boleh dimasuki kepada pemangku adat, lalu mengusulkan survei bertahap kepada ketua tim.` },
+          { label: 'D', teks: `Meminta pemangku adat membuka kawasan hutan pada Senin, lalu menjanjikan tim akan menjaga batas yang ditunjuk.` },
+          { label: 'E', teks: `Mengikuti tim memasuki kawasan hutan pada Senin sesuai jadwal, lalu mencatat larangan adat dalam laporan survei.` },
         ],
-        kunci: 'B',
-        pembahasan: `Konsep yang digunakan: Inklusivitas, akomodasi sesuai kebutuhan, hak memilih, hasil belajar
-Kata kunci: Kelas keterampilan, disabilitas, alat praktik, penyesuaian, kesetaraan
-Opsi B (5 poin) paling tepat karena tujuan pelatihan ialah penguasaan keterampilan bagi semua peserta, bukan penyeragaman cara belajar. Pembelajaran bersama dapat tetap berjalan ketika alat dan dukungan disesuaikan berdasarkan kebutuhan nyata dan capaian dinilai dengan kriteria kompetensi yang setara.
-
-Pembahasan setiap opsi:
-A (3 poin) karena peserta mendapat otonomi memilih cara belajar, tetapi hambatan alat tidak dipetakan sehingga pilihan bisa tidak benar-benar dapat diakses.
-B (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-C (2 poin) karena aturan terlihat sama untuk semua, tetapi kebutuhan akomodasi yang sah tidak diperhatikan dan sebagian peserta dirugikan.
-D (1 poin) karena ketersediaan alat dipertimbangkan, tetapi partisipasi ditunda tanpa mencoba akomodasi yang mungkin diterapkan sekarang.
-E (4 poin) karena sebagian kegiatan tetap inklusif serta instruktur memperhatikan tempo, tetapi pemisahan seluruh praktik didasarkan pada kategori kelompok, bukan kebutuhan individu.
-
-Cara cepat: Keadilan pelatihan berarti tujuan kompetensi setara dengan dukungan yang sesuai kebutuhan, bukan semua peserta harus memakai cara identik.`,
-        tingkat: 'sulit',
+        kunci: 'C',
+        pembahasan: `Konsep yang digunakan: Norma adat sebagai pembatas kegiatan dinas dan pencarian jalan yang menjaga tujuan kedua pihak.
+Kata kunci: desa adat, masa larangan adat, tertutup sampai Rabu, pemangku adat, sisi desa, laporan akhir bulan.
+Opsi C (5 poin) paling tepat karena pemangku adat bersedia mengantar tim ke sisi desa yang tidak dilarang, sehingga batas yang boleh dimasuki dipastikan dari sumbernya. Usulan survei bertahap, sisi desa pada Senin dan hutan setelah Rabu, memenuhi laporan akhir bulan yang memuat kedua data dan menghormati larangan adat.
+Pembahasan opsi lain:
+A (3 poin) mengundur survei menghormati larangan adat dan alasannya disampaikan kepada ketua tim. Namun pemangku adat bersedia mengantar tim ke sisi desa yang tidak dilarang, sehingga pengambilan data yang dapat dikerjakan pada Senin ikut tertunda.
+B (4 poin) senin sampai Rabu dipakai untuk sisi desa sehingga larangan adat dihormati, dan ketua tim menghubungi pemangku adat soal hutan. Namun jadwal hutan belum diusulkan dan Anda sendiri belum memastikannya kepada pemangku adat, sehingga laporan akhir bulan yang memuat kedua data bergantung pada tindak lanjut ketua tim.
+D (2 poin) meminta pemangku adat membuka kawasan pada masa larangan menuntut mereka mengubah ketentuan adat demi tenggat laporan tim. Janji menjaga batas tidak menggantikan penghormatan terhadap larangan yang berlaku bagi orang luar.
+E (1 poin) memasuki kawasan yang tertutup pada masa larangan mengabaikan ketentuan adat yang sudah disampaikan pemangku adat. Mencatat larangan dalam laporan tidak memperbaiki pelanggaran yang sudah terjadi dan merusak kepercayaan desa.
+Cara cepat: Bagian pekerjaan mana yang tidak dapat berjalan sekarang, dan bagian mana yang dapat?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-08-21 · Wil - TKP 2_Done Input.docx, soal 21
+      // tkp-kasus-sb-16 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 23,
         tipe: 'skala',
-        pertanyaan: `Maruli mendampingi alokasi kios saat renovasi pasar. Pesan berantai menuduh pedagang pendatang akan mendapat tempat lebih sedikit meski keputusan belum dibuat. Pedagang lama meminta prioritas berdasarkan masa berdagang, sementara pedagang baru menuntut kesempatan setara. Musyawarah berlangsung besok dan ketegangan meningkat. Maruli harus meluruskan informasi serta menjaga proses yang adil. Tindakan Maruli adalah ...`,
+        pertanyaan: `Anda pelaksana di kantor desa wisata yang menyusun brosur bagi pengunjung. Setelah separuh dari seribu brosur dibagikan, seorang warga menyampaikan bahwa brosur menyebut upacara adat desa sebagai hiburan yang boleh difoto kapan saja, padahal pemangku adat meminta pengunjung tidak memotret pada bagian tertentu upacara. Sisa brosur masih ada di kantor. Pemangku adat bersedia memeriksa naskah. Tindakan apa yang paling tepat Anda ambil?`,
         opsi: [
-          { label: 'A', teks: `Menyusun daftar pembagian kios berdasarkan usulan mayoritas pedagang yang hadir agar isu cepat selesai meskipun kriteria resmi belum disepakati.` },
-          { label: 'B', teks: `Meminta pedagang menunggu musyawarah resmi sambil menyebarkan klarifikasi singkat bahwa dokumen kios belum final agar kabar yang beredar tidak berkembang.` },
-          { label: 'C', teks: `Mendorong tokoh pasar menyelesaikan ketegangan secara informal dan membiarkan tim teknis bekerja sehingga proses renovasi tidak terhambat perdebatan.` },
-          { label: 'D', teks: `Mengundang perwakilan pedagang lama lebih dahulu untuk memperoleh dukungan terhadap rancangan, kemudian menyampaikan hasilnya kepada pendatang.` },
-          { label: 'E', teks: `Mengklarifikasi bahwa pembagian kios belum ditetapkan dan membuka pembahasan kriteria alokasi yang setara, seraya mendengar pedagang lama dan pendatang.` },
+          { label: 'A', teks: `Menarik sisa brosur dari meja pengunjung, lalu mencetak ulang dengan kalimat yang lebih netral sebelum dibagikan lagi.` },
+          { label: 'B', teks: `Mencoret kalimat yang keliru pada sisa brosur dengan pulpen, lalu meminta naskah baru diperiksa pemangku adat bulan depan.` },
+          { label: 'C', teks: `Memasang papan larangan memotret di lokasi upacara, lalu tetap membagikan sisa brosur lama kepada pengunjung.` },
+          { label: 'D', teks: `Meminta pemangku adat memeriksa naskah koreksi, lalu menukar brosur lama dengan naskah yang sudah diperiksa.` },
+          { label: 'E', teks: `Tetap membagikan sisa brosur sesuai naskah awal, lalu mencatat keberatan warga sebagai masukan untuk cetakan tahun depan.` },
         ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Resolusi konflik sosial, keterbukaan, serta musyawarah yang adil.
-Kata kunci: Rumor alokasi kios, pedagang pendatang, kriteria, ketegangan, konsultasi.
-Opsi E (5 poin) paling tepat karena memisahkan rumor dari fakta yang dapat diverifikasi sekaligus membangun proses penetapan yang dapat dipercaya semua pihak. Informasi tentang kriteria perlu disampaikan sebelum keputusan final agar masukan tidak sekadar formalitas. Akses yang setara membantu mencegah ketegangan berkembang menjadi diskriminasi.
-
-Pembahasan setiap opsi:
-A (1 poin) karena mempercepat keputusan berdasarkan suara mayoritas, tetapi tidak menjamin hak seluruh pedagang ataupun dasar alokasi yang adil.
-B (4 poin) karena meredakan rumor dengan fakta bahwa rancangan belum final, tetapi belum membuka pembahasan tentang kriteria dan kesempatan memberi masukan.
-C (2 poin) karena menghindari perdebatan terbuka, tetapi menyerahkan penanganan ketegangan pada tokoh informal tanpa kejelasan informasi resmi.
-D (3 poin) karena berusaha membangun dukungan awal, tetapi konsultasi hanya kepada sebagian pedagang dapat menambah kecurigaan kelompok lain.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Pada konflik berbasis kabar berantai, validasi fakta dan proses keputusan terbuka lebih penting daripada sekadar meredam percakapan.`,
-        tingkat: 'sulit',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Pemulihan atas kesalahan yang menyinggung makna budaya, yaitu memperbaiki naskah bersama pihak yang memahami maknanya dan menjangkau penerima yang sudah terdampak.
+Kata kunci: separuh brosur dibagikan, boleh difoto kapan saja, tidak memotret bagian tertentu, sisa brosur, pemangku adat.
+Opsi D (5 poin) paling tepat karena pemangku adat memeriksa naskah koreksi sehingga penyebutan upacara sesuai dengan maknanya. Brosur lama, baik sisa di kantor maupun yang sudah dipegang pengunjung, ditukar dengan naskah yang sudah diperiksa sehingga keterangan tentang memotret dibetulkan.
+Pembahasan opsi lain:
+A (4 poin) menarik sisa brosur menghentikan penyebaran keterangan keliru, dan cetak ulang dengan kalimat netral memperbaiki naskah sebelum dibagikan lagi. Namun naskah belum diperiksa pemangku adat dan pengunjung yang sudah menerima brosur lama belum dihubungi, sehingga koreksinya belum menjangkau mereka.
+B (3 poin) mencoret kalimat pada sisa brosur menghentikan kesalahan yang paling nyata, dan naskah baru akan diperiksa pemangku adat. Namun pemangku adat bersedia memeriksa naskah sekarang, sehingga perbaikan yang layak menunggu satu bulan.
+C (2 poin) papan larangan mengurangi pelanggaran di lokasi, tetapi sisa brosur lama tetap menyebut upacara sebagai hiburan yang boleh difoto. Penyebab kesalahan pada naskah brosur tidak disentuh sama sekali.
+E (1 poin) membagikan sisa brosur yang diketahui keliru mengabaikan permintaan pemangku adat agar pengunjung tidak memotret pada bagian tertentu. Keberatan warga hanya dicatat untuk tahun depan, sehingga pengunjung terus menerima keterangan yang menyesatkan.
+Cara cepat: Siapa yang memahami makna yang disinggung, dan siapa yang sudah memegang keterangan keliru?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-08-24 · Wil - TKP 2_Done Input.docx, soal 24
+      // tkp-kasus-sb-20 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 24,
         tipe: 'skala',
-        pertanyaan: `Dua kampung memakai nama lokal berbeda untuk satu jalan wisata; peta pemerintah menggunakan nama administratif. Pengunjung sering salah arah akibat petunjuk lisan tidak cocok dengan papan. Tim desa ingin menghargai identitas lokal dan menjaga petunjuk akurat. Sikap Anda adalah ...`,
+        pertanyaan: `Anda warga yang ikut dalam panitia pertunjukan tradisi tahunan kampung. Banyak perantau ingin menyaksikan acara itu, dan sebagian pemuda panitia mengusulkan siaran langsung di media sosial. Para sesepuh keberatan karena hanya bagian pertunjukan yang boleh disaksikan orang di luar warga, tetapi mereka bersedia menunjukkan bagian yang boleh disiarkan. Keputusan akhir ada pada panitia, dan Anda hanya dapat mengusulkan. Usul apa yang paling tepat Anda sampaikan?`,
         opsi: [
-          { label: 'A', teks: `Menyepakati pemakaian dua sebutan lokal secara bergantian pada papan di lokasi berbeda dan meminta petugas wisata menjelaskan keterkaitannya.` },
-          { label: 'B', teks: `Menerapkan nama administratif saja karena sudah memiliki dasar dokumen resmi, lalu memberikan penjelasan lisan ketika wisatawan mengalami kebingungan.` },
-          { label: 'C', teks: `Mengutamakan sebutan kampung yang paling banyak dihuni penduduk untuk memperpendek tulisan serta memudahkan pembuatan papan petunjuk.` },
-          { label: 'D', teks: `Mencantumkan nama administratif dan dua sebutan lokal yang telah dikonfirmasi pada papan arah di setiap persimpangan utama secara konsisten.` },
-          { label: 'E', teks: `Mengganti seluruh nama administratif pada papan menjadi sebutan lokal yang paling terkenal agar wisatawan lebih dekat dengan kebiasaan masyarakat.` },
+          { label: 'A', teks: `Mengusulkan unggahan rekaman pertunjukan setelah acara selesai, lalu meminta sesepuh menyetujui hasil akhirnya.` },
+          { label: 'B', teks: `Menanyakan kepada pemuda panitia bagian yang layak disiarkan, lalu mengusulkan siaran langsung sesuai pendapat mereka.` },
+          { label: 'C', teks: `Mengusulkan acara disiarkan dari awal sampai akhir agar perantau tidak ketinggalan, lalu meminta sesepuh menyesuaikan diri.` },
+          { label: 'D', teks: `Menyiarkan acara secara langsung dari ponsel Anda, lalu menjelaskan alasannya kepada sesepuh setelah acara selesai.` },
+          { label: 'E', teks: `Menanyakan kepada sesepuh bagian yang boleh disiarkan, lalu mengusulkan siaran langsung pada bagian itu.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Resolusi konflik sosial, keterbukaan, serta musyawarah yang adil.
-Kata kunci: Nama jalan, dua kampung, identitas lokal, rujukan administratif, wisatawan.
-Opsi D (5 poin) paling tepat karena menghormati penggunaan nama lokal tanpa menyingkirkan rujukan administratif yang dibutuhkan untuk kepastian lokasi. Konfirmasi kepada dua kampung menghindarkan kesan bahwa salah satu identitas lebih diutamakan. Petunjuk menjadi berguna bagi penduduk dan pendatang.
-
-Pembahasan setiap opsi:
-A (4 poin) karena mengakui kedua sebutan, tetapi pergantian nama antar-papan tanpa rujukan bersama bisa membingungkan pengunjung.
-B (3 poin) karena menjaga akurasi administratif, tetapi melewatkan kebutuhan wisatawan memahami sebutan yang digunakan warga setempat.
-C (2 poin) karena mengutamakan keterbacaan, tetapi jumlah penduduk bukan dasar yang tepat untuk menyingkirkan identitas kampung lain.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (1 poin) karena mempermudah pengenalan lokal, tetapi mengganti nama resmi secara sepihak berisiko menimbulkan ketidakpastian lokasi.
-
-Cara cepat: Satukan rujukan resmi dengan pengetahuan masyarakat jika keduanya diperlukan untuk pelayanan yang jelas dan inklusif.`,
-        tingkat: 'sulit',
+        kunci: 'E',
+        pembahasan: `Konsep yang digunakan: Pelestarian dan perubahan bentuk dengan menilai beberapa cara yang sama-sama berusaha mengakomodasi dua kepentingan.
+Kata kunci: perantau, siaran langsung, sesepuh keberatan, bagian pertunjukan, boleh disiarkan.
+Opsi E (5 poin) paling tepat karena sesepuh bersedia menunjukkan bagian yang boleh disiarkan, sehingga batas bagian pertunjukan yang boleh disaksikan orang luar dihormati. Siaran langsung pada bagian itu menjawab keinginan perantau untuk menonton saat acara berlangsung.
+Pembahasan opsi lain:
+A (4 poin) rekaman yang disetujui sesepuh menghormati batas bagian yang boleh disaksikan, dan perantau tetap dapat menonton. Namun perantau tidak menyaksikan pertunjukan saat berlangsung, sedangkan sesepuh bersedia menunjukkan bagian yang boleh disiarkan langsung.
+B (3 poin) pemuda panitia memahami kebutuhan siaran dan perantau, dan usulan disusun dari pendapat mereka. Namun batas bagian yang boleh disaksikan orang luar ditentukan sesepuh, yang belum ditanya, sehingga siaran dapat melewati batas itu.
+C (2 poin) siaran dari awal sampai akhir menjawab keinginan perantau, tetapi meminta sesepuh menyesuaikan diri menuntut mereka melepas batas yang mereka jaga. Bagian yang boleh disiarkan menurut sesepuh tidak dibahas sebelum perubahan diminta.
+D (1 poin) keputusan akhir ada pada panitia dan Anda hanya dapat mengusulkan, sehingga menyiarkan sendiri melampaui peran. Penjelasan setelah acara tidak dapat menarik kembali bagian yang sudah disaksikan orang di luar warga.
+Cara cepat: Siapa yang menentukan batas, dan apakah keinginan pihak lain tetap dapat terjawab dalam batas itu?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -2790,202 +2690,179 @@ Cara cepat: Satukan rujukan resmi dengan pengetahuan masyarakat jika keduanya di
   {
     stimulus: { judul: `Teknologi Informasi dan Komunikasi` },
     soal: [
-      // tryout-ref-07-27 · Wil - TKP 1_Done Input.docx, soal 27
+      // tkp-kasus-tik-07 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 25,
         tipe: 'skala',
-        pertanyaan: `Kantor memakai templat otomatis untuk surat koordinasi karhutla. Dua ASN belum memahami cara mengganti tanggal dan lokasi, padahal modul tersedia dan undangan harus siap sore ini. Respons Anda adalah ...`,
+        pertanyaan: `Anda warga yang memakai aplikasi layanan kependudukan di ponsel. Sebuah pesan singkat dari nomor tak dikenal mengaku dari layanan kependudukan dan menyatakan akun Anda akan ditutup hari ini, kecuali Anda memasukkan kode verifikasi melalui tautan di pesan itu. Pengumuman di aplikasi resmi menyebutkan bahwa kode verifikasi hanya dimasukkan di dalam aplikasi, yang juga menyediakan kanal pengaduan. Anda belum membuka tautan itu, dan status akun dapat Anda lihat langsung di aplikasi. Bagaimana sikap Anda terhadap pesan itu?`,
         opsi: [
-          { label: 'A', teks: `Memperagakan satu surat di lingkungan uji dan membagikan contoh yang dapat ditiru peserta, tetapi tidak memeriksa kemampuan mereka secara mandiri.` },
-          { label: 'B', teks: `Menyarankan mereka memakai surat manual sampai fitur otomatis lebih familiar karena kekeliruan tanggal bisa memengaruhi undangan resmi.` },
-          { label: 'C', teks: `Membagikan modul latihan dan meminta mereka mengikuti petunjuk mandiri, sambil menawarkan konsultasi apabila nanti mengalami hambatan.` },
-          { label: 'D', teks: `Membuatkan semua surat selama masa adaptasi sehingga rekan tetap produktif sambil menyaksikan bagaimana templat otomatis digunakan.` },
-          { label: 'E', teks: `Mendampingi mereka berlatih di lingkungan uji sampai dapat mengubah kolom penting sendiri kemudian menunjukkan petunjuk yang bisa dibaca ulang.` },
+          { label: 'A', teks: `Meneruskan pesan itu ke grup warga sekitar, lalu meminta tetangga berhati-hati terhadap tautannya.` },
+          { label: 'B', teks: `Membuka tautan itu di ponsel Anda untuk memastikan halamannya, lalu memasukkan kode bila tampak resmi.` },
+          { label: 'C', teks: `Menghapus pesan itu dari ponsel Anda, lalu memblokir nomor pengirimnya lewat pengaturan pesan di ponsel.` },
+          { label: 'D', teks: `Memeriksa status akun langsung di aplikasi resmi, lalu melaporkan penipuan itu kepada pengelola layanan resmi.` },
+          { label: 'E', teks: `Menyimpan tangkapan layar pesan itu sebagai bukti kiriman, lalu memeriksa status akun langsung di aplikasi resmi.` },
         ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Adaptasi teknologi, penguatan kemandirian, pelatihan berbasis praktik
-Kata kunci: Templat undangan karhutla, pelatihan mandiri, pengaturan tanggal dan tempat.
-Opsi E (5 poin) paling tepat karena kendala terletak pada keterampilan sederhana yang dapat dilatih tanpa risiko terhadap surat resmi. Praktik langsung dan petunjuk ulang membantu rekan menguasai fitur, bukan terus bergantung pada bantuan orang lain.
-
-Pembahasan setiap opsi:
-A (4 poin) karena contoh dikerjakan dengan benar dan tersedia sebagai rujukan, tetapi kemampuan rekan memakai fitur belum dipastikan melalui praktik mandiri.
-B (1 poin) karena kesalahan sementara dihindari, tetapi alat latihan yang aman tidak dimanfaatkan dan proses adaptasi justru ditunda.
-C (3 poin) karena modul dan bantuan tersedia, namun hambatan yang sudah diketahui belum dibantu langsung dalam latihan.
-D (2 poin) karena pekerjaan tetap berjalan, tetapi tugas dikerjakan oleh orang lain sehingga proses belajar rekan menjadi pasif.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Gunakan lingkungan aman untuk membangun kemampuan mandiri, bukan hanya membagikan modul atau mengambil alih tugas.`,
-        tingkat: 'sedang',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Pencegahan penipuan digital dan pelaporan lewat kanal resmi, tanpa menguji pesan secara langsung.
+Kata kunci: nomor tak dikenal, akun ditutup hari ini, kode verifikasi, tautan di pesan, pengumuman aplikasi resmi, kanal pengaduan.
+Opsi D (5 poin) paling tepat karena status akun diperiksa langsung di aplikasi sehingga kebenaran ancaman penutupan dapat dipastikan, dan tautan tidak dibuka. Laporan melalui kanal pengaduan aplikasi memungkinkan layanan menangani pesan yang mengaku dari layanan kependudukan itu.
+Pembahasan opsi lain:
+A (2 poin) meneruskan pesan ke grup warga menyebarkan tautan yang meminta kode verifikasi kepada lebih banyak orang. Niat memperingatkan tetangga tidak mengurangi risiko bahwa ada yang membukanya sebelum membaca pengumuman aplikasi.
+B (1 poin) membuka tautan untuk memastikan halamannya dapat mencuri kode verifikasi dan akses akun Anda. Pengumuman aplikasi sudah menyatakan bahwa kode hanya dimasukkan di dalam aplikasi, sehingga pengujian itu tidak diperlukan.
+C (3 poin) menghapus pesan dan memblokir nomor pengirim mengurangi risiko Anda membuka tautan tanpa sengaja. Namun status akun belum diperiksa di aplikasi dan pesan tidak sampai ke layanan, sehingga penipuan serupa tetap dapat menjangkau warga lain.
+E (4 poin) tangkapan layar menyimpan bukti pesan yang mengaku dari layanan kependudukan, dan status akun diperiksa langsung di aplikasi. Namun layanan tidak menerima laporan tentang pesan itu, sehingga penanganan terhadap pengirimnya tidak berjalan.
+Cara cepat: Perhatikan sumber pesan, isi pengumuman resmi, dan bagian yang dapat Anda periksa sendiri.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-08-29 · Wil - TKP 2_Done Input.docx, soal 29
+      // tkp-kasus-tik-04 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 26,
         tipe: 'skala',
-        pertanyaan: `Kantor mulai memakai aplikasi surat-menyurat baru. Sebagian pegawai kesulitan mencari menu dan menyimpan berkas saat uji coba, sedangkan surat penting tetap harus diproses tepat waktu. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda petugas loket pendaftaran di sebuah puskesmas. Sistem pendaftaran daring berhenti bekerja sejak pagi dan menurut teknisi baru pulih sekitar dua jam lagi, sementara belasan pasien sudah mengantre. Prosedur cadangan puskesmas mengizinkan pendaftaran dengan formulir kertas, yang datanya harus dimasukkan ulang ke sistem setelah pulih. Anda tidak dapat memperbaiki sistem itu, dan data pasien tidak boleh dibagikan di luar petugas pendaftaran. Bagaimana Anda menangani pendaftaran pasien?`,
         opsi: [
-          { label: 'A', teks: `Menawarkan untuk mengerjakan surat mereka selama masa uji coba agar pelayanan kantor tidak melambat ketika aplikasi baru dikenalkan.` },
-          { label: 'B', teks: `Membantu rekan mempraktikkan surat rutin lewat aplikasi baru dan menyusun panduan dari kendala selama uji coba.` },
-          { label: 'C', teks: `Mengirim tautan panduan resmi beserta jadwal pendampingan, lalu meminta rekan mempelajarinya sendiri sesuai waktu yang tersedia.` },
-          { label: 'D', teks: `Mengusulkan kepada pimpinan untuk menunda penggantian aplikasi sampai setiap pegawai menyatakan siap tanpa batas waktu tertentu untuk pelaksanaan.` },
-          { label: 'E', teks: `Menganjurkan rekan tetap memakai aplikasi lama pada sebagian besar tugas karena sudah terbiasa dan mempelajari sistem baru saat pekerjaan berkurang.` },
+          { label: 'A', teks: `Mencatat pasien pada formulir kertas sesuai prosedur cadangan, lalu memberi tahu pasien bahwa datanya dimasukkan ulang.` },
+          { label: 'B', teks: `Mendaftarkan pasien lewat formulir kertas yang diizinkan prosedur, lalu memasukkan datanya begitu layanan pulih.` },
+          { label: 'C', teks: `Menanyakan kepada teknisi kepastian waktu pulih sistem, lalu menentukan cara pendaftaran pasien sesudah mendapat jawaban.` },
+          { label: 'D', teks: `Menghentikan pendaftaran sementara dan meminta pasien kembali setelah sistem pulih, lalu mencatat nama pasien yang sudah datang.` },
+          { label: 'E', teks: `Mencatat data pasien di grup pesan petugas agar mudah dimasukkan kembali, lalu menghapus pesan itu setelah sistem pulih.` },
         ],
         kunci: 'B',
-        pembahasan: `Konsep yang digunakan: Adaptasi teknologi, pembelajaran bertahap, dan manajemen perubahan.
-Kata kunci: Aplikasi baru, pegawai kesulitan, uji coba, pendampingan, pembelajaran.
-Opsi B (5 poin) paling tepat karena menjadikan adaptasi teknologi sebagai proses latihan bersama yang relevan dengan pekerjaan. Petunjuk praktis dan pencatatan kesulitan membantu pegawai belajar bertahap. Dukungan tidak berarti mengambil alih seluruh tugas mereka.
-
-Pembahasan setiap opsi:
-A (3 poin) karena menjaga kelancaran pekerjaan sementara, tetapi membuat ketergantungan dan menghambat rekan menguasai aplikasi.
-B (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-C (4 poin) karena mengarahkan rekan kepada fasilitas belajar yang tersedia, tetapi belum membantu menerjemahkan panduan ke tugas harian.
-D (2 poin) karena menghormati kesiapan pegawai, tetapi penundaan tanpa rencana dapat menghambat transisi seluruh kantor.
-E (1 poin) karena mengurangi tekanan belajar, tetapi menunda adaptasi hingga mendekati penghentian sistem lama.
-
-Cara cepat: Adaptasi efektif memadukan latihan pada tugas nyata, dukungan rekan, dan pencatatan kendala untuk perbaikan.`,
-        tingkat: 'sedang',
+        pembahasan: `Konsep yang digunakan: Kesinambungan layanan memakai prosedur cadangan yang sah dan menyinkronkan data setelah sistem pulih.
+Kata kunci: sistem berhenti, pulih dua jam, belasan pasien, prosedur cadangan, formulir kertas, data pasien.
+Opsi B (5 poin) paling tepat karena formulir kertas yang diizinkan prosedur cadangan membuat pasien yang mengantre tetap terdaftar, dan datanya dimasukkan ulang begitu layanan pulih sehingga prosedur cadangan dijalankan sampai tuntas. Anda tidak dapat memperbaiki sistem, jadi pendaftaran dan pemasukan ulang itu menjadi bagian yang dapat Anda kerjakan.
+Pembahasan opsi lain:
+A (4 poin) formulir kertas sesuai prosedur cadangan melayani pasien yang sudah mengantre, dan pasien diberi tahu bahwa datanya dimasukkan ulang. Namun pemasukan ulang itu baru dijanjikan dan belum dikerjakan, sehingga prosedur cadangan belum dijalankan sampai tuntas.
+C (3 poin) bertanya kepada teknisi menunjukkan kehati-hatian dan masih menghasilkan cara pendaftaran. Namun prosedur cadangan sudah mengizinkan formulir kertas, sehingga pendaftaran dapat dimulai sekarang tanpa menunggu kepastian waktu pulih.
+D (2 poin) menghentikan pendaftaran membuat belasan pasien pulang tanpa terdaftar, padahal prosedur cadangan mengizinkan formulir kertas. Pencatatan nama pasien yang sudah datang membantu, tetapi pelayanan baru berjalan setelah sistem pulih.
+E (1 poin) grup pesan memudahkan data pasien dimasukkan kembali. Namun data pasien tidak boleh dibagikan di luar petugas pendaftaran, sedangkan formulir kertas sesuai prosedur cadangan sudah mengizinkan pencatatan yang aman.
+Cara cepat: Perhatikan perkiraan lama gangguan, cara yang diizinkan, dan jenis data yang tercatat.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-08-28 · Wil - TKP 2_Done Input.docx, soal 28
+      // tkp-kasus-tik-09 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 27,
         tipe: 'skala',
-        pertanyaan: `Uji aplikasi pelaporan berhasil di kantor pusat, tetapi petugas lapangan sulit mengirim data di daerah bersinyal lemah. Laporan kertas akan dihentikan bulan depan. Migrasi penuh berisiko menghilangkan catatan lapangan, sementara penundaan total menghambat unit yang siap. Anda harus menjaga data dan menentukan transisi yang proporsional antarwilayah. Keputusan Anda adalah ...`,
+        pertanyaan: `Anda pegawai baru di dinas pertanian dan baru menyelesaikan kunjungan penyuluhan di tiga desa. Untuk merapikan laporan, Anda memakai asisten AI yang disetujui kantor. Hasilnya enak dibaca, tetapi menyebut peserta sebanyak 84 orang padahal catatan lapangan Anda mencatat 48 orang, dan memuat satu kegiatan demonstrasi yang tidak ada di catatan itu. Catatan lapangan asli masih ada di tas Anda, dan laporan harus dikirim kepada koordinator sore ini. Apa langkah Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Mengeluarkan wilayah sulit sinyal dari pelaporan rutin sementara waktu agar penilaian keberhasilan aplikasi baru tidak terganggu oleh kendala teknis.` },
-          { label: 'B', teks: `Mengarahkan petugas lapangan datang ke kantor terdekat yang memiliki jaringan pada akhir setiap kegiatan dan menyediakan daftar kantor yang dapat digunakan.` },
-          { label: 'C', teks: `Menerapkan aplikasi serentak sesuai keputusan pimpinan, tetapi memberikan toleransi keterlambatan khusus kepada petugas yang bekerja di wilayah sulit sinyal.` },
-          { label: 'D', teks: `Mengusulkan uji coba bertahap di wilayah sulit sinyal dengan prosedur pelaporan sementara yang sah dan indikator kesiapan sebelum aplikasi dipakai penuh.` },
-          { label: 'E', teks: `Mempertahankan semua laporan cetak sampai jaringan membaik karena kegagalan di wilayah tertentu menunjukkan aplikasi belum layak dipakai di seluruh instansi.` },
+          { label: 'A', teks: `Meminta koordinator memperpanjang tenggat sampai besok, lalu menulis ulang laporan dari awal berdasarkan catatan lapangan.` },
+          { label: 'B', teks: `Merapikan ulang laporan dengan asisten AI lain yang lebih baru, lalu membandingkan angkanya dengan hasil pertama.` },
+          { label: 'C', teks: `Mencocokkan angka dan kegiatan pada hasil itu dengan catatan lapangan, lalu mengirim laporan setelah selisih dikoreksi.` },
+          { label: 'D', teks: `Mengoreksi angka dan kegiatan dalam laporan sesuai catatan lapangan, lalu mengirimnya sore ini dan menyimpan temuan selisih untuk diri sendiri.` },
+          { label: 'E', teks: `Mengirim laporan hasil asisten AI itu kepada koordinator, lalu memeriksa angkanya pada catatan lapangan setelah terkirim.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Adaptasi teknologi, pembelajaran bertahap, dan manajemen perubahan.
-Kata kunci: Aplikasi pelaporan, pusat berhasil, sinyal terbatas, penerapan serentak, fase uji.
-Opsi D (5 poin) paling tepat karena menilai keberhasilan teknologi berdasarkan seluruh kondisi pengguna, bukan hanya pegawai kantor pusat. Mekanisme alternatif yang sah menjaga pelaporan berjalan sambil mengumpulkan data tentang kendala nyata. Target transisi ditentukan dari hasil uji, bukan hanya batas waktu administratif.
-
-Pembahasan setiap opsi:
-A (1 poin) karena meningkatkan angka keberhasilan di atas kertas, tetapi menghilangkan pelaporan wilayah yang justru memerlukan dukungan khusus.
-B (3 poin) karena menyediakan titik jaringan alternatif, tetapi perjalanan tambahan dapat mengganggu pekerjaan dan belum tentu memungkinkan di semua wilayah.
-C (4 poin) karena mematuhi kebijakan dan mengurangi tekanan tenggat, tetapi belum menyediakan cara agar laporan tetap masuk ketika konektivitas tidak tersedia.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (2 poin) karena melindungi layanan lapangan, tetapi menunda seluruh modernisasi tanpa menguji jalur penerapan yang memungkinkan.
-
-Cara cepat: Perubahan teknologi harus diuji pada kondisi pengguna paling terbatas, dengan alternatif dan ukuran keberhasilan yang jelas.`,
-        tingkat: 'sulit',
+        kunci: 'C',
+        pembahasan: `Konsep yang digunakan: Penggunaan AI disertai pemeriksaan hasil oleh manusia dan sumber tepercaya.
+Kata kunci: asisten AI, peserta 84 orang, catatan lapangan 48 orang, kegiatan demonstrasi, laporan sore ini.
+Opsi C (5 poin) paling tepat karena pencocokan terhadap catatan lapangan menemukan jumlah peserta 48 orang dan kegiatan demonstrasi yang tidak ada, sehingga laporan dikoreksi sebelum dikirim sore ini. Anda yang bertanggung jawab atas isi laporan, bukan asisten AI.
+Pembahasan opsi lain:
+A (3 poin) meminta tambahan waktu menunjukkan kehati-hatian, dan penulisan ulang dari catatan lapangan menghasilkan laporan yang benar. Namun catatan asli masih ada dan pencocokan dapat dilakukan sebelum laporan dikirim sore ini, sehingga tenggat tidak perlu bergeser.
+B (2 poin) asisten AI lain belum dinilai kebutuhan dan keamanannya oleh kantor, dan hasilnya tetap berupa keluaran yang belum dicek. Membandingkan angkanya dengan hasil pertama tidak menjawab selisih antara laporan dan catatan lapangan, yaitu 84 orang dan 48 orang.
+D (4 poin) angka dan kegiatan dikoreksi sesuai catatan lapangan sehingga laporan benar sebelum dikirim sore ini. Namun koordinator tidak mengetahui bahwa hasil asisten AI menyebut 84 orang padahal catatan lapangan mencatat 48 orang, sehingga kekeliruan asisten tidak ikut dievaluasi.
+E (1 poin) laporan terkirim sebelum angka 84 orang dan kegiatan demonstrasi yang tidak ada dicek terhadap catatan lapangan. Pemeriksaan setelah terkirim terlambat, sebab koordinator sudah menerima isi laporan yang keliru.
+Cara cepat: Perhatikan perbedaan isi dengan dokumen asli, tenggat pengiriman, dan peran Anda atas isinya.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-06-27 · Nynda - TKP 1_Done Input.docx, soal 27
+      // tkp-kasus-tik-12 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 28,
         tipe: 'skala',
-        pertanyaan: `Server pelayanan mengalami gangguan ketika antrean sedang padat. Tim TIK meminta contoh waktu kejadian dan pesan galat untuk penelusuran. SOP menyediakan formulir cadangan, tetapi transaksi baru boleh disahkan setelah sistem pulih. Warga membutuhkan kepastian mengenai berkas yang sudah diserahkan. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda kepala sebuah unit pelayanan yang memiliki tiga seksi. Kantor pusat telah menetapkan bahwa aplikasi persuratan lama ditutup pada akhir kuartal dan setiap unit beralih ke aplikasi baru. Baru satu seksi yang sudah lancar memakai aplikasi baru, sedangkan dua seksi lain masih sering salah mengirim surat. Anda dapat mengatur jadwal kerja seksi, dan pusat menyediakan dua sesi pelatihan untuk unit Anda. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Memprioritaskan pencatatan warga dengan kebutuhan mendesak dan meminta pemohon lain kembali setelah sistem dinyatakan normal.` },
-          { label: 'B', teks: `Mengumumkan gangguan kepada warga serta membagikan nomor kontak layanan agar mereka dapat menanyakan perkembangan secara berkala.` },
-          { label: 'C', teks: `Mengirim laporan gangguan kepada tim TIK dan meminta warga menunggu sampai tersedia perkiraan waktu pemulihan sistem.` },
-          { label: 'D', teks: `Menerima seluruh berkas secara manual dan mengesahkan transaksi berdasarkan kelengkapan dokumen agar antrean tetap bergerak.` },
-          { label: 'E', teks: `Mencatat detail galat untuk tim TIK sambil memakai formulir cadangan dan tanda terima sebagai jejak tindak lanjut.` },
+          { label: 'A', teks: `Meminta kantor pusat memundurkan penutupan aplikasi lama, lalu menyusun pelatihan setelah tanggal baru ditetapkan.` },
+          { label: 'B', teks: `Memerintahkan ketiga seksi beralih besok pagi, lalu menilai kedisiplinan seksi dari jumlah surat salah kirim.` },
+          { label: 'C', teks: `Memakai dua sesi pelatihan untuk dua seksi yang belum lancar, lalu menugaskan pendamping dari seksi yang sudah lancar.` },
+          { label: 'D', teks: `Mengalihkan seksi yang sudah lancar lebih dahulu, lalu meminta kantor pusat menambah sesi pelatihan bagi dua seksi lain.` },
+          { label: 'E', teks: `Membagikan panduan pusat kepada dua seksi yang belum lancar, lalu memeriksa kemajuan mereka setiap pekan.` },
         ],
-        kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Penanganan gangguan sistem melalui pelaporan teknis terstruktur, prosedur cadangan, dan jejak tindak lanjut
-Kata kunci: server down, pesan galat, tim TIK, formulir cadangan, tanda terima
-Opsi E (5 Poin) paling tepat karena tim TIK memperoleh informasi yang diperlukan untuk diagnosis dan layanan tetap berjalan melalui mekanisme cadangan. Tanda terima memberi bukti bahwa berkas telah diterima serta akan dilanjutkan setelah sistem pulih.
-Petugas tidak mengesahkan transaksi di luar sistem, sehingga kesinambungan layanan tetap sejalan dengan batas kewenangan.
-
-Pembahasan setiap opsi:
-A (2 poin): Prioritas kebutuhan mendesak cukup responsif, tetapi pemohon lain dibebani untuk kembali padahal formulir cadangan tersedia.
-B (4 poin): Pengumuman dan nomor kontak memberi informasi, tetapi belum mencatat berkas atau menyediakan jejak tindak lanjut individual.
-C (3 poin): Pelaporan kepada tim TIK sudah tepat, tetapi warga dibiarkan menunggu tanpa pencatatan cadangan atau bukti penerimaan.
-D (1 poin): Pengesahan manual mempercepat antrean, tetapi melampaui SOP karena transaksi harus menunggu sistem kembali berfungsi.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Saat sistem gagal, kirim detail teknis, aktifkan prosedur cadangan, dan berikan bukti tindak lanjut kepada pengguna.`,
-        tingkat: 'sulit',
+        kunci: 'C',
+        pembahasan: `Konsep yang digunakan: Pengelolaan transisi sistem dengan penerapan bertahap, pendampingan, dan pemanfaatan dukungan yang tersedia ketika kemampuan pengguna tidak merata.
+Kata kunci: aplikasi persuratan lama, akhir kuartal, satu seksi lancar, salah mengirim surat, dua sesi pelatihan, jadwal kerja seksi.
+Opsi C (5 poin) paling tepat karena dua sesi pelatihan dari pusat dipakai untuk dua seksi yang belum lancar, dan pendamping dari seksi yang sudah lancar membantu mereka menjelang penutupan aplikasi lama pada akhir kuartal. Peralihan tetap sesuai jadwal pusat dan tidak mengganggu pengiriman surat.
+Pembahasan opsi lain:
+A (2 poin) kantor pusat memang dapat menimbang penundaan penutupan aplikasi lama, tetapi unit Anda sudah memiliki dua sesi pelatihan yang dapat dipakai sekarang. Keputusan dialihkan kepada pusat, sedangkan dua seksi yang belum lancar tidak terbantu sampai tanggal baru ditetapkan.
+B (1 poin) memerintahkan ketiga seksi beralih esok hari membiarkan dua seksi yang belum lancar beralih padahal pelatihan yang tersedia belum dipakai. Menilai kedisiplinan dari surat salah kirim memindahkan kegagalan peralihan menjadi kesalahan seksi.
+D (4 poin) peralihan bertahap dimulai dari seksi yang lancar sehingga unit tidak berhenti, dan permintaan pelatihan tambahan memperhatikan kebutuhan dua seksi lain. Namun dua sesi pelatihan yang sudah disediakan pusat belum dipakai, sehingga dua seksi itu menunggu tambahan yang belum pasti.
+E (3 poin) panduan pusat memberi acuan bagi dua seksi yang belum lancar, dan pemeriksaan tiap pekan menjaga perkembangan terpantau. Namun dua sesi pelatihan dari pusat belum dipakai dan belum ada pendamping, sehingga kebiasaan salah mengirim surat sulit berubah menjelang penutupan aplikasi lama pada akhir kuartal.
+Cara cepat: Perhatikan kesiapan tiap seksi, dukungan yang sudah tersedia, dan tenggat yang ditetapkan pusat.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-07-30 · Wil - TKP 1_Done Input.docx, soal 30
+      // tkp-kasus-tik-23 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 29,
         tipe: 'skala',
-        pertanyaan: `Tim komunikasi memakai AI untuk menyusun edaran pendaftaran layanan digital. Draf memuat kewajiban mengunggah dokumen identitas ke situs yang belum ada dalam ketentuan instansi, sedangkan edaran harus terbit hari ini. Tim menyatakan kalimat itu berasal dari alat otomatis, bukan dari keputusan manusia. Sebagai pemeriksa substansi, Anda harus menjaga batas kewenangan dan ketepatan informasi. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda pegawai baru di sebuah dinas. Surel dari alamat yang sangat mirip dengan alamat kepala dinas meminta Anda dan dua rekan mengisi daftar gaji melalui sebuah tautan hari ini. Salah satu rekan di ruangan Anda baru saja memasukkan kata sandi akunnya pada halaman dari tautan itu, sedangkan rekan lainnya hampir membukanya. Tim keamanan informasi hanya menangani laporan yang masuk melalui formulir pada intranet. Anda tidak berwenang memblokir akun maupun mengatur sistem surel. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Mengirim surat berdasarkan draf AI dengan menambahkan catatan bahwa pegawai boleh meminta klarifikasi mengenai ketentuan yang tercantum.` },
-          { label: 'B', teks: `Menyerahkan keputusan sepenuhnya kepada tim komunikasi karena mereka bertanggung jawab atas bahasa dan penerbitan surat dinas.` },
-          { label: 'C', teks: `Menahan edaran, menguji dasar aturan bersama unit berwenang dan menyusun ulang hanya ketentuan yang sah sebelum dokumen disetujui untuk diedarkan.` },
-          { label: 'D', teks: `Menghapus klaim yang tidak ditemukan sumbernya, lalu meminta unit terkait meninjau isi lain yang masih relevan sebelum penetapan edaran.` },
-          { label: 'E', teks: `Mengirim edaran sementara dengan catatan bahwa pegawai dapat melaporkan kesalahan isi melalui saluran umpan balik kantor.` },
+          { label: 'A', teks: `Mengirim ulang surel itu kepada pegawai lain di unit Anda sebagai peringatan, lalu meminta mereka tidak mengisi tautannya hari ini.` },
+          { label: 'B', teks: `Melaporkan surel itu melalui formulir intranet, lalu mencantumkan nama rekan yang memasukkan kata sandi pada laporan.` },
+          { label: 'C', teks: `Membuka tautan dari surel itu di komputer kantor untuk menilai halamannya, lalu menyampaikan hasilnya kepada rekan.` },
+          { label: 'D', teks: `Meminta rekan yang terpapar mengganti kata sandi dan rekan lain berhenti mengakses tautan, lalu melapor lewat formulir intranet.` },
+          { label: 'E', teks: `Memeriksa keaslian surel itu kepada kepala dinas lewat nomor dikenal, lalu melapor lewat formulir bila terbukti palsu.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Etika penggunaan AI, verifikasi regulasi, kewenangan, keamanan data
-Kata kunci: AI penyusun surat, dasar aturan tak ditemukan, dokumen identitas, publikasi
-Opsi C (5 poin) paling tepat karena draf hasil AI tidak membuktikan adanya dasar kewajiban administratif. Klaim yang meminta dokumen identitas memiliki dampak serius bila keliru. Sebelum diterbitkan, dasar hukumnya harus diverifikasi dengan pihak berwenang dan naskah diperbaiki sesuai ketentuan yang benar.
-
-Pembahasan setiap opsi:
-A (1 poin) karena klarifikasi dibuka setelah penyebaran, tetapi pegawai dapat telanjur mengikuti klaim yang tidak didukung aturan.
-B (2 poin) karena peran tim komunikasi diakui, namun akurasi norma dan dasar kewenangan tidak bisa dialihkan hanya karena mereka menerbitkan surat.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (4 poin) karena ketentuan tanpa sumber dihapus dan peninjauan substansi dilakukan, tetapi verifikasi terhadap ketentuan yang mungkin tetap berlaku belum secara eksplisit diarahkan ke unit yang berwenang.
-E (3 poin) karena penerbitan sementara mempercepat informasi, tetapi kewajiban yang belum terverifikasi dapat segera memengaruhi perilaku pegawai.
-
-Cara cepat: Perlakukan keluaran AI sebagai draf yang harus diverifikasi, khususnya ketika memuat kewajiban dan data pribadi.`,
-        tingkat: 'sulit',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Penanganan insiden phishing yang sudah menimbulkan paparan, yaitu melindungi akun yang terpapar, menghentikan paparan baru, dan melapor lewat jalur yang ditetapkan.
+Kata kunci: alamat mirip kepala dinas, tautan daftar gaji, kata sandi dimasukkan, rekan hampir membuka, formulir intranet.
+Opsi D (5 poin) paling tepat karena rekan yang sudah memasukkan kata sandi segera mengubahnya sehingga akunnya terlindungi, dan rekan yang hampir membuka tautan dihentikan sebelum terlambat. Laporan melalui formulir intranet menyampaikan surel itu kepada tim keamanan yang hanya menangani laporan lewat jalur itu.
+Pembahasan opsi lain:
+A (2 poin) peringatan kepada pegawai lain dimaksudkan melindungi mereka, tetapi surel yang diteruskan membawa tautan yang sama kepada lebih banyak orang. Rekan yang sudah memasukkan kata sandi tidak ditolong, dan tim keamanan belum menerima laporan lewat formulir intranet.
+B (4 poin) laporan melalui formulir intranet sampai kepada tim keamanan beserta nama rekan yang sudah memasukkan kata sandi. Namun perlindungan akun rekan itu bergantung pada tim keamanan, padahal Anda dapat memintanya mengubah kata sandi sekarang dan menghentikan rekan lain membuka tautan.
+C (1 poin) membuka tautan di komputer kantor menjalankan risiko pada perangkat Anda sendiri, padahal satu rekan sudah memasukkan kata sandi dan rekan lain hampir membukanya. Hasil pengujian tidak menggantikan laporan kepada tim keamanan melalui formulir intranet.
+E (3 poin) menghubungi kepala dinas lewat nomor yang dikenal adalah cara aman untuk memeriksa keaslian surel. Namun satu rekan sudah memasukkan kata sandi dan rekan lain hampir membuka tautan, sehingga pemeriksaan dahulu menunda perlindungan akun dan laporan kepada tim keamanan.
+Cara cepat: Perhatikan siapa yang sudah menjadi korban, siapa yang masih dapat dicegah, dan jalur lapor yang diterima tim keamanan.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-25 · Nynda - TKP 1_Done Input.docx, soal 25
+      // tkp-kasus-tik-15 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 30,
         tipe: 'skala',
-        pertanyaan: `Instansi mulai memakai aplikasi terpadu dan menghentikan pencatatan manual dalam dua minggu. Beberapa pegawai senior masih kesulitan melakukan migrasi data, sedangkan panduan resmi hanya berupa video panjang. Anda telah memahami fungsi dasar aplikasi, tetapi juga memiliki target kerja harian. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda penghubung dinas sosial untuk sebuah desa mitra penyaluran bantuan. Daftar penerima di dinas memuat 412 nama, sedangkan daftar yang dipegang desa memuat 374 nama, sehingga ada selisih 38 nama. Penyaluran dilakukan dua pekan lagi. Anda dapat melihat daftar kedua pihak beserta dokumen pendukung masing-masing, tetapi penetapan daftar akhir berada pada kepala bidang di dinas. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Membantu memasukkan data milik pegawai senior sampai masa transisi selesai agar pekerjaan unit tidak mengalami keterlambatan.` },
-          { label: 'B', teks: `Menyarankan pegawai senior menonton kembali video resmi serta mencatat bagian yang belum dipahami untuk ditanyakan kepada unit TIK.` },
-          { label: 'C', teks: `Mengumpulkan pertanyaan rekan dan meneruskannya kepada pengelola aplikasi supaya jawaban teknis tersedia bagi seluruh pegawai.` },
-          { label: 'D', teks: `Membuat panduan singkat dari fungsi yang sering digunakan dan mengadakan sesi latihan terjadwal tanpa mengabaikan target kerja tim.` },
-          { label: 'E', teks: `Meminta pimpinan memperpanjang penggunaan cara manual bagi pegawai yang belum mahir sampai pelatihan resmi diselenggarakan.` },
+          { label: 'A', teks: `Meminta pihak desa mengirim dokumen pendukung 38 nama itu ke dinas hari ini, lalu meneruskan daftar selisihnya kepada kepala bidang.` },
+          { label: 'B', teks: `Mencocokkan 38 nama itu dengan dokumen pembuktian kedua pihak, lalu menyerahkan selisih beserta bukti kepada kepala bidang.` },
+          { label: 'C', teks: `Menanyakan kepada kepala bidang daftar mana yang dipakai penyaluran, lalu menunjukkan pencocokan dokumen setelah ada jawaban.` },
+          { label: 'D', teks: `Memberi tahu desa bahwa 38 nama selisih akan menerima bantuan, lalu menyiapkan penyaluran sesuai daftar dinas.` },
+          { label: 'E', teks: `Menghapus 38 nama selisih dari daftar dinas agar sama dengan daftar desa, lalu menetapkannya sebagai daftar akhir.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Adaptasi sistem baru melalui pembelajaran mandiri, penyederhanaan panduan, dan pendampingan yang membangun kemandirian
-Kata kunci: aplikasi terpadu, migrasi data, pegawai senior, panduan singkat, sesi latihan
-Opsi D (5 Poin) paling tepat karena bantuan disusun berdasarkan kebutuhan nyata dan diberikan secara terjadwal sehingga rekan belajar menggunakan sistem sendiri. Target kerja tetap dijaga melalui pengaturan waktu.
-Pendampingan tidak berubah menjadi pengambilalihan pekerjaan, sementara transisi digital tetap mengikuti batas waktu instansi.
-
-Pembahasan setiap opsi:
-A (2 poin): Mengambil alih input menjaga kecepatan sementara, tetapi membuat rekan bergantung dan tidak meningkatkan kemampuan penggunaan aplikasi.
-B (3 poin): Video dan pencatatan pertanyaan mendukung belajar mandiri, tetapi belum mengatasi kesulitan penggunaan yang membutuhkan praktik langsung.
-C (4 poin): Pengumpulan pertanyaan menghasilkan informasi bersama, tetapi belum memastikan rekan mampu menerapkan jawaban pada pekerjaannya.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (1 poin): Perpanjangan cara manual memberi waktu belajar, tetapi menghambat integrasi dan membuat proses ganda yang tidak diperlukan.
-
-Cara cepat: Dukung transisi teknologi dengan latihan praktis yang membuat pengguna mandiri tanpa mengabaikan pekerjaan utama.`,
-        tingkat: 'sulit',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Penyelesaian data yang bertentangan antarmitra dengan menelusuri bukti dan menyerahkan keputusan kepada pemilik kewenangan.
+Kata kunci: selisih 38 nama, daftar dinas dan desa, dokumen pendukung, penyaluran dua pekan lagi, penetapan daftar akhir, kepala bidang.
+Opsi B (5 poin) paling tepat karena pencocokan 38 nama dengan dokumen pendukung kedua pihak menunjukkan nama mana yang berhak, dan daftar selisih beserta bukti sampai kepada kepala bidang yang menetapkan daftar akhir. Anda menyerahkan bukti dan tidak menetapkan daftar.
+Pembahasan opsi lain:
+A (4 poin) dokumen pendukung dari desa memang perlu dilihat dinas, dan daftar selisih sampai kepada kepala bidang. Namun Anda sudah dapat melihat dokumen kedua pihak, sehingga meminta desa mengirimnya menambah perantara dan memperlambat penyaluran dua pekan lagi.
+C (3 poin) bertanya kepada kepala bidang menghormati penetapan daftar akhir. Namun dokumen pendukung kedua pihak sudah dapat Anda lihat, sehingga pencocokan 38 nama dapat dimulai sekarang dan hasilnya menjadi bahan jawaban.
+D (2 poin) memberi tahu desa bahwa 38 nama akan menerima bantuan menyampaikan hal yang belum ditetapkan kepala bidang. Desa dapat menyiapkan penyaluran menurut daftar dinas yang masih berselisih dengan daftar desa.
+E (1 poin) menghapus 38 nama dan menetapkan daftar akhir melampaui peran Anda, karena penetapan daftar akhir berada pada kepala bidang. Nama yang dihapus sebelum dokumen pendukung dicocokkan dapat kehilangan hak bantuan.
+Cara cepat: Perhatikan asal tiap daftar, dokumen yang dapat Anda lihat, dan pemegang keputusan akhir.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-08-30 · Wil - TKP 2_Done Input.docx, soal 30
+      // tkp-kasus-tik-20 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 31,
         tipe: 'skala',
-        pertanyaan: `Anda menyatukan laporan persediaan obat dari tiga puskesmas. Dua unit memakai sistem daring, sedangkan satu mengirim lembar kerja mingguan dengan format tanggal berbeda. Rekap menunjukkan selisih stok yang bisa mengganggu pemesanan obat bulan depan. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda anggota tim lapangan yang akan mensurvei calon penerima bantuan hari Kamis. Daftar calon penerima beserta alamatnya disimpan di folder bersama milik bagian data dan dibagikan melalui tautan yang dapat dibuka siapa pun yang memilikinya. Enam anggota tim lapangan memakai tautan itu karena belum terdaftar di sistem penyimpanan, yang dapat memberi akses atas nama lewat surel kerja. Aturan kantor melarang data calon penerima disimpan di akun pribadi. Hanya bagian data yang dapat mengubah pengaturan folder, dan bagian itu pernah mengganti tautan tanpa pemberitahuan sehingga survei terhenti. Bagaimana sikap Anda?`,
         opsi: [
-          { label: 'A', teks: `Menggunakan laporan sistem daring sebagai rujukan utama, sementara berkas mingguan dilampirkan untuk pemeriksaan akhir.` },
-          { label: 'B', teks: `Mewajibkan unit yang memakai spreadsheet mengganti perangkat pelaporannya sebelum laporan dapat digabung dengan dua sistem daring.` },
-          { label: 'C', teks: `Meminta tiga puskesmas mengecek contoh transaksi dan menyamakan format tanggal sebelum rekap stok digabung dan selisihnya dikonfirmasi.` },
-          { label: 'D', teks: `Mengubah semua tanggal ke format yang sama menggunakan aplikasi, kemudian mengirimkan hasil penggabungan beserta catatan mengenai sumber data.` },
-          { label: 'E', teks: `Menyusun total persediaan tanpa memperhatikan tanggal penerimaan agar laporan dapat dikirim cepat, lalu memeriksa periode transaksi bila ada selisih.` },
+          { label: 'A', teks: `Melaporkan tautan terbuka itu kepada kepala bagian data, lalu meminta kepala bagian mengganti pengaturan.` },
+          { label: 'B', teks: `Meminta bagian data mengganti tautan terbuka dengan akses atas nama, lalu mengirim daftar nama dan surel rekan satu tim.` },
+          { label: 'C', teks: `Menyalin daftar calon penerima ke akun penyimpanan pribadi Anda, lalu membagikan salinannya kepada tim lapangan.` },
+          { label: 'D', teks: `Tetap memakai tautan itu untuk survei hari Kamis, lalu mengingatkan bagian data mengganti tautan setelah survei.` },
+          { label: 'E', teks: `Meminta bagian data membuat tautan berbatas waktu sampai survei selesai, lalu membagikannya kepada enam anggota tim lapangan.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Penggunaan TIK yang tepat guna, validasi data, dan integrasi informasi.
-Kata kunci: Persediaan obat, format tanggal, integrasi data, validasi contoh transaksi.
-Opsi C (5 poin) paling tepat karena memastikan kesamaan format bermakna sama sebelum data digabung. Konversi otomatis dapat menghasilkan tanggal keliru jika asal format tidak dikenali dengan benar. Konfirmasi bersama unit sumber menjaga ketepatan stok dan keputusan distribusi.
-
-Pembahasan setiap opsi:
-A (3 poin) karena mengutamakan data daring yang lebih cepat, tetapi tidak membuktikan data dari unit ketiga kurang akurat.
-B (2 poin) karena mendorong pembaruan perangkat, tetapi menjadikan pilihan teknologi sebagai syarat tanpa menyelesaikan kesalahan format yang ada.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (4 poin) karena memanfaatkan otomasi dan transparansi sumber, tetapi konversi tanpa uji contoh dapat tetap menghasilkan tanggal salah.
-E (1 poin) karena mempercepat angka total, tetapi menghilangkan informasi waktu yang diperlukan untuk menelusuri pergerakan persediaan.
-
-Cara cepat: Saat menggabungkan sistem berbeda, periksa arti dan mutu data sebelum mempercepat proses pengolahannya.`,
-        tingkat: 'sulit',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Privasi tanpa menghambat kerja yang sah, yaitu mengganti akses terbuka dengan akses yang dikenali bagi pihak yang berhak.
+Kata kunci: alamat calon penerima, tautan terbuka, belum terdaftar, akses atas nama, surel kerja, survei Kamis.
+Opsi B (5 poin) paling tepat karena akses atas nama bagi anggota tim lapangan menutup tautan terbuka yang memungkinkan siapa pun melihat alamat calon penerima, dan tiap anggota tetap dapat membuka data untuk survei hari Kamis. Bagian data yang dapat mengubah pengaturan folder menerima daftar nama dan surel yang diperlukan.
+Pembahasan opsi lain:
+A (3 poin) kepala bagian data memang dapat memerintahkan pergantian pengaturan folder, dan tautan terbuka dilaporkan. Namun Anda belum menyampaikan kebutuhan tim lapangan kepada bagian data, sehingga pengaturan dapat berubah tanpa pemberitahuan lagi dan survei hari Kamis terganggu.
+C (1 poin) menyimpan daftar di akun pribadi melanggar aturan kantor dan memindahkan alamat calon penerima ke tempat yang tidak dikendalikan kantor. Tim lapangan memang mendapat data untuk survei hari Kamis, tetapi tautan terbuka dan pengaturan folder tidak berubah.
+D (2 poin) survei hari Kamis tetap berjalan, tetapi tautan terbuka tetap memungkinkan siapa pun melihat alamat calon penerima sampai survei selesai. Mengingatkan bagian data setelah survei membiarkan paparan berlangsung, padahal bagian data yang dapat mengubah pengaturan folder dapat dihubungi sekarang.
+E (4 poin) tautan berbatas waktu membuat alamat calon penerima tidak terbuka selamanya dan tim lapangan tetap dapat bekerja sampai survei hari Kamis selesai. Namun siapa pun yang memperoleh tautan selama waktu itu tetap dapat melihat alamat calon penerima, sehingga paparan hanya dipersempit dan tidak ditutup.
+Cara cepat: Perhatikan siapa yang dapat melihat data sekarang, kebutuhan kerja tim, dan siapa pemegang pengaturan.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -2993,203 +2870,179 @@ Cara cepat: Saat menggabungkan sistem berbeda, periksa arti dan mutu data sebelu
   {
     stimulus: { judul: `Profesionalisme` },
     soal: [
-      // tryout-ref-07-38 · Wil - TKP 1_Done Input.docx, soal 38
+      // tkp-kasus-prof-07 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 32,
         tipe: 'skala',
-        pertanyaan: `Seorang pemasok yang masih dinilai menyerahkan bingkisan makanan kepada Anda dan dua pemeriksa lain sebagai tanda terima kasih. Hasil penilaian diumumkan besok. Tim belum menyepakati cara menangani pemberian tersebut. Sikap Anda adalah ...`,
+        pertanyaan: `Anda petugas pendata di sebuah desa terpencil. Sekarang pukul 15.30. Laporan harian wajib diunggah lewat aplikasi sebelum pukul 17.00, tetapi sejak siang jaringan seluler terputus dan baru aktif di kantor kecamatan, sekitar satu jam perjalanan dari lokasi Anda. Data warga hari ini sudah Anda catat di buku lapangan. Aturan dinas membolehkan laporan susulan paling lambat esok pagi bila kendala jaringan dilaporkan lewat telepon kepada koordinator, yang menerima laporan kendala sampai pukul 18.00. Apa langkah Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Membagikan bingkisan kepada seluruh petugas agar tidak dinikmati sendiri, kemudian melanjutkan pemeriksaan berkas seperti biasa.` },
-          { label: 'B', teks: `Meminta arahan pimpinan tanpa menerima bingkisan terlebih dahulu, tetapi menunda penolakan tegas sampai rapat tim selesai.` },
-          { label: 'C', teks: `Menolak pemberian sambil menjelaskan batas etis, tetapi tidak meneruskan informasi kepada pengelola pengendalian gratifikasi unit.` },
-          { label: 'D', teks: `Mengembalikan bingkisan setelah hasil penilaian diumumkan, sambil menyimpannya dalam lemari unit agar tidak dipakai secara pribadi.` },
-          { label: 'E', teks: `Menolak bingkisan dan mencatat kejadian dalam mekanisme pengendalian gratifikasi agar tim menangani tawaran serupa secara konsisten.` },
+          { label: 'A', teks: `Meminta rekan di kantor kecamatan mengisi laporan hari ini berdasarkan perkiraan Anda, lalu mengunggahnya sebelum pukul 17.00.` },
+          { label: 'B', teks: `Merapikan catatan di buku lapangan hingga pukul 16.30, lalu berangkat ke kantor kecamatan untuk melapor dan mengirim laporan.` },
+          { label: 'C', teks: `Mencatat data di buku lapangan, lalu mengunggah laporan beberapa hari sekaligus saat jaringan di desa sudah pulih.` },
+          { label: 'D', teks: `Mengunggah laporan setibanya di kantor kecamatan, lalu meminta rekan di sana menyampaikan kendala jaringan kepada koordinator.` },
+          { label: 'E', teks: `Pergi ke kantor kecamatan yang jaringannya aktif untuk mengirim isi buku catatan, lalu menelepon koordinator untuk melaporkan kendala jaringan.` },
         ],
         kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Integritas ASN, penolakan gratifikasi terkait jabatan, dan pengendalian konflik kepentingan.
-Kata kunci: Hadiah dari peserta dinilai, penolakan, independensi, pencatatan unit.
-Opsi E (5 poin) paling tepat karena hadiah dari pihak yang sedang dinilai terkait dengan jabatan dan berpotensi menimbulkan konflik kepentingan. Penolakan menjaga independensi penilaian, sedangkan pencatatan melalui mekanisme internal memungkinkan unit mengetahui pendekatan kepada lebih dari satu pemeriksa. Pelaporan kejadian penolakan merupakan penguatan pengendalian unit, bukan pembenaran untuk menerima bingkisan.
-
-Pembahasan setiap opsi:
-A (1 poin) karena manfaat dibagikan kepada banyak orang, tetapi pemberian dari pihak yang dinilai tetap diterima dan dapat menimbulkan kesan keberpihakan.
-B (3 poin) karena bingkisan belum diterima dan kehati-hatian terlihat, tetapi keputusan penolakan yang semestinya dapat dilakukan saat itu justru ditunda.
-C (4 poin) karena pemberian sudah ditolak secara tegas, tetapi pendekatan kepada beberapa pemeriksa belum dicatat untuk pengendalian yang konsisten di tingkat unit.
-D (2 poin) karena bingkisan tidak digunakan, tetapi tetap berada dalam penguasaan tim pada saat peserta masih berkepentingan terhadap hasil penilaian.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Ketika pemberi masih berkepentingan pada hasil penilaian, tolak pemberian dan gunakan prosedur pengendalian unit yang relevan.`,
-        tingkat: 'sedang',
+        pembahasan: `Konsep yang digunakan: Disiplin waktu dan kesinambungan pelaporan saat sarana terganggu.
+Kata kunci: unggah sebelum pukul 17.00, jaringan seluler terputus, kantor kecamatan satu jam, buku lapangan, laporan susulan, laporan kendala sampai pukul 18.00.
+Opsi E (5 poin) paling tepat karena dari pukul 15.30 kantor kecamatan dapat dicapai sebelum batas pukul 17.00, sehingga laporan terkirim tepat waktu. Kendala jaringan Anda laporkan sendiri lewat telepon kepada koordinator sebelum pukul 18.00 sesuai aturan dinas.
+Pembahasan opsi lain:
+A (1 poin) laporan yang diisi dari perkiraan tidak cocok dengan data warga di buku lapangan, sehingga angkanya tidak dapat dipertanggungjawabkan walau tepat waktu. Aturan dinas sebenarnya membolehkan laporan susulan esok pagi bila kendala jaringan dilaporkan.
+B (3 poin) kendala tetap dilaporkan lewat telepon sebelum pukul 18.00 dan laporan terkirim sebagai susulan. Dari pukul 15.30 Anda dapat tiba sebelum pukul 17.00, tetapi merapikan catatan lebih dulu membuat laporan harian terlambat padahal data sudah lengkap.
+C (2 poin) buku lapangan menjaga data warga hari ini, tetapi laporan digeser beberapa hari padahal aturan dinas hanya membolehkan susulan esok pagi. Koordinator juga tidak menerima laporan kendala sampai pukul 18.00.
+D (4 poin) laporan terkirim sebelum pukul 17.00 dari kantor kecamatan, dan kabar kendala sampai kepada koordinator lewat telepon sebelum pukul 18.00. Kendala tidak Anda sampaikan sendiri, jadi koordinator menerimanya lewat rekan dan tidak dapat langsung menanyai Anda.
+Cara cepat: Apa yang masih mungkin dicapai sebelum batas, dan siapa yang perlu menerima kabar langsung dari Anda?`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-08-34 · Wil - TKP 2_Done Input.docx, soal 34
+      // tkp-kasus-prof-03 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 33,
         tipe: 'skala',
-        pertanyaan: `Anda ikut menilai penawaran jasa cetak buku panduan kantor. Salah satu peserta merupakan usaha kerabat dekat Anda, tetapi tidak ada permintaan perlakuan khusus. Penilaian belum dimulai. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda penghubung unit Anda dengan sebuah lembaga pelatihan mitra. Kemarin mitra meminta daftar nama peserta untuk mencetak sertifikat, paling lambat Jumat siang, dan Anda berjanji mengirimnya kemarin sore. Jumat pagi Anda sadar daftar itu belum dikirim karena terlewat dalam kesibukan, sedangkan mitra belum menghubungi Anda. Daftar nama sudah tersedia di berkas unit, dan sertifikat itu dijadwalkan dibagikan pada acara penutupan akhir pekan. Bagaimana sikap Anda?`,
         opsi: [
-          { label: 'A', teks: `Memberi nilai lebih rendah kepada penawaran kerabat untuk menunjukkan bahwa hubungan pribadi tidak memengaruhi keputusan panitia pengadaan.` },
-          { label: 'B', teks: `Mengajukan cuti dari seluruh pekerjaan kantor sampai pengadaan selesai, agar tidak muncul dugaan bahwa Anda memengaruhi keputusan panitia.` },
-          { label: 'C', teks: `Tidak ikut menilai penawaran kerabat dan tetap memeriksa peserta lain, lalu memberitahukan pembagian kerja tersebut kepada rekan satu panitia.` },
-          { label: 'D', teks: `Menyampaikan hubungan keluarga kepada ketua panitia sejak awal dan mengikuti penetapan resmi mengenai peran Anda dalam proses penilaian.` },
-          { label: 'E', teks: `Menjelaskan hubungan keluarga kepada sesama penilai lalu meminta mereka menilai berkas kerabat, berdasarkan kesepakatan informal di tim.` },
+          { label: 'A', teks: `Mencatat permintaan itu pada daftar pekerjaan pekan ini, lalu baru mengirim daftar nama pada Jumat sore.` },
+          { label: 'B', teks: `Mengirim daftar nama beserta nomor identitas peserta sekarang, lalu menjelaskan bahwa data itu sekalian disiapkan.` },
+          { label: 'C', teks: `Memasukkan daftar nama ke surel balasan untuk mitra sekarang, lalu mencatat keterlambatan pada berkas kerja unit.` },
+          { label: 'D', teks: `Memberi tahu kepala unit bahwa daftar terlambat, lalu mengirim daftar itu sesuai arahannya.` },
+          { label: 'E', teks: `Mengirim daftar nama itu sekarang, lalu menjelaskan kepada mitra penyebab keterlambatan pengirimannya.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Integritas, objektivitas, transparansi, dan pengelolaan konflik kepentingan.
-Kata kunci: Hubungan keluarga, penilaian penawaran, potensi konflik kepentingan, keterbukaan, objektivitas.
-Opsi D (5 poin) paling tepat karena hubungan keluarga dengan salah satu penawar merupakan potensi konflik kepentingan yang perlu diungkapkan sebelum penilaian dilakukan. Pengungkapan kepada ketua panitia memungkinkan penanganan yang sah, terdokumentasi, dan sesuai pembagian kewenangan. Tindakan tersebut melindungi objektivitas proses, meskipun kerabat tidak pernah meminta perlakuan khusus.
-
-Pembahasan setiap opsi:
-A (1 poin) karena bertujuan menunjukkan ketidakberpihakan, tetapi memberikan nilai lebih rendah secara sengaja merupakan manipulasi penilaian yang merugikan peserta pengadaan.
-B (2 poin) karena berupaya menghindari pengaruh hubungan pribadi, tetapi meninggalkan seluruh pekerjaan kantor merupakan respons berlebihan terhadap konflik kepentingan yang sebenarnya dapat dikelola secara proporsional.
-C (3 poin) karena mengurangi keterlibatan dalam pemeriksaan penawaran kerabat, tetapi penyesuaian tugas dilakukan atas keputusan sendiri tanpa penanganan konflik kepentingan melalui penanggung jawab panitia.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (4 poin) karena mengungkap hubungan keluarga kepada rekan penilai dan mengalihkan pemeriksaan penawaran kerabat, tetapi kesepakatan informal belum memberikan kepastian bahwa penanganan konflik telah ditetapkan secara resmi.
-
-Cara cepat: Apabila terdapat hubungan pribadi dengan pihak yang dinilai, utamakan keterbukaan dan pengelolaan konflik melalui kewenangan yang tepat. Menghindari keterlibatan secara sepihak belum menjamin proses yang akuntabel.`,
-        tingkat: 'sedang',
+        kunci: 'E',
+        pembahasan: `Konsep yang digunakan: Tanggung jawab memulihkan komitmen yang terlewat dengan tindakan langsung dan keterbukaan kepada mitra.
+Kata kunci: janji kemarin sore, paling lambat Jumat siang, terlewat dalam kesibukan, mitra belum menghubungi, daftar nama tersedia.
+Opsi E (5 poin) paling tepat karena daftar nama yang sudah tersedia langsung sampai kepada mitra sebelum batas Jumat siang, dan penjelasan penyebab keterlambatan memulihkan kepercayaan mereka. Anda memegang janji sendiri tanpa menunggu ditanya.
+Pembahasan opsi lain:
+A (2 poin) batas pengiriman adalah Jumat siang, sedangkan daftar nama baru dikirim Jumat sore, akibatnya janji Anda terlewat. Pencetakan sertifikat mitra ikut mundur padahal acara penutupan sudah terjadwal akhir pekan.
+B (1 poin) mitra hanya meminta daftar nama untuk mencetak sertifikat, yang berarti nomor identitas peserta yang ikut terkirim membuka data pribadi di luar kebutuhan mitra. Daftar tiba sebelum Jumat siang, tetapi data peserta tersebar kepada pihak yang tidak memerlukannya.
+C (4 poin) mitra menerima daftar nama lewat surel sebelum Jumat siang, dan keterlambatan tercatat pada berkas kerja unit. Penjelasan tentang janji yang terlewat belum sampai kepada mitra, sehingga kepercayaan mereka belum pulih.
+D (3 poin) kepala unit mengetahui kelalaian itu dan daftar nama tetap dikirim. Daftar sudah tersedia di berkas unit dan Anda sebagai penghubung dapat mengirimnya sendiri, akibatnya arahan hanya memperpendek waktu sebelum Jumat siang.
+Cara cepat: Apa yang masih dapat dikerjakan hari ini, dan siapa yang sedang bergantung pada janji Anda?`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-06-36 · Nynda - TKP 1_Done Input.docx, soal 36
+      // tkp-kasus-prof-09 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 34,
         tipe: 'skala',
-        pertanyaan: `Instansi menetapkan format analisis baru berbasis perangkat lunak yang belum Anda kuasai. Draf pertama Anda mendapat kritik tajam karena kurang mendalam, sedangkan pelatihan resmi belum tersedia. Revisi harus selesai dalam lima hari dan seorang analis dari unit lain bersedia memberi arahan singkat. Langkah Anda adalah ...`,
+        pertanyaan: `Anda panitia pendaftaran pada pelatihan dua hari yang diadakan kantor. Daftar hadir dipakai untuk menerbitkan sertifikat dan menghitung jam pelatihan setiap pegawai. Hari ini Dimas, rekan dekat Anda, pulang pukul 11.00 karena urusan keluarga, padahal sesi baru selesai pukul 16.00. Sebelum pergi ia meminta Anda memarafkan kolom kehadirannya hingga sore agar jam pelatihannya tidak dikurangi. Koordinator pelatihan menetapkan jam pegawai yang izin berdasarkan keterangan tertulis yang masuk sebelum daftar hadir ditutup pukul 16.00. Sikap Anda adalah ...`,
         opsi: [
-          { label: 'A', teks: `Membagi revisi dengan rekan yang lebih menguasai perangkat lunak sambil mempelajari langkah yang mereka gunakan pada pekerjaan tersebut.` },
-          { label: 'B', teks: `Menjelaskan kepada pimpinan bahwa kualitas draf dipengaruhi belum adanya pelatihan lalu meminta tambahan waktu untuk belajar.` },
-          { label: 'C', teks: `Mengubah kritik menjadi rencana belajar mandiri dengan arahan analis dan pengujian hasil revisi sebelum diserahkan.` },
-          { label: 'D', teks: `Meminta contoh laporan analis tersebut dan menyesuaikan isi draf Anda dengan formatnya agar revisi selesai lebih cepat.` },
-          { label: 'E', teks: `Memperbaiki bagian yang dikritik berdasarkan petunjuk pimpinan dan menunda pembelajaran perangkat lunak sampai pelatihan tersedia.` },
+          { label: 'A', teks: `Menolak memarafkan kolom sore itu, lalu menyarankan Dimas mengirim keterangan izin kepada koordinator sebelum pukul 16.00.` },
+          { label: 'B', teks: `Mencatat jam pulang Dimas yang sebenarnya pada daftar hadir, lalu menolak memarafkan kolom sore itu.` },
+          { label: 'C', teks: `Melaporkan permintaan Dimas kepada kepala bagian kepegawaian, lalu menolak memarafkan kolom kehadirannya.` },
+          { label: 'D', teks: `Mengosongkan kolom kehadiran Dimas, lalu menutup daftar hadir pukul 16.00 dan tidak memberi tahu siapa pun.` },
+          { label: 'E', teks: `Memarafkan kolom kehadiran Dimas hingga pukul 16.00, lalu menyampaikan kepada koordinator bahwa ia hadir penuh.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Respons profesional terhadap kritik melalui identifikasi kekurangan, pembelajaran mandiri, konsultasi, dan pemeriksaan kualitas
-Kata kunci: format baru, kritik, modul, konsultasi ahli, uji hasil
-Opsi C (5 Poin) paling tepat karena kritik diterjemahkan menjadi kebutuhan perbaikan yang jelas dan diikuti pembelajaran dari beberapa sumber. Pengujian hasil memastikan revisi tidak hanya tampak sesuai format, tetapi juga lebih akurat.
-Peserta menerima evaluasi tanpa defensif sekaligus membangun kemampuan yang dapat digunakan pada pekerjaan berikutnya.
-
-Pembahasan setiap opsi:
-A (4 poin): Kolaborasi dan pengamatan langkah rekan mendukung pembelajaran, tetapi tanggung jawab revisi terbagi dan pemeriksaan mandiri belum jelas.
-B (1 poin): Keterbatasan pelatihan merupakan konteks yang benar, tetapi fokus pada alasan belum menunjukkan upaya belajar yang tersedia.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (2 poin): Contoh laporan mempercepat pemahaman, tetapi meniru format belum memastikan peserta menguasai metode atau menghasilkan analisis yang sesuai data.
-E (3 poin): Perbaikan sesuai petunjuk menyelesaikan kebutuhan saat ini, tetapi ketergantungan pada arahan akan berulang karena kompetensi tidak dikembangkan.
-
-Cara cepat: Terima kritik sebagai data perbaikan, pelajari kesenjangan kemampuan, dan uji hasil sebelum menyerahkan ulang.`,
-        tingkat: 'sulit',
+        kunci: 'A',
+        pembahasan: `Konsep yang digunakan: Integritas profesional saat rekan dekat meminta Anda menyimpang dari standar.
+Kata kunci: daftar hadir, sertifikat dan jam pelatihan, Dimas pulang pukul 11.00, memarafkan kolom kehadiran, rekan dekat, keterangan tertulis sebelum pukul 16.00.
+Opsi A (5 poin) paling tepat karena daftar hadir menjadi dasar sertifikat dan jam pelatihan, yang berarti kehadiran Dimas hanya tercatat sampai pukul 11.00. Keterangan izin sebelum pukul 16.00 membuka jalan agar koordinator menetapkan jam pelatihannya secara sah.
+Pembahasan opsi lain:
+B (4 poin) jam pulang Dimas tercatat sesuai kenyataan pada daftar hadir yang menjadi dasar sertifikat. Dimas tidak diberi tahu bahwa keterangan izin masih dapat masuk sebelum pukul 16.00, sehingga jam pelatihannya berkurang tanpa upaya yang sah.
+C (3 poin) penolakan menjaga keakuratan daftar hadir, dan kepala bagian kepegawaian dapat mengetahui permintaan itu. Dimas baru mengajukan permintaan sekali dan belum diberi tahu jalur izin, akibatnya laporan melompati pembicaraan langsung.
+D (2 poin) kolom yang kosong menjaga keakuratan daftar hadir, tetapi Dimas dan koordinator tidak mengetahui bahwa keterangan izin masih dapat masuk sebelum pukul 16.00. Jam pelatihan Dimas berkurang tanpa upaya apa pun dari Anda.
+E (1 poin) paraf pada kolom sore mencatat kehadiran yang tidak terjadi pada daftar yang menjadi dasar sertifikat dan jam pelatihan. Dimas pulang pukul 11.00, dan keterangan kepada koordinator menutup jalur izin yang sah.
+Cara cepat: Untuk apa catatan resmi itu dipakai oleh pihak lain, dan jalan sah apa yang masih terbuka bagi rekan Anda?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-33 · Nynda - TKP 1_Done Input.docx, soal 33
+      // tkp-kasus-prof-18 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 35,
         tipe: 'skala',
-        pertanyaan: `Setelah mengirim laporan kinerja bulanan, Anda menemukan rumus yang salah sehingga capaian unit terlihat lebih tinggi dari kondisi sebenarnya. Atasan belum menyadarinya dan laporan akan digunakan dalam rapat dua jam lagi. Anda telah menghitung angka yang benar dan mengetahui bagian yang terdampak. Langkah Anda adalah ...`,
+        pertanyaan: `Anda kepala unit pendaftaran di sebuah dinas. Dalam tiga bulan terakhir, kesalahan penulisan nomor identitas pada formulir pemohon muncul empat kali, dan dua kali di antaranya sudah ditangani dengan mengingatkan petugas. Data menunjukkan keempat kesalahan terjadi pada formulir cetak lama yang kolom nomornya tidak berpetak, sedangkan formulir berpetak yang baru dipakai di dua loket tidak menimbulkan kesalahan. Stok formulir berpetak tersedia di gudang unit. Bagaimana Anda menindaklanjutinya?`,
         opsi: [
-          { label: 'A', teks: `Mengirim versi baru kepada atasan dengan catatan bahwa terdapat pembaruan data tanpa menjelaskan sumber perubahan perhitungan.` },
-          { label: 'B', teks: `Menunggu rapat selesai untuk memastikan apakah angka tersebut benar-benar dipakai sebelum mengakui kesalahan perhitungan.` },
-          { label: 'C', teks: `Memperbaiki file pada penyimpanan bersama tanpa pemberitahuan agar atasan menggunakan angka terbaru saat rapat dimulai.` },
-          { label: 'D', teks: `Memberi tahu atasan tentang kesalahan dan dampaknya sambil menyerahkan versi koreksi yang telah diperiksa sebelum rapat.` },
-          { label: 'E', teks: `Menghubungi rekan penyedia data untuk mengonfirmasi angka lalu meminta atasan menunda pembahasan sampai pemeriksaan lengkap selesai.` },
+          { label: 'A', teks: `Mengulang peringatan kepada petugas pada apel pagi, lalu mencatat kesalahan berikutnya pada daftar pantauan.` },
+          { label: 'B', teks: `Mengganti formulir lama dengan yang berpetak di setiap loket, lalu memantau kesalahan selama dua bulan.` },
+          { label: 'C', teks: `Menambah pemeriksaan nomor identitas oleh petugas kedua di setiap loket, lalu mengevaluasinya pada akhir tahun.` },
+          { label: 'D', teks: `Memakai formulir berpetak di loket yang sudah menggunakannya, lalu mengganti formulir lama di loket lain secara bertahap.` },
+          { label: 'E', teks: `Memberi sanksi kepada petugas yang terakhir salah menulis, lalu memakai formulir lama sampai stoknya habis.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Pertanggungjawaban kesalahan melalui pengungkapan segera, penjelasan dampak, koreksi, dan pemeriksaan sebelum penggunaan
-Kata kunci: rumus salah, capaian unit, rapat, pengakuan, versi koreksi
-Opsi D (5 Poin) paling tepat karena kesalahan disampaikan sebelum memengaruhi keputusan dan disertai solusi yang siap digunakan. Penjelasan dampak membantu atasan memahami perubahan angka serta menentukan tindakan pada rapat.
-Mengakui kekeliruan secara terbuka menjaga keterlacakan dokumen dan mencegah koreksi diam-diam menimbulkan kebingungan versi.
-
-Pembahasan setiap opsi:
-A (2 poin): Versi baru memperbaiki angka, tetapi penjelasan yang tidak lengkap mengaburkan kesalahan serta dampaknya.
-B (1 poin): Menunggu memastikan dampak aktual, tetapi membiarkan informasi yang diketahui salah berpotensi dipakai dalam rapat.
-C (3 poin): Koreksi cepat mencegah penggunaan angka salah, tetapi perubahan tanpa pemberitahuan menghilangkan jejak dan dapat membingungkan pengguna dokumen.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (4 poin): Konfirmasi tambahan menunjukkan kehati-hatian, tetapi sumber kesalahan sudah ditemukan dan penundaan rapat belum tentu diperlukan.
-
-Cara cepat: Jika menemukan kesalahan penting, laporkan sebelum dipakai dan sertakan koreksi yang sudah diperiksa.`,
-        tingkat: 'sulit',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Penyelesaian masalah yang menyentuh akar penyebab dan dipantau hasilnya.
+Kata kunci: kesalahan nomor identitas, empat kali, dua kali diingatkan, formulir cetak lama, kolom tidak berpetak, stok formulir berpetak.
+Opsi B (5 poin) paling tepat karena data menunjukkan kesalahan hanya terjadi pada formulir yang kolom nomornya tidak berpetak, sehingga mengganti formulir di setiap loket menyentuh penyebabnya. Pemantauan dua bulan membuktikan bahwa perbaikan itu bekerja.
+Pembahasan opsi lain:
+A (2 poin) peringatan sudah dua kali diberikan dan kesalahan tetap muncul, yang berarti mengulanginya tidak menyentuh penyebab. Daftar pantauan hanya mencatat kesalahan pada formulir lama yang kolom nomornya tidak berpetak.
+C (3 poin) petugas kedua menangkap sebagian kesalahan nomor identitas. Formulir lama yang kolom nomornya tidak berpetak tetap dipakai, dan evaluasi akhir tahun terlalu jauh untuk kesalahan yang muncul tiap bulan.
+D (4 poin) formulir berpetak sudah terbukti tidak menimbulkan kesalahan di dua loket, dan formulir lama di loket lain diganti secara bertahap. Penggantian belum menjangkau setiap loket sekarang dan belum disertai pemantauan hasil, jadi perbaikan penyebab baru separuh jalan.
+E (1 poin) sanksi memindahkan kegagalan formulir menjadi kesalahan seorang petugas, padahal empat kesalahan terjadi pada formulir yang sama. Formulir lama yang kolom nomornya tidak berpetak tetap dipakai sehingga kesalahan berikutnya hampir pasti terjadi.
+Cara cepat: Kapan masalah muncul dan kapan tidak, dan apakah perbaikan terdahulu menyentuh sebabnya?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-37 · Nynda - TKP 1_Done Input.docx, soal 37
+      // tkp-kasus-prof-17 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 36,
         tipe: 'skala',
-        pertanyaan: `Seorang teman dekat di luar instansi meminta informasi mengenai peserta yang lolos tahap awal pengadaan sebelum pengumuman resmi. Ia mengaku hanya ingin menyiapkan dokumen dan berjanji tidak menyebarkannya. Anda memiliki akses ke data tersebut karena menjadi anggota sekretariat seleksi. Respons Anda adalah ...`,
+        pertanyaan: `Anda koordinator tim penyusun laporan di sebuah dinas. Pimpinan menetapkan format laporan baru berbasis lembar kerja bersama mulai bulan depan. Bu Wati, rekan senior yang paling teliti, keberatan karena data tahun-tahun lalu tersimpan di format lama dan ia khawatir riwayat angka tidak terbaca. Dua anggota lain ingin segera beralih. Anda dapat mengatur cara tim mencoba format baru, sedangkan tanggal berlakunya tetap. Keputusan Anda adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menjelaskan bahwa informasi belum dapat dibagikan, tetapi memberi petunjuk apakah posisi temannya cukup aman berdasarkan hasil sementara.` },
-          { label: 'B', teks: `Meminta teman mengirim pertanyaan tertulis ke instansi sehingga Anda dapat menjawabnya setelah memperoleh persetujuan ketua tim.` },
-          { label: 'C', teks: `Memberikan penjelasan umum tentang tahapan berikutnya tanpa menyebut nama peserta agar teman dapat melakukan persiapan awal.` },
-          { label: 'D', teks: `Menegaskan batas kerahasiaan dan menyarankan penggunaan sumber publik yang dapat diakses setara oleh calon penyedia.` },
-          { label: 'E', teks: `Tidak menanggapi permintaan tersebut dan mengurangi komunikasi dengan teman sampai pengumuman resmi selesai dilakukan.` },
+          { label: 'A', teks: `Menggali alasan keberatan Bu Wati secara terbuka, lalu menguji format baru pada satu laporan percobaan sebelum tanggal berlaku.` },
+          { label: 'B', teks: `Mengumumkan uji format baru pada satu laporan kepada tim, lalu meminta masukan setelah laporan selesai.` },
+          { label: 'C', teks: `Menyampaikan bahwa tanggal berlaku format baru tetap, lalu menyiapkan pelatihan format baru bagi tim.` },
+          { label: 'D', teks: `Meminta Bu Wati membuktikan sendiri bahwa riwayat data tidak hilang, lalu memutuskan format berdasarkan jawabannya.` },
+          { label: 'E', teks: `Menyebut keberatan Bu Wati sebagai penghambat pada rapat tim, lalu meminta anggota lain beralih ke format baru.` },
         ],
-        kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Kerahasiaan jabatan melalui penolakan yang jelas dan penggunaan kanal informasi resmi yang setara
-Kata kunci: teman dekat, data seleksi, belum diumumkan, rahasia, kanal resmi
-Opsi D (5 Poin) paling tepat karena informasi yang belum diumumkan tidak dibagikan dalam bentuk apa pun dan teman tetap memperoleh rujukan yang sah. Kedekatan pribadi tidak mengubah hak akses terhadap data seleksi.
-Respons tegas dan santun menjaga kerahasiaan tanpa memutus hubungan pribadi atau memberikan sinyal yang dapat dimanfaatkan.
-
-Pembahasan setiap opsi:
-A (1 poin): Tidak menyebut data langsung tampak berhati-hati, tetapi petunjuk hasil sementara tetap membocorkan informasi rahasia.
-B (3 poin): Pertanyaan tertulis menciptakan jejak dan meminta persetujuan, tetapi peserta tetap diarahkan melalui hubungan pribadi alih-alih kanal resmi yang setara.
-C (4 poin): Informasi umum relatif aman dan cukup membantu, tetapi perlu dipastikan benar-benar sudah tersedia untuk publik sebelum disampaikan secara pribadi.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (2 poin): Tidak memberi informasi menjaga kerahasiaan, tetapi menghindari komunikasi tidak menjelaskan batas etika atau kanal yang benar.
-
-Cara cepat: Jaga informasi belum publik dan arahkan semua pihak pada kanal resmi tanpa memberi petunjuk pribadi.`,
-        tingkat: 'sulit',
+        kunci: 'A',
+        pembahasan: `Konsep yang digunakan: Adaptasi terhadap perubahan dengan menggali penolakan dan menguji perubahan secara terkendali.
+Kata kunci: format laporan baru, keberatan Bu Wati, data format lama, riwayat angka tidak terbaca, tanggal berlaku tetap, cara tim mencoba.
+Opsi A (5 poin) paling tepat karena keberatan Bu Wati tentang riwayat data punya dasar nyata yang perlu didengar, dan uji pada satu laporan membuktikan apakah format baru terbaca sebelum berlaku bulan depan. Tanggal berlaku tetap terpenuhi.
+Pembahasan opsi lain:
+B (4 poin) uji pada satu laporan diumumkan kepada tim dan masukan dikumpulkan setelahnya, yang berarti tim siap sebelum format baru berlaku. Alasan keberatan Bu Wati belum dibahas lebih dulu, sehingga ia belum merasa didengar.
+C (3 poin) pelatihan membantu tim beralih sebelum tanggal berlaku yang tetap. Keberatan Bu Wati tentang riwayat data tidak mendapat jalan keluar, padahal Anda dapat mengatur cara tim mencoba format baru.
+D (2 poin) bu Wati paling mengenal data lama, akibatnya ia mampu menilai keamanan format baru. Beban membuktikannya berpindah kepadanya, padahal Anda yang dapat mengatur cara tim mencoba format itu sebelum tanggal berlaku.
+E (1 poin) menyebut keberatan Bu Wati sebagai penghambat di depan rapat mempermalukan rekan senior yang keberatannya berdasar. Format baru berjalan, tetapi persoalan riwayat data tidak dibahas dan hubungan kerja rusak.
+Cara cepat: Apa dasar kekhawatiran yang disampaikan, dan bagian perubahan mana yang dapat dijajaki lebih dulu?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-07-34 · Wil - TKP 1_Done Input.docx, soal 34
+      // tkp-kasus-prof-21 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 37,
         tipe: 'skala',
-        pertanyaan: `Setelah tugas lapangan memantau distribusi air pada masa kemarau, Anda menyadari aplikasi presensi mencatat waktu pulang setengah jam terlalu cepat akibat koneksi terputus. Catatan kunjungan dan berita acara menunjukkan pekerjaan selesai sesuai jadwal. Penilaian kehadiran segera dikunci. Sikap Anda adalah ...`,
+        pertanyaan: `Anda petugas penyuluh di sebuah puskesmas. Sekarang pukul 08.00. Penyuluhan imunisasi di balai desa pukul 09.00 sudah diumumkan kepada warga, tetapi kepala puskesmas meminta revisi laporan imunisasi yang harus terkirim kepada dinas kesehatan sebelum pukul 12.00. Revisi itu hanya dapat dikerjakan dari berkas di komputer Anda dan memerlukan sekitar dua jam, sedangkan menyiapkan bahan untuk Mbak Dewi memerlukan setengah jam. Kepala puskesmas membolehkan petugas meminta bantuan sesama penyuluh, dan Mbak Dewi dapat menggantikan penyuluhan bila diberi bahan. Apa langkah Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Mengajukan koreksi melalui prosedur yang berlaku dengan bukti pelaksanaan tugas, lalu memberi tahu pengelola presensi sebelum rekap ditutup.` },
-          { label: 'B', teks: `Menghubungi pengelola presensi dan menjelaskan kekeliruan secara terbuka, kemudian meminta arahan mengenai bukti yang perlu diajukan.` },
-          { label: 'C', teks: `Meminta rekan mengubah jam pada file rekap bersama sehingga waktu kerja sesuai kenyataan, kemudian mengabarkan koreksi itu kepada operator.` },
-          { label: 'D', teks: `Menambahkan jam kerja yang kurang pada hari berikutnya di aplikasi sehingga jumlah bulanan sama tanpa mengubah catatan hari yang bermasalah.` },
-          { label: 'E', teks: `Mengisi penjelasan pada kolom catatan kegiatan dan membiarkan angka presensi tetap tercatat sambil menunggu pemeriksaan rutin.` },
+          { label: 'A', teks: `Memberi penyuluhan sesuai jadwal, lalu meminta kepala puskesmas memperpanjang batas kirim laporan imunisasi.` },
+          { label: 'B', teks: `Mengerjakan revisi laporan lebih dulu, lalu memberi tahu warga di balai desa bahwa penyuluhan imunisasi ditunda.` },
+          { label: 'C', teks: `Mengirim revisi laporan imunisasi sebelum angka dicocokkan dengan berkas, lalu berangkat memberi penyuluhan sesuai jadwal.` },
+          { label: 'D', teks: `Mengabari kepala puskesmas bahwa Mbak Dewi menggantikan penyuluhan, lalu mengirim bahan penyuluhan kepada Mbak Dewi.` },
+          { label: 'E', teks: `Meminta Mbak Dewi menggantikan penyuluhan dengan bahan Anda, lalu meminta laporan hasilnya setelah revisi itu.` },
         ],
-        kunci: 'A',
-        pembahasan: `Konsep yang digunakan: Disiplin administrasi, pembetulan catatan, bukti objektif, akuntabilitas
-Kata kunci: Presensi salah, koneksi terputus, bukti tugas, koreksi
-Opsi A (5 poin) paling tepat karena kesalahan administrasi dapat diperbaiki secara resmi ketika bukti yang memadai tersedia. Pengajuan sebelum penutupan rekap disertai dokumen pendukung memastikan catatan sesuai kenyataan serta perubahan dapat diaudit. Perbaikan informal tanpa kewenangan justru membuat arsip tidak dapat dipertanggungjawabkan.
-
-Pembahasan setiap opsi:
-A (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-B (4 poin) karena pengelola diberi informasi segera dan bukti akan disiapkan, tetapi permohonan koreksi formal belum diajukan sebelum tenggat.
-C (2 poin) karena angka berusaha disesuaikan dengan kejadian sebenarnya, tetapi perubahan dilakukan oleh pihak yang belum tentu berwenang melalui file bersama.
-D (1 poin) karena jumlah jam dibuat terlihat seimbang, tetapi mencatat kerja pada hari lain tidak mengoreksi fakta kehadiran yang keliru.
-E (3 poin) karena keterangan pribadi tersedia, namun angka rekap tetap salah dan tindak lanjut diserahkan pada pemeriksaan mendatang.
-
-Cara cepat: Koreksi catatan kerja dilakukan melalui mekanisme resmi dengan bukti, bukan dengan memindahkan jam atau mengubah berkas bersama.`,
-        tingkat: 'sulit',
+        kunci: 'E',
+        pembahasan: `Konsep yang digunakan: Pengelolaan dua tanggung jawab melalui bantuan rekan yang diizinkan, dengan tanggung jawab hasil tetap pada pemilik tugas.
+Kata kunci: penyuluhan pukul 09.00, sudah diumumkan, revisi laporan sebelum pukul 12.00, revisi dua jam, bahan setengah jam, Mbak Dewi.
+Opsi E (5 poin) paling tepat karena bahan siap dalam setengah jam sehingga Mbak Dewi dapat menggantikan penyuluhan pukul 09.00, dan revisi laporan imunisasi terkirim sebelum pukul 12.00. Laporan hasil penyuluhan menjaga tanggung jawab Anda atas pertanyaan warga.
+Pembahasan opsi lain:
+A (3 poin) penyuluhan terlaksana sesuai pengumuman kepada warga, dan perpanjangan batas kiriman dapat diminta. Mbak Dewi dapat menggantikan penyuluhan, sehingga batas laporan dikorbankan padahal bantuan yang diizinkan tersedia.
+B (2 poin) laporan imunisasi terkirim sebelum pukul 12.00, tetapi warga yang sudah datang ke balai desa pukul 09.00 kehilangan penyuluhan yang diumumkan. Mbak Dewi dapat menggantikan bila diberi bahan, akibatnya penutupan itu sebenarnya dapat dihindari.
+C (1 poin) revisi dikirim sebelum angka dicocokkan dengan berkas di komputer Anda, yang berarti dinas kesehatan menerima laporan yang belum teruji. Penyuluhan terlaksana, tetapi laporan imunisasi tidak dapat dipertanggungjawabkan.
+D (4 poin) kepala puskesmas mengetahui pergantian itu dan Mbak Dewi menerima bahan penyuluhan sebelum pukul 09.00, sehingga warga tetap mendapat penyuluhan. Hasil penyuluhan tidak kembali kepada Anda, akibatnya pertanyaan warga yang belum terjawab belum dapat ditindaklanjuti.
+Cara cepat: Kewajiban mana yang harus Anda pegang sendiri, dan mana yang dapat dijalankan orang lain dengan bekal cukup?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-07-35 · Wil - TKP 1_Done Input.docx, soal 35
+      // tkp-kasus-prof-15 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 38,
         tipe: 'skala',
-        pertanyaan: `Saat serah terima pengaduan keamanan pangan MBG, catatan kasus pengaduan seorang orang tua belum memuat hasil pemeriksaan unit teknis. Petugas pengganti akan bertugas besok dan warga meminta pembaruan. Anda harus memastikan pelayanan berlanjut tanpa mengarang status yang belum diketahui. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda pegawai baru di tim pemeriksa dokumen sebuah dinas. Dalam draf laporan Anda mencatat satu temuan: sebagian berkas hibah tidak memuat tanda tangan penerima, dan berkas pendukungnya lengkap. Ketua tim, Pak Arif, meminta temuan itu tidak dicantumkan pekan ini karena ia akan memperbaikinya bulan depan. Laporan dikirim kepada inspektur pekan ini, dan hanya ketua tim yang dapat mengubah isi laporan akhir. Anda hanya dapat mengusulkan perubahan. Bagaimana sebaiknya Anda menanggapi?`,
         opsi: [
-          { label: 'A', teks: `Menjelaskan status kasus kepada petugas pengganti secara lisan dan memberi warga kontak unit teknis untuk menanyakan perkembangannya.` },
-          { label: 'B', teks: `Melengkapi status kasus yang akurat dan menyerahkannya kepada pengganti disertai tindak lanjut serta rencana informasi bagi warga.` },
-          { label: 'C', teks: `Meminta petugas pengganti mempelajari riwayat aplikasi dan meneruskan kasus berdasarkan catatan yang sudah tersimpan dalam sistem.` },
-          { label: 'D', teks: `Menutup status kasus sebagai selesai di aplikasi karena dokumen sudah diteruskan kepada unit teknis, lalu meminta warga menghubungi kembali.` },
-          { label: 'E', teks: `Menahan berkas sampai jawaban unit teknis tiba sehingga petugas pengganti menerima persoalan yang telah selesai dan mudah ditutup.` },
+          { label: 'A', teks: `Mempertahankan temuan itu pada draf laporan, lalu melaporkan permintaan Pak Arif langsung kepada inspektur.` },
+          { label: 'B', teks: `Menyusun laporan tanpa temuan itu sesuai permintaan Pak Arif, lalu menyimpan berkas pendukungnya untuk bulan depan.` },
+          { label: 'C', teks: `Mengeluarkan temuan itu beserta berkas pendukungnya dari draf, lalu mengirim draf laporan kepada Pak Arif hari ini.` },
+          { label: 'D', teks: `Menegaskan temuan itu didukung berkas, lalu mengusulkan pencantuman bersama rencana perbaikan Pak Arif.` },
+          { label: 'E', teks: `Mendiskusikan dengan Pak Arif alasan permintaannya, lalu meminta keputusan tertulis tentang temuan sebelum laporan dikirim.` },
         ],
-        kunci: 'B',
-        pembahasan: `Konsep yang digunakan: Akuntabilitas serah terima, kesinambungan layanan, dokumentasi status
-Kata kunci: Pengaduan MBG, pergantian petugas, status kasus, kesinambungan layanan.
-Opsi B (5 poin) paling tepat karena pergantian petugas tidak boleh membuat warga mengulang penjelasan atau kehilangan kepastian layanan. Catatan status yang akurat dan serah terima yang jelas memastikan petugas penerima mengetahui tindakan berikutnya serta cara memberi kabar kepada warga.
-
-Pembahasan setiap opsi:
-A (4 poin) karena petugas baru memperoleh penjelasan langsung dan warga mendapat kontak, tetapi sistem belum diperbaiki sehingga riwayat bersama tetap tidak lengkap.
-B (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-C (3 poin) karena riwayat tersedia dan petugas diminta meneruskan layanan, tetapi bagian penting yang diketahui kosong tidak dilengkapi oleh petugas sebelumnya.
-D (1 poin) karena status dibuat selesai meski jawaban teknis belum tersedia, sehingga catatan dan kepastian kepada warga menjadi keliru.
-E (2 poin) karena keinginan menyerahkan kasus lengkap dapat dipahami, namun menahan berkas menghambat kelanjutan pekerjaan ketika pergantian shift sudah tersedia.
-
-Cara cepat: Serah terima tugas harus mencakup status nyata, tindak lanjut dan penanggung jawab yang dapat memberi kepastian kepada warga.`,
-        tingkat: 'sulit',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Integritas dan keberanian menyampaikan temuan di bawah tekanan atasan langsung.
+Kata kunci: temuan berkas hibah, tanda tangan penerima, berkas pendukung lengkap, perbaikan bulan depan, laporan kepada inspektur.
+Opsi D (5 poin) paling tepat karena berkas yang lengkap menjaga temuan tetap tercantum, dan rencana perbaikan Pak Arif memberinya ruang menunjukkan penanganan kepada inspektur. Anda mengusulkan perubahan sesuai peran, bukan mengubah laporan akhir sendiri.
+Pembahasan opsi lain:
+A (3 poin) temuan tetap tercantum dan inspektur berhak mengetahui permintaan itu. Pak Arif belum Anda ajak membahas rencana perbaikannya, sehingga laporan langsung kepada inspektur melompati pembicaraan dengan ketua tim.
+B (2 poin) berkas pendukung temuan tersimpan dan Pak Arif berjanji memperbaikinya, tetapi inspektur menerima laporan pekan ini tanpa temuan yang sudah terbukti. Tanggung jawab Anda sebagai pemeriksa dilepaskan karena ketua tim memintanya.
+C (1 poin) pengeluaran temuan dan berkas pendukungnya menghilangkan bukti yang sudah lengkap, dan laporan yang sampai kepada inspektur tidak menggambarkan keadaan sebenarnya. Pak Arif memang meminta, tetapi Anda ikut melepaskannya.
+E (4 poin) diskusi membuka alasan Pak Arif, dan keputusan tertulis meninggalkan jejak sebelum laporan dikirim kepada inspektur pekan ini. Usul mencantumkan temuan bersama rencana perbaikan belum Anda sampaikan, akibatnya peran Anda sebagai pemeriksa baru terisi separuh.
+Cara cepat: Siapa yang memegang keputusan akhir atas laporan itu, dan sejauh mana peran Anda dalam menyampaikan pendapat?`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],
@@ -3197,201 +3050,179 @@ Cara cepat: Serah terima tugas harus mencakup status nyata, tindak lanjut dan pe
   {
     stimulus: { judul: `Anti Radikalisme` },
     soal: [
-      // tryout-ref-08-40 · Wil - TKP 2_Done Input.docx, soal 40
+      // tkp-kasus-ar-10 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 39,
         tipe: 'skala',
-        pertanyaan: `Dalam rapat anggaran, seorang warga mempertanyakan ketimpangan pembangunan. Egi bertugas sebagai moderator. Seorang rekannya menganggap kritik tersebut sikap anti-pemerintah dan ingin menghentikan sesi tanya jawab, meski peserta tertib. Sebagai moderator, tindakan Egi adalah ...`,
+        pertanyaan: `Anda warga yang menjadi anggota panitia peringatan hari kemerdekaan tingkat RW, di bawah pembinaan ketua RW. Dalam rapat, mayoritas panitia menyetujui iuran dua kali lipat bagi warga pendatang dengan alasan mereka belum lama tinggal di sana. Biaya kegiatan dihitung sama untuk setiap rumah, dan keputusan itu belum diumumkan kepada warga. Anda tidak setuju, tetapi belum bersuara dalam rapat. Ketua panitia masih menerima usulan perbaikan keputusan. Sikap Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menyarankan warga menyampaikan kritik hanya melalui kepala desa karena pernyataan terbuka dapat menimbulkan kesalahpahaman terhadap pemerintah.` },
-          { label: 'B', teks: `Mengajak peserta mendiskusikan kritik dan bukti anggaran secara terbuka tanpa menganggap perbedaan pendapat sebagai sikap anti-pemerintah.` },
-          { label: 'C', teks: `Menyarankan warga menyerahkan kritik tertulis setelah rapat agar tidak terjadi perbedaan pendapat di hadapan peserta lainnya.` },
-          { label: 'D', teks: `Mempersilakan warga berbicara sampai selesai dan menyampaikan bahwa semua pendapat akan dicatat tanpa perlu dibahas dalam rapat yang sama.` },
-          { label: 'E', teks: `Mendukung penutupan sesi agar rapat tetap tertib dan menawarkan penjelasan anggaran kepada warga yang bersangkutan secara terpisah.` },
+          { label: 'A', teks: `Menyampaikan keberatan kepada ketua RW di atas panitia, lalu meminta ketua RW membatalkan keputusan panitia.` },
+          { label: 'B', teks: `Mencatat ketidaksetujuan Anda atas iuran warga pendatang di buku pribadi, lalu mengikuti keputusan panitia.` },
+          { label: 'C', teks: `Menyetujui keputusan itu pada rapat berikutnya, lalu menagih iuran lipat dua kepada warga pendatang.` },
+          { label: 'D', teks: `Mengusulkan iuran yang sama bagi tiap rumah menurut biaya acara, lalu meminta keputusan itu ditinjau sebelum diumumkan.` },
+          { label: 'E', teks: `Menyampaikan usulan iuran yang sama kepada ketua panitia lewat pesan pribadi, lalu meminta ketua membawanya ke rapat.` },
         ],
-        kunci: 'B',
-        pembahasan: `Konsep yang digunakan: Penghormatan hak, kebebasan menyampaikan kritik, dan penolakan diskriminasi.
-Kata kunci: Kritik anggaran, kebebasan berpendapat, rapat damai, moderasi.
-Opsi B (5 poin) paling tepat karena memisahkan kritik terhadap anggaran dari tuduhan ketidakloyalan politik. Meminta bukti dan mengarahkan pembahasan pada substansi memberi kesempatan peserta menilai keberatan warga secara adil sambil tetap menjaga ketertiban forum.
-
-Pembahasan setiap opsi:
-A (2 poin) karena berusaha menjaga komunikasi, tetapi membatasi hak berbicara hanya melalui satu tokoh yang belum tentu mewakili warga.
-B (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-C (3 poin) karena menyediakan saluran formal, tetapi membatasi kontribusi langsung pada rapat tanpa alasan keselamatan atau ketertiban yang cukup.
-D (4 poin) karena memberi kesempatan mengutarakan pandangan, tetapi tidak menghubungkan kritik dengan pembahasan kebijakan yang sedang berlangsung.
-E (1 poin) karena menjaga kelancaran rapat, tetapi menutup kesempatan menyampaikan kritik yang sah sebelum masalah dipahami.
-
-Cara cepat: Pisahkan kritik damai yang sah dari ajakan diskriminatif atau ancaman. Jangan menilai orang hanya dari ketidaksetujuannya.`,
-        tingkat: 'sedang',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Perlindungan hak kelompok kecil dalam keputusan mayoritas dan pengembalian keputusan pada kriteria yang relevan.
+Kata kunci: iuran dua kali lipat, warga pendatang, biaya sama tiap rumah, belum diumumkan, ketua panitia menerima usulan.
+Opsi D (5 poin) paling tepat karena biaya kegiatan dihitung sama untuk setiap rumah, sehingga iuran yang sama menjadi dasar yang adil bagi warga pendatang dan warga lain. Karena keputusan belum diumumkan dan ketua panitia masih menerima usulan, peninjauan dapat dilakukan sebelum merugikan warga.
+Pembahasan opsi lain:
+A (3 poin) ketua RW membina panitia dan dapat menilai keputusan yang membedakan warga pendatang. Namun keberatan langsung kepada ketua RW melompati ketua panitia yang masih menerima usulan perbaikan, sehingga panitia tidak diberi kesempatan memperbaiki keputusannya lebih dahulu.
+B (2 poin) catatan pribadi tidak sampai kepada panitia, sehingga keputusan tentang iuran bagi warga pendatang berjalan tanpa keberatan. Mengikuti keputusan mayoritas yang membedakan warga membuat Anda ikut menjalankannya.
+C (1 poin) menyetujui dan menagih iuran lipat dua menjalankan keputusan yang membedakan warga pendatang padahal biaya kegiatan sama untuk setiap rumah. Anda ikut membuat warga itu menanggung beban lebih berat hanya karena statusnya.
+E (4 poin) usulan iuran yang sama kepada ketua panitia sesuai dengan biaya kegiatan setiap rumah. Namun usulan lewat pesan pribadi bergantung pada ketua untuk membawanya ke rapat, sehingga mayoritas panitia tidak mendengarnya langsung dari Anda.
+Cara cepat: Perhatikan dasar perbedaan perlakuan itu dan apakah masih ada kesempatan untuk memperbaikinya.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-07-39 · Wil - TKP 1_Done Input.docx, soal 39
+      // tkp-kasus-ar-09 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 40,
         tipe: 'skala',
-        pertanyaan: `Dalam rapat penanganan karhutla, ASN mengkritik pembagian fasilitas lapangan. Rekannya menuduh kritik itu ekstrem hanya karena berbeda dari keputusan pimpinan. Sebagai moderator, tindakan Anda adalah ...`,
+        pertanyaan: `Anda anggota tim yang baru ditunjuk memoderasi forum diskusi kebijakan internal kantor. Beberapa diskusi sebelumnya memanas dan pernah muncul komentar yang menyerang pribadi. Anda belum pernah memoderasi forum, dan pedoman forum belum ada. Unit TIK membuka pelatihan moderasi forum pekan ini bagi pegawai yang ditunjuk, sedangkan penetapan pedoman menjadi urusan pimpinan, yang menerima usulan dari moderator. Langkah Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menilai substansi kritik berdasarkan bukti dan mengingatkan tim bahwa perbedaan pendapat bukan ekstremisme.` },
-          { label: 'B', teks: `Meminta perdebatan dihentikan sementara sehingga ketegangan mereda dan seluruh peserta dapat melanjutkan agenda kantor dengan tertib.` },
-          { label: 'C', teks: `Memberi kesempatan pegawai menjelaskan kritik dengan bukti dan merangkum hal-hal yang relevan dengan kebijakan fasilitas.` },
-          { label: 'D', teks: `Melarang pegawai itu hadir dalam diskusi berikutnya sampai ia menyatakan setuju terhadap keputusan pimpinan mengenai ruang kerja.` },
-          { label: 'E', teks: `Mencatat kritik sebagai potensi masalah kedisiplinan karena penyampaian yang keras dinilai dapat mengganggu keharmonisan unit.` },
+          { label: 'A', teks: `Membaca panduan moderasi forum dari situs lain, lalu menerapkannya pada diskusi pertama yang Anda pimpin.` },
+          { label: 'B', teks: `Mengikuti pelatihan moderasi dari unit TIK, lalu mengajukan pedoman forum kepada pimpinan.` },
+          { label: 'C', teks: `Mempelajari materi pelatihan unit TIK, lalu memoderasi forum berdasarkan materi itu dan pertimbangan sendiri.` },
+          { label: 'D', teks: `Menempelkan imbauan menjaga bahasa di halaman forum, lalu membuka diskusi kebijakan seperti biasa.` },
+          { label: 'E', teks: `Menutup kolom komentar forum diskusi itu, lalu melarang peserta membahas kebijakan yang memicu perdebatan.` },
         ],
-        kunci: 'A',
-        pembahasan: `Konsep yang digunakan: Pembedaan kritik sah dan ekstremisme, kebebasan berpendapat bertanggung jawab
-Kata kunci: Kritik karhutla, kebebasan berpendapat, tuduhan ekstrem, pemeriksaan fakta.
-Opsi A (5 poin) paling tepat karena kritik terhadap keputusan organisasi merupakan bagian dari diskusi yang sehat selama tidak mengarah pada intimidasi atau diskriminasi. Penilaian perlu didasarkan pada isi dan perilaku nyata, bukan sekadar ketidaksetujuan dengan pimpinan. Diskusi tetap dapat diarahkan pada fakta.
-
-Pembahasan setiap opsi:
-A (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-B (3 poin) karena ketegangan dapat turun, namun masalah kesalahpahaman terhadap kritik dan stigma pada pegawai belum diselesaikan.
-C (4 poin) karena penjelasan kritik diberi ruang dan diskusi kembali pada isi kebijakan, tetapi tuduhan ekstremisme yang tidak berdasar belum dikoreksi.
-D (1 poin) karena kebebasan berbeda pendapat ditiadakan melalui syarat menyetujui pimpinan sehingga praktik kerja menjadi diskriminatif.
-E (2 poin) karena ketertiban dikedepankan, tetapi kritik yang sah diperlakukan sebagai indikasi pelanggaran tanpa bukti perilaku merugikan.
-
-Cara cepat: Nilai isi dan tindakan berdasarkan bukti. Kritik tajam tidak identik dengan radikalisme.`,
-        tingkat: 'sedang',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Pengembangan kemampuan moderasi untuk membedakan kritik kebijakan dari serangan pribadi.
+Kata kunci: baru ditunjuk, diskusi memanas, komentar menyerang pribadi, pedoman belum ada, pelatihan moderasi unit TIK, usulan dari moderator.
+Opsi B (5 poin) paling tepat karena pelatihan moderasi dari unit TIK yang dibuka pekan ini menjawab ketidakmampuan Anda memoderasi forum yang sering memanas. Karena pimpinan menerima usulan pedoman dari moderator, materi pelatihan dapat dipakai menyusun pedoman yang membedakan kritik kebijakan dari serangan pribadi.
+Pembahasan opsi lain:
+A (3 poin) panduan dari situs lain memberi gambaran umum tentang moderasi forum. Namun materi itu tidak disesuaikan dengan pedoman dan kebiasaan kantor, dan pelatihan moderasi dari unit TIK pekan ini belum dimanfaatkan.
+C (4 poin) mempelajari materi pelatihan membekali Anda menghadapi diskusi yang memanas. Namun pedoman forum belum ada dan Anda tidak mengikuti pelatihannya, sehingga penilaian komentar bergantung pada pertimbangan sendiri dan dapat berbeda dari diskusi ke diskusi.
+D (2 poin) imbauan menjaga bahasa di halaman forum tidak mengubah cara forum dimoderasi. Komentar yang menyerang pribadi tetap dapat muncul karena pedoman belum ada dan Anda belum mengikuti pelatihan moderasi.
+E (1 poin) menutup kolom komentar dan melarang pembahasan kebijakan yang memicu perdebatan membungkam kritik yang sah di forum diskusi kebijakan. Pimpinan belum menerima usulan pedoman, sehingga larangan itu hanya keputusan moderator.
+Cara cepat: Perhatikan bekal apa yang sudah tersedia dan siapa yang dapat menetapkan aturan main diskusi itu.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-08-42 · Wil - TKP 2_Done Input.docx, soal 42
+      // tkp-kasus-ar-05 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 41,
         tipe: 'skala',
-        pertanyaan: `Unggahan berulang di grup masyarakat mengajak mengucilkan kelompok tertentu. Sejumlah warga mulai terintimidasi, tetapi identitas pengunggah belum pasti dan belum ada bukti ancaman fisik. Tim ingin menghapus konten tanpa catatan atau mengumumkan identitas akun. Anda harus melindungi warga, mencegah penyebaran, dan memeriksa fakta sebelum mengambil tindakan lanjutan. Tindakan Anda adalah ...`,
+        pertanyaan: `Anda petugas loket pengurusan izin usaha. Seorang pemohon yang sudah mengambil nomor antrean melihat nama dan mendengar logat Anda, lalu meminta dilayani petugas lain karena menurutnya orang dari daerah Anda tidak dapat dipercaya. Berkasnya lengkap, loket sebelah melayani izin yang sama dengan standar yang sama, dan permohonannya dapat Anda selesaikan di loket ini. Antrean di belakangnya mulai panjang. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menyerahkan seluruh tangkapan layar kepada banyak anggota tim sehingga mereka dapat menilai sendiri apakah akun tersebut perlu ditindaklanjuti.` },
-          { label: 'B', teks: `Menyampaikan imbauan umum agar saling menghormati sambil meminta anggota menunda perdebatan sampai informasi diperiksa secara terbatas.` },
-          { label: 'C', teks: `Membatasi penayangan unggahan dan meminta klarifikasi terbatas kepada pengelola akun, tetapi belum menilai dampak yang dirasakan warga.` },
-          { label: 'D', teks: `Membatasi penyebaran unggahan dan menjaga bukti seperlunya, lalu menilai pola serta dampaknya dengan pengelola kanal untuk melindungi warga.` },
-          { label: 'E', teks: `Menetapkan akun sebagai kelompok berbahaya berdasarkan laporan awal dan meminta semua pegawai menjauhi orang yang pernah terhubung dengan akun itu.` },
+          { label: 'A', teks: `Memanggil kepala seksi ke loket untuk menangani pemohon itu, lalu menyampaikan kepada pemohon bahwa keputusan ada pada kepala seksi.` },
+          { label: 'B', teks: `Menyuruh pemohon itu mengambil nomor antrean baru di loket sebelah, lalu melayani pemohon berikutnya di loket ini.` },
+          { label: 'C', teks: `Menolak melayani pemohon itu karena ucapannya, lalu mencatat berkasnya sebagai permohonan yang telah ditolak.` },
+          { label: 'D', teks: `Menyampaikan bahwa setiap pemohon dilayani petugas sesuai nomor antreannya, lalu memproses izinnya dengan standar yang sama.` },
+          { label: 'E', teks: `Memproses berkas pemohon itu sesuai urutan antrean, lalu mencatat ucapannya pada lembar keluhan di loket.` },
         ],
         kunci: 'D',
-        pembahasan: `Konsep yang digunakan: Identifikasi propaganda diskriminatif berdasarkan isi, konteks, dan pola bukti.
-Kata kunci: Pola unggahan berulang, ajakan pengucilan, ajakan diskriminatif, bukti, risiko.
-Opsi D (5 poin) paling tepat karena penghentian penyebaran mengurangi paparan konten diskriminatif yang sedang berlangsung. Bukti dijaga seperlunya untuk pemeriksaan pola dan konteks tanpa menyebarkan identitas akun yang belum terverifikasi. Koordinasi dengan pengelola kanal membantu melindungi warga terdampak secara proporsional.
-
-Pembahasan setiap opsi:
-A (2 poin) karena mendorong penilaian rekan, tetapi menyebarkan konten dan identitas secara luas tanpa kebutuhan memperbesar risiko.
-B (3 poin) karena mengedepankan ketenangan dan penghormatan, tetapi imbauan umum tidak menghentikan unggahan bermasalah atau menjawab kondisi warga yang telah merasa terintimidasi.
-C (4 poin) karena mengurangi paparan unggahan dan melakukan klarifikasi, tetapi belum menilai pola berulang maupun dampaknya terhadap warga yang menjadi sasaran.
-D (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-E (1 poin) karena bermaksud mencegah paparan, tetapi memberi label kolektif tanpa penilaian yang memadai dan merugikan orang berdasarkan hubungan sosial.
-
-Cara cepat: Hentikan paparan diskriminatif dan periksa bukti secara proporsional tanpa menuduh identitas yang belum terbukti.`,
-        tingkat: 'sulit',
+        pembahasan: `Konsep yang digunakan: Pelayanan tanpa diskriminasi ketika pengguna menolak petugas karena identitas.
+Kata kunci: nomor antrean, nama dan logat, tidak dapat dipercaya, berkas lengkap, standar yang sama.
+Opsi D (5 poin) paling tepat karena pelayanan menurut nomor antrean berlaku sama bagi setiap pemohon, dan asal daerah petugas bukan alasan untuk memindahkan berkas. Karena loket sebelah menerapkan standar yang sama dan permohonannya dapat Anda selesaikan, berkas diproses tanpa mengorbankan antrean lain.
+Pembahasan opsi lain:
+A (3 poin) memanggil kepala seksi membawa permintaan pemohon itu ke tingkat lebih tinggi sebelum Anda menjelaskan standar layanan yang sama. Pemohon diberi tahu bahwa keputusan ada pada kepala seksi, padahal permohonannya dapat Anda selesaikan di loket ini.
+B (2 poin) menyuruh pemohon mengambil nomor baru memindahkan permintaan karena asal daerah kepada petugas lain dan membuatnya kembali ke belakang antrean. Loket sebelah memang melayani izin yang sama, tetapi permohonannya tetap dapat Anda selesaikan.
+C (1 poin) menolak melayani pemohon karena ucapannya menutup haknya atas layanan, padahal berkasnya lengkap dan dapat Anda selesaikan di loket ini. Penolakan itu membalas ucapan dengan cara yang merugikan pemohon.
+E (4 poin) berkas pemohon diproses sesuai urutan antrean sehingga haknya terlayani. Namun ucapan tentang asal daerah Anda hanya dicatat pada lembar keluhan, dan pemohon tidak mendengar bahwa permintaannya tidak dapat dituruti.
+Cara cepat: Perhatikan apa yang menjadi hak pengguna dan apa yang hanya menjadi alasan pribadinya.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-07-45 · Wil - TKP 1_Done Input.docx, soal 45
+      // tkp-kasus-ar-04 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 42,
         tipe: 'skala',
-        pertanyaan: `Pada forum pemuda tentang tanggapan masyarakat terhadap kekeringan, salah satu kelompok mengusulkan semua pembicara menandatangani larangan mengkritik kebijakan pemerintah daerah. Mereka menganggap cara itu menjaga persatuan dan mencegah provokasi, tetapi forum sedianya membuka dialog kebijakan yang konstruktif. Sebagai pendamping dinas, tindakan Anda adalah ...`,
+        pertanyaan: `Anda warga yang menerima pesan berantai di grup percakapan lingkungan. Pesan itu menyebut alamat sebuah rumah kontrakan warga pendatang dan mengajak warga berkumpul di sana malam ini untuk mengusir penghuninya secara paksa. Belum ada yang menanggapi, padahal waktu berkumpul tinggal tiga jam lagi dan belasan anggota grup sudah membacanya. Anda tidak mengenal pengirimnya, dan ketua RT dapat dihubungi lewat telepon. Apa yang sebaiknya Anda lakukan?`,
         opsi: [
-          { label: 'A', teks: `Melarang ancaman serta diskriminasi di forum, sekaligus tetap melindungi kritik gagasan secara bertanggung jawab.` },
-          { label: 'B', teks: `Melarang kehadiran kelompok yang paling sering mengkritik demi menjamin peserta lain merasa nyaman mengikuti seluruh acara diskusi.` },
-          { label: 'C', teks: `Meminta semua pembicara menyepakati larangan kritik selama kegiatan, lalu menawarkan pembahasan perbedaan pandangan pada forum terpisah.` },
-          { label: 'D', teks: `Membatasi topik pembicaraan pada kegiatan sosial yang tidak menyinggung pandangan komunitas agar forum berjalan tanpa perdebatan sensitif.` },
-          { label: 'E', teks: `Mewajibkan pembicara menyertakan bukti saat mengkritik dan meminta moderator menegur serangan pribadi tanpa menghapus hak berbeda pendapat.` },
+          { label: 'A', teks: `Meneruskan pesan itu kepada beberapa tetangga dekat, lalu meminta mereka berhati-hati terhadap pengirimnya.` },
+          { label: 'B', teks: `Melaporkan pesan itu ke kepolisian beserta tangkapan layarnya, lalu menghubungi ketua RT.` },
+          { label: 'C', teks: `Meminta tetangga yang bekerja di kelurahan melaporkan pesan itu, lalu menyimpan tangkapan layarnya sebagai bukti.` },
+          { label: 'D', teks: `Datang ke alamat itu malam ini bersama beberapa warga untuk menghadang kerumunan, lalu menyuruh mereka bubar.` },
+          { label: 'E', teks: `Datang ke kepolisian setempat membawa tangkapan layar pesan itu, lalu menyimpan salinannya di tempat aman.` },
         ],
-        kunci: 'A',
-        pembahasan: `Konsep yang digunakan: Moderasi proporsional, toleransi perbedaan, pencegahan intimidasi
-Kata kunci: Forum pemuda, kritik gagasan, larangan diskriminasi, moderator
-Opsi A (5 poin) paling tepat karena aturan forum harus melindungi orang dari ancaman dan perlakuan diskriminatif tanpa menutup diskusi atas ide. Batas berbasis perilaku dapat diterapkan konsisten kepada semua peserta, sehingga pengelola tidak menyamakan kritik dengan intoleransi atau memberi hak veto pada suatu kelompok.
-
-Pembahasan setiap opsi:
-A (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-B (1 poin) karena kenyamanan sebagian peserta dijaga dengan pengecualian kelompok yang kritis tanpa bukti perilaku yang melanggar.
-C (2 poin) karena forum tampak tertib karena kritik dilarang, tetapi kebebasan menilai gagasan dibatasi secara berlebihan.
-D (3 poin) karena ketegangan mungkin berkurang, namun penghindaran topik menghilangkan fungsi forum sebagai tempat dialog atas perbedaan pandangan.
-E (4 poin) karena kualitas kritik didorong dan serangan pribadi ditangani, tetapi aturan belum secara eksplisit mencakup diskriminasi atau ancaman yang mungkin tidak berupa serangan personal.
-
-Cara cepat: Tetapkan batas pada ancaman dan diskriminasi, bukan pada keberadaan kritik atau pandangan berbeda.`,
-        tingkat: 'sulit',
+        kunci: 'B',
+        pembahasan: `Konsep yang digunakan: Respons warga terhadap ajakan kekerasan yang menyebut sasaran, tempat, dan waktu, yaitu melapor kepada pihak berwenang dan tidak menghadapinya sendiri.
+Kata kunci: pesan berantai, alamat rumah kontrakan, warga pendatang, mengusir secara paksa, tiga jam lagi, ketua RT.
+Opsi B (5 poin) paling tepat karena pesan itu menyebut alamat dan waktu berkumpul malam ini untuk mengusir penghuninya, sehingga ancaman terhadap warga pendatang bersifat spesifik dan dekat. Laporan kepada kepolisian beserta tangkapan layar membuka penanganan resmi, sedangkan ketua RT yang dihubungi lewat telepon dapat memberi tahu warga dan penghuni rumah.
+Pembahasan opsi lain:
+A (2 poin) meneruskan pesan yang menyebut alamat rumah warga pendatang menambah jumlah orang yang membaca ajakan berkumpul dan mengusir penghuninya. Peringatan terhadap pengirim tidak melindungi penghuni rumah dan tidak melibatkan pihak yang dapat bertindak malam ini.
+C (3 poin) tetangga yang bekerja di kelurahan dapat meneruskan laporan, dan tangkapan layar tetap tersimpan. Namun penghuni rumah kontrakan warga pendatang bergantung pada orang lain yang belum tentu bertindak sebelum warga berkumpul malam ini, padahal Anda dapat melapor sendiri.
+D (1 poin) datang bersama warga lain ke alamat itu untuk menghadang kerumunan menempatkan Anda berhadapan dengan orang yang berniat mengusir penghuninya. Perintah bubar tanpa petugas dapat memicu kekerasan malam ini.
+E (4 poin) datang ke kepolisian membawa tangkapan layar membuka penanganan resmi atas ajakan mengusir penghuni rumah. Namun ketua RT yang dapat dihubungi lewat telepon tidak diberi tahu, sehingga warga dan penghuni rumah belum mendapat peringatan dari lingkungan.
+Cara cepat: Perhatikan seberapa dekat waktu kejadian dan siapa yang dapat bertindak paling cepat dari tempat Anda.`,
+        tingkat: 'mudah',
         status: 'draft',
       },
-      // tryout-ref-08-41 · Wil - TKP 2_Done Input.docx, soal 41
+      // tkp-kasus-ar-18 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 43,
         tipe: 'skala',
-        pertanyaan: `Hilda memimpin diskusi publik layanan inklusif. Narasumber berencana mengajak peserta menjauhi warga yang tidak sepaham, meskipun materi belum disampaikan. Nama narasumber sudah tercantum dan acara besok. Panitia terbelah: sebagian ingin membiarkan demi kebebasan berpendapat, sebagian meminta pembatalan tanpa klarifikasi. Hilda harus menjaga dialog sekaligus mencegah ajakan diskriminatif. Keputusannya adalah ...`,
+        pertanyaan: `Anda penghubung kelurahan dengan paguyuban warga untuk rencana pembangunan pos layanan. Paguyuban mengirim surat keberatan yang memuat alasan sah, yaitu pos akan mengurangi lahan parkir warga. Namun satu kalimat di surat itu menyatakan warga akan menutup paksa lokasi dengan massa pada Senin pagi bila rencana tidak dibatalkan. Pengamanan lokasi diatur bersama aparat keamanan setempat. Keputusan rencana ada di tangan lurah, dan Anda hanya dapat memberi usulan. Tindakan Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Mengirim panduan sikap saling menghormati kepada seluruh narasumber dan mengarahkan moderator menanggapi pernyataan yang melanggar saat diskusi berlangsung.` },
-          { label: 'B', teks: `Membiarkan narasumber menyampaikan seluruh materinya agar peserta dapat menilai sendiri, lalu menyediakan sesi tanya jawab untuk mengoreksi pandangan yang muncul.` },
-          { label: 'C', teks: `Membatalkan seluruh diskusi dan menjadwalkannya ulang tanpa berkomunikasi dengan narasumber karena satu materi berisiko menimbulkan penolakan.` },
-          { label: 'D', teks: `Memindahkan narasumber tersebut ke sesi tertutup bersama peserta yang sepakat dengannya agar acara utama tetap berlangsung tanpa polemik.` },
-          { label: 'E', teks: `Mengklarifikasi materi dengan narasumber sebelum forum dan menetapkan batas diskusi nondiskriminatif, serta menyiapkan pengganti jika ajakan pengucilan bertahan.` },
+          { label: 'A', teks: `Menyampaikan alasan keberatan dan kalimat ancaman itu kepada lurah, lalu mengusulkan peninjauan ulang lokasi pos.` },
+          { label: 'B', teks: `Memberi tahu pengurus paguyuban bahwa rencana akan dibatalkan, lalu meminta mereka tidak menutup lokasi.` },
+          { label: 'C', teks: `Menyebut paguyuban warga itu kelompok pengacau dalam laporan kepada lurah, lalu mengusulkan suratnya diabaikan.` },
+          { label: 'D', teks: `Mengundang pengurus paguyuban warga bertemu di kelurahan membahas keberatan, lalu melaporkan kalimat ancaman itu kepada lurah.` },
+          { label: 'E', teks: `Melaporkan ancaman itu kepada aparat keamanan, lalu menyampaikan keberatan sah warga dan usul peninjauan ulang kepada lurah.` },
         ],
         kunci: 'E',
-        pembahasan: `Konsep yang digunakan: Pencegahan intoleransi, klarifikasi, penolakan diskriminasi, dan dialog proporsional.
-Kata kunci: Narasumber, ajakan pengucilan, acara besok, batas diskusi, klarifikasi.
-Opsi E (5 poin) paling tepat karena mencegah potensi diskriminasi sebelum acara sambil menjaga ruang diskusi yang sehat. Klarifikasi materi membedakan kritik yang boleh diperdebatkan dari ajakan mengucilkan orang. Batas yang dinyatakan jelas serta rencana penggantian proporsional jika materi bermasalah dipertahankan.
-
-Pembahasan setiap opsi:
-A (4 poin) karena menetapkan pedoman dan kesiapan moderator, tetapi membiarkan risiko materi baru ditangani ketika sudah disampaikan kepada publik.
-B (3 poin) karena menjaga kesempatan berdiskusi, tetapi menempatkan koreksi setelah ajakan pengucilan terlanjur didengar peserta.
-C (2 poin) karena memprioritaskan pencegahan, tetapi pembatalan seluruh kegiatan tanpa klarifikasi atau alternatif tidak proporsional.
-D (1 poin) karena mencegah polemik di acara utama, tetapi menyediakan ruang bagi ajakan pengucilan tanpa koreksi substansi.
-E (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-
-Cara cepat: Batas diskusi harus jelas sebelum acara, dengan klarifikasi dan langkah pengganti jika materi tetap diskriminatif.`,
-        tingkat: 'sulit',
+        pembahasan: `Konsep yang digunakan: Membedakan keberatan warga yang sah dari ancaman pemaksaan dalam satu surat, dan menangani keduanya menurut risiko dan wewenang.
+Kata kunci: surat keberatan, lahan parkir warga, alasan sah, menutup paksa dengan massa, Senin pagi, aparat keamanan.
+Opsi E (5 poin) paling tepat karena kalimat ancaman menutup paksa lokasi dengan massa pada Senin pagi memuat pemaksaan, sehingga dilaporkan langsung kepada aparat keamanan yang mengatur pengamanan lokasi. Karena Anda hanya dapat memberi usulan, alasan lahan parkir yang sah dan usul peninjauan ulang disampaikan kepada lurah yang memutuskan, sehingga keberatan warga tidak hilang di balik ancaman itu.
+Pembahasan opsi lain:
+A (4 poin) alasan lahan parkir yang sah dan kalimat ancaman menutup paksa lokasi dengan massa pada Senin pagi sampai kepada lurah, dan peninjauan lokasi dapat meredakan keberatan. Namun aparat keamanan yang mengatur pengamanan lokasi tidak diberi tahu, sehingga perlindungan lokasi bergantung pada lurah.
+B (2 poin) keputusan rencana ada di tangan lurah, sehingga memberi tahu paguyuban bahwa rencana akan dibatalkan adalah janji yang tidak dapat Anda penuhi. Kalimat ancaman menutup lokasi dengan massa juga tidak dilaporkan.
+C (1 poin) menyebut paguyuban kelompok pengacau dari satu kalimat ancaman mengabaikan alasan lahan parkir yang sah. Mengusulkan surat diabaikan menutup jalan dialog dan membuat keberatan warga tidak pernah ditinjau.
+D (3 poin) mengundang pengurus paguyuban membahas keberatan membuka dialog tentang lahan parkir. Namun kalimat ancaman menutup lokasi dengan massa pada Senin pagi baru dilaporkan kepada lurah setelah pertemuan, sehingga pelaporan ancaman tertunda dan aparat keamanan belum diberi tahu.
+Cara cepat: Perhatikan bagian surat yang berupa pendapat dan bagian yang berupa pemaksaan, lalu waktu yang tersisa.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-06-43 · Nynda - TKP 1_Done Input.docx, soal 43
+      // tkp-kasus-ar-21 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 44,
         tipe: 'skala',
-        pertanyaan: `Di lingkungan tempat tinggal, sebuah kelompok mengadakan pertemuan tertutup. Seorang tetangga yang pernah hadir mengatakan materi pertemuan menolak simbol negara dan mendorong permusuhan terhadap kelompok lain. Anda tidak pernah mengikuti pertemuan dan belum memiliki bukti selain cerita tersebut. Sikap Anda adalah ...`,
+        pertanyaan: `Anda pimpinan unit yang memimpin rapat penyusunan tim proyek tahunan. Rapat itu dihadiri dua belas anggota tim. Mayoritas anggota mengusulkan seorang rekan tidak diikutkan karena ia aktif di sebuah komunitas yang dianggap kurang cocok dengan budaya kerja tim. Penilaian kinerja rekan itu tercatat baik, dan tidak ada laporan pelanggaran tentangnya. Anda berwenang menetapkan susunan tim. Beberapa anggota mendukung usulan itu karena merasa lebih nyaman bekerja bersama. Keputusan Anda yang paling tepat adalah ...`,
         opsi: [
-          { label: 'A', teks: `Menyampaikan peringatan di grup lingkungan agar warga menghindari kelompok tersebut sampai aparat melakukan pemeriksaan.` },
-          { label: 'B', teks: `Memeriksa informasi awal melalui sumber yang wajar sebelum berkonsultasi secara rahasia dengan pihak berwenang setempat.` },
-          { label: 'C', teks: `Mendatangi pertemuan dengan alasan ingin bergabung agar dapat merekam materi dan memperoleh bukti yang lebih kuat.` },
-          { label: 'D', teks: `Mengajak pengurus lingkungan berdialog terbuka dengan pimpinan kelompok untuk menanyakan tujuan kegiatan mereka.` },
-          { label: 'E', teks: `Mengabaikan cerita sampai ada tindakan nyata karena pertemuan tertutup dan pandangan berbeda belum membuktikan pelanggaran.` },
+          { label: 'A', teks: `Menetapkan susunan tim berdasarkan kinerja, lalu menegaskan bahwa keanggotaan komunitas bukan kriteria.` },
+          { label: 'B', teks: `Memasukkan rekan itu ke tim berdasarkan kinerjanya, lalu membahas keberatan anggota secara pribadi satu per satu.` },
+          { label: 'C', teks: `Meminta pimpinan di atas Anda memutuskan susunan tim, lalu menjalankan keputusan tersebut.` },
+          { label: 'D', teks: `Menyerahkan susunan tim kepada hasil pemungutan suara anggota, lalu mencatat hasilnya sebagai keputusan rapat.` },
+          { label: 'E', teks: `Menyetujui usulan mayoritas anggota itu, lalu meminta rekan tersebut mengundurkan diri dari proyek tahunan.` },
         ],
-        kunci: 'B',
-        pembahasan: `Konsep yang digunakan: Deteksi dini yang aman melalui verifikasi terbatas dan konsultasi rahasia tanpa penyusupan atau tuduhan publik
-Kata kunci: pertemuan tertutup, informasi awal, verifikasi wajar, konsultasi rahasia, pihak berwenang
-Opsi B (5 Poin) paling tepat karena informasi awal tidak langsung dianggap sebagai fakta, tetapi juga tidak diabaikan. Verifikasi dilakukan sebatas sumber yang wajar dan konsultasi diserahkan kepada pihak yang memiliki kewenangan menilai risiko.
-Peserta menghindari penyusupan, penyebaran tuduhan, dan tindakan yang dapat membahayakan diri atau warga lain.
-
-Pembahasan setiap opsi:
-A (2 poin): Peringatan bermaksud melindungi lingkungan, tetapi tuduhan publik berdasarkan satu cerita dapat memicu stigma dan konflik.
-B (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-C (1 poin): Rekaman dapat menjadi bukti, tetapi penyusupan berisiko bagi keselamatan dan melampaui peran warga biasa.
-D (4 poin): Dialog terbuka dapat memberi klarifikasi dan cukup konstruktif, tetapi berisiko bila dugaan permusuhan benar serta belum melibatkan penilaian pihak berwenang.
-E (3 poin): Kehati-hatian terhadap kabar belum terverifikasi itu penting, tetapi pola yang dilaporkan cukup serius untuk dikonsultasikan secara aman.
-
-Cara cepat: Pada indikasi awal, verifikasi secara terbatas dan konsultasikan secara rahasia tanpa menyusup atau menuduh di ruang publik.`,
-        tingkat: 'sulit',
+        kunci: 'A',
+        pembahasan: `Konsep yang digunakan: Perlindungan hak seorang anggota dalam keputusan mayoritas yang berbasis identitas komunitas, dan pengembalian keputusan pada kriteria pekerjaan.
+Kata kunci: usulan mayoritas, aktif di komunitas, budaya kerja tim, kinerja tercatat baik, tanpa laporan pelanggaran, susunan tim.
+Opsi A (5 poin) paling tepat karena kinerja rekan itu tercatat baik dan tidak ada laporan pelanggaran, sehingga keanggotaan di komunitas bukan dasar yang relevan menyusun tim. Anda berwenang menetapkan susunan tim, dan penegasan di depan dua belas anggota mengembalikan keputusan pada kriteria kinerja.
+Pembahasan opsi lain:
+B (4 poin) memasukkan rekan itu berdasarkan kinerja menjaga haknya, dan pembicaraan pribadi dapat meredakan keberatan anggota. Namun kriteria penyusunan tim tidak dinyatakan kepada rapat yang dihadiri dua belas anggota, sehingga usulan serupa dapat muncul kembali terhadap anggota lain.
+C (3 poin) pimpinan di atas Anda dapat memutuskan berdasarkan kinerja rekan itu yang tercatat baik. Namun Anda berwenang menetapkan susunan tim, dan penyerahan itu membiarkan usulan mayoritas karena komunitas belum dijawab di rapat.
+D (2 poin) menyerahkan susunan tim kepada pemungutan suara melepaskan wewenang Anda menetapkan susunan tim. Mayoritas anggota yang sudah mengusulkan menyingkirkan rekan itu menentukan nasibnya, padahal kinerjanya tercatat baik.
+E (1 poin) menyetujui usulan mayoritas dan meminta rekan itu mengundurkan diri menyingkirkannya dari proyek karena komunitasnya, padahal kinerjanya tercatat baik dan tidak ada laporan pelanggaran. Hak rekan itu atas kesempatan berkontribusi tertutup.
+Cara cepat: Perhatikan hal apa yang berkaitan dengan pekerjaan dan hal apa yang hanya soal kenyamanan sebagian orang.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
-      // tryout-ref-07-43 · Wil - TKP 1_Done Input.docx, soal 43
+      // tkp-kasus-ar-20 · kasus orisinal data/tkp-kasus (bank TKP generator)
       {
         nomor: 45,
         tipe: 'skala',
-        pertanyaan: `Panitia literasi digital pemerintah menerima proposal pelatihan pemuda dari kelompok yang memakai logo dan nama mirip lembaga resmi. Mereka menawarkan pembinaan gratis untuk menangkal hoaks, tetapi situs rujukannya tidak terverifikasi dan meminta data calon peserta. Sebelum bekerja sama, tindakan Anda adalah ...`,
+        pertanyaan: `Anda penghubung dinas sosial dengan relawan di posko bantuan banjir. Pembagian paket dilakukan menurut daftar dinas yang disusun dari tingkat kerusakan rumah. Sekelompok warga setempat tiba-tiba menghadang penerima dari kampung lain dan menuntut paket diberikan lebih dahulu kepada warga sekampung. Antrean berhenti hampir setengah jam dan suasana mulai tegang. Anda hanya dapat mengusulkan cara pembagian, sedangkan komandan posko berada di tenda dan memutuskan setelah mendengar usulan. Apa langkah Anda yang paling tepat?`,
         opsi: [
-          { label: 'A', teks: `Menolak dan melabeli penyelenggara sebagai kelompok radikal berdasarkan kemiripan logo dan penggunaan kanal pribadi tanpa bukti tambahan.` },
-          { label: 'B', teks: `Menerima pembinaan awal sebagai uji coba terbatas karena belum ada konten yang terbukti melanggar ketentuan pelatihan.` },
-          { label: 'C', teks: `Memeriksa legalitas serta identitas penyelenggara melalui sumber independen dan menahan undangan peserta sampai hasil verifikasi jelas.` },
-          { label: 'D', teks: `Menghubungi kontak proposal dan meminta identitas penyelenggara serta contoh materi sebelum memutuskan apakah kerja sama akan diteruskan.` },
-          { label: 'E', teks: `Menunda publikasi poster kerja sama sambil meminta panitia lain membaca proposal untuk menilai apakah bahasanya terdengar meyakinkan.` },
+          { label: 'A', teks: `Menyarankan agar pembagian dilanjutkan dengan pengawalan petugas, lalu mencatat penghadangan itu sebagai laporan.` },
+          { label: 'B', teks: `Meminta komandan posko menghubungi dinas untuk memutuskan, lalu menyarankan pembagian dilanjutkan sesuai jawaban dinas.` },
+          { label: 'C', teks: `Mengusulkan agar pembagian paket dihentikan hari ini, lalu meminta penerima dari kampung lain kembali besok pagi.` },
+          { label: 'D', teks: `Mengusulkan komandan posko menjelaskan dasar daftar kepada perwakilan mereka, lalu mengusulkan pembagian dilanjutkan dengan pengawalan.` },
+          { label: 'E', teks: `Memberikan paket bantuan kepada warga sekampung lebih dahulu, lalu menyusun ulang daftar penerima di tempat.` },
         ],
-        kunci: 'C',
-        pembahasan: `Konsep yang digunakan: Kewaspadaan informasi, verifikasi identitas mitra, respons berbasis bukti
-Kata kunci: Logo mirip, pengurus tidak jelas, undangan, verifikasi independen
-Opsi C (5 poin) paling tepat karena situasi memuat tanda yang memerlukan pemeriksaan, tetapi belum membuktikan suatu paham atau pelanggaran. Identitas dan kewenangan mitra harus diverifikasi lewat jalur independen sebelum peserta diarahkan masuk ke kanal tertutup. Dengan demikian, panitia melindungi peserta tanpa membuat tuduhan yang tidak didukung bukti.
-
-Pembahasan setiap opsi:
-A (1 poin) karena pencegahan dilakukan melalui penolakan, namun label radikal disematkan tanpa bukti perilaku atau isi ajakan yang relevan.
-B (2 poin) karena uji coba dianggap cara memperoleh bukti, tetapi peserta sudah diundang sebelum kredibilitas mitra ditetapkan.
-C (5 poin): Paling tepat; alasannya ada pada penjelasan di atas.
-D (4 poin) karena penyelenggara dimintai keterangan dan materi, tetapi verifikasi masih bergantung pada pernyataan sumber yang sedang diperiksa.
-E (3 poin) karena publikasi ditahan sehingga risiko undangan berkurang, namun evaluasi bahasa secara subjektif tidak menggantikan pemeriksaan identitas dan legalitas.
-
-Cara cepat: Indikasi mencurigakan adalah alasan memverifikasi, bukan alasan langsung memberi cap radikal.`,
-        tingkat: 'sulit',
+        kunci: 'D',
+        pembahasan: `Konsep yang digunakan: Memulihkan layanan bantuan yang terhenti oleh penolakan berbasis asal kampung, dengan tetap memakai dasar yang adil dan menghormati batas peran penghubung.
+Kata kunci: posko bantuan banjir, daftar dinas, tingkat kerusakan rumah, menghadang penerima, antrean berhenti setengah jam, komandan posko.
+Opsi D (5 poin) paling tepat karena daftar dinas disusun menurut kerusakan rumah, sehingga penjelasan dasarnya kepada perwakilan warga menjawab tuntutan tanpa mengubah daftar. Karena Anda hanya mengusulkan dan komandan posko yang memutuskan, usulan melanjutkan pembagian dengan pengawalan memulihkan antrean yang berhenti hampir setengah jam.
+Pembahasan opsi lain:
+A (4 poin) saran melanjutkan pembagian dengan pengawalan petugas memulihkan layanan bagi penerima dari kampung lain, dan penghadangan tercatat. Namun warga setempat yang menghadang tidak mendengar dasar daftar menurut kerusakan rumah, sehingga penghadangan dapat terulang.
+B (3 poin) menghubungi dinas dapat menguatkan dasar daftar. Namun antrean yang sudah berhenti hampir setengah jam tertahan lebih lama, padahal komandan posko dapat memutuskan cara pembagian setelah mendengar usulan sekarang.
+C (2 poin) menghentikan pembagian hari ini membuat penerima dari kampung lain kembali besok dengan kebutuhan yang belum terpenuhi. Kerugian itu masih dapat dipulihkan, tetapi dasar daftar menurut kerusakan rumah tidak dijelaskan kepada warga setempat.
+E (1 poin) memberikan paket kepada warga sekampung lebih dahulu menyimpang dari daftar dinas dan merugikan penerima yang kerusakannya lebih parah. Menyusun ulang daftar di tempat tidak dapat dipertanggungjawabkan oleh Anda yang hanya mengusulkan.
+Cara cepat: Perhatikan siapa yang memegang keputusan di lokasi dan apa yang membuat tuntutan itu muncul.`,
+        tingkat: 'sedang',
         status: 'draft',
       },
     ],

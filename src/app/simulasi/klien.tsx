@@ -351,7 +351,9 @@ function Awal({ props, onMulai }: { props: PropsSimulasi; onMulai: () => void })
                     <span className="kartu-kecil">{b.tahap}</span>
                     {b.menit === undefined && (
                       <span className="kartu-kecil">
-                        Waktu resmi belum tercatat, jadi tanpa batas waktu: stopwatch berjalan naik.
+                        {b.satuSesi
+                          ? 'Jumlah soal resmi belum diumumkan, jadi waktu sesi tak bisa dibagi: tanpa batas waktu, stopwatch berjalan naik.'
+                          : 'Waktu resmi belum tercatat, jadi tanpa batas waktu: stopwatch berjalan naik.'}
                       </span>
                     )}
                     {b.subtes.length > 1 && (
@@ -369,7 +371,7 @@ function Awal({ props, onMulai }: { props: PropsSimulasi; onMulai: () => void })
                   </div>
                   <div className="sim-bagian-meta">
                     <span>{sebut(n, 'soal')} · {batasTeks(b.menit)}</span>
-                    {b.satuSesi && (
+                    {b.satuSesi && (b.menit !== undefined || props.mode !== 'subtes') && (
                       <span className="kartu-kecil">
                         {props.mode === 'subtes' ? 'porsi dari waktu sesi' : 'satu sesi untuk semua subtes'}
                       </span>

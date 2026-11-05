@@ -5,8 +5,12 @@ import { tpa } from './tpa';
  * JagoTPA.
  *
  * Belum ada dokumen kurikulum untuk platform ini di repo. Strukturnya
- * diturunkan dari paket TRYOUT di Markaz (dibaca 23 September 2026), jadi
- * berstatus 'indikasi' dan sumbernya berkeandalan 'asumsi'.
+ * diturunkan dari paket TRYOUT di Markaz (dibaca 23 September 2026) dan dari
+ * riset serta blueprint TPA Generator (dibaca 5 November 2026), jadi berstatus
+ * 'indikasi' dan sumbernya berkeandalan 'asumsi'. Contoh soalnya berasal dari
+ * batch TPA Generator, bukan dari Markaz.
+ *
+ * Ditampilkan sejak 5 November 2026 (sebelumnya disembunyikan sejak 19 Oktober).
  *
  * Markaz juga memuat tryout "Tahap 3 Special Hire BI Tahun 2024 - 2025"
  * (Tes Psikologi). Itu sengaja tidak ditulis: hanya tahap ketiganya yang
@@ -19,7 +23,5 @@ export const jagotpa: Platform = {
   slug: 'jagotpa',
   logo: 'logo/icon-jagotpa.png',
   deskripsi: 'Persiapan Tes Potensi Akademik.',
-  // Disembunyikan 19 Okt 2026: aplikasinya belum siap. Hapus baris ini untuk menampilkan lagi.
-  tampil: false,
   tes: [tpa],
 };

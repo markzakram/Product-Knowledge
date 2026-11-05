@@ -18,7 +18,7 @@ export const skdKedinasan2026: Angkatan = {
   ringkasan:
     'Tiga subtes dikerjakan serentak dalam satu sesi 100 menit. Dipakai semua ' +
     'sekolah kedinasan; seleksi lanjutan ada di tesnya sendiri.',
-  diperbarui: '2026-10-19',
+  diperbarui: '2026-11-05',
   info: [
     {
       tipe: 'pendahuluan',
@@ -52,7 +52,7 @@ export const skdKedinasan2026: Angkatan = {
     {
       jenis: 'internal',
       judul: 'SKD Generator - mapping SKD 2027 (skd-mapping.json)',
-      tanggalAkses: '2026-10-19',
+      tanggalAkses: '2026-11-05',
       keandalan: 'resmi',
       catatan:
         'Mapping SKD 2027.xlsx (sheet "1 TO 0 Latsol" dan rotasi tiga paket) yang dibaca SKD Generator: 57 chapter, 37 di antaranya ' +
@@ -61,12 +61,21 @@ export const skdKedinasan2026: Angkatan = {
     {
       jenis: 'internal',
       judul: 'SKD Generator - 12 dokumen tryout 2027',
-      tanggalAkses: '2026-10-19',
+      tanggalAkses: '2026-11-05',
       keandalan: 'asumsi',
       catatan:
         'Contoh tryout internal: 12 dokumen tim yang diterima SKD Generator (312 soal: TWK 90, TIU 87, TKP 135; satu dokumen versi awal ' +
-        'tidak dihitung). Berstatus draf sampai ditelaah tim. Sumber 100 dari 110 soal paket contoh SKD (10 soal TIU lainnya dari ' +
-        'dokumen riset CPNS 2027 "Contoh Soal TIU SKD 2027"). Angka ketersediaan SIADU tidak dihitung.',
+        'tidak dihitung). Berstatus draf sampai ditelaah tim. Sumber 51 dari 110 soal paket contoh SKD (TWK 30 dan TIU 21). Angka ketersediaan SIADU tidak dihitung.',
+    },
+    {
+      jenis: 'internal',
+      judul: 'SKD Generator - kasus TKP orisinal dan mesin figural',
+      tanggalAkses: '2026-11-05',
+      keandalan: 'asumsi',
+      catatan:
+        'SKD Generator (HEAD 3d4e92e, ada perubahan yang belum di-commit), profil tryout-2027, seed PK-SKD-2027-PAKET-2. ' +
+        'Sumber 45 soal TKP (kasus orisinal data/tkp-kasus; skor 1 sampai 5 adalah skor rubrik latihan, bukan skor dokumen tryout) ' +
+        'dan 14 soal TIU buatan mesin generator (5 silogisme, 1 analogi dua kata, 8 figural). Belum ditelaah ahli.',
     },
   ],
 };
