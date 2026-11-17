@@ -698,6 +698,17 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
 }
 .ubin-catatan { margin-top: 2px; font-size: 12px; line-height: 1.35; color: var(--teks-2); }
 .plat-ubin { grid-template-columns: repeat(3, minmax(96px, auto)); }
+/* Tombol unduh di atas ubin angka, rata kanan dengan ubinnya. */
+.plat-samping { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.plat-unduh { min-height: 40px; padding: 0 14px; font-size: 14px; }
+.plat-unduh-format {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--teks-2);
+  padding-left: 8px;
+  border-left: 1px solid var(--garis);
+}
 
 /* ── Judul bagian ────────────────────────────────────────────────────── */
 .bagian-kepala {
@@ -1317,6 +1328,7 @@ td.angka, th.angka { text-align: right; font-variant-numeric: tabular-nums; }
   .plat-teks h1, .ang-judul h1 { font-size: 26px; }
   .logo-besar { width: 56px; height: 56px; border-radius: 16px; padding: 8px; }
   .plat-deskripsi { font-size: 14px; }
+  .plat-samping { width: 100%; align-items: stretch; gap: 8px; }
   .plat-ubin { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .plat-ubin .ubin { padding: 10px 12px; }
   .ubin-nilai { font-size: 21px; }

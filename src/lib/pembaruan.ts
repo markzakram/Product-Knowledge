@@ -27,6 +27,14 @@ export interface Rilis {
 
 export const PEMBARUAN: readonly Rilis[] = [
   {
+    versi: '1.11.0',
+    tanggal: '2026-11-17',
+    poin: [
+      'Tombol "Unduh semua" di halaman setiap platform: seluruh isi platform (tes, angkatan, tahapan, subtes, informasi seleksi, sumber, dan contoh soal beserta kunci dan pembahasannya) diunduh sebagai satu berkas ZIP.',
+      'Isi ZIP disiapkan untuk bahan knowledge AI: satu berkas Markdown per angkatan dan per subtes, satu berkas Markdown berisi seluruh platform, data.json untuk diolah jadi dataset, serta gambar dan audio soal. README di dalamnya menjelaskan arti status, termasuk bahwa isi berstatus Indikasi tidak boleh disampaikan sebagai kepastian.',
+    ],
+  },
+  {
     versi: '1.10.0',
     tanggal: '2026-11-05',
     poin: [

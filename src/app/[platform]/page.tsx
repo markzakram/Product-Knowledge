@@ -5,7 +5,7 @@ import {
   tautanTahapan, totalAngka,
   type JalurAngkatan,
 } from '@/lib/data';
-import { Remah, Kosong } from '../komponen';
+import { Remah, Kosong, Ikon } from '../komponen';
 import { PetaTes, type PetaAngkatan } from '../peta-tes';
 
 export function generateStaticParams() {
@@ -105,18 +105,32 @@ export default async function HalamanPlatform({
         {/* Platform tanpa tes tak punya apa pun untuk dihitung; deretan nol
             hanya akan terbaca seperti data yang gagal dimuat. */}
         {platform.tes.length > 0 && (
-          <div className="ubin-baris plat-ubin">
-            <div className="ubin">
-              <div className="ubin-nilai">{angka.tes}</div>
-              <div className="ubin-label">tes</div>
-            </div>
-            <div className="ubin">
-              <div className="ubin-nilai">{angka.subtes}</div>
-              <div className="ubin-label">subtes</div>
-            </div>
-            <div className="ubin">
-              <div className="ubin-nilai">{angka.contoh || '—'}</div>
-              <div className="ubin-label">contoh soal</div>
+          <div className="plat-samping">
+            {/* <a> biasa, bukan <Link>: Link mem-prefetch tujuannya, dan tujuannya
+                ZIP berukuran megabyte. Isinya disusun di lib/ekspor.ts. */}
+            <a
+              className="aksi aksi-garis plat-unduh tanpa-cetak"
+              href={`/unduh/${platform.slug}`}
+              download
+              title="Semua tes, angkatan, tahapan, subtes, dan contoh soal platform ini dalam satu ZIP: Markdown per level, satu Markdown lengkap, data.json, serta gambar dan audio. Untuk bahan knowledge AI."
+            >
+              <Ikon nama="unduh" ukuran={17} />
+              Unduh semua
+              <span className="plat-unduh-format">ZIP · MD · JSON</span>
+            </a>
+            <div className="ubin-baris plat-ubin">
+              <div className="ubin">
+                <div className="ubin-nilai">{angka.tes}</div>
+                <div className="ubin-label">tes</div>
+              </div>
+              <div className="ubin">
+                <div className="ubin-nilai">{angka.subtes}</div>
+                <div className="ubin-label">subtes</div>
+              </div>
+              <div className="ubin">
+                <div className="ubin-nilai">{angka.contoh || '—'}</div>
+                <div className="ubin-label">contoh soal</div>
+              </div>
             </div>
           </div>
         )}

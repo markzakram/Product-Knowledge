@@ -148,6 +148,31 @@ disembunyikan terlihat lewat `grep -rn "tampil: false" data`. Di kode,
 | `/dashboard` | Rekap kekurangan soal dan angkatan yang datanya belum lengkap |
 | `/cek-data` | Kunci tak cocok, pembahasan kosong, nomor ganda, lesson tak lengkap, mapping janggal, jalur atau berkas audio yang salah, versi yang tak cocok dengan catatan pembaruan |
 | `/pembaruan` | Catatan pembaruan: tiap versi aplikasi dengan tanggal dan poin perubahannya, terbaru di atas |
+| `/unduh/<platform>` | Seluruh isi satu platform sebagai ZIP untuk bahan knowledge AI (tombol "Unduh semua" di halaman platform) |
+
+### Unduh per platform (bahan knowledge AI)
+
+Tombol **Unduh semua** di kepala halaman platform mengunduh `/unduh/<platform>`, yaitu ZIP
+yang disusun `src/lib/ekspor.ts` (penulis ZIP-nya `src/lib/zip.ts`, tanpa dependensi). ZIP-nya
+dibuat SEKALI saat build seperti halaman lain (`force-static`), jadi berkas di `public/` cukup
+dibaca saat build. Isinya:
+
+```
+<platform>/
+  README.md                     daftar isi, arti status, arti status review
+  <platform>-lengkap.md         seluruh isi dalam satu berkas (untuk alat AI yang membatasi jumlah unggahan)
+  data.json                     data mentah persis bentuk skema, untuk diolah jadi dataset
+  <tes>/README.md               deskripsi tes dan daftar angkatan
+  <tes>/<angkatan>/angkatan.md  ringkasan, susunan tahapan, informasi seleksi, sumber
+  <tes>/<angkatan>/tahap-N-<nama>/NN-<subtes>.md   spesifikasi, materi, mapping, contoh soal + kunci + pembahasan
+  aset/gambar/…, aset/audio/…   hanya yang dirujuk
+```
+
+Tiap berkas Markdown diawali frontmatter YAML (platform, tes, angkatan, tahapan, subtes, status)
+supaya potongannya tetap tahu asalnya saat dipakai RAG. Di Markdown, penanda `⟦gambar:…⟧` jadi
+`![gambar](…)` relatif ke `aset/` dan rumus `\( … \)` jadi `$…$` (atau `$$…$$` bila satu baris
+sendiri); di `data.json` keduanya apa adanya. Platform tanpa tes tidak punya tombol dan rutenya
+404. Seperti halaman lain, `/unduh` di balik PIN dan tidak pernah disimpan service worker.
 
 ### Audio soal
 

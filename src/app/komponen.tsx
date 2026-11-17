@@ -95,6 +95,13 @@ const GAMBAR_IKON = {
       <path d="M7 14h10v7H7z" />
     </>
   ),
+  unduh: (
+    <>
+      <path d="M12 4v11" />
+      <path d="m7 10 5 5 5-5" />
+      <path d="M5 20h14" />
+    </>
+  ),
   info: (
     <>
       <circle cx="12" cy="12" r="9" />
