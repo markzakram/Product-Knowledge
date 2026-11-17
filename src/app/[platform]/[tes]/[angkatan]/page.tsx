@@ -257,6 +257,7 @@ export default async function HalamanAngkatan({
                       )}
 
                       {adaSubtes ? (
+                        <>
                         <TabelGulir kelas="tabel-subtes">
                           <table>
                             <thead>
@@ -284,10 +285,19 @@ export default async function HalamanAngkatan({
                                         <b>{subtes.nama}</b>
                                       </a>
                                     </td>
-                                    <td>{subtes.jumlahSoal ?? '—'}</td>
+                                    <td title={subtes.jumlahSoal === undefined ? 'Belum diketahui' : undefined}>
+                                      {subtes.jumlahSoal ?? '—'}
+                                    </td>
                                     {/* Tahapan satu sesi: waktu milik sesi, bukan subtes
                                         ini; angkanya ada di ringkasan tahapan. */}
-                                    <td className={tahapan.waktuBersama ? 'waktu-bersama' : undefined}>
+                                    <td
+                                      className={tahapan.waktuBersama ? 'waktu-bersama' : undefined}
+                                      title={
+                                        !tahapan.waktuBersama && subtes.waktuMenit === undefined
+                                          ? 'Belum diketahui'
+                                          : undefined
+                                      }
+                                    >
                                       {tahapan.waktuBersama
                                         ? 'Satu sesi'
                                         : subtes.waktuMenit === undefined
@@ -310,6 +320,10 @@ export default async function HalamanAngkatan({
                             </tbody>
                           </table>
                         </TabelGulir>
+                        {tahapan.subtes.some(
+                          (x) => x.jumlahSoal === undefined || (!tahapan.waktuBersama && x.waktuMenit === undefined),
+                        ) && <p className="tabel-ket">— berarti belum diketahui (belum ada di dokumen sumber).</p>}
+                        </>
                       ) : (
                         <p className="lini-belum">Belum ada subtes</p>
                       )}

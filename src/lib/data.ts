@@ -297,6 +297,28 @@ export function metaSubtes(
 }
 
 /**
+ * Teks satu subtes untuk index samping: "30 soal · 30 mnt". Di tahapan
+ * `waktuBersama` waktunya milik sesi: "30 soal · satu sesi 100 mnt" (waktu sesi
+ * dari `durasiTahapan`, satu-satunya penghitung durasi). Bagian yang tak
+ * diketahui dilewati; bila keduanya kosong: "belum ada angka".
+ */
+export function metaSubtesIndeks(
+  s: Pick<Subtes, 'jumlahSoal' | 'waktuMenit'>,
+  t: Pick<Tahapan, 'subtes' | 'waktuBersama'>,
+): string {
+  if (!t.waktuBersama) return metaSubtes(s) || 'belum ada angka';
+  const sesi = durasiTahapan(t);
+  return (
+    [
+      s.jumlahSoal === undefined ? '' : `${s.jumlahSoal} soal`,
+      sesi.tanpaMenit === 0 ? `satu sesi ${angkaId(sesi.menit)} mnt` : '',
+    ]
+      .filter(Boolean)
+      .join(' · ') || 'belum ada angka'
+  );
+}
+
+/**
  * ["90 soal", "105 menit"]; bagian yang tak satu pun subtesnya punya angka
  * dilewati. Tanda + berarti sebagian subtes belum punya angka, jadi jumlahnya
  * paling sedikit segitu. Tahapan satu sesi menulis "100 menit, satu sesi".
@@ -322,6 +344,18 @@ export function totalAngka(a: AngkaSubtes): string {
   return [...bagianSoalMenit(a), a.contoh ? `${a.contoh} contoh soal` : 'belum ada contoh soal'].join(
     ' · ',
   );
+}
+
+/**
+ * "110 soal · 100 mnt" untuk kartu beranda, dari `angkaAngkatan` yang sama
+ * dengan ubin "Soal ujian" dan "Durasi". Tanda + berarti sebagian subtes belum
+ * punya angka. Kosong bila tak ada angka sama sekali.
+ */
+export function ringkasKartu(a: AngkaSubtes): string {
+  const hasil: string[] = [];
+  if (a.subtes > a.tanpaSoal) hasil.push(`${a.soal}${a.tanpaSoal ? '+' : ''} soal`);
+  if (a.subtes > a.tanpaMenit) hasil.push(`${angkaId(a.menit)}${a.tanpaMenit ? '+' : ''} mnt`);
+  return hasil.join(' · ');
 }
 
 /**

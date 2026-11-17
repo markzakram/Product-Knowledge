@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import {
   cariSubtes, semuaSubtes, jumlahContoh, judulAngkatan, labelTahapan, tetanggaSubtes,
-  tautanAngkatan, tautanPlatform, tautanSubtes,
+  angkaTahapan, durasiTahapan, kodeChipTahapan, metaSubtesIndeks, angkaId, tautanAngkatan, tautanPlatform, tautanSubtes,
 } from '@/lib/data';
 import { Remah, Status, Kosong, Waktu, Ikon } from '../../../../../komponen';
 import { siapkanKelompok, uraikan } from '@/lib/isi-kaya';
@@ -43,10 +43,43 @@ export default async function HalamanSubtes({
   const daftarSubtes = tahapan.subtes.map((s) => ({
     nama: s.nama,
     jumlah: jumlahContoh(s),
+    meta: metaSubtesIndeks(s, tahapan),
     href: tautanSubtes({ ...jalur, subtes: s }),
     aktif: s === subtes,
   }));
   const adaSamping = indeks.length > 0 || daftarSubtes.length > 1;
+  // Waktu yang berlaku untuk subtes ini: miliknya sendiri, atau waktu sesi bersama.
+  const sesi = tahapan.waktuBersama ? durasiTahapan(tahapan) : null;
+  const waktuSesi = sesi && sesi.tanpaMenit === 0 ? sesi.menit : undefined;
+  // Tahapan satu sesi: "satu sesi 100 menit bersama TIU dan TKP (110 soal)"; kode chip
+  // subtes lain, atau "N subtes lain" bila kodenya angka. Total soal sesi hanya bila ada.
+  let sesiTeks = '';
+  if (waktuSesi !== undefined) {
+    const chip = kodeChipTahapan(tahapan.subtes.map((s) => s.nama));
+    const lain = tahapan.subtes.flatMap((s, k) => (s === subtes ? [] : [chip[k]]));
+    const angkaSesi = angkaTahapan(tahapan);
+    const daftar =
+      lain.length === 0
+        ? ''
+        : /^\d+$/.test(lain[0])
+          ? ` bersama ${lain.length} subtes lain`
+          : ` bersama ${lain.length > 1 ? `${lain.slice(0, -1).join(', ')} dan ${lain[lain.length - 1]}` : lain[0]}`;
+    const total =
+      lain.length > 0 && angkaSesi.subtes > angkaSesi.tanpaSoal
+        ? ` (${angkaSesi.soal}${angkaSesi.tanpaSoal ? '+' : ''} soal)`
+        : '';
+    sesiTeks = `satu sesi ${angkaId(waktuSesi)} menit${daftar}${total}`;
+  }
+  const ringkasan = [
+    subtes.jumlahSoal === undefined ? '' : `${subtes.jumlahSoal} soal`,
+    tahapan.waktuBersama
+      ? sesiTeks
+      : subtes.waktuMenit === undefined
+        ? ''
+        : `${angkaId(subtes.waktuMenit)} menit`,
+  ]
+    .filter(Boolean)
+    .join(' · ');
 
   return (
     <>
@@ -66,17 +99,32 @@ export default async function HalamanSubtes({
             <Status nilai={tahapan.status} />
             <span className="kartu-kecil"> · {labelTahapan(angkatan, tahapan)}</span>
           </p>
+          <p className="kartu-kecil" style={{ margin: '0 0 10px' }}>
+            {ringkasan || 'Jumlah soal dan waktu belum diketahui'}
+          </p>
 
           <dl className="spek">
             <div>
               <dt>Jumlah soal</dt>
-              <dd>{subtes.jumlahSoal ?? '—'}</dd>
+              {subtes.jumlahSoal === undefined ? (
+                <dd className="belum-tahu">belum diketahui</dd>
+              ) : (
+                <dd>{subtes.jumlahSoal}</dd>
+              )}
             </div>
             <div>
               <dt>Waktu</dt>
-              <dd>
-                <Waktu menit={subtes.waktuMenit} />
-              </dd>
+              {waktuSesi !== undefined ? (
+                <dd>
+                  {angkaId(waktuSesi)} menit, satu sesi
+                </dd>
+              ) : subtes.waktuMenit !== undefined ? (
+                <dd>
+                  <Waktu menit={subtes.waktuMenit} />
+                </dd>
+              ) : (
+                <dd className="belum-tahu">belum diketahui</dd>
+              )}
             </div>
             <div>
               <dt>Contoh soal</dt>

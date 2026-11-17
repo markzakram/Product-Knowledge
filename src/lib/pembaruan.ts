@@ -27,6 +27,15 @@ export interface Rilis {
 
 export const PEMBARUAN: readonly Rilis[] = [
   {
+    versi: '1.12.0',
+    tanggal: '2026-11-17',
+    poin: [
+      'Jumlah soal dan waktu kini tampil di lebih banyak tempat: di bawah tiap subtes pada index samping, di bawah judul halaman subtes, dan di kartu platform beranda (per tes, mengikuti tahun terbaru). Untuk SKD tertulis bahwa TWK, TIU, dan TKP dikerjakan dalam satu sesi 100 menit.',
+      'Angka yang memang belum ada kini tertulis "belum diketahui", bukan tanda strip. Tanda "+" berarti sebagian subtes belum punya angka.',
+      'PKN STAN: waktu TPA Numerik (45 menit), TPA Figural (30), TBI Structure (20), dan TBI Reading (30) diisi dari dokumen riset Seleksi Lanjutan PKN STAN.',
+    ],
+  },
+  {
     versi: '1.11.0',
     tanggal: '2026-11-17',
     poin: [

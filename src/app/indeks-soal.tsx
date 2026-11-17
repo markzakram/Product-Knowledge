@@ -6,6 +6,8 @@ import type { KategoriIndeks } from '@/lib/indeks-soal';
 export interface SubtesIndeks {
   nama: string;
   jumlah: number;
+  /** Teks angka ujian, mis. "30 soal · 30 mnt"; dihitung di server. */
+  meta: string;
   href: string;
   aktif: boolean;
 }
@@ -185,8 +187,15 @@ export function IndeksSoal({
                   href={s.href}
                   aria-current={s.aktif ? 'page' : undefined}
                 >
-                  <span className="indeks-nama">{s.nama}</span>
-                  {s.jumlah > 0 && <span className="indeks-jumlah">{s.jumlah}</span>}
+                  <span className="indeks-nama">
+                    {s.nama}
+                    <span className="indeks-meta">{s.meta}</span>
+                  </span>
+                  {s.jumlah > 0 && (
+                    <span className="indeks-jumlah" title={`${s.jumlah} contoh soal di subtes ini`}>
+                      {s.jumlah} contoh
+                    </span>
+                  )}
                 </a>
               </li>
             ))}

@@ -1,6 +1,25 @@
 import {
-  PLATFORM, angkaPlatform, semuaAngkatan, semuaSubtes, jumlahContoh, tautanPlatform,
+  PLATFORM, angkaPlatform, angkaAngkatan, angkatanAwal, judulAngkatan, ringkasKartu,
+  semuaAngkatan, semuaSubtes, jumlahContoh, tautanPlatform,
 } from '@/lib/data';
+import type { Platform } from '@/lib/skema';
+
+/** Paling banyak segini baris angka per kartu; sisanya "+n tes lainnya". */
+const BATAS_BARIS = 2;
+
+/**
+ * Baris angka ujian per tes: tahun terbaru tes itu, dengan angka yang sama dengan
+ * ubin "Soal ujian" dan "Durasi" di halaman tahunnya (`angkaAngkatan`). Tes tanpa
+ * angka sama sekali dilewati.
+ */
+function barisAngka(p: Platform) {
+  const baris = p.tes.flatMap((t) => {
+    const a = angkatanAwal(t);
+    const teks = a ? ringkasKartu(angkaAngkatan(a)) : '';
+    return a && teks ? [{ kunci: `${t.kode}/${a.kode}`, judul: judulAngkatan(t, a), teks }] : [];
+  });
+  return { tampil: baris.slice(0, BATAS_BARIS), sisa: Math.max(0, baris.length - BATAS_BARIS) };
+}
 
 export default function Beranda() {
   // Angka kartu memakai helper yang sama dengan kepala halaman platform (per
@@ -39,7 +58,9 @@ export default function Beranda() {
 
       <p className="judul-bagian">Siap dipakai · {terisi.length}</p>
       <div className="petak">
-        {terisi.map(({ platform, r }) => (
+        {terisi.map(({ platform, r }) => {
+          const angka = barisAngka(platform);
+          return (
           <a key={platform.kode} href={tautanPlatform(platform)} className="kartu">
             <div className="kartu-kepala">
               {platform.logo && (
@@ -61,8 +82,19 @@ export default function Beranda() {
                 <div className="kartu-kecil">contoh soal</div>
               </div>
             </div>
+            {angka.tampil.length > 0 && (
+              <ul className="kartu-angka" aria-label="Jumlah soal dan waktu">
+                {angka.tampil.map((b) => (
+                  <li key={b.kunci}>
+                    <span className="kartu-angka-judul">{b.judul}:</span> {b.teks}
+                  </li>
+                ))}
+                {angka.sisa > 0 && <li className="kartu-angka-sisa">+{angka.sisa} tes lainnya</li>}
+              </ul>
+            )}
           </a>
-        ))}
+          );
+        })}
       </div>
 
       {kosong.length > 0 && (

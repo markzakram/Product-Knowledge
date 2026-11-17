@@ -39,6 +39,8 @@ export const tahapLanjutan: Tahapan = {
       kode: 'tpa-numerik',
       nama: 'TPA - Numerik',
       jumlahSoal: 36,
+      waktuMenit: 45,
+      catatan: 'Waktu dari tabel Materi Pembelajaran (2.1) di dokumen riset Seleksi Lanjutan PKN STAN (JadiSekdin).',
       mapping: [
         { tipe: 'tryout', paket: 10, soalPerPaket: 36, dibutuhkan: 360, status: 'berjalan' },
         { tipe: 'latsol', paket: 5, soalPerPaket: 10, dibutuhkan: 50, status: 'berjalan' },
@@ -48,7 +50,8 @@ export const tahapLanjutan: Tahapan = {
       kode: 'tpa-figural',
       nama: 'TPA - Figural',
       jumlahSoal: 40,
-      catatan: 'Soal figural membutuhkan gambar; berkasnya belum ada di repo.',
+      waktuMenit: 30,
+      catatan: 'Soal figural membutuhkan gambar; berkasnya belum ada di repo. Waktu dari tabel Materi Pembelajaran (2.1) di dokumen riset Seleksi Lanjutan PKN STAN (JadiSekdin).',
       mapping: [
         { tipe: 'tryout', paket: 10, soalPerPaket: 40, dibutuhkan: 400, status: 'berjalan' },
         { tipe: 'latsol', paket: 5, soalPerPaket: 10, dibutuhkan: 50, status: 'berjalan' },
@@ -58,6 +61,8 @@ export const tahapLanjutan: Tahapan = {
       kode: 'tbi-structure',
       nama: 'TBI - Structure and Written Expression',
       jumlahSoal: 25,
+      waktuMenit: 20,
+      catatan: 'Waktu dari tabel Materi Pembelajaran (2.1) di dokumen riset Seleksi Lanjutan PKN STAN (JadiSekdin).',
       mapping: [
         { tipe: 'tryout', paket: 10, soalPerPaket: 25, dibutuhkan: 250, status: 'berjalan' },
         { tipe: 'latsol', paket: 5, soalPerPaket: 10, dibutuhkan: 50, status: 'berjalan' },
@@ -67,6 +72,8 @@ export const tahapLanjutan: Tahapan = {
       kode: 'tbi-reading',
       nama: 'TBI - Reading Comprehension',
       jumlahSoal: 35,
+      waktuMenit: 30,
+      catatan: 'Waktu dari tabel Materi Pembelajaran (2.1) di dokumen riset Seleksi Lanjutan PKN STAN (JadiSekdin).',
       mapping: [
         { tipe: 'tryout', paket: 10, soalPerPaket: 35, dibutuhkan: 350, status: 'berjalan' },
         { tipe: 'latsol', paket: 5, soalPerPaket: 10, dibutuhkan: 50, status: 'berjalan' },
